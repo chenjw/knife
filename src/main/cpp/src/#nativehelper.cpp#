@@ -1,0 +1,92 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include "jvmti.h"
+#include "agent.h"
+#include "nativehelper.h"
+jvmtiEnv *jvmti;
+void initJvmti( // JNIEnv
+	       * env){
+	JavaVM *jvm = 0;
+	int res;
+	res = env->GetJavaVM(&jvm);
+	if (res < 0 || jvm == 0) {
+		throwException(env,"java/lang/RuntimeException","GetJavaVM fail");
+	}
+	res = jvm->GetEnv((void **)&jvmti, JVMTI_VERSION_1_0);
+	if (res != JNI_OK || jvmti == 0) {
+		throwException(env,"java/lang/RuntimeException","GetEnv fail");
+	}
+	jvmtiError error;
+  	jvmtiCapabilities   capabilities;
+  	error = jvmti->GetCapabilities(&capabilities);
+  	capabilities.can_tag_objects = 1;
+  	capabilities.can_generate_garbage_collection_events = 1;
+  	error= jvmti->AddCapabilities(&capabilities);
+}
+
+void throwException(JNIEnv * env,char * clazz, char * message)
+{
+  	jclass exceptionClass = env->FindClass(clazz);
+  	if (exceptionClass==NULL) 
+  	{
+		exceptionClass = env->FindClass("java/lang/RuntimeException");
+     		if (exceptionClass==NULL) 
+     		{
+			fprintf (stderr,"Couldn't throw exception %s - %s\n",clazz,message);
+     		}
+ 	}
+  	env->ThrowNew(exceptionClass,message);
+}
+
+
+jvmtiIterationControl JNICALL iterate_markTag
+    (jlong class_tag, jlong size, jlong* tag_ptr, void* user_data) 
+{
+	IteraOverObjectsControl * control = (IteraOverObjectsControl *) user_data;
+    	*tag_ptr=1;
+    	control->count++;
+    	return JVMTI_ITERATION_CONTINUE;
+}
+
+jvmtiIterationControl JNICALL iterate_cleanTag
+    (jlong class_tag, jlong size, jlong* tag_ptr, void* user_data)
+{
+	*tag_ptr=0;
+   	return JVMTI_ITERATION_CONTINUE;   
+}
+
+
+void releaseTags()
+{
+  	jvmti->IterateOverHeap( JVMTI_HEAP_OBJECT_TAGGED,
+                          &iterate_cleanTag, NULL);
+}
+
+
+JNIEXPORT jobjectArray JNICALL Java_com_chenjw_attach_agent_NativeHelper_findInstancesByClass0
+  (JNIEnv * env, jclass thisClass, jclass klass)
+{ 
+	initJvmti(env);
+	jclass loadedObject = env->FindClass("java/lang/Object");
+	IteraOverObjectsControl control;
+  	control.size = 0;
+  	control.maxsize = 0;
+  	control.count=0;
+  	jvmti->IterateOverInstancesOfClass(klass,JVMTI_HEAP_OBJECT_EITHER,iterate_markTag, &control);
+  	jint countObjts=0;
+  	jobject * objs;
+  	jlong * tagResults;
+  	jlong idToQuery=1;  
+  	jvmti->GetObjectsWithTags(1,&idToQuery,&countObjts,&objs,&tagResults);
+  	// Set the object array
+  	jobjectArray arrayReturn = env->NewObjectArray(countObjts,loadedObject,0);
+  	for (jint i=0;i<countObjts;i++) {
+     		env->SetObjectArrayElement(arrayReturn,i, objs[i]);
+  	}
+	jvmti->Deallocate((unsigned char *)tagResults);  
+  	jvmti->Deallocate((unsigned char *)objs);  
+  	releaseTags();            
+  	return arrayReturn;
+}
+
+
