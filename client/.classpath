@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="src" path="java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/knife.core"/>
+	<classpathentry kind="lib" path="/home/chenjw/software/jdk1.6.0_29/lib/tools.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

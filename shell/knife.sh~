@@ -1,0 +1,2 @@
+#!/bin/bash
+java -Djava.ext.dirs=lib com.chenjw.knife.client.ClientMain

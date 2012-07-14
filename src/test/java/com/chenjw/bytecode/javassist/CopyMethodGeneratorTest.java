@@ -1,7 +1,7 @@
 package com.chenjw.bytecode.javassist;
 
 import com.chenjw.bytecode.javassist.method.CopyMethodGenerator;
-import com.chenjw.knife.test.impl.TestServiceImpl;
+import com.chenjw.knife.server.test.impl.TestServiceImpl;
 
 public class CopyMethodGeneratorTest {
 	public void proxy() {
