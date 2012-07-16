@@ -2,13 +2,16 @@ package com.chenjw.knife.agent.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.chenjw.knife.agent.Agent;
+import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.NativeHelper;
+import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
 
 public class FindCommandHandler implements CommandHandler {
@@ -35,10 +38,10 @@ public class FindCommandHandler implements CommandHandler {
 		return StringUtils.isNumeric(str);
 	}
 
-	public void handle(String[] args) {
+	public void handle(Args args, CommandDispatcher dispatcher) {
 		try {
 			Class<?> clazz = null;
-			String className = args[0];
+			String className = args.arg(0);
 			if (isNumeric(className)) {
 				Class<?>[] likeClazz = (Class<?>[]) Context
 						.get(Constants.CLASS_LIST);
@@ -51,37 +54,44 @@ public class FindCommandHandler implements CommandHandler {
 						Context.put(Constants.CLASS_LIST, likeClazz);
 						int i = 0;
 						for (Class<?> cc : likeClazz) {
-							Agent.print(i + ". " + cc.getName());
+							Agent.println(i + ". " + cc.getName());
 							i++;
 						}
-						Agent.print("find " + i + " classes like " + className
-								+ ", please choose one typing like 'find 0'!");
+						Agent.println("find " + i + " classes like '"
+								+ className
+								+ "', please choose one typing like 'find 0'!");
 						return;
 					} else if (likeClazz.length == 1) {
 						clazz = likeClazz[0];
 					}
 				}
 				if (clazz == null) {
-					Agent.print("not found!");
+					Agent.println("not found!");
 					return;
 				}
 			}
 			// //
 			Object[] objs = NativeHelper.findInstancesByClass(clazz);
-			Context.put(Constants.LIST, objs);
+			Context.put(Constants.OBJECT_LIST, objs);
 			int i = 0;
 			for (Object obj : objs) {
-				Agent.print(i + ". " + obj);
+				Agent.println(i + ". " + obj);
 				i++;
 			}
-			Agent.print("find " + i + " instances of " + clazz.getName());
+			Agent.println("find " + i + " instances of " + clazz.getName());
 		} catch (Exception e) {
-			Agent.print(e.getClass().getName() + ":" + e.getLocalizedMessage());
+			Agent.println(e.getClass().getName() + ":"
+					+ e.getLocalizedMessage());
 		}
 	}
 
 	@Override
 	public String getName() {
 		return "find";
+	}
+
+	@Override
+	public void declareArgs(Map<String, Integer> argDecls) {
+
 	}
 }

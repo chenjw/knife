@@ -8,15 +8,18 @@ import com.chenjw.knife.agent.handler.ClearCommandHandler;
 import com.chenjw.knife.agent.handler.CloseCommandHandler;
 import com.chenjw.knife.agent.handler.DoCommandHandler;
 import com.chenjw.knife.agent.handler.FindCommandHandler;
+import com.chenjw.knife.agent.handler.GcCommandHandler;
+import com.chenjw.knife.agent.handler.InvokeCommandHandler;
 import com.chenjw.knife.agent.handler.LogCommandHandler;
 import com.chenjw.knife.agent.handler.LsCommandHandler;
 import com.chenjw.knife.agent.handler.ViewCommandHandler;
+import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.core.Command;
 import com.chenjw.knife.core.ObjectPacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
 
-public class AgentPacketListener implements PacketHandler {
+public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 	private Map<String, CommandHandler> handlerMap = new HashMap<String, CommandHandler>();
 
 	public AgentPacketListener() {
@@ -28,16 +31,26 @@ public class AgentPacketListener implements PacketHandler {
 		addCommandHandler(new LsCommandHandler());
 		addCommandHandler(new CdCommandHandler());
 		addCommandHandler(new FindCommandHandler());
+		addCommandHandler(new InvokeCommandHandler());
+		addCommandHandler(new GcCommandHandler());
+
 	}
 
 	private void addCommandHandler(CommandHandler commandHandler) {
-		handlerMap.put(commandHandler.getName(), commandHandler);
+		Object pre = handlerMap.put(commandHandler.getName(), commandHandler);
+		if (pre != null) {
+			throw new RuntimeException(commandHandler.getName()
+					+ " has registered!");
+		}
 	}
 
-	private void dispatch(Command command) {
+	public void dispatch(Command command) {
 		CommandHandler handler = handlerMap.get(command.getName());
 		if (handler != null) {
-			handler.handle(command.getArgs());
+			String args = command.getArgs();
+			Map<String, Integer> argDecls = new HashMap<String, Integer>();
+			handler.declareArgs(argDecls);
+			handler.handle(new Args(args, argDecls), this);
 		}
 	}
 

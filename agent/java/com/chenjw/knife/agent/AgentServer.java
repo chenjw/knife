@@ -43,7 +43,7 @@ public class AgentServer implements Runnable {
 			socket = serverSocket.accept();
 			InputStream is = socket.getInputStream();
 			Agent.setInfo(new AgentInfo(socket, inst));
-			Agent.print("connected!");
+			Agent.println("connected!");
 			Packet command = null;
 			while (true) {
 				command = PacketResolver.read(is);

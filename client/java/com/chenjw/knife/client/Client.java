@@ -5,15 +5,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.chenjw.knife.core.Command;
 import com.chenjw.knife.core.ObjectPacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
 import com.chenjw.knife.core.PacketResolver;
+import com.chenjw.knife.utils.JvmUtils;
 import com.sun.tools.attach.VirtualMachine;
+import com.sun.tools.attach.VirtualMachineDescriptor;
 
 public class Client {
 
@@ -30,9 +35,12 @@ public class Client {
 
 	public void attach(String pid) throws IOException {
 		try {
-			String agentPath = "/home/chenjw/my_workspace/knife/dist/knife/lib/knife-agent.jar";
-
-			attach(pid, agentPath, null, null);
+			String agentPath = JvmUtils.findJar("knife-agent.jar");
+			if (StringUtils.isEmpty(pid)) {
+				attach(agentPath, null, null);
+			} else {
+				attach(pid, agentPath, null, null);
+			}
 			connect();
 		} catch (RuntimeException re) {
 			throw re;
@@ -43,9 +51,42 @@ public class Client {
 		}
 	}
 
-	public void attach(String pid, String agentPath, String sysCp, String bootCp)
-			throws IOException {
+	private void attach(String agentPath, String sysCp, String bootCp)
+			throws NumberFormatException, IOException {
+		List<VirtualMachineDescriptor> list = VirtualMachine.list();
+		List<String> idList = new ArrayList<String>();
+		int i = 0;
+		for (VirtualMachineDescriptor vm : list) {
+			idList.add(vm.id());
+			System.out.println(i + ". " + vm.displayName());
+			i++;
+		}
+		if (idList.isEmpty()) {
+			System.out.println("cant find vm process!");
+			return;
+		} else {
+			System.out.println("input [0-" + (i - 1) + "] to choose vm! ");
+		}
+		Scanner stdin = new Scanner(System.in);
+		String line;
+		while (true) {
+			line = stdin.nextLine();
+			if (StringUtils.isNumeric(line)) {
+				int id = Integer.parseInt(line);
+				if (id >= 0 && id < i) {
+					attach(idList.get(id), agentPath, sysCp, bootCp);
+					break;
+				}
+			}
+			System.out.println("input [0-" + (i - 1) + "] to choose vm! ");
+		}
+		// 0stdin.remove();
+	}
+
+	private void attach(String pid, String agentPath, String sysCp,
+			String bootCp) throws IOException {
 		try {
+
 			vm = VirtualMachine.attach(pid);
 			String agentArgs = (new StringBuilder()).append("port=")
 					.append(port).toString();
@@ -56,9 +97,9 @@ public class Client {
 				sysCp = getToolsJarPath();
 			agentArgs = (new StringBuilder()).append(agentArgs)
 					.append("&systemClassPath=").append(sysCp).toString();
-			vm.loadAgentPath(
-					"/home/chenjw/workspace/jvmtitest/src/.libs/libagent.so",
-					agentArgs);
+			// vm.loadAgentPath(
+			// "/home/chenjw/workspace/jvmtitest/src/.libs/libagent.so",
+			// agentArgs);
 
 			vm.loadAgent(agentPath, agentArgs);
 
@@ -126,23 +167,25 @@ public class Client {
 		Thread t = new Thread("client-console") {
 			@Override
 			public void run() {
+				Scanner stdin = null;
 				try {
-					Scanner stdin = new Scanner(System.in);
+					stdin = new Scanner(System.in);
 					String line = null;
 					while (!isClosed()) {
+
+						// System.out.println(stdin.);
+						// Display display = Display.getDefault();
 						line = stdin.nextLine();
-						String[] l = line.split(" ");
-						if (l.length == 0) {
-							continue;
-						}
-						String name = l[0];
-						String[] arguments = Arrays.copyOfRange(l, 1, l.length);
+
+						String name = StringUtils.substringBefore(line, " ");
+						String arguments = StringUtils
+								.substringAfter(line, " ");
 						Command command = new Command();
 						command.setName(name);
 						command.setArgs(arguments);
 						send(new ObjectPacket<Command>(command));
 					}
-				} catch (IOException e) {
+				} catch (Exception e) {
 				}
 			}
 		};

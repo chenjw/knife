@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="/home/chenjw/software/jdk1.6.0_29/lib/tools.jar"/>
 	<classpathentry kind="lib" path="/knife.core/lib/commons-io-1.4.jar"/>
 	<classpathentry kind="lib" path="/knife.core/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/knife.agent"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -1,9 +1,12 @@
 package com.chenjw.knife.agent;
 
+import java.io.IOException;
 import java.lang.instrument.Instrumentation;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarFile;
+
+import com.chenjw.knife.utils.JvmUtils;
 
 public class AgentMain {
 	private static Map<String, String> parse(String arguments) {
@@ -17,8 +20,7 @@ public class AgentMain {
 
 	public static void agentmain(String arguments, Instrumentation inst)
 			throws Exception {
-		inst.appendToSystemClassLoaderSearch(new JarFile(
-				"/home/chenjw/my_workspace/knife/dist/knife/lib/knife-core.jar"));
+		appendJar(inst);
 		// inst.appendToBootstrapClassLoaderSearch(new JarFile(
 		// "/home/chenjw/test/Test.jar"));
 		Map<String, String> argumentMap = parse(arguments);
@@ -27,5 +29,12 @@ public class AgentMain {
 		thread.setDaemon(true);
 		thread.start();
 		System.out.println("agent installed!");
+	}
+
+	private static void appendJar(Instrumentation inst) throws IOException {
+		for (String path : JvmUtils.findJars()) {
+			// System.out.println(file.getName());
+			inst.appendToSystemClassLoaderSearch(new JarFile(path));
+		}
 	}
 }

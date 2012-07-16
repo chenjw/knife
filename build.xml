@@ -129,6 +129,12 @@
   		</copy>
 	</target>
 
+	<target name="tar">
+		<tar destfile="${dist.dir}/knife.tar.gz" basedir="${dist.dir}/knife" compression="gzip"/>
+	</target>
+
+
+
 	<target name="make-rpm">
 		<property name="rpmbuildRoot" location="${base.dir}/rpm/rpm"/>
 		<delete dir="${rpmbuildRoot}"/>
@@ -155,5 +161,5 @@
  		<rpm specFile="rpm.spec" topDir="${rpmbuildRoot}" cleanBuildDir="true" failOnError="false"/>
 	</target>
     
-    	<target name="main" depends="init,build-native,build-core,build-client,build-agent,copy-shell,copy-lib"/>
+    	<target name="main" depends="init,build-native,build-core,build-client,build-agent,copy-shell,copy-lib,tar"/>
 </project>

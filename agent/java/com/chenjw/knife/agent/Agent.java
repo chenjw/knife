@@ -21,7 +21,7 @@ public class Agent {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			send(new TextPacket(entry.getKey().getName() + " recovered!"));
+			// send(new TextPacket(entry.getKey().getName() + " recovered!"));
 		}
 		info.getBaseMap().clear();
 	}
@@ -43,10 +43,10 @@ public class Agent {
 		try {
 
 			backup(clazz);
-			send(new TextPacket(clazz.getName() + " redefining..."));
+			// send(new TextPacket(clazz.getName() + " redefining..."));
 			info.getInst()
 					.redefineClasses(new ClassDefinition(clazz, bytecode));
-			send(new TextPacket(clazz.getName() + " redefined!"));
+			// send(new TextPacket(clazz.getName() + " redefined!"));
 			// inst.addTransformer(t, false);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -72,7 +72,7 @@ public class Agent {
 		}
 	}
 
-	public static void print(String msg) {
+	public static void println(String msg) {
 		send(new TextPacket(msg));
 	}
 

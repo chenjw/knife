@@ -1,9 +1,13 @@
 package com.chenjw.knife.agent.handler;
 
+import java.util.Map;
+
 import org.springframework.context.ApplicationContext;
 
+import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.NativeHelper;
+import com.chenjw.knife.agent.handler.arg.Args;
 
 public class DoCommandHandler implements CommandHandler {
 	private ApplicationContext[] contexts = null;
@@ -25,7 +29,7 @@ public class DoCommandHandler implements CommandHandler {
 		return null;
 	}
 
-	public void handle(String[] args) {
+	public void handle(Args args, CommandDispatcher dispatcher) {
 		try {
 			init();
 
@@ -40,5 +44,9 @@ public class DoCommandHandler implements CommandHandler {
 	@Override
 	public String getName() {
 		return "do";
+	}
+
+	@Override
+	public void declareArgs(Map<String, Integer> argDecls) {
 	}
 }

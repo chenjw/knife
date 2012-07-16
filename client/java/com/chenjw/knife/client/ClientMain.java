@@ -12,6 +12,7 @@ public final class ClientMain {
 	public static void main(String args[]) {
 		int port = DEFAULT_PORT;
 		String pid = JvmUtils.findPid("test_main");
+		pid = null;
 		try {
 			final Client client = new Client(port);
 			client.attach(pid);
@@ -20,10 +21,10 @@ public final class ClientMain {
 				@Override
 				public void handle(Packet packet) throws IOException {
 					if (packet instanceof ClosePacket) {
-						System.out.println("agent closed!");
+						System.out.println("knife>agent closed!");
 						client.close();
 					} else {
-						System.out.println(packet);
+						System.out.println("knife>" + packet);
 					}
 				}
 			});
