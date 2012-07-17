@@ -16,7 +16,7 @@ import com.chenjw.knife.core.ObjectPacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
 import com.chenjw.knife.core.PacketResolver;
-import com.chenjw.knife.utils.JvmUtils;
+import com.chenjw.knife.utils.JarHelper;
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
 
@@ -35,7 +35,7 @@ public class Client {
 
 	public void attach(String pid) throws IOException {
 		try {
-			String agentPath = JvmUtils.findJar("knife-agent.jar");
+			String agentPath = JarHelper.findJar("knife-agent.jar");
 			if (StringUtils.isEmpty(pid)) {
 				attach(agentPath, null, null);
 			} else {
@@ -100,7 +100,6 @@ public class Client {
 			// vm.loadAgentPath(
 			// "/home/chenjw/workspace/jvmtitest/src/.libs/libagent.so",
 			// agentArgs);
-
 			vm.loadAgent(agentPath, agentArgs);
 
 			// vm.detach();

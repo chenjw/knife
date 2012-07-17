@@ -5,13 +5,13 @@ import java.io.IOException;
 import com.chenjw.knife.core.ClosePacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
-import com.chenjw.knife.utils.JvmUtils;
+import com.chenjw.knife.utils.JvmHelper;
 
 public final class ClientMain {
 
 	public static void main(String args[]) {
 		int port = DEFAULT_PORT;
-		String pid = JvmUtils.findPid("test_main");
+		String pid = JvmHelper.findPid("test_main");
 		pid = null;
 		try {
 			final Client client = new Client(port);

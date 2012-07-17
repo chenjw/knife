@@ -9,11 +9,6 @@
 	<property name="build.classes.dir" location="${build.dir}/classes"/>
 	<property name="dist.dir" location="${base.dir}/dist"/>
 	<property environment="env"/>
-	<!--taskdef resource="net/sf/antcontrib/antcontrib.properties">
-		<classpath location="${base.dir}/ant-lib/ant-contrib-1.0b3.jar"/>
-	</taskdef-->
-	<!--taskdef name="cc" classname="com.seraph.extending.AntPathTask" classpath="${base.dir}/ant-lib/ant-contrib-1.0b3.jar"/-->
-    <!-- Targets -->
 
 	<property name="appName" value="knife"/>
 	<property name="date" value="2012"/>
@@ -22,11 +17,8 @@
 		<fileset dir="${base.dir}/core/lib">
    			<include name="**/*.jar"/>
 		</fileset>
-		<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
-		<pathelement location="${dist.dir}/knife/lib/knife-core.jar"/>
-		
+		<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>		
   	</path>
-	<echo message="${dist.dir}/knife/lib/knife-core.jar"/>
     	<target name="init">
   		<delete dir="${build.dir}"/>
 		<mkdir dir="${build.dir}"/>
@@ -45,36 +37,15 @@
 		<copy overwrite="true" file="${native.dir}/src/.libs/libnativehelper.so" todir="${base.dir}/agent/resources"/>
 	</target>
 
-       	<target name="build-core">
-		<local name="name"/>
-		<property name="name" value="core"/>
-  		<javac destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false">
-    			<src path="${base.dir}/${name}/java"/>
-    			<include name="**/*.java"/>
-			<classpath>
-				<path refid="lib.path"/>
-			</classpath>
-  		</javac>
- 		<copy todir="${build.classes.dir}/${name}">
-    			<fileset dir="${base.dir}/${name}/resources"/>
-  		</copy>
-		<copy todir="${build.classes.dir}/${name}">
-    			<fileset dir="${base.dir}/${name}/java" excludes="**/*.java"/>
-  		</copy>
-		<jar destfile="${dist.dir}/knife/lib/knife-${name}.jar" manifest="${base.dir}/${name}/resources/META-INF/MANIFEST.MF">
-    			<fileset dir="${build.classes.dir}/${name}"/>
-  		</jar>
-	</target>
-
        	<target name="build-client">
 		<local name="name"/>
 		<property name="name" value="client"/>
   		<javac destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false">
     			<src path="${base.dir}/${name}/java"/>
+			<src path="${base.dir}/core/java"/>
     			<include name="**/*.java"/>
 			<classpath>
 				<path refid="lib.path"/>
-				<pathelement location="${dist.dir}/knife/lib/knife-core.jar"/>
 			</classpath>
   		</javac>
  		<copy todir="${build.classes.dir}/${name}">
@@ -94,10 +65,10 @@
 		<property name="name" value="agent"/>
   		<javac destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false">
     			<src path="${base.dir}/${name}/java"/>
+			<src path="${base.dir}/core/java"/>
     			<include name="**/*.java"/>
 			<classpath>
 				<path refid="lib.path"/>
-				<pathelement location="${dist.dir}/knife/lib/knife-core.jar"/>
 			</classpath>
   		</javac>
  		<copy todir="${build.classes.dir}/${name}">
@@ -161,5 +132,5 @@
  		<rpm specFile="rpm.spec" topDir="${rpmbuildRoot}" cleanBuildDir="true" failOnError="false"/>
 	</target>
     
-    	<target name="main" depends="init,build-native,build-core,build-client,build-agent,copy-shell,copy-lib,tar"/>
+    	<target name="main" depends="init,build-native,build-client,build-agent,copy-shell,copy-lib,tar"/>
 </project>
