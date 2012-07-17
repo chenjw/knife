@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javassist.CannotCompileException;
 import javassist.ClassClassPath;
@@ -265,5 +267,15 @@ public final class ClassGenerator {
 		} finally {
 			finish();
 		}
+	}
+
+	public static void main(String[] args) {
+		Pattern pattern = Pattern
+				.compile("/member/midway(_)?[aA]v(_)?[aA]lert.htm");
+
+		Matcher matcher = pattern
+				.matcher("http://exodus2.china.alibaba.com:2100/member/midway_av_alert.htm");
+		System.out.println(matcher.find());
+
 	}
 }
