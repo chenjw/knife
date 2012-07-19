@@ -17,6 +17,7 @@ import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
 import com.chenjw.knife.core.PacketResolver;
 import com.chenjw.knife.utils.JarHelper;
+import com.chenjw.knife.utils.JvmHelper;
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
 
@@ -56,7 +57,12 @@ public class Client {
 		List<VirtualMachineDescriptor> list = VirtualMachine.list();
 		List<String> idList = new ArrayList<String>();
 		int i = 0;
+		String selfJvmId = JvmHelper.getPID();
 		for (VirtualMachineDescriptor vm : list) {
+			// exclude this app self
+			if (StringUtils.equals(selfJvmId, vm.id())) {
+				continue;
+			}
 			idList.add(vm.id());
 			System.out.println(i + ". " + vm.displayName());
 			i++;

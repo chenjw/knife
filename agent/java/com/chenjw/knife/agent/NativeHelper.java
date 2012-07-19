@@ -7,19 +7,25 @@ import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.security.ProtectionDomain;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 public class NativeHelper {
 	static {
-		// System.load("/home/chenjw/my_workspace/knife/src/main/cpp/src/.libs/libnativehelper.so");
-		// System.loadLibrary("libnativehelper");
-		NativeHelper.loadNativeLibrary("libnativehelper");
+		System.load("/home/chenjw/my_workspace/knife/native/src/.libs/libnativehelper.so");
+
+		// NativeHelper.loadNativeLibrary("libnativehelper");
 
 	}
+	private static String jvmClassName = null;
+
+	private static byte[] classBytes = null;
 
 	/**
 	 * 加载so或dll包，为支持跨平台，入参应不包含后缀
@@ -55,7 +61,7 @@ public class NativeHelper {
 	}
 
 	/**
-	 * 查找该类型的对象（包括继承自该类型的对象）
+	 * find instances by class
 	 * 
 	 * @param clazz
 	 * @return
@@ -80,36 +86,95 @@ public class NativeHelper {
 				if (Modifier.isStatic(field.getModifiers())) {
 					continue;
 				}
-				Object value = getFieldValue0(obj, field.getName(),
-						field.getType());
-				result.put(field, value);
+				try {
+					Object value = getFieldValue0(obj,
+							field.getDeclaringClass(), field.getName(),
+							field.getType());
+					result.put(field, value);
+				} catch (Exception e) {
+					System.out.println(field + " not found");
+				}
+
 			}
 		}
 		return result;
 	}
 
 	private static Field[] getFields(Class<?> clazz) {
-		Field[] fields = clazz.getDeclaredFields();
-		return fields;
+		Set<Field> fieldList = new HashSet<Field>();
+		while (clazz != Object.class && clazz != null) {
+			for (Field f : clazz.getDeclaredFields()) {
+				fieldList.add(f);
+			}
+			clazz = clazz.getSuperclass();
+		}
+		return fieldList.toArray(new Field[fieldList.size()]);
+	}
+
+	public synchronized static byte[] getClassBytes(Class<?> clazz) {
+		if (clazz == null) {
+			return null;
+		}
+		jvmClassName = StringUtils.replaceChars(clazz.getName(), ".", "/");
+		startClassFileLoadHook0();
+		retransformClasses(new Class<?>[] { clazz });
+		stopClassFileLoadHook0();
+		byte[] r = classBytes;
+		jvmClassName = null;
+		classBytes = null;
+		return r;
 	}
 
 	private native static Object[] findInstancesByClass0(Class<?> clazz);
 
-	private native static Object getFieldValue0(Object obj, String name,
-			Class<?> clazz);
+	private native static Object getFieldValue0(Object obj,
+			Class<?> fieldClass, String name, Class<?> returnType);
 
-	public static void main(String[] args) {
-		for (HashMap obj : NativeHelper.findInstancesByClass(HashMap.class)) {
-			// System.out.println(obj);
-			// System.err.println(NativeHelper.getFieldValue0(obj,
-			// "test1Service",
-			// Test1Service.class));
-			for (Entry<Field, Object> entry : NativeHelper.getFieldValues(obj)
-					.entrySet()) {
-				System.err.println(entry.getKey().getName() + "="
-						+ entry.getValue());
+	private native static void startClassFileLoadHook0();
 
-			}
+	private native static void stopClassFileLoadHook0();
+
+	private native static void retransformClasses(Class<?>[] classes);
+
+	/**
+	 * invoke by native code
+	 * 
+	 * @param loader
+	 * @param classname
+	 * @param classBeingRedefined
+	 * @param protectionDomain
+	 * @param classfileBuffer
+	 * @param isRetransformer
+	 * @return
+	 */
+	private static byte[] transform(ClassLoader loader, String className,
+			Class<?> classBeingRedefined, ProtectionDomain protectionDomain,
+			byte[] classfileBuffer) {
+		if (className != null && className.equals(jvmClassName)) {
+			classBytes = classfileBuffer;
 		}
+		return null;
+	}
+
+	private static void do1() throws ClassNotFoundException {
+		System.out
+				.println(NativeHelper.getClassBytes(OutputStream.class).length);
+
+		Class.forName("com.chenjw.knife.agent.handler.arg.Args");
+
+	}
+
+	private static void do2() throws ClassNotFoundException, SecurityException,
+			NoSuchFieldException {
+
+		Class c = Class.forName("com.chenjw.knife.agent.handler.arg.Args")
+				.getDeclaredField("argStr").getDeclaringClass();
+		System.out.println(c);
+	}
+
+	public static void main(String[] args) throws ClassNotFoundException,
+			SecurityException, NoSuchFieldException {
+		do2();
+		System.out.println("finished!");
 	}
 }

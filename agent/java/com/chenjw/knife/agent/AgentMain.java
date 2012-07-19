@@ -27,6 +27,21 @@ public class AgentMain {
 			appendJar(inst);
 			// inst.appendToBootstrapClassLoaderSearch(new JarFile(
 			// "/home/chenjw/test/Test.jar"));
+
+			// ClassFileTransformer transformer = new MyClassFileTransformer();
+			// inst.addTransformer(transformer, true);
+			// List<Class<?>> cList = new ArrayList<Class<?>>();
+			// for (Class<?> clazz : inst.getAllLoadedClasses()) {
+			// if (inst.isModifiableClass(clazz)) {
+			// cList.add(clazz);
+			// // System.out.println("+" + clazz.getName());
+			// } else {
+			//
+			// }
+			// }
+			// inst.retransformClasses(Class.forName("$Proxy0"));
+
+			// /
 			Map<String, String> argumentMap = parse(arguments);
 			Thread thread = new Thread(new AgentServer(
 					Integer.parseInt(argumentMap.get("port")), inst),
@@ -53,7 +68,9 @@ public class AgentMain {
 
 	private static void appendJar(Instrumentation inst) throws IOException {
 		for (String path : JarHelper.findJars()) {
-			// System.out.println(file.getName());
+
+			// System.out.println(path);
+			// inst.appendToBootstrapClassLoaderSearch(new JarFile(path));
 			inst.appendToSystemClassLoaderSearch(new JarFile(path));
 		}
 	}

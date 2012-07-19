@@ -20,13 +20,13 @@
 		<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>		
   	</path>
     	<target name="init">
-  		<delete dir="${build.dir}"/>
+  		<delete dir="${build.dir}" quiet="true"/>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
 		<mkdir dir="${build.classes.dir}/core"/>
 		<mkdir dir="${build.classes.dir}/agent"/>
 		<mkdir dir="${build.classes.dir}/client"/>
-		<delete dir="${dist.dir}"/>
+		<delete dir="${dist.dir}" quiet="true"/>
 		<mkdir dir="${dist.dir}"/>
 		<mkdir dir="${dist.dir}/knife/lib"/>
 	</target>

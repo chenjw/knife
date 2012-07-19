@@ -18,11 +18,14 @@ import com.chenjw.bytecode.javassist.InvokeExpression;
 import com.chenjw.bytecode.javassist.method.EnhanceMethodGenerator;
 import com.chenjw.bytecode.javassist.method.EnhanceMethodGenerator.TypeEnum;
 import com.chenjw.knife.agent.Agent;
+import com.chenjw.knife.agent.NativeHelper;
 
 public class InvokeLogUtils {
 	private static Method INVOKE_LOG_START_METHOD = null;
 	private static Method INVOKE_LOG_RETURN_END_METHOD = null;
 	private static Method INVOKE_LOG_EXCEPTION_END_METHOD = null;
+	// force trace class list
+	private static final String[] CLASS_WHITE_LIST = new String[] { "java.lang.reflect.InvocationHandler" };
 	static {
 		try {
 			INVOKE_LOG_START_METHOD = InvokeLog.class.getDeclaredMethod(
@@ -111,14 +114,8 @@ public class InvokeLogUtils {
 			@Override
 			public void edit(FieldAccess fieldaccess)
 					throws CannotCompileException {
-				if (fieldaccess.isStatic()) {
-					return;
-				}
-				try {
-					if (!isNeedLog(fieldaccess.getField())) {
-						return;
-					}
-				} catch (NotFoundException e) {
+
+				if (!isNeedLog(fieldaccess)) {
 					return;
 				}
 				try {
@@ -133,22 +130,57 @@ public class InvokeLogUtils {
 
 			}
 
-			private boolean isNeedLog(CtField ctField) {
+			/**
+			 * decide if this field need be traced
+			 * 
+			 * @param fieldaccess
+			 * @return
+			 */
+			private boolean isNeedLog(FieldAccess fieldaccess) {
+				// not static field
+				if (fieldaccess.isStatic()) {
+					return false;
+				}
+				CtField ctField;
+				try {
+					ctField = fieldaccess.getField();
+				} catch (NotFoundException e1) {
+					return false;
+				}
 				CtClass ctClass;
 				try {
 					ctClass = Helper.getComponentType(ctField.getType());
 				} catch (NotFoundException e) {
 					return false;
 				}
-				if (ctClass.getName().startsWith("java.")) {
+				// not primitive field
+				if (ctClass.isPrimitive()) {
 					return false;
-				} else if (ctClass.getName().startsWith("javax.")) {
-					return false;
-				} else if (ctClass.getName().startsWith("sun.")) {
-					return false;
-				} else {
-					return true;
 				}
+				// not system class field
+				boolean isLog = true;
+				if (ctClass.getName().startsWith("java.")) {
+					isLog = false;
+				} else if (ctClass.getName().startsWith("javax.")) {
+					isLog = false;
+				} else if (ctClass.getName().startsWith("sun.")) {
+					isLog = false;
+				}
+				// pass for white list
+				if (!isLog) {
+					for (String className : CLASS_WHITE_LIST) {
+						if (ctClass.getName().equals(className)) {
+							isLog = true;
+							break;
+						}
+					}
+				}
+				// if (isLog) {
+				// System.out.println("field " + ctClass.getName() + "."
+				// + ctField.getName());
+				// }
+				return isLog;
+
 			}
 
 		});
@@ -156,24 +188,29 @@ public class InvokeLogUtils {
 
 	public static void buildTraceClass(int dep, Class<?> clazz)
 			throws Exception {
-		ClassGenerator classGenerator = ClassGenerator.newInstance(Helper
-				.makeClassName(clazz));
+		ClassGenerator classGenerator = ClassGenerator.newInstance(
+				Helper.makeClassName(clazz), NativeHelper.getClassBytes(clazz));
 		buildClass(dep, classGenerator);
 		buildFieldAccess(dep, classGenerator);
-		Agent.redefineClass(Helper.findClass(classGenerator.getCtClass()),
-				classGenerator.toBytecode());
+
+		byte[] classBytes = classGenerator.toBytecode();
+		// System.out.println("buildTraceClass " + clazz.getName() + ","
+		// + classBytes);
+		Agent.redefineClass(clazz, classBytes);
 	}
 
 	public static void buildMockClass(int dep, Class<?> clazz) throws Exception {
-		ClassGenerator classGenerator = ClassGenerator.newInstance(Helper
-				.makeClassName(clazz));
+		ClassGenerator classGenerator = ClassGenerator.newInstance(
+				Helper.makeClassName(clazz), NativeHelper.getClassBytes(clazz));
 		buildClass(dep, classGenerator);
-		Agent.redefineClass(Helper.findClass(classGenerator.getCtClass()),
-				classGenerator.toBytecode());
+		byte[] classBytes = classGenerator.toBytecode();
+		Agent.redefineClass(clazz, classBytes);
 	}
 
 	private static boolean isNeedLog(CtMethod ctMethod) {
 		if (!Modifier.isPublic(ctMethod.getModifiers())) {
+			return false;
+		} else if (Modifier.isStatic(ctMethod.getModifiers())) {
 			return false;
 		} else if (ctMethod.getLongName().startsWith("java.")) {
 			return false;
@@ -192,5 +229,4 @@ public class InvokeLogUtils {
 			}
 		}
 	}
-
 }

@@ -7,7 +7,6 @@ package com.chenjw.bytecode.javassist;
 
 import java.lang.reflect.Method;
 
-import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
@@ -161,7 +160,8 @@ public class Helper {
 	}
 
 	public static Class<?> findClass(CtClass ctClass) {
-		return findClass(ctClass.getName());
+		Class<?> clazz = findClass(ctClass.getName());
+		return clazz;
 	}
 
 	public static Method findMethod(CtMethod ctMethod) {
@@ -180,32 +180,32 @@ public class Helper {
 		}
 	}
 
-	public static byte[] getBytecode(Class<?> clazz) {
-		ClassPool classPool = ClassPool.getDefault();
-		CtClass targetCtClass = null;
-		try {
-			targetCtClass = classPool.getCtClass(clazz.getName());
-		} catch (NotFoundException e) {
-			try {
-				classPool.appendClassPath(new ClassClassPath(clazz));
-				targetCtClass = classPool.getCtClass(clazz.getName());
-			} catch (Exception e1) {
-				targetCtClass = null;
-			}
-		}
-		if (targetCtClass == null) {
-			return null;
-		} else {
-			try {
-				byte[] bytecode = targetCtClass.toBytecode();
-				targetCtClass.defrost();
-				return bytecode;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
-			}
-		}
-	}
+	// public static byte[] getBytecode(Class<?> clazz) {
+	// ClassPool classPool = ClassPool.getDefault();
+	// CtClass targetCtClass = null;
+	// try {
+	// targetCtClass = classPool.getCtClass(clazz.getName());
+	// } catch (NotFoundException e) {
+	// try {
+	// classPool.appendClassPath(new ClassClassPath(clazz));
+	// targetCtClass = classPool.getCtClass(clazz.getName());
+	// } catch (Exception e1) {
+	// targetCtClass = null;
+	// }
+	// }
+	// if (targetCtClass == null) {
+	// return null;
+	// } else {
+	// try {
+	// byte[] bytecode = targetCtClass.toBytecode();
+	// targetCtClass.defrost();
+	// return bytecode;
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// return null;
+	// }
+	// }
+	// }
 
 	/**
 	 * 生成表示某个字符串常量的表达式

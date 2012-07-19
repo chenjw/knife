@@ -34,6 +34,9 @@ public class TestServiceImpl implements TestService {
 				ResultModel r = new ResultModel();
 				r.setSuccess(false);
 				return r;
+			} catch (Error e) {
+				e.printStackTrace();
+				throw e;
 			}
 		}
 	}

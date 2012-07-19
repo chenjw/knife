@@ -14,12 +14,13 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javassist.ByteArrayClassPath;
 import javassist.CannotCompileException;
-import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtField;
 import javassist.CtNewConstructor;
+import javassist.LoaderClassPath;
 import javassist.Modifier;
 import javassist.NotFoundException;
 
@@ -43,43 +44,89 @@ public final class ClassGenerator {
 
 	public static ClassGenerator newInstance(String className) {
 		ClassGenerator classGenerator = new ClassGenerator();
-		classGenerator.init(null, null, className);
+		classGenerator.initModifyClass(null, className);
 		return classGenerator;
 	}
 
 	public static ClassGenerator newInstance(CtClass ctClass) {
 		ClassGenerator classGenerator = new ClassGenerator();
-		classGenerator.init(null, ctClass, null);
+		classGenerator.initModifyClass(null, ctClass);
+		return classGenerator;
+	}
+
+	public static ClassGenerator newInstance(String className, byte[] classBytes) {
+		ClassGenerator classGenerator = new ClassGenerator();
+		classGenerator.initModifyClass(null, className, classBytes);
 		return classGenerator;
 	}
 
 	public static ClassGenerator newInstance() {
 		ClassGenerator classGenerator = new ClassGenerator();
-		classGenerator.init(null, null, null);
+		classGenerator.initNewClass(null);
 		return classGenerator;
 	}
 
-	private void init(ClassPool classPool, CtClass ctClass, String className) {
+	private void initPool(ClassPool classPool) {
 		if (classPool == null) {
 			classPool = new ClassPool(null);
 			classPool.appendSystemPath();
 		}
 		this.classPool = classPool;
+	}
+
+	private void initModifyClass(ClassPool classPool, CtClass ctClass) {
 		if (ctClass == null) {
-			if (className != null) {
-				ctClass = this.findCtClass(className);
-			} else {
-				className = generateClassName();
-				ctClass = this.createNewCtClass(className);
-			}
+			throw new RuntimeException("ctClass cant be null!");
 		}
+		initPool(classPool);
 		this.ctClass = ctClass;
+	}
+
+	private void initModifyClass(ClassPool classPool, String className) {
+		if (className == null) {
+			throw new RuntimeException("className cant be null!");
+		}
+		initPool(classPool);
+		this.ctClass = this.findCtClass(className);
+		if (this.ctClass == null) {
+			throw new RuntimeException("ctClass cant be null!");
+		}
+	}
+
+	private void initModifyClass(ClassPool classPool, String className,
+			byte[] classBytes) {
+		if (className == null) {
+			throw new RuntimeException("className cant be null!");
+		}
+		if (classBytes == null) {
+			throw new RuntimeException("classBytes cant be null!");
+		}
+		initPool(classPool);
+		this.ctClass = this.findCtClass(className);
+		if (this.ctClass == null) {
+			appandClass(className, classBytes);
+			this.ctClass = this.findCtClass(className);
+		}
+		if (this.ctClass == null) {
+			throw new RuntimeException("ctClass cant be null!");
+		}
+	}
+
+	private void initNewClass(ClassPool classPool) {
+		initPool(classPool);
+		String className = generateClassName();
+		this.ctClass = this.createNewCtClass(className);
 		if (this.ctClass == null) {
 			throw new RuntimeException("ctClass not found!");
 		}
 	}
 
 	private ClassGenerator() {
+	}
+
+	private void appandClass(String className, byte[] classBytes) {
+		classPool
+				.appendClassPath(new ByteArrayClassPath(className, classBytes));
 	}
 
 	private CtClass createNewCtClass(String className) {
@@ -193,7 +240,9 @@ public final class ClassGenerator {
 			Class<?> clazz;
 			try {
 				clazz = Class.forName(className);
-				classPool.appendClassPath(new ClassClassPath(clazz));
+				// System.out.println(clazz.getClassLoader());
+				classPool.appendClassPath(new LoaderClassPath(clazz
+						.getClassLoader()));
 				try {
 					return classPool.getCtClass(className);
 				} catch (NotFoundException e1) {

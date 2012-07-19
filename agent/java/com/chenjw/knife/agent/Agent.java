@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.instrument.ClassDefinition;
 import java.util.Map.Entry;
 
-import com.chenjw.bytecode.javassist.Helper;
 import com.chenjw.knife.core.ClosePacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketResolver;
@@ -34,7 +33,7 @@ public class Agent {
 	private static void backup(Class<?> clazz) {
 		byte[] base = info.getBaseMap().get(clazz);
 		if (base == null) {
-			byte[] bytes = Helper.getBytecode(clazz);
+			byte[] bytes = NativeHelper.getClassBytes(clazz);
 			info.getBaseMap().put(clazz, bytes);
 		}
 	}
@@ -47,7 +46,7 @@ public class Agent {
 			info.getInst()
 					.redefineClasses(new ClassDefinition(clazz, bytecode));
 			// send(new TextPacket(clazz.getName() + " redefined!"));
-			// inst.addTransformer(t, false);
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

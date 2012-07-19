@@ -12,7 +12,7 @@ public class InvokeLog {
 	private static final InvocationListener DEFAULT_LISTENER = new PrintInvocationListener();
 	public static InvocationListener listener = null;
 	public static Thread checkThread = null;
-
+	private static volatile boolean needLogging = true;
 	@SuppressWarnings("unchecked")
 	private static Set<Class<?>> classSet = SynchronizedSet
 			.decorate(new HashSet<Class<?>>());
@@ -27,17 +27,27 @@ public class InvokeLog {
 		if (field == null) {
 			return;
 		}
-		// System.out.println("start proxy " + field.getClass());
-		Class<?> clazz = field.getClass();
+		trace(dep + 1, field.getClass());
+	}
+
+	/**
+	 * add trace bytecode
+	 * 
+	 * @param dep
+	 * @param clazz
+	 */
+	private static void trace(int dep, Class<?> clazz) {
+
 		if (!classSet.contains(clazz)) {
 			try {
 				classSet.add(clazz);
-				InvokeLogUtils.buildTraceClass(dep + 1, clazz);
+				// Agent.println("start trace " + clazz);
+				InvokeLogUtils.buildTraceClass(dep, clazz);
+				// Agent.println("end trace " + clazz);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		// System.out.println("end proxy " + field.getClass());
 	}
 
 	private static boolean isLogThread() {
@@ -63,31 +73,66 @@ public class InvokeLog {
 
 	public static void start(int dep, Object thisObject, String className,
 			String methodName, Object[] arguments) {
-		if (!isLogThread()) {
+		if (!needLogging || !isLogThread()) {
+			// System.out.println(className + "." + methodName +
+			// " start return");
 			return;
 		}
-		InvocationListener listener = getListener();
-		listener.onStart(dep, thisObject, className, methodName, arguments);
+		needLogging = false;
+		// System.out.println(className + "." + methodName +
+		// " start return true");
+		try {
+			InvocationListener listener = getListener();
+			listener.onStart(dep, thisObject, className, methodName, arguments);
+		} finally {
+			needLogging = true;
+		}
 	}
 
 	public static void returnEnd(int dep, Object thisObject, String className,
 			String methodName, Object[] arguments, Object result) {
-		if (!isLogThread()) {
+		if (!needLogging || !isLogThread()) {
+			// System.out.println("returnEnd return");
 			return;
 		}
-		InvocationListener listener = getListener();
-		listener.onReturnEnd(dep, thisObject, className, methodName, arguments,
-				result);
+		needLogging = false;
+		try {
+			InvocationListener listener = getListener();
+			listener.onReturnEnd(dep, thisObject, className, methodName,
+					arguments, result);
+			if (result != null) {
+				trace(dep, result.getClass());
+			}
+		} finally {
+			needLogging = true;
+		}
+	}
+
+	private static String toString(Object obj) {
+		if (obj == null) {
+			return null;
+		}
+		try {
+			return JSON.toJSONString(obj);
+		} catch (Throwable e) {
+			return obj.toString();
+		}
 	}
 
 	public static void exceptionEnd(int dep, Object thisObject,
 			String className, String methodName, Object[] arguments, Throwable e) {
-		if (!isLogThread()) {
+		if (!needLogging || !isLogThread()) {
+			System.out.println("exceptionEnd return");
 			return;
 		}
-		InvocationListener listener = getListener();
-		listener.onExceptionEnd(dep, thisObject, className, methodName,
-				arguments, e);
+		needLogging = false;
+		try {
+			InvocationListener listener = getListener();
+			listener.onExceptionEnd(dep, thisObject, className, methodName,
+					arguments, e);
+		} finally {
+			needLogging = true;
+		}
 	}
 
 	private static class PrintInvocationListener implements InvocationListener {
@@ -102,9 +147,19 @@ public class InvokeLog {
 		@Override
 		public void onStart(int dep, Object thisObject, String className,
 				String methodName, Object[] arguments) {
-			String msg = null;
-			msg = className + "." + methodName;
-
+			StringBuffer msg = new StringBuffer("[invoke] ");
+			msg.append(className + "." + methodName);
+			msg.append("(");
+			boolean isFirst = true;
+			for (Object arg : arguments) {
+				if (isFirst) {
+					isFirst = false;
+				} else {
+					msg.append(",");
+				}
+				msg.append(InvokeLog.toString(arg));
+			}
+			msg.append(")");
 			try {
 				Agent.println(d(dep) + msg);
 			} catch (Exception e1) {
@@ -115,9 +170,13 @@ public class InvokeLog {
 		@Override
 		public void onReturnEnd(int dep, Object thisObject, String className,
 				String methodName, Object[] arguments, Object result) {
-			String msg = null;
-			msg = "[returns] " + JSON.toJSONString(result);
-
+			StringBuffer msg = new StringBuffer("[returns] ");
+			if (result == null) {
+				msg.append("null");
+			} else {
+				msg.append(JSON.toJSONString(result) + " @"
+						+ result.getClass().getName() + "@");
+			}
 			try {
 				Agent.println(d(dep) + msg);
 			} catch (Exception e1) {
