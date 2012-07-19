@@ -18,9 +18,9 @@ import org.apache.commons.lang.StringUtils;
 
 public class NativeHelper {
 	static {
-		System.load("/home/chenjw/my_workspace/knife/native/src/.libs/libnativehelper.so");
+		// System.load("/home/chenjw/my_workspace/knife/native/src/.libs/libnativehelper.so");
 
-		// NativeHelper.loadNativeLibrary("libnativehelper");
+		NativeHelper.loadNativeLibrary("libnativehelper");
 
 	}
 	private static String jvmClassName = null;
