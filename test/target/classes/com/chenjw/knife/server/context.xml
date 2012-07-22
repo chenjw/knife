@@ -15,9 +15,9 @@
 	
 	
 	<bean id="check" class="com.chenjw.knife.server.test.Check"/> 
-	
-	<aop:config> 
-    	<aop:aspect ref="check"> 
+	<!--  proxy-target-class="true"-->
+	<aop:config proxy-target-class="true"> 
+    	<aop:aspect ref="check" > 
       		<aop:pointcut id="target" expression="execution(* com.chenjw.knife.server.test.impl.Test1ServiceImpl.doApply(..))"/> 
       		<aop:before method="show" pointcut-ref="target"/> 
     	</aop:aspect> 

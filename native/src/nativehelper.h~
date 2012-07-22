@@ -19,7 +19,7 @@ JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_NativeHelper_findInst
  * Signature: (Ljava/lang/Object;Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;
  */
 JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_NativeHelper_getFieldValue0
-  (JNIEnv *, jclass, jobject,jclass, jstring, jclass);
+  (JNIEnv *, jclass, jobject, jclass, jstring, jclass);
 
 /*
  * Class:     com_chenjw_knife_agent_NativeHelper
@@ -44,6 +44,9 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_NativeHelper_stopClassFileLoa
  */
 JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_NativeHelper_retransformClasses
   (JNIEnv *, jclass, jobjectArray);
+
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_NativeHelper_redefineClass0
+  (JNIEnv *, jclass, jclass, jbyteArray);
 
 
 #ifdef __cplusplus

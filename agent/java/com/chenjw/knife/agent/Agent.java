@@ -1,8 +1,12 @@
 package com.chenjw.knife.agent;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.instrument.ClassDefinition;
 import java.util.Map.Entry;
+import java.util.jar.JarFile;
+
+import org.apache.commons.io.FileUtils;
 
 import com.chenjw.knife.core.ClosePacket;
 import com.chenjw.knife.core.Packet;
@@ -12,11 +16,41 @@ import com.chenjw.knife.core.TextPacket;
 public class Agent {
 	private static AgentInfo info = null;
 
+	/**
+	 * install jars dependent by agent
+	 * 
+	 * @param inst
+	 * @throws IOException
+	 */
+	public static void installJars() throws IOException {
+		if (info.getBootstrapJars() != null) {
+			for (String path : info.getBootstrapJars()) {
+				info.getInst().appendToBootstrapClassLoaderSearch(
+						new JarFile(path));
+
+			}
+		}
+
+		if (info.getSystemJars() != null) {
+			for (String path : info.getSystemJars()) {
+				info.getInst().appendToSystemClassLoaderSearch(
+						new JarFile(path));
+			}
+		}
+
+	}
+
+	/**
+	 * uninstall jars dependent by agent
+	 */
+	public static void uninstallJars() {
+
+	}
+
 	public static void clear() {
 		for (Entry<Class<?>, byte[]> entry : info.getBaseMap().entrySet()) {
 			try {
-				info.getInst().redefineClasses(
-						new ClassDefinition(entry.getKey(), entry.getValue()));
+				NativeHelper.redefineClass(entry.getKey(), entry.getValue());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -42,11 +76,16 @@ public class Agent {
 		try {
 
 			backup(clazz);
-			// send(new TextPacket(clazz.getName() + " redefining..."));
+			// send(new TextPacket(clazz.getName() + "(" + bytecode.length
+			// + ") redefining..."));
 			info.getInst()
 					.redefineClasses(new ClassDefinition(clazz, bytecode));
+			// NativeHelper.redefineClass(clazz, bytecode);
 			// send(new TextPacket(clazz.getName() + " redefined!"));
 
+			FileUtils.writeByteArrayToFile(new File("/home/chenjw/test/"
+					+ clazz.getName() + ".class"),
+					NativeHelper.getClassBytes(clazz));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

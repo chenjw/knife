@@ -29,6 +29,8 @@ void initJvmti(JNIEnv * env){
 	  	capabilities.can_generate_garbage_collection_events = 1;
 		capabilities.can_retransform_classes = 1;
 		capabilities.can_retransform_any_class = 1;
+		capabilities.can_redefine_classes = 1;
+		capabilities.can_redefine_any_class = 1;
 	  	error= jvmti->AddCapabilities(&capabilities);
 	}	
 }
@@ -298,9 +300,11 @@ JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_NativeHelper_findInst
 JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_NativeHelper_getFieldValue0
   (JNIEnv * env, jclass thisClass, jobject obj,jclass fieldClass,jstring fieldName,jclass fieldType)
 {
+	
+	initJvmti(env);
 	char* fieldNameChars=(char*)env->GetStringUTFChars(fieldName,0);	
 	//printf("123%s\n",fieldNameChars);	
-	initJvmti(env);
+	
 	//jclass klass=env->GetObjectClass(obj);
 	jclass klass=fieldClass;
 	//jfieldID fieldId=env->GetFieldID(klass,fieldNameChars,fieldNameChars);
@@ -327,6 +331,20 @@ JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_NativeHelper_getFieldValue
 	jvmti->Deallocate((unsigned char *)fieldIds);  
 	env->ReleaseStringUTFChars(fieldName,fieldNameChars);
 	return NULL;
+}
+
+
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_NativeHelper_redefineClass0
+  (JNIEnv * env, jclass thisClass, jclass klass, jbyteArray byteArray)
+{
+	initJvmti(env);
+    	jvmtiClassDefinition * classDef = NULL;
+	jvmti->Allocate(sizeof(jvmtiClassDefinition),(unsigned char**)&classDef);
+  	classDef->klass = klass;
+	classDef->class_bytes = (unsigned char*)env->GetByteArrayElements(byteArray, NULL);
+	classDef->class_byte_count = env->GetArrayLength(byteArray);
+	jvmti->RedefineClasses(1, classDef);
+	jvmti->Deallocate((unsigned char *)classDef);
 }
 
 

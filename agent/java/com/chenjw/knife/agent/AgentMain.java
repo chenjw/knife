@@ -1,51 +1,87 @@
 package com.chenjw.knife.agent;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.instrument.Instrumentation;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.jar.JarFile;
-
-import com.chenjw.knife.utils.JarHelper;
 
 public class AgentMain {
-	private static Map<String, String> parse(String arguments) {
-		Map<String, String> map = new HashMap<String, String>();
-		for (String str : arguments.split("&")) {
-			String[] strs = str.split("=");
-			map.put(strs[0], strs[1]);
+
+	private static void initJarPath(AgentInfo agentInfo,
+			Map<String, String> args) {
+		String bjs = args.get("bootstrapJars");
+		List<String> bjsL = new ArrayList<String>();
+		if (bjs != null) {
+			String[] bjss = bjs.split(";");
+			for (String s : bjss) {
+				bjsL.add(s);
+			}
 		}
-		return map;
+		agentInfo.setBootstrapJars(bjsL);
+		String sjs = args.get("systemJars");
+		List<String> sjsL = new ArrayList<String>();
+		if (sjs != null) {
+			String[] sjss = sjs.split(";");
+			for (String s : sjss) {
+				sjsL.add(s);
+			}
+		}
+		agentInfo.setSystemJars(sjsL);
+	}
+
+	private static Map<String, String> parseArgs(String arguments) {
+		Map<String, String> r = new HashMap<String, String>();
+		if (arguments != null && arguments.length() > 0) {
+			String[] strs = arguments.split("&");
+			for (String str : strs) {
+				String[] ss = str.split("=");
+				if (ss.length == 2) {
+					r.put(ss[0], ss[1]);
+				}
+			}
+		}
+		return r;
+	}
+
+	private static String readArgs(String fileName) {
+		FileInputStream fis = null;
+		try {
+			fis = new FileInputStream(fileName);
+			ByteArrayOutputStream output = new ByteArrayOutputStream();
+			byte buffer[] = new byte[4096];
+			for (int n = 0; -1 != (n = fis.read(buffer));) {
+				output.write(buffer, 0, n);
+			}
+			return new String(output.toByteArray());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+				}
+			}
+		}
 	}
 
 	public static void agentmain(String arguments, Instrumentation inst)
 			throws Exception {
 		try {
-			appendJar(inst);
-			// inst.appendToBootstrapClassLoaderSearch(new JarFile(
-			// "/home/chenjw/test/Test.jar"));
-
-			// ClassFileTransformer transformer = new MyClassFileTransformer();
-			// inst.addTransformer(transformer, true);
-			// List<Class<?>> cList = new ArrayList<Class<?>>();
-			// for (Class<?> clazz : inst.getAllLoadedClasses()) {
-			// if (inst.isModifiableClass(clazz)) {
-			// cList.add(clazz);
-			// // System.out.println("+" + clazz.getName());
-			// } else {
-			//
-			// }
-			// }
-			// inst.retransformClasses(Class.forName("$Proxy0"));
-
-			// /
-			Map<String, String> argumentMap = parse(arguments);
-			Thread thread = new Thread(new AgentServer(
-					Integer.parseInt(argumentMap.get("port")), inst),
-					"agent-server");
+			Map<String, String> args = parseArgs(readArgs(arguments));
+			AgentInfo agentInfo = new AgentInfo();
+			agentInfo.setInst(inst);
+			initJarPath(agentInfo, args);
+			Thread thread = new Thread(new AgentServer(Integer.parseInt(args
+					.get("port")), agentInfo), "agent-server");
 			thread.setDaemon(true);
 			thread.start();
 			System.out.println("agent installed!");
@@ -62,16 +98,6 @@ public class AgentMain {
 			e.printStackTrace(new PrintStream(new FileOutputStream(f)));
 		} catch (Exception e1) {
 
-		}
-
-	}
-
-	private static void appendJar(Instrumentation inst) throws IOException {
-		for (String path : JarHelper.findJars()) {
-
-			// System.out.println(path);
-			// inst.appendToBootstrapClassLoaderSearch(new JarFile(path));
-			inst.appendToSystemClassLoaderSearch(new JarFile(path));
 		}
 	}
 }

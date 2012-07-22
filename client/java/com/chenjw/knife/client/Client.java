@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.io.FileUtils;
 
 import com.chenjw.knife.core.Command;
 import com.chenjw.knife.core.ObjectPacket;
@@ -37,10 +37,10 @@ public class Client {
 	public void attach(String pid) throws IOException {
 		try {
 			String agentPath = JarHelper.findJar("knife-agent.jar");
-			if (StringUtils.isEmpty(pid)) {
-				attach(agentPath, null, null);
+			if (pid == null) {
+				attachAgent(agentPath);
 			} else {
-				attach(pid, agentPath, null, null);
+				attachAgent(pid, agentPath);
 			}
 			connect();
 		} catch (RuntimeException re) {
@@ -52,15 +52,29 @@ public class Client {
 		}
 	}
 
-	private void attach(String agentPath, String sysCp, String bootCp)
-			throws NumberFormatException, IOException {
+	private String appendBootstrapJars() {
+		return "";
+	}
+
+	private String appendSystemJars() {
+		String jars = getToolsJarPath();
+		for (String jar : JarHelper.findJars()) {
+			if (jars.length() != 0) {
+				jars += ";" + jar;
+			}
+		}
+		return jars;
+	}
+
+	private void attachAgent(String agentPath) throws NumberFormatException,
+			IOException {
 		List<VirtualMachineDescriptor> list = VirtualMachine.list();
 		List<String> idList = new ArrayList<String>();
 		int i = 0;
 		String selfJvmId = JvmHelper.getPID();
 		for (VirtualMachineDescriptor vm : list) {
 			// exclude this app self
-			if (StringUtils.equals(selfJvmId, vm.id())) {
+			if (vm.id().equals(selfJvmId)) {
 				continue;
 			}
 			idList.add(vm.id());
@@ -77,38 +91,28 @@ public class Client {
 		String line;
 		while (true) {
 			line = stdin.nextLine();
-			if (StringUtils.isNumeric(line)) {
+			try {
 				int id = Integer.parseInt(line);
 				if (id >= 0 && id < i) {
-					attach(idList.get(id), agentPath, sysCp, bootCp);
+					attachAgent(idList.get(id), agentPath);
 					break;
 				}
+			} catch (NumberFormatException e) {
+
 			}
 			System.out.println("input [0-" + (i - 1) + "] to choose vm! ");
 		}
 		// 0stdin.remove();
 	}
 
-	private void attach(String pid, String agentPath, String sysCp,
-			String bootCp) throws IOException {
+	private void attachAgent(String pid, String agentPath) throws IOException {
 		try {
 
 			vm = VirtualMachine.attach(pid);
-			String agentArgs = (new StringBuilder()).append("port=")
-					.append(port).toString();
-			if (bootCp != null)
-				agentArgs = (new StringBuilder()).append(agentArgs)
-						.append("&bootClassPath=").append(bootCp).toString();
-			if (sysCp == null)
-				sysCp = getToolsJarPath();
-			agentArgs = (new StringBuilder()).append(agentArgs)
-					.append("&systemClassPath=").append(sysCp).toString();
-			// vm.loadAgentPath(
-			// "/home/chenjw/workspace/jvmtitest/src/.libs/libagent.so",
-			// agentArgs);
-			vm.loadAgent(agentPath, agentArgs);
-
-			// vm.detach();
+			String agentArgs = "port=" + port;
+			agentArgs += "&bootstrapJars=" + appendBootstrapJars();
+			agentArgs += "&systemJars=" + appendSystemJars();
+			vm.loadAgent(agentPath, createArgFile(agentArgs));
 		} catch (RuntimeException re) {
 			throw re;
 		} catch (IOException ioexp) {
@@ -116,6 +120,18 @@ public class Client {
 		} catch (Exception exp) {
 			throw new IOException(exp.getMessage());
 		}
+	}
+
+	private String createArgFile(String str) {
+		File tmpFile = null;
+		try {
+			tmpFile = File.createTempFile("agentArgs", ".dat");
+			FileUtils.writeStringToFile(tmpFile, str);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		tmpFile.deleteOnExit();
+		return tmpFile.getAbsolutePath();
 	}
 
 	private void connect() throws IOException {
@@ -181,10 +197,8 @@ public class Client {
 						// System.out.println(stdin.);
 						// Display display = Display.getDefault();
 						line = stdin.nextLine();
-
-						String name = StringUtils.substringBefore(line, " ");
-						String arguments = StringUtils
-								.substringAfter(line, " ");
+						String name = subStringBefore(line, " ");
+						String arguments = subStringAfter(line, " ");
 						Command command = new Command();
 						command.setName(name);
 						command.setArgs(arguments);
@@ -192,6 +206,22 @@ public class Client {
 					}
 				} catch (Exception e) {
 				}
+			}
+
+			private String subStringBefore(String s, String s1) {
+				int pos = s.indexOf(s1);
+				if (pos == -1)
+					return s;
+				else
+					return s.substring(0, pos);
+			}
+
+			private String subStringAfter(String s, String s1) {
+				int pos = s.indexOf(s1);
+				if (pos == -1)
+					return "";
+				else
+					return s.substring(pos + s1.length());
 			}
 		};
 		t.setDaemon(true);

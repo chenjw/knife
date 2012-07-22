@@ -2,7 +2,6 @@ package com.chenjw.knife.agent;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.instrument.Instrumentation;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,11 +16,11 @@ public class AgentServer implements Runnable {
 	private static String LOCAL_ADDR = "127.0.0.1";
 	private ServerSocket serverSocket;
 	public PacketHandler handler = null;
-	private Instrumentation inst;
+	private AgentInfo agentInfo;
 
-	public AgentServer(int port, Instrumentation inst) throws IOException {
+	public AgentServer(int port, AgentInfo agentInfo) throws IOException {
 		try {
-			this.inst = inst;
+			this.agentInfo = agentInfo;
 			handler = new AgentPacketListener();
 			serverSocket = new ServerSocket(port, 1,
 					InetAddress.getByName(LOCAL_ADDR));
@@ -42,7 +41,8 @@ public class AgentServer implements Runnable {
 		try {
 			socket = serverSocket.accept();
 			InputStream is = socket.getInputStream();
-			Agent.setInfo(new AgentInfo(socket, inst));
+			agentInfo.setSocket(socket);
+			Agent.setInfo(agentInfo);
 			Agent.println("connected!");
 			Packet command = null;
 			while (true) {

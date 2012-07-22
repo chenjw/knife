@@ -42,8 +42,11 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_NativeHelper_stopClassFileLoa
  * Method:    retransformClasses
  * Signature: ([Ljava/lang/Class;)V
  */
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_NativeHelper_retransformClasses
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_NativeHelper_retransformClasses0
   (JNIEnv *, jclass, jobjectArray);
+
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_NativeHelper_redefineClass0
+  (JNIEnv *, jclass, jclass, jbyteArray);
 
 
 #ifdef __cplusplus

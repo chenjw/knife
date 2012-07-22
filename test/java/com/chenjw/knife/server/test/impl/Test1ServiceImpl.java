@@ -8,10 +8,12 @@ public class Test1ServiceImpl implements Test1Service {
 	private HelloService helloService;
 
 	@Override
-	public void doApply(ApplyModel apply) throws Exception {
+	public String doApply(ApplyModel apply) throws Exception {
 		if (!"chenjw".equals(apply.getName())) {
 			throw new Exception(helloService.hi(apply.getName())
 					+ " not allowed");
+		} else {
+			return null;
 		}
 	}
 

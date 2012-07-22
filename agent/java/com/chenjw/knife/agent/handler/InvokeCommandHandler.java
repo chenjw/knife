@@ -15,13 +15,14 @@ import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
 import com.chenjw.knife.agent.handler.log.InvokeLog;
-import com.chenjw.knife.agent.handler.log.InvokeLogUtils;
+import com.chenjw.knife.agent.handler.log.filter.PatternMethodFilter;
+import com.chenjw.knife.agent.handler.log.listener.DefaultInvocationListener;
 
 public class InvokeCommandHandler implements CommandHandler {
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
 		try {
-			addLogger();
+			addLogger(args);
 			invokeMethod(args.getArgStr());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -32,18 +33,25 @@ public class InvokeCommandHandler implements CommandHandler {
 		}
 	}
 
-	private void addLogger() throws Exception {
+	private void addLogger(Args args) throws Exception {
 
 		Object thisObject = Context.get(Constants.THIS);
 		if (thisObject != null) {
 			InvokeLog.checkThread = Thread.currentThread();
-			InvokeLogUtils.buildTraceClass(0, thisObject.getClass());
 		}
+		String[] arg = args.arg("-f");
+		if (arg != null) {
+			DefaultInvocationListener listener = new DefaultInvocationListener();
+			listener.setMethodFilter(new PatternMethodFilter(arg[0]));
+			InvokeLog.listener = listener;
+		}
+
 	}
 
 	private void clearLogger() {
 		InvokeLog.clear();
 		InvokeLog.checkThread = null;
+		InvokeLog.listener = null;
 	}
 
 	private void invokeMethod(String methodSig)
@@ -85,14 +93,19 @@ public class InvokeCommandHandler implements CommandHandler {
 	private void invoke(Method method, Object thisObject, Object[] args)
 			throws IllegalArgumentException, IllegalAccessException {
 		try {
-			method.invoke(thisObject, args);
+			InvokeLog.start(thisObject, thisObject.getClass().getName(),
+					method.getName(), args);
+			InvokeLog.traceObject(thisObject);
+			Object r = method.invoke(thisObject, args);
+			InvokeLog.returnEnd(thisObject, thisObject.getClass().getName(),
+					method.getName(), args, r);
 		} catch (InvocationTargetException e) {
-		}
-	}
+			Throwable t = e.getTargetException();
+			InvokeLog.exceptionEnd(thisObject, thisObject.getClass().getName(),
+					method.getName(), args, t);
+		} catch (Exception e) {
 
-	public static void main(String[] args) {
-		InvokeCommandHandler t = new InvokeCommandHandler();
-		t.getMethodArgs(new Class<?>[3], "{\"a\":[\"b\",\"c\"]},\"aaa\",2");
+		}
 	}
 
 	private Object[] getMethodArgs(Class<?>[] types, String str) {
@@ -145,5 +158,6 @@ public class InvokeCommandHandler implements CommandHandler {
 
 	@Override
 	public void declareArgs(Map<String, Integer> argDecls) {
+		argDecls.put("-f", 1);
 	}
 }

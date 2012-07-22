@@ -1,9 +1,7 @@
 package com.chenjw.knife.agent.handler;
 
-import java.io.File;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.context.ApplicationContext;
 
 import com.chenjw.knife.agent.CommandDispatcher;
@@ -38,11 +36,12 @@ public class DoCommandHandler implements CommandHandler {
 		try {
 			init();
 			Context.put(Constants.THIS, getBean("testService"));
-			FileUtils.writeByteArrayToFile(new File(
-					"/home/chenjw/test/$Proxy0.class"), NativeHelper
-					.getClassBytes(Class.forName("$Proxy0")));
+			// FileUtils.writeByteArrayToFile(new File(
+			// "/home/chenjw/test/$Proxy0.class"), NativeHelper
+			// .getClassBytes(Class.forName("$Proxy0")));
 
-			dispatcher.dispatch(new Command("invoke", "apply({})"));
+			dispatcher.dispatch(new Command("invoke",
+					"-f com.chenjw.* apply({})"));
 			System.out.println("do finished!");
 
 		} catch (Exception e) {

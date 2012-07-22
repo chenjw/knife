@@ -5,15 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 public class Args {
 	private Map<String, String[]> argMap = new HashMap<String, String[]>();
 
 	private String[] args;
 
-	private String argStr;
-
 	public Args(String argStr, Map<String, Integer> argDecls) {
-		this.argStr = argStr;
 		if (argStr == null) {
 			return;
 		}
@@ -43,7 +42,7 @@ public class Args {
 	}
 
 	public String getArgStr() {
-		return argStr;
+		return StringUtils.join(args, " ");
 	}
 
 	public String arg(int index) {

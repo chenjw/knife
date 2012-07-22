@@ -57,15 +57,12 @@ public final class EnhanceMethodGenerator implements MethodGenerator {
 			try {
 				oldCtMethod.insertBefore(beforeCode);
 			} catch (CannotCompileException e) {
-				System.out.println(this.oldCtMethod.getLongName() + " "
-						+ beforeCode);
 				throw e;
 			}
 
 		}
 		String afterCode = lineListToCode(afterMethodLines);
 		if (afterCode != null) {
-			// System.err.println(afterCode);
 			try {
 				oldCtMethod.insertAfter(afterCode, false);
 			} catch (CannotCompileException e) {

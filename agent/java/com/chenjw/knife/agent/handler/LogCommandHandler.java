@@ -14,7 +14,7 @@ public class LogCommandHandler implements CommandHandler {
 	public void handle(Args args, CommandDispatcher dispatcher) {
 
 		try {
-			InvokeLogUtils.buildTraceClass(0, Helper.findClass(args.arg(0)));
+			InvokeLogUtils.buildTraceClass(Helper.findClass(args.arg(0)));
 		} catch (Exception e) {
 			Agent.println(e.getClass().getName() + ":"
 					+ e.getLocalizedMessage());

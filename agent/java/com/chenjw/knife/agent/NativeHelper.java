@@ -18,11 +18,12 @@ import org.apache.commons.lang.StringUtils;
 
 public class NativeHelper {
 	static {
-		// System.load("/home/chenjw/my_workspace/knife/native/src/.libs/libnativehelper.so");
+		System.load("/home/chenjw/my_workspace/knife/native/src/.libs/libnativehelper.so");
 
-		NativeHelper.loadNativeLibrary("libnativehelper");
+		// NativeHelper.loadNativeLibrary("libnativehelper");
 
 	}
+	private static Object[] retransformLock = new Object[0];
 	private static String jvmClassName = null;
 
 	private static byte[] classBytes = null;
@@ -111,19 +112,29 @@ public class NativeHelper {
 		return fieldList.toArray(new Field[fieldList.size()]);
 	}
 
-	public synchronized static byte[] getClassBytes(Class<?> clazz) {
+	public static byte[] getClassBytes(Class<?> clazz) {
 		if (clazz == null) {
 			return null;
 		}
-		jvmClassName = StringUtils.replaceChars(clazz.getName(), ".", "/");
-		startClassFileLoadHook0();
-		retransformClasses(new Class<?>[] { clazz });
-		stopClassFileLoadHook0();
-		byte[] r = classBytes;
-		jvmClassName = null;
-		classBytes = null;
-		return r;
+		synchronized (retransformLock) {
+			jvmClassName = StringUtils.replaceChars(clazz.getName(), ".", "/");
+			classBytes = null;
+			startClassFileLoadHook0();
+			retransformClasses0(new Class<?>[] { clazz });
+			stopClassFileLoadHook0();
+			byte[] r = classBytes;
+			jvmClassName = null;
+			classBytes = null;
+			return r;
+		}
 	}
+
+	public static void redefineClass(Class<?> clazz, byte[] newClassBytes) {
+		redefineClass0(clazz, newClassBytes);
+	}
+
+	private native static void redefineClass0(Class<?> clazz,
+			byte[] newClassBytes);
 
 	private native static Object[] findInstancesByClass0(Class<?> clazz);
 
@@ -134,7 +145,7 @@ public class NativeHelper {
 
 	private native static void stopClassFileLoadHook0();
 
-	private native static void retransformClasses(Class<?>[] classes);
+	private native static void retransformClasses0(Class<?>[] classes);
 
 	/**
 	 * invoke by native code
@@ -151,7 +162,12 @@ public class NativeHelper {
 			Class<?> classBeingRedefined, ProtectionDomain protectionDomain,
 			byte[] classfileBuffer) {
 		if (className != null && className.equals(jvmClassName)) {
-			classBytes = classfileBuffer;
+			if (classBytes == null) {
+				classBytes = classfileBuffer;
+				return null;
+			} else {
+				return classBytes;
+			}
 		}
 		return null;
 	}
