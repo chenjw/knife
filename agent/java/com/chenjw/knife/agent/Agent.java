@@ -1,7 +1,6 @@
 package com.chenjw.knife.agent;
 
 import java.io.IOException;
-import java.lang.instrument.ClassDefinition;
 import java.util.Map.Entry;
 import java.util.jar.JarFile;
 
@@ -75,9 +74,9 @@ public class Agent {
 			backup(clazz);
 			// send(new TextPacket(clazz.getName() + "(" + bytecode.length
 			// + ") redefining..."));
-			info.getInst()
-					.redefineClasses(new ClassDefinition(clazz, bytecode));
-			// NativeHelper.redefineClass(clazz, bytecode);
+			// info.getInst()
+			// .redefineClasses(new ClassDefinition(clazz, bytecode));
+			NativeHelper.redefineClass(clazz, bytecode);
 			// send(new TextPacket(clazz.getName() + " redefined!"));
 
 			// FileUtils.writeByteArrayToFile(new File("/home/chenjw/test/"

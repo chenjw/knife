@@ -288,14 +288,17 @@ public class InvokeLogUtils {
 		long time = System.currentTimeMillis();
 		ClassGenerator classGenerator = ClassGenerator.newInstance(
 				Helper.makeClassName(clazz), NativeHelper.getClassBytes(clazz));
-		buildClass(classGenerator);
+		// buildClass(classGenerator);
 		buildFieldAccess(classGenerator);
 
 		byte[] classBytes = classGenerator.toBytecode();
 		// System.out.println("buildTraceClass " + clazz.getName() + ","
 		// + classBytes);
+		Agent.println("build " + clazz.getName() + " use "
+				+ (System.currentTimeMillis() - time) + " ms!");
+		time = System.currentTimeMillis();
 		Agent.redefineClass(clazz, classBytes);
-		Agent.println("build trace " + clazz.getName() + " use "
+		Agent.println("redefine " + clazz.getName() + " use "
 				+ (System.currentTimeMillis() - time) + " ms!");
 	}
 
