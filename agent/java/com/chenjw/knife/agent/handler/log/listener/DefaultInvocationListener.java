@@ -1,9 +1,9 @@
 package com.chenjw.knife.agent.handler.log.listener;
 
-import com.alibaba.fastjson.JSON;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.handler.log.InvocationListener;
 import com.chenjw.knife.agent.handler.log.InvokeDepth;
+import com.chenjw.knife.agent.handler.log.InvokeRecord;
 import com.chenjw.knife.agent.handler.log.MethodFilter;
 
 public class DefaultInvocationListener implements InvocationListener {
@@ -18,17 +18,6 @@ public class DefaultInvocationListener implements InvocationListener {
 			} else {
 				return false;
 			}
-		}
-	}
-
-	private static String toString(Object obj) {
-		if (obj == null) {
-			return null;
-		}
-		try {
-			return JSON.toJSONString(obj);
-		} catch (Throwable e) {
-			return obj.toString();
 		}
 	}
 
@@ -50,7 +39,8 @@ public class DefaultInvocationListener implements InvocationListener {
 		StringBuffer msg = new StringBuffer("[invoke] ");
 		String cn = null;
 		if (thisObject != null) {
-			cn = thisObject.getClass().getName();
+			cn = InvokeRecord.toId(thisObject)
+					+ thisObject.getClass().getName();
 		} else {
 			cn = className;
 		}
@@ -63,7 +53,11 @@ public class DefaultInvocationListener implements InvocationListener {
 			} else {
 				msg.append(",");
 			}
-			msg.append(toString(arg));
+			if (arg == null) {
+				msg.append("null");
+			} else {
+				msg.append(InvokeRecord.toId(arg) + arg.getClass().getName());
+			}
 		}
 		msg.append(")");
 		try {
@@ -83,8 +77,7 @@ public class DefaultInvocationListener implements InvocationListener {
 		if (result == null) {
 			msg.append("null");
 		} else {
-			msg.append(toString(result) + " @" + result.getClass().getName()
-					+ "@");
+			msg.append(InvokeRecord.toId(result) + result.getClass().getName());
 		}
 		try {
 			Agent.println(d(InvokeDepth.getDep()) + msg);
@@ -104,7 +97,7 @@ public class DefaultInvocationListener implements InvocationListener {
 		}
 		String msg = null;
 		// e.printStackTrace();
-		msg = "[throws] " + e;
+		msg = "[throws] " + InvokeRecord.toId(e) + e;
 		try {
 			Agent.println(d(InvokeDepth.getDep()) + msg);
 		} catch (Exception e1) {

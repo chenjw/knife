@@ -8,6 +8,7 @@ import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
+import com.chenjw.knife.agent.handler.log.InvokeRecord;
 
 public class CdCommandHandler implements CommandHandler {
 
@@ -15,12 +16,12 @@ public class CdCommandHandler implements CommandHandler {
 		try {
 			String param = args.arg(0);
 			int index = Integer.parseInt(param);
-			Object[] objs = (Object[]) Context.get(Constants.OBJECT_LIST);
-			Object obj = objs[index];
+			Object obj = InvokeRecord.get(index);
 			Context.put(Constants.THIS, obj);
-			Agent.println("into " + index + ". " + obj);
+			Agent.println("into " + obj);
 		} catch (Exception e) {
-			Agent.println(e.getClass().getName() + ":" + e.getLocalizedMessage());
+			Agent.println(e.getClass().getName() + ":"
+					+ e.getLocalizedMessage());
 		}
 	}
 

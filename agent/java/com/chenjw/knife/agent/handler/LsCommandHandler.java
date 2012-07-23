@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.chenjw.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
@@ -17,6 +18,7 @@ import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.NativeHelper;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
+import com.chenjw.knife.agent.handler.log.InvokeRecord;
 
 public class LsCommandHandler implements CommandHandler {
 
@@ -30,8 +32,8 @@ public class LsCommandHandler implements CommandHandler {
 		List<Object> list = new ArrayList<Object>();
 		int i = 0;
 		for (Entry<Field, Object> entry : fieldMap.entrySet()) {
-			Agent.println(i + ". " + entry.getKey().getName() + "="
-					+ entry.getValue());
+			Agent.println(entry.getKey().getName() + "="
+					+ InvokeRecord.toId(entry.getValue()) + entry.getValue());
 			list.add(entry.getValue());
 			i++;
 		}
@@ -63,7 +65,18 @@ public class LsCommandHandler implements CommandHandler {
 			Agent.println("not found!");
 			return;
 		}
-		Agent.println(obj.toString());
+		Agent.println(toString(obj));
+	}
+
+	private static String toString(Object obj) {
+		if (obj == null) {
+			return null;
+		}
+		try {
+			return JSON.toJSONString(obj);
+		} catch (Throwable e) {
+			return obj.toString();
+		}
 	}
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
