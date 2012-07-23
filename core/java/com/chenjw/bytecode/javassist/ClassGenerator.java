@@ -246,9 +246,11 @@ public final class ClassGenerator {
 				try {
 					return classPool.getCtClass(className);
 				} catch (NotFoundException e1) {
+					System.out.println("cant find class " + className);
 					return null;
 				}
 			} catch (ClassNotFoundException e1) {
+				System.out.println("cant find class " + className);
 				return null;
 			}
 		}
