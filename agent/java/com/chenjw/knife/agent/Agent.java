@@ -1,12 +1,9 @@
 package com.chenjw.knife.agent;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.instrument.ClassDefinition;
 import java.util.Map.Entry;
 import java.util.jar.JarFile;
-
-import org.apache.commons.io.FileUtils;
 
 import com.chenjw.knife.core.ClosePacket;
 import com.chenjw.knife.core.Packet;
@@ -83,9 +80,9 @@ public class Agent {
 			// NativeHelper.redefineClass(clazz, bytecode);
 			// send(new TextPacket(clazz.getName() + " redefined!"));
 
-			FileUtils.writeByteArrayToFile(new File("/home/chenjw/test/"
-					+ clazz.getName() + ".class"),
-					NativeHelper.getClassBytes(clazz));
+			// FileUtils.writeByteArrayToFile(new File("/home/chenjw/test/"
+			// + clazz.getName() + ".class"),
+			// NativeHelper.getClassBytes(clazz));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
