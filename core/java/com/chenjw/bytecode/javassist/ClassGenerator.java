@@ -249,7 +249,7 @@ public final class ClassGenerator {
 					return null;
 				}
 			} catch (ClassNotFoundException e1) {
-				throw null;
+				return null;
 			}
 		}
 		return targetCtClass;

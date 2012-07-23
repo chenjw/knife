@@ -84,8 +84,6 @@ public class InvokeLog {
 	public static void start(Object thisObject, String className,
 			String methodName, Object[] arguments) {
 		if (!needLogging || !isLogThread()) {
-			// System.out.println(className + "." + methodName +
-			// " start return");
 			return;
 		}
 
@@ -103,7 +101,6 @@ public class InvokeLog {
 	public static void returnEnd(Object thisObject, String className,
 			String methodName, Object[] arguments, Object result) {
 		if (!needLogging || !isLogThread()) {
-			// System.out.println("returnEnd return");
 			return;
 		}
 		needLogging = false;
@@ -122,7 +119,6 @@ public class InvokeLog {
 	public static void exceptionEnd(Object thisObject, String className,
 			String methodName, Object[] arguments, Throwable e) {
 		if (!needLogging || !isLogThread()) {
-			System.out.println("exceptionEnd return");
 			return;
 		}
 

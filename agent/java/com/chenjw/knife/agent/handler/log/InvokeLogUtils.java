@@ -285,6 +285,7 @@ public class InvokeLogUtils {
 		if (!isCanTrace(clazz)) {
 			return;
 		}
+		long time = System.currentTimeMillis();
 		ClassGenerator classGenerator = ClassGenerator.newInstance(
 				Helper.makeClassName(clazz), NativeHelper.getClassBytes(clazz));
 		buildClass(classGenerator);
@@ -294,6 +295,8 @@ public class InvokeLogUtils {
 		// System.out.println("buildTraceClass " + clazz.getName() + ","
 		// + classBytes);
 		Agent.redefineClass(clazz, classBytes);
+		Agent.println("build trace " + clazz.getName() + " use "
+				+ (System.currentTimeMillis() - time) + " ms!");
 	}
 
 	public static void buildMockClass(Class<?> clazz) throws Exception {
