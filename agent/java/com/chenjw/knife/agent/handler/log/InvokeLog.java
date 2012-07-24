@@ -1,11 +1,5 @@
 package com.chenjw.knife.agent.handler.log;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.apache.commons.collections.set.SynchronizedSet;
-
-import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.handler.log.listener.DefaultInvocationListener;
 
 public class InvokeLog {
@@ -14,28 +8,23 @@ public class InvokeLog {
 	public static Thread checkThread = null;
 	private static volatile boolean needLogging = true;
 
-	@SuppressWarnings("unchecked")
-	private static Set<Class<?>> classSet = SynchronizedSet
-			.decorate(new HashSet<Class<?>>());
-
 	public static void clear() {
-		Agent.clear();
-		classSet.clear();
+		InvokeLogUtils.clear();
 	}
 
-	public static <T> void traceObject(T obj) {
+	public static <T> void traceObject(T obj, String methodName) {
 		if (obj == null) {
 			return;
 		}
-		traceClass(obj.getClass());
+		traceClass(obj.getClass(), methodName);
 	}
 
-	public static void traceClass(Class<?> clazz) {
+	public static void traceClass(Class<?> clazz, String methodName) {
 		if (clazz == null) {
 			return;
 		}
 		// Agent.println("proxy " + clazz.getName());
-		trace(clazz);
+		trace(clazz, methodName);
 	}
 
 	/**
@@ -44,20 +33,16 @@ public class InvokeLog {
 	 * @param dep
 	 * @param clazz
 	 */
-	private static void trace(Class<?> clazz) {
+	private static void trace(Class<?> clazz, String methodName) {
 		if (!needLogging) {
 			return;
 		}
-		if (!classSet.contains(clazz)) {
-			try {
-				classSet.add(clazz);
-				// Agent.println("start trace " + clazz);
-				InvokeLogUtils.buildTraceClass(clazz);
-				// Agent.println("end trace " + clazz);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		try {
+			InvokeLogUtils.buildTraceMethod(clazz, methodName);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	private static boolean isLogThread() {
@@ -108,9 +93,6 @@ public class InvokeLog {
 			InvocationListener listener = getListener();
 			listener.onReturnEnd(thisObject, className, methodName, arguments,
 					result);
-			if (result != null) {
-				trace(result.getClass());
-			}
 		} finally {
 			needLogging = true;
 		}

@@ -7,10 +7,18 @@ import java.util.jar.JarFile;
 import com.chenjw.knife.core.ClosePacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketResolver;
+import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.TextPacket;
 
 public class Agent {
 	private static AgentInfo info = null;
+	public static Printer printer = new Printer() {
+		@Override
+		public void println(String str) {
+			Agent.println(str);
+		}
+
+	};
 
 	/**
 	 * install jars dependent by agent

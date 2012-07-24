@@ -95,7 +95,7 @@ public class InvokeCommandHandler implements CommandHandler {
 		try {
 			InvokeLog.start(thisObject, thisObject.getClass().getName(),
 					method.getName(), args);
-			InvokeLog.traceObject(thisObject);
+			InvokeLog.traceObject(thisObject, method.getName());
 			Object r = method.invoke(thisObject, args);
 			InvokeLog.returnEnd(thisObject, thisObject.getClass().getName(),
 					method.getName(), args, r);

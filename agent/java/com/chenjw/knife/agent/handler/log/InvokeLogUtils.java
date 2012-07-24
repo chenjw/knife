@@ -1,276 +1,158 @@
 package com.chenjw.knife.agent.handler.log;
 
-import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 import javassist.CannotCompileException;
+import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.Modifier;
 import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
-import javassist.expr.FieldAccess;
 import javassist.expr.MethodCall;
+
+import org.apache.commons.collections.set.SynchronizedSet;
 
 import com.chenjw.bytecode.javassist.ClassGenerator;
 import com.chenjw.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.NativeHelper;
+import com.chenjw.knife.utils.IntervalHelper;
 
 public class InvokeLogUtils {
-	// private static Method INVOKE_LOG_START_METHOD = null;
-	// private static Method INVOKE_LOG_RETURN_END_METHOD = null;
-	// private static Method INVOKE_LOG_EXCEPTION_END_METHOD = null;
-	// force trace class list
+	@SuppressWarnings("unchecked")
+	private static final Set<String> TRACED_METHOD = SynchronizedSet
+			.decorate(new HashSet<String>());
+
 	private static final String[] CLASS_WHITE_LIST = new String[] {
 			"java.lang.reflect.InvocationHandler.invoke",
 			"java.lang.reflect.Method.invoke" };
-	static {
-		// try {
-		// INVOKE_LOG_START_METHOD = InvokeLog.class.getDeclaredMethod(
-		// "start", new Class[] { Object.class, String.class,
-		// String.class, Object[].class });
-		// INVOKE_LOG_RETURN_END_METHOD = InvokeLog.class.getDeclaredMethod(
-		// "returnEnd", new Class[] { Object.class, String.class,
-		// String.class, Object[].class, Object.class });
-		// INVOKE_LOG_EXCEPTION_END_METHOD = InvokeLog.class
-		// .getDeclaredMethod("exceptionEnd", new Class[] {
-		// Object.class, String.class, String.class,
-		// Object[].class, Throwable.class });
-		//
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
+
+	public static void clear() {
+		Agent.clear();
+		TRACED_METHOD.clear();
 	}
 
-	private static void buildMethod(ClassGenerator classGenerator,
-			CtMethod ctMethod) throws Exception {
-		// EnhanceMethodGenerator methodGenerator = EnhanceMethodGenerator
-		// .newInstance(classGenerator, ctMethod);
-		// methodGenerator.addExpression(TypeEnum.BEFORE,
-		// new InvokeExpression(INVOKE_LOG_START_METHOD, null,
-		// new Expression[] {
-		// new Expression(String.valueOf(dep), int.class),
-		// new Expression("$0", Object.class),
-		// new Expression("\""
-		// + classGenerator.getCtClass().getName()
-		// + "\"", String.class),
-		// new Expression(
-		// "\"" + ctMethod.getName() + "\"",
-		// String.class),
-		// new Expression("$args", Object[].class) }));
-
-		// methodGenerator.addExpression(
-		// TypeEnum.AFTER,
-		// new InvokeExpression(INVOKE_LOG_RETURN_END_METHOD, null,
-		// new Expression[] {
-		// new Expression(String.valueOf(dep), int.class),
-		// new Expression("$0", Object.class),
-		// new Expression("\""
-		// + classGenerator.getCtClass().getName()
-		// + "\"", String.class),
-		// new Expression(
-		// "\"" + ctMethod.getName() + "\"",
-		// String.class),
-		// new Expression("$args", Object[].class),
-		// new Expression("$_", Helper.findClass(ctMethod
-		// .getReturnType())) }));
-
-		// methodGenerator.addExpression(TypeEnum.CATCH,
-		//
-		// new InvokeExpression(INVOKE_LOG_EXCEPTION_END_METHOD, null,
-		// new Expression[] {
-		// new Expression(String.valueOf(dep), int.class),
-		// new Expression("$0", Object.class),
-		// new Expression("\""
-		// + classGenerator.getCtClass().getName()
-		// + "\"", String.class),
-		// new Expression(
-		// "\"" + ctMethod.getName() + "\"",
-		// String.class),
-		// new Expression("$args", Object[].class),
-		// new Expression("$e", Throwable.class) }));
-		// classGenerator.addMethod(methodGenerator);
-	}
-
-	private static void buildClass(ClassGenerator classGenerator)
-			throws Exception {
-		for (CtMethod ctMethod : classGenerator.getCtClass().getMethods()) {
-			if (isNeedLog(ctMethod)) {
-				buildMethod(classGenerator, ctMethod);
-			}
+	private static void buildMethodAccess(final ClassGenerator classGenerator,
+			final String methodName) throws Exception {
+		String methodFullName = classGenerator.getCtClass().getName() + "."
+				+ methodName;
+		// filter traced method
+		if (TRACED_METHOD.contains(methodFullName)) {
+			return;
+		} else {
+			TRACED_METHOD.add(methodFullName);
 		}
-		// System.out
-		// .println("end build " + classGenerator.getCtClass().getName());
-	}
+		for (CtMethod method : classGenerator.getCtClass().getMethods()) {
 
-	private static void buildFieldAccess(final ClassGenerator classGenerator)
-			throws Exception {
-		classGenerator.getCtClass().instrument(new ExprEditor() {
-			public void edit(MethodCall methodcall)
-					throws CannotCompileException {
-				// System.out.println(methodcall.getClassName() + "."
-				// + methodcall.getMethodName());
-				if (!isNeedLog(methodcall)) {
-					return;
-				}
-				// if (!StringUtils.equals(methodcall.getClassName(),
-				// classGenerator.getCtClass().getName())) {
-				// InvokeLog.proxy(Helper.findClass(methodcall.getClassName()));
-				// // Agent.println(dep + 1 + methodcall.getClassName());
-				// }
-
-				String proxyCode = InvokeLog.class.getName()
-						+ ".traceObject($0);";
-
-				if ("java.lang.reflect.Method".equals(methodcall.getClassName())
-						&& "invoke".equals(methodcall.getMethodName())) {
-
-					proxyCode = InvokeLog.class.getName() + ".traceObject($1);";
-				}
-				if (isStatic(methodcall)) {
-					proxyCode = InvokeLog.class.getName()
-							+ ".traceClass($class);";
-				}
-				String startCode = InvokeLog.class.getName() + ".start($0,\""
-						+ methodcall.getClassName() + "\",\""
-						+ methodcall.getMethodName() + "\",$args);";
-				String returnEndCode = InvokeLog.class.getName()
-						+ ".returnEnd( $0,\"" + methodcall.getClassName()
-						+ "\",\"" + methodcall.getMethodName()
-						+ "\",$args,($w)$_);";
-
-				String exceptionEndCode = InvokeLog.class.getName()
-						+ ".exceptionEnd( $0,\"" + methodcall.getClassName()
-						+ "\",\"" + methodcall.getMethodName()
-						+ "\",$args,$e);";
-				String code = "try{";
-				code += startCode;
-				code += proxyCode;
-				code += "$_ = $proceed($$);";
-				code += returnEndCode;
-				code += "}";
-				code += "catch(java.lang.Throwable $e){";
-				code += exceptionEndCode;
-				code += "throw $e;";
-				code += "}";
-				// System.out.println(methodcall.getClassName() + "."
-				// + methodcall.getMethodName());
-				// System.out.println(code);
-
-				methodcall.replace(code);
-
+			// filter trace method
+			if (!methodName.equals(method.getName())) {
+				System.out.println(methodName + " " + method.getName());
+				continue;
+			}
+			// filter unsupport method
+			if (!isSupportTrace(classGenerator.getCtClass(), method)) {
+				continue;
 			}
 
-			private boolean isStatic(MethodCall methodcall) {
-				try {
-					return Modifier.isStatic(methodcall.getMethod()
-							.getModifiers());
-				} catch (NotFoundException e) {
-					return false;
+			method.instrument(new ExprEditor() {
+				public void edit(MethodCall methodcall)
+						throws CannotCompileException {
+
+					IntervalHelper.start(methodcall.getClassName() + "."
+							+ methodcall.getMethodName());
+
+					String proxyCode = InvokeLog.class.getName()
+							+ ".traceObject($0,\"" + methodcall.getMethodName()
+							+ "\");";
+
+					if ("java.lang.reflect.Method".equals(methodcall
+							.getClassName())
+							&& "invoke".equals(methodcall.getMethodName())) {
+
+						proxyCode = InvokeLog.class.getName()
+								+ ".traceObject($1,\""
+								+ methodcall.getMethodName() + "\");";
+					}
+					if (isStatic(methodcall)) {
+						proxyCode = InvokeLog.class.getName()
+								+ ".traceClass($class,\""
+								+ methodcall.getMethodName() + "\");";
+					}
+					String startCode = InvokeLog.class.getName()
+							+ ".start($0,\"" + methodcall.getClassName()
+							+ "\",\"" + methodcall.getMethodName()
+							+ "\",$args);";
+					String returnEndCode = InvokeLog.class.getName()
+							+ ".returnEnd( $0,\"" + methodcall.getClassName()
+							+ "\",\"" + methodcall.getMethodName()
+							+ "\",$args,($w)$_);";
+
+					String exceptionEndCode = InvokeLog.class.getName()
+							+ ".exceptionEnd( $0,\""
+							+ methodcall.getClassName() + "\",\""
+							+ methodcall.getMethodName() + "\",$args,$e);";
+					String code = "try{";
+					code += startCode;
+					code += proxyCode;
+					code += "$_ = $proceed($$);";
+					code += returnEndCode;
+					code += "}";
+					code += "catch(java.lang.Throwable $e){";
+					code += exceptionEndCode;
+					code += "throw $e;";
+					code += "}";
+					// System.out.println(methodcall.getClassName() + "."
+					// + methodcall.getMethodName());
+					// System.out.println(code);
+					IntervalHelper.printMillis(
+							Agent.printer,
+							methodcall.getClassName() + "."
+									+ methodcall.getMethodName());
+					IntervalHelper.start("replace");
+					methodcall.replace(code);
+					IntervalHelper.printMillis(Agent.printer, "replace");
+
 				}
-			}
 
-			// new Expression[] {
-			// new Expression(String.valueOf(dep), int.class),
-			// new Expression("$0", Object.class),
-			// new Expression("\""
-			// + classGenerator.getCtClass().getName()
-			// + "\"", String.class),
-			// new Expression(
-			// "\"" + ctMethod.getName() + "\"",
-			// String.class),
-			// new Expression("$args", Object[].class),
-			// new Expression("$_", Helper.findClass(ctMethod
-			// .getReturnType())) }));
-			@Override
-			public void edit(FieldAccess fieldaccess)
-					throws CannotCompileException {
-
-				// if (!isNeedLog(fieldaccess)) {
-				// return;
-				// }
-				// try {
-				// fieldaccess.replace("$_=$proceed($$);"
-				// + InvokeLog.class.getName() + ".proxy(($w)$_);");
-				// } catch (CannotCompileException e) {
-				// Agent.println(fieldaccess.getFieldName() + " proxy error");
-				//
-				// throw e;
-				// }
-
-			}
-
-			//
-			// private boolean isNeedLog(CtClass ctClass) {
-			// ctClass = Helper.getComponentType(ctClass);
-			// // not primitive field
-			// if (ctClass.isPrimitive()) {
-			// return false;
-			// }
-			// return isNeedLog(ctClass.getName());
-			// }
-
-			private boolean isNeedLog(String className, String methodName) {
-				// not system class field
-				boolean isLog = true;
-				String name = className + "." + methodName;
-				if (name.startsWith("java.")) {
-					isLog = false;
-				} else if (name.startsWith("javax.")) {
-					isLog = false;
-				} else if (name.startsWith("sun.")) {
-					isLog = false;
-				}
-				// pass for white list
-				if (!isLog) {
-					for (String cn : CLASS_WHITE_LIST) {
-						if (name.equals(cn)) {
-							isLog = true;
-							break;
-						}
+				private boolean isStatic(MethodCall methodcall) {
+					try {
+						return Modifier.isStatic(methodcall.getMethod()
+								.getModifiers());
+					} catch (NotFoundException e) {
+						return false;
 					}
 				}
-				return isLog;
-			}
 
-			/**
-			 * decide if this field need be traced
-			 * 
-			 * @param fieldaccess
-			 * @return
-			 */
-			// private boolean isNeedLog(FieldAccess fieldaccess) {
-			// // not static field
-			// if (fieldaccess.isStatic()) {
-			// return false;
-			// }
-			// CtField ctField;
-			// try {
-			// ctField = fieldaccess.getField();
-			// } catch (NotFoundException e1) {
-			// return false;
-			// }
-			// CtClass ctClass;
-			// try {
-			// ctClass = ctField.getType();
-			// } catch (NotFoundException e) {
-			// return false;
-			// }
-			// return isNeedLog(ctClass);
-			// }
+				// @Override
+				// public void edit(FieldAccess fieldaccess)
+				// throws CannotCompileException {
+				//
+				// // if (!isNeedLog(fieldaccess)) {
+				// // return;
+				// // }
+				// // try {
+				// // fieldaccess.replace("$_=$proceed($$);"
+				// // + InvokeLog.class.getName() + ".proxy(($w)$_);");
+				// // } catch (CannotCompileException e) {
+				// // Agent.println(fieldaccess.getFieldName() +
+				// // " proxy error");
+				// //
+				// // throw e;
+				// // }
+				//
+				// }
 
-			/**
-			 * decide if this field need be traced
-			 * 
-			 * @param fieldaccess
-			 * @return
-			 */
-			private boolean isNeedLog(MethodCall methodcall) {
-				// not static field
-				return isNeedLog(methodcall.getClassName(),
-						methodcall.getMethodName());
-			}
+				/**
+				 * decide if this field need be traced
+				 * 
+				 * @param fieldaccess
+				 * @return
+				 */
 
-		});
+			});
+		}
+
 	}
 
 	private static boolean isCanTrace(Class<?> clazz) {
@@ -281,58 +163,80 @@ public class InvokeLogUtils {
 		}
 	}
 
-	public static void buildTraceClass(Class<?> clazz) throws Exception {
+	public static void buildTraceMethod(Class<?> clazz, String methodName)
+			throws Exception {
 		if (!isCanTrace(clazz)) {
 			return;
 		}
-		long time = System.currentTimeMillis();
+		IntervalHelper.start("getClassBytes");
+		byte[] bytes = NativeHelper.getClassBytes(clazz);
+		IntervalHelper.printMillis(Agent.printer, "getClassBytes");
+		IntervalHelper.start("ClassGenerator.newInstance");
 		ClassGenerator classGenerator = ClassGenerator.newInstance(
-				Helper.makeClassName(clazz), NativeHelper.getClassBytes(clazz));
-		// buildClass(classGenerator);
-		buildFieldAccess(classGenerator);
-
+				Helper.makeClassName(clazz), bytes);
+		IntervalHelper.printMillis(Agent.printer, "ClassGenerator.newInstance");
+		IntervalHelper.start("buildField");
+		buildMethodAccess(classGenerator, methodName);
+		IntervalHelper.printMillis(Agent.printer, "buildField");
+		IntervalHelper.start("toBytecode");
 		byte[] classBytes = classGenerator.toBytecode();
-		// System.out.println("buildTraceClass " + clazz.getName() + ","
-		// + classBytes);
-		Agent.println("build " + clazz.getName() + " use "
-				+ (System.currentTimeMillis() - time) + " ms!");
-		time = System.currentTimeMillis();
+		IntervalHelper.printMillis(Agent.printer, "toBytecode");
+		IntervalHelper.start("redefine");
 		Agent.redefineClass(clazz, classBytes);
-		Agent.println("redefine " + clazz.getName() + " use "
-				+ (System.currentTimeMillis() - time) + " ms!");
+		IntervalHelper.printMillis(Agent.printer, "redefine");
 	}
 
-	public static void buildMockClass(Class<?> clazz) throws Exception {
-		if (!isCanTrace(clazz)) {
-			return;
+	private boolean isNeedLog(String className, String methodName) {
+		// not system class field
+		boolean isLog = true;
+		String name = className + "." + methodName;
+		if (name.startsWith("java.")) {
+			isLog = false;
+		} else if (name.startsWith("javax.")) {
+			isLog = false;
+		} else if (name.startsWith("sun.")) {
+			isLog = false;
 		}
-		ClassGenerator classGenerator = ClassGenerator.newInstance(
-				Helper.makeClassName(clazz), NativeHelper.getClassBytes(clazz));
-		buildClass(classGenerator);
-		byte[] classBytes = classGenerator.toBytecode();
-		Agent.redefineClass(clazz, classBytes);
+		// pass for white list
+		if (!isLog) {
+			for (String cn : CLASS_WHITE_LIST) {
+				if (name.equals(cn)) {
+					isLog = true;
+					break;
+				}
+			}
+		}
+		return isLog;
 	}
 
-	private static boolean isNeedLog(CtMethod ctMethod) {
-		if (!Modifier.isPublic(ctMethod.getModifiers())) {
+	private static boolean isSupportTrace(CtClass ctClass, CtMethod ctMethod) {
+		// filter name
+		boolean isLog = true;
+		if (ctClass.getName().startsWith("java.")) {
+			isLog = false;
+		} else if (ctClass.getName().startsWith("javax.")) {
+			isLog = false;
+		} else if (ctClass.getName().startsWith("sun.")) {
+			isLog = false;
+		}
+		String name = ctClass.getName() + "." + ctMethod.getName();
+		// pass for white list
+		if (!isLog) {
+			for (String cn : CLASS_WHITE_LIST) {
+				if (name.equals(cn)) {
+					isLog = true;
+					break;
+				}
+			}
+		}
+		if (isLog == false) {
 			return false;
-		} else if (Modifier.isStatic(ctMethod.getModifiers())) {
-			return false;
-		} else if (ctMethod.getLongName().startsWith("java.")) {
-			return false;
-		} else if (ctMethod.getLongName().startsWith("javax.")) {
-			return false;
-		} else if (ctMethod.getLongName().startsWith("sun.")) {
+		}
+		// filter native
+		if (Modifier.isNative(ctMethod.getModifiers())) {
 			return false;
 		} else {
-			Method method = Helper.findMethod(ctMethod);
-			if (method == null) {
-				return false;
-			} else if (Modifier.isNative(method.getModifiers())) {
-				return false;
-			} else {
-				return true;
-			}
+			return true;
 		}
 	}
 }
