@@ -5,14 +5,11 @@ import java.io.OutputStream;
 import java.lang.instrument.Instrumentation;
 import java.net.Socket;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class AgentInfo {
 	private Socket socket;
 	private OutputStream os;
 	private Instrumentation inst;
-	private Map<Class<?>, byte[]> baseMap = new ConcurrentHashMap<Class<?>, byte[]>();
 	// will be loaded when enter and unload when close
 	private List<String> bootstrapJars;
 	private List<String> systemJars;
@@ -34,10 +31,6 @@ public class AgentInfo {
 
 	public Instrumentation getInst() {
 		return inst;
-	}
-
-	public Map<Class<?>, byte[]> getBaseMap() {
-		return baseMap;
 	}
 
 	public List<String> getBootstrapJars() {

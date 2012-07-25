@@ -5,6 +5,7 @@ import com.chenjw.knife.agent.handler.log.InvocationListener;
 import com.chenjw.knife.agent.handler.log.InvokeDepth;
 import com.chenjw.knife.agent.handler.log.InvokeRecord;
 import com.chenjw.knife.agent.handler.log.MethodFilter;
+import com.chenjw.knife.utils.TimingHelper;
 
 public class DefaultInvocationListener implements InvocationListener {
 	private MethodFilter methodFilter;
@@ -61,7 +62,9 @@ public class DefaultInvocationListener implements InvocationListener {
 		}
 		msg.append(")");
 		try {
-			Agent.println(d(InvokeDepth.getDep()) + msg);
+			int dep = InvokeDepth.getDep();
+			Agent.println(d(dep) + msg);
+			TimingHelper.start(String.valueOf(dep));
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -73,14 +76,17 @@ public class DefaultInvocationListener implements InvocationListener {
 		if (!isLog(className, methodName)) {
 			return;
 		}
+		int dep = InvokeDepth.getDep();
 		StringBuffer msg = new StringBuffer("[returns] ");
 		if (result == null) {
 			msg.append("null");
 		} else {
 			msg.append(InvokeRecord.toId(result) + result.getClass().getName());
 		}
+		msg.append(" [" + TimingHelper.getMillisInterval(String.valueOf(dep))
+				+ " ms]");
 		try {
-			Agent.println(d(InvokeDepth.getDep()) + msg);
+			Agent.println(d(dep) + msg);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} finally {
@@ -95,11 +101,15 @@ public class DefaultInvocationListener implements InvocationListener {
 		if (!isLog(className, methodName)) {
 			return;
 		}
-		String msg = null;
+		int dep = InvokeDepth.getDep();
+		StringBuffer msg = new StringBuffer("[throws] ");
 		// e.printStackTrace();
-		msg = "[throws] " + InvokeRecord.toId(e) + e;
+		msg.append(InvokeRecord.toId(e));
+		msg.append(e);
+		msg.append(" [" + TimingHelper.getMillisInterval(String.valueOf(dep))
+				+ " ms]");
 		try {
-			Agent.println(d(InvokeDepth.getDep()) + msg);
+			Agent.println(d(dep) + msg);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		} finally {

@@ -6,7 +6,7 @@ import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.handler.log.InvokeLog;
+import com.chenjw.knife.agent.handler.log.Profiler;
 
 public class CloseCommandHandler implements CommandHandler {
 	public String getName() {
@@ -15,7 +15,7 @@ public class CloseCommandHandler implements CommandHandler {
 
 	@Override
 	public void handle(Args args, CommandDispatcher dispatcher) {
-		InvokeLog.clear();
+		Profiler.clear();
 		Agent.close();
 	}
 

@@ -14,7 +14,7 @@ import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.handler.log.InvokeLog;
+import com.chenjw.knife.agent.handler.log.Profiler;
 import com.chenjw.knife.agent.handler.log.filter.PatternMethodFilter;
 import com.chenjw.knife.agent.handler.log.listener.DefaultInvocationListener;
 
@@ -37,21 +37,21 @@ public class InvokeCommandHandler implements CommandHandler {
 
 		Object thisObject = Context.get(Constants.THIS);
 		if (thisObject != null) {
-			InvokeLog.checkThread = Thread.currentThread();
+			Profiler.checkThread = Thread.currentThread();
 		}
 		String[] arg = args.arg("-f");
 		if (arg != null) {
 			DefaultInvocationListener listener = new DefaultInvocationListener();
 			listener.setMethodFilter(new PatternMethodFilter(arg[0]));
-			InvokeLog.listener = listener;
+			Profiler.listener = listener;
 		}
 
 	}
 
 	private void clearLogger() {
-		InvokeLog.clear();
-		InvokeLog.checkThread = null;
-		InvokeLog.listener = null;
+		Profiler.clear();
+		Profiler.checkThread = null;
+		Profiler.listener = null;
 	}
 
 	private void invokeMethod(String methodSig)
@@ -93,15 +93,15 @@ public class InvokeCommandHandler implements CommandHandler {
 	private void invoke(Method method, Object thisObject, Object[] args)
 			throws IllegalArgumentException, IllegalAccessException {
 		try {
-			InvokeLog.start(thisObject, thisObject.getClass().getName(),
+			Profiler.start(thisObject, thisObject.getClass().getName(),
 					method.getName(), args);
-			InvokeLog.traceObject(thisObject, method.getName());
+			Profiler.traceObject(thisObject, method.getName());
 			Object r = method.invoke(thisObject, args);
-			InvokeLog.returnEnd(thisObject, thisObject.getClass().getName(),
+			Profiler.returnEnd(thisObject, thisObject.getClass().getName(),
 					method.getName(), args, r);
 		} catch (InvocationTargetException e) {
 			Throwable t = e.getTargetException();
-			InvokeLog.exceptionEnd(thisObject, thisObject.getClass().getName(),
+			Profiler.exceptionEnd(thisObject, thisObject.getClass().getName(),
 					method.getName(), args, t);
 		} catch (Exception e) {
 

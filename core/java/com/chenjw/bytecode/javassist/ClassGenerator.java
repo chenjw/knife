@@ -5,7 +5,9 @@
  */
 package com.chenjw.bytecode.javassist;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +32,10 @@ import javassist.NotFoundException;
  * @author chenjw 2012-6-13 下午12:53:36
  */
 public final class ClassGenerator {
-
+	private static final ClassPool DEFAULT_CLASS_POOL = new ClassPool(null);
+	static {
+		DEFAULT_CLASS_POOL.appendSystemPath();
+	}
 	private static final AtomicLong CLASS_NAME_COUNTER = new AtomicLong(0);
 
 	private final AtomicLong CLASS_VARIABLE_COUNTER = new AtomicLong(0);
@@ -54,9 +59,9 @@ public final class ClassGenerator {
 		return classGenerator;
 	}
 
-	public static ClassGenerator newInstance(String className, byte[] classBytes) {
+	public static ClassGenerator newInstance(byte[] classBytes) {
 		ClassGenerator classGenerator = new ClassGenerator();
-		classGenerator.initModifyClass(null, className, classBytes);
+		classGenerator.initModifyClass(null, classBytes);
 		return classGenerator;
 	}
 
@@ -68,8 +73,7 @@ public final class ClassGenerator {
 
 	private void initPool(ClassPool classPool) {
 		if (classPool == null) {
-			classPool = new ClassPool(null);
-			classPool.appendSystemPath();
+			classPool = DEFAULT_CLASS_POOL;
 		}
 		this.classPool = classPool;
 	}
@@ -93,22 +97,33 @@ public final class ClassGenerator {
 		}
 	}
 
-	private void initModifyClass(ClassPool classPool, String className,
-			byte[] classBytes) {
-		if (className == null) {
-			throw new RuntimeException("className cant be null!");
-		}
+	private void initModifyClass(ClassPool classPool, byte[] classBytes) {
+
 		if (classBytes == null) {
 			throw new RuntimeException("classBytes cant be null!");
 		}
 		initPool(classPool);
-		this.ctClass = this.findCtClass(className);
-		if (this.ctClass == null) {
-			appandClass(className, classBytes);
-			this.ctClass = this.findCtClass(className);
-		}
+		this.ctClass = makeClass(classBytes);
 		if (this.ctClass == null) {
 			throw new RuntimeException("ctClass cant be null!");
+		}
+	}
+
+	private CtClass makeClass(byte[] classBytes) {
+		InputStream is = new ByteArrayInputStream(classBytes);
+		try {
+			try {
+				return this.classPool.makeClass(is);
+			} catch (Exception e) {
+				throw new RuntimeException("make from classBytes fail!", e);
+			}
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 	}
 

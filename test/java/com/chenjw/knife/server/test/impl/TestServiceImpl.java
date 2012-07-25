@@ -20,6 +20,7 @@ public class TestServiceImpl implements TestService {
 
 	@Override
 	public ResultModel apply(ApplyModel apply) {
+		// System.out.println("in apply");
 		if (testStr.equals(apply.getName())) {
 			ResultModel r = new ResultModel();
 			r.setSuccess(true);

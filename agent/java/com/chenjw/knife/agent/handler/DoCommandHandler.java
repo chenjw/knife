@@ -39,7 +39,7 @@ public class DoCommandHandler implements CommandHandler {
 			// FileUtils.writeByteArrayToFile(new File(
 			// "/home/chenjw/test/$Proxy0.class"), NativeHelper
 			// .getClassBytes(Class.forName("$Proxy0")));
-
+			// -f com.chenjw.*
 			dispatcher.dispatch(new Command("invoke",
 					"-f com.chenjw.* apply({})"));
 			System.out.println("do finished!");

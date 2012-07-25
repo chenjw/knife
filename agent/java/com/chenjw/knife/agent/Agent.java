@@ -1,9 +1,10 @@
 package com.chenjw.knife.agent;
 
 import java.io.IOException;
-import java.util.Map.Entry;
+import java.lang.instrument.ClassDefinition;
 import java.util.jar.JarFile;
 
+import com.chenjw.knife.agent.handler.log.ByteCodeManager;
 import com.chenjw.knife.core.ClosePacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketResolver;
@@ -52,15 +53,16 @@ public class Agent {
 	}
 
 	public static void clear() {
-		for (Entry<Class<?>, byte[]> entry : info.getBaseMap().entrySet()) {
-			try {
-				NativeHelper.redefineClass(entry.getKey(), entry.getValue());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			// send(new TextPacket(entry.getKey().getName() + " recovered!"));
-		}
-		info.getBaseMap().clear();
+		// for (Entry<Class<?>, byte[]> entry : info.getBaseMap().entrySet()) {
+		// try {
+		// NativeHelper.redefineClass(entry.getKey(), entry.getValue());
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// // send(new TextPacket(entry.getKey().getName() + " recovered!"));
+		// }
+		// info.getBaseMap().clear();
+		ByteCodeManager.getInstance().recoverAll();
 	}
 
 	/**
@@ -69,23 +71,23 @@ public class Agent {
 	 * @param clazz
 	 */
 	private static void backup(Class<?> clazz) {
-		byte[] base = info.getBaseMap().get(clazz);
-		if (base == null) {
-			byte[] bytes = NativeHelper.getClassBytes(clazz);
-			info.getBaseMap().put(clazz, bytes);
-		}
+		// byte[] base = info.getBaseMap().get(clazz);
+		// if (base == null) {
+		// byte[] bytes = NativeHelper.getClassBytes(clazz);
+		// info.getBaseMap().put(clazz, bytes);
+		// }
 	}
 
-	public static void redefineClass(Class<?> clazz, byte[] bytecode) {
+	private static void redefineClass(Class<?> clazz, byte[] bytecode) {
 		try {
 
 			backup(clazz);
-			// send(new TextPacket(clazz.getName() + "(" + bytecode.length
-			// + ") redefining..."));
-			// info.getInst()
-			// .redefineClasses(new ClassDefinition(clazz, bytecode));
-			NativeHelper.redefineClass(clazz, bytecode);
-			// send(new TextPacket(clazz.getName() + " redefined!"));
+			// System.out.println(clazz.getName() + "(" + bytecode.length
+			// + ") redefining...");
+			info.getInst()
+					.redefineClasses(new ClassDefinition(clazz, bytecode));
+			// NativeHelper.redefineClass(clazz, bytecode);
+			// System.out.println(clazz.getName() + " redefined!");
 
 			// FileUtils.writeByteArrayToFile(new File("/home/chenjw/test/"
 			// + clazz.getName() + ".class"),
