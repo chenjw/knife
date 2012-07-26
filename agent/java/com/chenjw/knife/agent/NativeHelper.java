@@ -11,6 +11,7 @@ import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
@@ -80,22 +81,145 @@ public class NativeHelper {
 		return r;
 	}
 
+	public static Field findStaticField(Class<?> clazz, String fieldName) {
+		Field field = null;
+		for (Field f : getStaticFields(clazz)) {
+			if (fieldName.equals(f.getName())) {
+				field = f;
+				break;
+			}
+		}
+		return field;
+	}
+
+	public static Field findField(Object obj, String fieldName) {
+		Field field = null;
+		for (Field f : getFields(obj.getClass())) {
+			if (fieldName.equals(f.getName())) {
+				field = f;
+				break;
+			}
+		}
+		return field;
+	}
+
+	public static void setStaticFieldValue(Class<?> clazz, Field field,
+			Object value) {
+		if (field == null) {
+			throw new RuntimeException("field cant be null!");
+		}
+		Class<?> type = field.getType();
+		if (type == int.class) {
+			setStaticIntFieldValue0(clazz, field, (Integer) value);
+		} else if (type == short.class) {
+			setStaticShortFieldValue0(clazz, field, (Short) value);
+		} else if (type == long.class) {
+			setStaticLongFieldValue0(clazz, field, (Long) value);
+		} else if (type == double.class) {
+			setStaticDoubleFieldValue0(clazz, field, (Double) value);
+		} else if (type == float.class) {
+			setStaticFloatFieldValue0(clazz, field, (Float) value);
+		} else if (type == boolean.class) {
+			setStaticBooleanFieldValue0(clazz, field, (Boolean) value);
+		} else if (type == char.class) {
+			setStaticCharFieldValue0(clazz, field, (Character) value);
+		} else if (type == byte.class) {
+			setStaticByteFieldValue0(clazz, field, (Byte) value);
+		} else {
+			setStaticObjectFieldValue0(clazz, field, value);
+		}
+	}
+
+	public static void setStaticFieldValue(Class<?> clazz, String fieldName,
+			Object value) {
+		Field field = findStaticField(clazz, fieldName);
+		setStaticFieldValue(clazz, field, value);
+	}
+
+	public static void setFieldValue(Object obj, Field field, Object value) {
+		if (field == null) {
+			throw new RuntimeException("field cant be null!");
+		}
+		Class<?> type = field.getType();
+		if (type == int.class) {
+			setIntFieldValue0(obj, field, (Integer) value);
+		} else if (type == short.class) {
+			setShortFieldValue0(obj, field, (Short) value);
+		} else if (type == long.class) {
+			setLongFieldValue0(obj, field, (Long) value);
+		} else if (type == double.class) {
+			setDoubleFieldValue0(obj, field, (Double) value);
+		} else if (type == float.class) {
+			setFloatFieldValue0(obj, field, (Float) value);
+		} else if (type == boolean.class) {
+			setBooleanFieldValue0(obj, field, (Boolean) value);
+		} else if (type == char.class) {
+			setCharFieldValue0(obj, field, (Character) value);
+		} else if (type == byte.class) {
+			setByteFieldValue0(obj, field, (Byte) value);
+		} else {
+			setObjectFieldValue0(obj, field, value);
+		}
+	}
+
+	public static void setFieldValue(Object obj, String fieldName, Object value) {
+		Field field = findField(obj, fieldName);
+		setFieldValue(obj, field, value);
+	}
+
 	public static Map<Field, Object> getFieldValues(Object obj) {
 		Map<Field, Object> result = new HashMap<Field, Object>();
 		if (obj != null) {
 			for (Field field : getFields(obj.getClass())) {
-				if (Modifier.isStatic(field.getModifiers())) {
-					continue;
+				Class<?> type = field.getType();
+				if (type == int.class) {
+					result.put(field, getIntFieldValue0(obj, field));
+				} else if (type == short.class) {
+					result.put(field, getShortFieldValue0(obj, field));
+				} else if (type == long.class) {
+					result.put(field, getLongFieldValue0(obj, field));
+				} else if (type == double.class) {
+					result.put(field, getDoubleFieldValue0(obj, field));
+				} else if (type == float.class) {
+					result.put(field, getFloatFieldValue0(obj, field));
+				} else if (type == boolean.class) {
+					result.put(field, getBooleanFieldValue0(obj, field));
+				} else if (type == char.class) {
+					result.put(field, getCharFieldValue0(obj, field));
+				} else if (type == byte.class) {
+					result.put(field, getByteFieldValue0(obj, field));
+				} else {
+					result.put(field, getObjectFieldValue0(obj, field));
 				}
-				try {
-					Object value = getFieldValue0(obj,
-							field.getDeclaringClass(), field.getName(),
-							field.getType());
-					result.put(field, value);
-				} catch (Exception e) {
-					System.out.println(field + " not found");
-				}
+			}
+		}
+		return result;
+	}
 
+	public static Map<Field, Object> getStaticFieldValues(Class<?> clazz) {
+		Map<Field, Object> result = new HashMap<Field, Object>();
+		if (clazz != null) {
+			for (Field field : getStaticFields(clazz)) {
+				Class<?> type = field.getType();
+				if (type == int.class) {
+					result.put(field, getStaticIntFieldValue0(clazz, field));
+				} else if (type == short.class) {
+					result.put(field, getStaticShortFieldValue0(clazz, field));
+				} else if (type == long.class) {
+					result.put(field, getStaticLongFieldValue0(clazz, field));
+				} else if (type == double.class) {
+					result.put(field, getStaticDoubleFieldValue0(clazz, field));
+				} else if (type == float.class) {
+					result.put(field, getStaticFloatFieldValue0(clazz, field));
+				} else if (type == boolean.class) {
+					result.put(field, getStaticBooleanFieldValue0(clazz, field));
+				} else if (type == char.class) {
+					result.put(field, getStaticCharFieldValue0(clazz, field));
+				} else if (type == byte.class) {
+					result.put(field, getStaticByteFieldValue0(clazz, field));
+				} else {
+					result.put(field, getStaticObjectFieldValue0(clazz, field));
+				}
 			}
 		}
 		return result;
@@ -105,9 +229,21 @@ public class NativeHelper {
 		Set<Field> fieldList = new HashSet<Field>();
 		while (clazz != Object.class && clazz != null) {
 			for (Field f : clazz.getDeclaredFields()) {
-				fieldList.add(f);
+				if (!Modifier.isStatic(f.getModifiers())) {
+					fieldList.add(f);
+				}
 			}
 			clazz = clazz.getSuperclass();
+		}
+		return fieldList.toArray(new Field[fieldList.size()]);
+	}
+
+	private static Field[] getStaticFields(Class<?> clazz) {
+		Set<Field> fieldList = new HashSet<Field>();
+		for (Field f : clazz.getDeclaredFields()) {
+			if (Modifier.isStatic(f.getModifiers())) {
+				fieldList.add(f);
+			}
 		}
 		return fieldList.toArray(new Field[fieldList.size()]);
 	}
@@ -136,16 +272,127 @@ public class NativeHelper {
 	private native static void redefineClass0(Class<?> clazz,
 			byte[] newClassBytes);
 
-	private native static Object[] findInstancesByClass0(Class<?> clazz);
-
-	private native static Object getFieldValue0(Object obj,
-			Class<?> fieldClass, String name, Class<?> returnType);
-
 	private native static void startClassFileLoadHook0();
 
 	private native static void stopClassFileLoadHook0();
 
 	private native static void retransformClasses0(Class<?>[] classes);
+
+	private native static Object[] findInstancesByClass0(Class<?> clazz);
+
+	private native static Object getFieldValue0(Object obj,
+			Class<?> fieldClass, String name, Class<?> returnType);
+
+	// ///////////////////////////////////////////////
+	// set field
+	// ///////////////////////////////////////////////
+	private native static void setObjectFieldValue0(Object obj, Field field,
+			Object newValue);
+
+	private native static void setBooleanFieldValue0(Object obj, Field field,
+			boolean newValue);
+
+	private native static void setByteFieldValue0(Object obj, Field field,
+			byte newValue);
+
+	private native static void setCharFieldValue0(Object obj, Field field,
+			char newValue);
+
+	private native static void setShortFieldValue0(Object obj, Field field,
+			short newValue);
+
+	private native static void setIntFieldValue0(Object obj, Field field,
+			int newValue);
+
+	private native static void setLongFieldValue0(Object obj, Field field,
+			long newValue);
+
+	private native static void setFloatFieldValue0(Object obj, Field field,
+			float newValue);
+
+	private native static void setDoubleFieldValue0(Object obj, Field field,
+			double newValue);
+
+	// ///////////////////////////////////////////////
+	// set static field
+	// ///////////////////////////////////////////////
+	private native static void setStaticObjectFieldValue0(Class<?> clazz,
+			Field field, Object newValue);
+
+	private native static void setStaticBooleanFieldValue0(Class<?> clazz,
+			Field field, boolean newValue);
+
+	private native static void setStaticByteFieldValue0(Class<?> clazz,
+			Field field, byte newValue);
+
+	private native static void setStaticCharFieldValue0(Class<?> clazz,
+			Field field, char newValue);
+
+	private native static void setStaticShortFieldValue0(Class<?> clazz,
+			Field field, short newValue);
+
+	private native static void setStaticIntFieldValue0(Class<?> clazz,
+			Field field, int newValue);
+
+	private native static void setStaticLongFieldValue0(Class<?> clazz,
+			Field field, long newValue);
+
+	private native static void setStaticFloatFieldValue0(Class<?> clazz,
+			Field field, float newValue);
+
+	private native static void setStaticDoubleFieldValue0(Class<?> clazz,
+			Field field, double newValue);
+
+	// ///////////////////////////////////////////////
+	// get field
+	// ///////////////////////////////////////////////
+	private native static Object getObjectFieldValue0(Object obj, Field field);
+
+	private native static boolean getBooleanFieldValue0(Object obj, Field field);
+
+	private native static byte getByteFieldValue0(Object obj, Field field);
+
+	private native static char getCharFieldValue0(Object obj, Field field);
+
+	private native static short getShortFieldValue0(Object obj, Field field);
+
+	private native static int getIntFieldValue0(Object obj, Field field);
+
+	private native static long getLongFieldValue0(Object obj, Field field);
+
+	private native static float getFloatFieldValue0(Object obj, Field field);
+
+	private native static double getDoubleFieldValue0(Object obj, Field field);
+
+	// ///////////////////////////////////////////////
+	// get static field
+	// ///////////////////////////////////////////////
+	private native static Object getStaticObjectFieldValue0(Class<?> clazz,
+			Field field);
+
+	private native static boolean getStaticBooleanFieldValue0(Class<?> clazz,
+			Field field);
+
+	private native static byte getStaticByteFieldValue0(Class<?> clazz,
+			Field field);
+
+	private native static char getStaticCharFieldValue0(Class<?> clazz,
+			Field field);
+
+	private native static short getStaticShortFieldValue0(Class<?> clazz,
+			Field field);
+
+	private native static int getStaticIntFieldValue0(Class<?> clazz,
+			Field field);
+
+	private native static long getStaticLongFieldValue0(Class<?> clazz,
+			Field field);
+
+	private native static float getStaticFloatFieldValue0(Class<?> clazz,
+			Field field);
+
+	private native static double getStaticDoubleFieldValue0(Class<?> clazz,
+			Field field);
 
 	/**
 	 * invoke by native code
@@ -183,9 +430,13 @@ public class NativeHelper {
 	private static void do2() throws ClassNotFoundException, SecurityException,
 			NoSuchFieldException {
 
-		Class c = Class.forName("com.chenjw.knife.agent.handler.arg.Args")
-				.getDeclaredField("argStr").getDeclaringClass();
-		System.out.println(c);
+		Context ai = new Context();
+		for (Entry<Field, Object> entry : NativeHelper.getFieldValues(ai)
+				.entrySet()) {
+			System.out.println(entry.getKey().getName() + "="
+					+ entry.getValue());
+		}
+
 	}
 
 	public static void main(String[] args) throws ClassNotFoundException,

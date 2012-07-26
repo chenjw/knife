@@ -6,6 +6,8 @@ import com.chenjw.knife.server.test.Test1Service;
 import com.chenjw.knife.server.test.TestService;
 
 public class TestServiceImpl implements TestService {
+	private static String testStaticString = "testStaticString";
+	private static int testStaticInt = 9;
 	private Test1Service test1Service;
 	private boolean testBoolean = false;
 	private byte testByte = 1;
@@ -17,6 +19,10 @@ public class TestServiceImpl implements TestService {
 	private double testDouble = 7;
 
 	private String testStr = "8";
+
+	public static String hello(String name) {
+		return "hello " + name;
+	}
 
 	@Override
 	public ResultModel apply(ApplyModel apply) {

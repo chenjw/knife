@@ -4,9 +4,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import javassist.Modifier;
+
 import org.apache.commons.lang.StringUtils;
 
-import com.alibaba.fastjson.JSON;
 import com.chenjw.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
@@ -14,6 +15,7 @@ import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
+import com.chenjw.knife.agent.handler.log.ParseHelper;
 import com.chenjw.knife.agent.handler.log.Profiler;
 import com.chenjw.knife.agent.handler.log.filter.PatternMethodFilter;
 import com.chenjw.knife.agent.handler.log.listener.DefaultInvocationListener;
@@ -56,10 +58,7 @@ public class InvokeCommandHandler implements CommandHandler {
 
 	private void invokeMethod(String methodSig)
 			throws IllegalArgumentException, IllegalAccessException {
-		Object thisObject = Context.get(Constants.THIS);
-		if (thisObject == null) {
-			Agent.println("current object not found!");
-		}
+
 		String argStr = methodSig;
 		String m = StringUtils.substringBefore(argStr, "(");
 		m = m.trim();
@@ -68,13 +67,35 @@ public class InvokeCommandHandler implements CommandHandler {
 			method = ((Method[]) Context.get(Constants.METHOD_LIST))[Integer
 					.parseInt(m)];
 		} else {
-			Object obj = Context.get(Constants.THIS);
-			if (obj != null) {
+			if (m.indexOf(".") != -1) {
+				String className = StringUtils.substringBeforeLast(m, ".");
+				m = StringUtils.substringAfterLast(m, ".");
+				Class<?> clazz = Helper.findClass(className);
+				if (clazz == null) {
+					Agent.println("class " + className + " not found!");
+					return;
+				}
+				Method[] methods = clazz.getMethods();
+				for (Method tm : methods) {
+					if (StringUtils.equals(tm.getName(), m)) {
+						if (Modifier.isStatic(tm.getModifiers())) {
+							method = tm;
+							break;
+						}
+					}
+				}
+
+			} else {
+				Object obj = Context.get(Constants.THIS);
+				if (obj == null) {
+					Agent.println("not found!");
+					return;
+				}
 				Method[] methods = obj.getClass().getMethods();
 				for (Method tm : methods) {
 					if (StringUtils.equals(tm.getName(), m)) {
 						method = tm;
-						continue;
+						break;
 					}
 				}
 			}
@@ -83,64 +104,44 @@ public class InvokeCommandHandler implements CommandHandler {
 			Agent.println("cant find method!");
 			return;
 		}
-		Object[] mArgs = getMethodArgs(
-				method.getParameterTypes(),
+		Object[] mArgs = ParseHelper.parseMethodArgs(
 				StringUtils.substringBeforeLast(
-						StringUtils.substringAfter(argStr, "("), ")"));
-		invoke(method, thisObject, mArgs);
+						StringUtils.substringAfter(argStr, "("), ")"),
+				method.getParameterTypes());
+		if (Modifier.isStatic(method.getModifiers())) {
+			invoke(method, null, mArgs);
+		} else {
+			invoke(method, Context.get(Constants.THIS), mArgs);
+		}
 	}
 
 	private void invoke(Method method, Object thisObject, Object[] args)
 			throws IllegalArgumentException, IllegalAccessException {
+		boolean isStatic = Modifier.isStatic(method.getModifiers());
+		Class<?> clazz = null;
+		if (isStatic) {
+			thisObject = null;
+			clazz = method.getDeclaringClass();
+		} else {
+			clazz = thisObject.getClass();
+		}
 		try {
-			Profiler.start(thisObject, thisObject.getClass().getName(),
-					method.getName(), args);
-			Profiler.traceObject(thisObject, method.getName());
+			Profiler.start(thisObject, clazz.getName(), method.getName(), args);
+			if (isStatic) {
+				Profiler.traceClass(clazz, method.getName());
+			} else {
+				Profiler.traceObject(thisObject, method.getName());
+			}
 			Object r = method.invoke(thisObject, args);
-			Profiler.returnEnd(thisObject, thisObject.getClass().getName(),
-					method.getName(), args, r);
+			Profiler.returnEnd(thisObject, clazz.getName(), method.getName(),
+					args, r);
 		} catch (InvocationTargetException e) {
 			Throwable t = e.getTargetException();
-			Profiler.exceptionEnd(thisObject, thisObject.getClass().getName(),
+			Profiler.exceptionEnd(thisObject, clazz.getName(),
 					method.getName(), args, t);
 		} catch (Exception e) {
 
 		}
-	}
-
-	private Object[] getMethodArgs(Class<?>[] types, String str) {
-		Object[] objs = new Object[types.length];
-		int i = 0;
-		for (Class<?> type : types) {
-			int end = getFirstArgIndex(str);
-			String s = StringUtils.substring(str, 0, end);
-			objs[i] = JSON.parseObject(s, type);
-			str = StringUtils.substring(str, end + 1);
-			i++;
-		}
-		return objs;
-	}
-
-	private int getFirstArgIndex(String str) {
-		int n = 0;
-		int i = 0;
-		for (char c : str.toCharArray()) {
-			if (c == '(') {
-				n++;
-			} else if (c == ')') {
-				n--;
-			} else if (c == '[') {
-				n++;
-			} else if (c == ']') {
-				n--;
-			} else if (c == ',') {
-				if (n == 0) {
-					return i;
-				}
-			}
-			i++;
-		}
-		return i;
 	}
 
 	public static String getParamClassNames(Class<?>[] classes) {

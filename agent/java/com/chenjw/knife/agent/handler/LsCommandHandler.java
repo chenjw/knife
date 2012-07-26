@@ -2,6 +2,7 @@ package com.chenjw.knife.agent.handler;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,50 +23,114 @@ import com.chenjw.knife.agent.handler.log.InvokeRecord;
 
 public class LsCommandHandler implements CommandHandler {
 
-	private void lsField() {
-		Object obj = Context.get(Constants.THIS);
-		if (obj == null) {
-			Agent.println("not found!");
-			return;
+	private void lsField(Args args) {
+		Object obj = null;
+		Class<?> clazz = null;
+		String arg0 = args.arg(0);
+		if (StringUtils.isBlank(arg0)) {
+			obj = Context.get(Constants.THIS);
+			if (obj == null) {
+				Agent.println("not found!");
+				return;
+			}
+			clazz = obj.getClass();
+		} else {
+			clazz = Helper.findClass(arg0);
+			if (clazz == null) {
+				Agent.println("not found!");
+				return;
+			}
 		}
-		Map<Field, Object> fieldMap = NativeHelper.getFieldValues(obj);
-		List<Object> list = new ArrayList<Object>();
-		int i = 0;
-		for (Entry<Field, Object> entry : fieldMap.entrySet()) {
-			Agent.println(entry.getKey().getName() + "="
-					+ InvokeRecord.toId(entry.getValue()) + entry.getValue());
-			list.add(entry.getValue());
-			i++;
+		if (clazz != null) {
+			Map<Field, Object> fieldMap = NativeHelper
+					.getStaticFieldValues(clazz);
+			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
+				Agent.println("[static-field] " + entry.getKey().getName()
+						+ " = " + InvokeRecord.toId(entry.getValue())
+						+ toString(entry.getValue()));
+			}
 		}
-		Context.put(Constants.OBJECT_LIST,
-				list.toArray(new Object[list.size()]));
-		Agent.println("find " + i + " fields of " + obj);
+		if (obj != null) {
+			Map<Field, Object> fieldMap = NativeHelper.getFieldValues(obj);
+			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
+				Agent.println("[field] " + entry.getKey().getName() + " = "
+						+ InvokeRecord.toId(entry.getValue())
+						+ toString(entry.getValue()));
+			}
+		}
+		Agent.println("finished!");
 	}
 
-	private void lsMethod() {
-		Object obj = Context.get(Constants.THIS);
-		if (obj == null) {
-			Agent.println("not found!");
-			return;
+	private void lsMethod(Args args) {
+
+		Object obj = null;
+		Class<?> clazz = null;
+		String arg0 = args.arg(0);
+		if (StringUtils.isBlank(arg0)) {
+			obj = Context.get(Constants.THIS);
+			if (obj == null) {
+				Agent.println("not found!");
+				return;
+			}
+			clazz = obj.getClass();
+		} else {
+			clazz = Helper.findClass(arg0);
+			if (clazz == null) {
+				Agent.println("not found!");
+				return;
+			}
 		}
+		List<Method> list = new ArrayList<Method>();
 		int i = 0;
-		Method[] methods = obj.getClass().getMethods();
-		for (Method method : methods) {
-			Agent.println(i + ". " + method.getName() + "("
-					+ getParamClassNames(method.getParameterTypes()) + ")");
-			i++;
+		if (clazz != null) {
+			Method[] methods = clazz.getMethods();
+			int j = 0;
+			for (Method method : methods) {
+				if (Modifier.isStatic(method.getModifiers())) {
+					Agent.println(i + ". [static-method] " + method.getName()
+							+ "("
+							+ getParamClassNames(method.getParameterTypes())
+							+ ")");
+					list.add(method);
+					i++;
+					j++;
+				}
+			}
 		}
-		Context.put(Constants.METHOD_LIST, methods);
-		Agent.println("find " + i + " methods of " + obj);
+		if (obj != null) {
+			Method[] methods = obj.getClass().getMethods();
+			int j = 0;
+			for (Method method : methods) {
+				if (!Modifier.isStatic(method.getModifiers())) {
+					Agent.println(i + ". [method] " + method.getName() + "("
+							+ getParamClassNames(method.getParameterTypes())
+							+ ")");
+					list.add(method);
+					i++;
+					j++;
+				}
+			}
+		}
+		Context.put(Constants.METHOD_LIST,
+				list.toArray(new Method[list.size()]));
+		Agent.println("finished!");
+
 	}
 
-	private void lsClass() {
-		Object obj = Context.get(Constants.THIS);
+	private void lsClass(Args args) {
+		Object obj = null;
+		String arg0 = args.arg(0);
+		if (StringUtils.isBlank(arg0)) {
+			obj = Context.get(Constants.THIS);
+		} else if (StringUtils.isNumeric(arg0)) {
+			obj = InvokeRecord.get(Integer.parseInt(arg0));
+		}
 		if (obj == null) {
 			Agent.println("not found!");
 			return;
 		}
 		Agent.println(toString(obj));
+		Agent.println("finished!");
 	}
 
 	private static String toString(Object obj) {
@@ -82,11 +147,11 @@ public class LsCommandHandler implements CommandHandler {
 	public void handle(Args args, CommandDispatcher dispatcher) {
 		try {
 			if (args.arg("-f") != null) {
-				lsField();
+				lsField(args);
 			} else if (args.arg("-m") != null) {
-				lsMethod();
+				lsMethod(args);
 			} else {
-				lsClass();
+				lsClass(args);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

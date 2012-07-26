@@ -7,8 +7,6 @@ public class HelloServiceImpl implements HelloService {
 
 	@Override
 	public String hi(String name) throws Exception {
-		Thread.sleep(3000);
 		return str + " " + name;
-
 	}
 }

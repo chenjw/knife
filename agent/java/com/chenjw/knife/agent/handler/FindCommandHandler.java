@@ -55,7 +55,7 @@ public class FindCommandHandler implements CommandHandler {
 						Context.put(Constants.CLASS_LIST, likeClazz);
 						int i = 0;
 						for (Class<?> cc : likeClazz) {
-							Agent.println(i + ". " + cc.getName());
+							Agent.println(i + ". [class] " + cc.getName());
 							i++;
 						}
 						Agent.println("find " + i + " classes like '"
@@ -75,7 +75,7 @@ public class FindCommandHandler implements CommandHandler {
 			Object[] objs = NativeHelper.findInstancesByClass(clazz);
 			int i = 0;
 			for (Object obj : objs) {
-				Agent.println(InvokeRecord.toId(obj) + obj);
+				Agent.println("[instance] " + InvokeRecord.toId(obj) + obj);
 				i++;
 			}
 			Agent.println("find " + i + " instances of " + clazz.getName());
