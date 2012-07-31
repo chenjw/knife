@@ -1,7 +1,6 @@
 package com.chenjw.knife.agent.handler;
 
 import java.lang.reflect.Field;
-import java.util.Map;
 
 import javassist.Modifier;
 
@@ -13,6 +12,7 @@ import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.NativeHelper;
+import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
 import com.chenjw.knife.agent.handler.log.ParseHelper;
@@ -20,8 +20,8 @@ import com.chenjw.knife.agent.handler.log.ParseHelper;
 public class SetCommandHandler implements CommandHandler {
 
 	private void setField(Args args) {
-		String fieldName = args.arg(0);
-		String value = args.arg(1);
+		String fieldName = args.arg("fieldname");
+		String value = args.arg("new-value");
 		Object obj = null;
 		Field field = null;
 
@@ -79,22 +79,23 @@ public class SetCommandHandler implements CommandHandler {
 	}
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
-		try {
-			setField(args);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Agent.println(e.getClass().getName() + ":"
-					+ e.getLocalizedMessage());
-		}
+		setField(args);
 	}
 
 	@Override
-	public String getName() {
-		return "set";
+	public void declareArgs(ArgDef argDef) {
+		argDef.setCommandName("set");
+		argDef.setDef("[-s] <fieldname> <new-value>");
+		argDef.setDesc("set field value to target object.");
+		argDef.addOptionDesc(
+				"fieldname",
+				"input 'package.TestClass.field1' means static field or 'field1' means both static and no-static field.");
+		argDef.addOptionDesc(
+				"new-value",
+				"a expretion which will transfer to object by json tool, or '@1' means direct the object.");
+		argDef.addOptionDesc("-s",
+				"force set to static field, to avoid misunderstanding");
+
 	}
 
-	@Override
-	public void declareArgs(Map<String, Integer> argDecls) {
-		argDecls.put("-s", 0);
-	}
 }

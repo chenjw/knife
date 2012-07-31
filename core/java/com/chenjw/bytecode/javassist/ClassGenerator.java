@@ -291,7 +291,7 @@ public final class ClassGenerator {
 		}
 
 		// 要看生成的class文件，可以开打这个注释（需要自行反编译）
-		ctClass.writeFile("/tmp/knife/");
+		// ctClass.writeFile("/tmp/knife/");
 
 		// ctClass.rebuildClassFile();
 		// return Class.forName(ctClass.getName());

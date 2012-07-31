@@ -1,38 +1,31 @@
 package com.chenjw.knife.agent.handler.log;
 
-import java.util.Stack;
-
 public class InvokeDepth {
-	private static ThreadLocal<Stack<Object>> dep = new ThreadLocal<Stack<Object>>();
+	private static ThreadLocal<Integer> dep = new ThreadLocal<Integer>();
 
-	private static Stack<Object> getStack() {
-		Stack<Object> stack = dep.get();
+	private static Integer getStack() {
+		Integer stack = dep.get();
 		if (stack == null) {
-			stack = new Stack<Object>();
+			stack = 0;
 			dep.set(stack);
 		}
 		return stack;
 	}
 
+	private static void setDep(Integer i) {
+		dep.set(i);
+	}
+
 	public static int getDep() {
-		Stack<Object> stack = getStack();
-		return stack.size() - 1;
+		return getStack() - 1;
 	}
 
-	public static void enter(Object obj) {
+	public static void enter() {
 
-		Stack<Object> stack = getStack();
-		// if (stack.size() == 0 || stack.peek() != obj) {
-		// Agent.println("enter" + obj.toString());
-		stack.push(obj);
-		// }
+		setDep(getStack() + 1);
 	}
 
-	public static void leave(Object obj) {
-		Stack<Object> stack = getStack();
-		// if (stack.size() != 0 && stack.peek() == obj) {
-		// Agent.println("leave" + obj.toString());
-		stack.pop();
-		// }
+	public static void leave() {
+		setDep(getStack() - 1);
 	}
 }

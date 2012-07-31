@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import org.apache.commons.io.FileUtils;
 
@@ -87,7 +86,7 @@ public class Client {
 		} else {
 			System.out.println("input [0-" + (i - 1) + "] to choose vm! ");
 		}
-		Scanner stdin = new Scanner(System.in);
+		JlineScanner stdin = new JlineScanner();
 		String line;
 		while (true) {
 			line = stdin.nextLine();
@@ -188,9 +187,9 @@ public class Client {
 		Thread t = new Thread("client-console") {
 			@Override
 			public void run() {
-				Scanner stdin = null;
+				JlineScanner stdin = null;
 				try {
-					stdin = new Scanner(System.in);
+					stdin = new JlineScanner();
 					String line = null;
 					while (!isClosed()) {
 

@@ -3,7 +3,7 @@ package com.chenjw.knife.server;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import com.chenjw.knife.server.test.ApplyModel;
-import com.chenjw.knife.server.test.TestService;
+import com.chenjw.knife.server.test.ApplyService;
 import com.chenjw.knife.server.test.utils.JvmUtils;
 
 public class Main {
@@ -21,16 +21,13 @@ public class Main {
 
 				Thread.sleep(3000);
 				try {
-					TestService testService = (TestService) context
-							.getBean("testService");
+					ApplyService testService = (ApplyService) context
+							.getBean("applyService");
 					ApplyModel apply = new ApplyModel();
-					apply.setName("chenjw");
-					// ResultModel result = testService.apply(apply);
-					// t.test2("bb");
-					// t.test1("aa", "b");
-
+					apply.setId(1);
+					testService.apply(apply);
 				} catch (Throwable e) {
-
+					e.printStackTrace();
 				}
 
 			} catch (InterruptedException e) {

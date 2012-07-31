@@ -2,7 +2,6 @@ package com.chenjw.knife.agent.handler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -11,6 +10,7 @@ import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.NativeHelper;
+import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
 import com.chenjw.knife.agent.handler.log.InvokeRecord;
@@ -40,58 +40,50 @@ public class FindCommandHandler implements CommandHandler {
 	}
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
-		try {
-			Class<?> clazz = null;
-			String className = args.arg(0);
-			if (isNumeric(className)) {
-				Class<?>[] likeClazz = (Class<?>[]) Context
-						.get(Constants.CLASS_LIST);
-				clazz = likeClazz[Integer.parseInt(className)];
-			} else {
-				clazz = findClass(className);
-				if (clazz == null) {
-					Class<?>[] likeClazz = findLikeClass(className);
-					if (likeClazz.length > 1) {
-						Context.put(Constants.CLASS_LIST, likeClazz);
-						int i = 0;
-						for (Class<?> cc : likeClazz) {
-							Agent.println(i + ". [class] " + cc.getName());
-							i++;
-						}
-						Agent.println("find " + i + " classes like '"
-								+ className
-								+ "', please choose one typing like 'find 0'!");
-						return;
-					} else if (likeClazz.length == 1) {
-						clazz = likeClazz[0];
+		Class<?> clazz = null;
+		String className = args.arg("find-expretion");
+		if (isNumeric(className)) {
+			Class<?>[] likeClazz = (Class<?>[]) Context
+					.get(Constants.CLASS_LIST);
+			clazz = likeClazz[Integer.parseInt(className)];
+		} else {
+			clazz = findClass(className);
+			if (clazz == null) {
+				Class<?>[] likeClazz = findLikeClass(className);
+				if (likeClazz.length > 1) {
+					Context.put(Constants.CLASS_LIST, likeClazz);
+					int i = 0;
+					for (Class<?> cc : likeClazz) {
+						Agent.println(i + ". [class] " + cc.getName());
+						i++;
 					}
-				}
-				if (clazz == null) {
-					Agent.println("not found!");
+					Agent.println("find " + i + " classes like '" + className
+							+ "', please choose one typing like 'find 0'!");
 					return;
+				} else if (likeClazz.length == 1) {
+					clazz = likeClazz[0];
 				}
 			}
-			// //
-			Object[] objs = NativeHelper.findInstancesByClass(clazz);
-			int i = 0;
-			for (Object obj : objs) {
-				Agent.println("[instance] " + InvokeRecord.toId(obj) + obj);
-				i++;
+			if (clazz == null) {
+				Agent.println("not found!");
+				return;
 			}
-			Agent.println("find " + i + " instances of " + clazz.getName());
-		} catch (Exception e) {
-			Agent.println(e.getClass().getName() + ":"
-					+ e.getLocalizedMessage());
 		}
+		// //
+		Object[] objs = NativeHelper.findInstancesByClass(clazz);
+		int i = 0;
+		for (Object obj : objs) {
+			Agent.println("[instance] " + InvokeRecord.toId(obj) + obj);
+			i++;
+		}
+		Agent.println("find " + i + " instances of " + clazz.getName());
 	}
 
-	@Override
-	public String getName() {
-		return "find";
-	}
-
-	@Override
-	public void declareArgs(Map<String, Integer> argDecls) {
-
+	public void declareArgs(ArgDef argDef) {
+		argDef.setCommandName("find");
+		argDef.setDef("<find-expretion>");
+		argDef.setDesc("find classes and instances from the heap");
+		argDef.addOptionDesc("find-expretion",
+				"className to find or index of the result found before");
 	}
 }

@@ -266,7 +266,8 @@ public class NativeHelper {
 	}
 
 	public static void redefineClass(Class<?> clazz, byte[] newClassBytes) {
-		redefineClass0(clazz, newClassBytes);
+		Agent.redefineClasses(clazz, newClassBytes);
+		// redefineClass0(clazz, newClassBytes);
 	}
 
 	private native static void redefineClass0(Class<?> clazz,

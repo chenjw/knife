@@ -1,13 +1,13 @@
 package com.chenjw.knife.agent.handler;
 
-import java.util.Map;
-
 import org.springframework.context.ApplicationContext;
 
+import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.NativeHelper;
+import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
 import com.chenjw.knife.core.Command;
@@ -33,29 +33,17 @@ public class DoCommandHandler implements CommandHandler {
 	}
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
-		try {
-			init();
-			Context.put(Constants.THIS, getBean("testService"));
-			// FileUtils.writeByteArrayToFile(new File(
-			// "/home/chenjw/test/$Proxy0.class"), NativeHelper
-			// .getClassBytes(Class.forName("$Proxy0")));
-			// -f com.chenjw.*
-			dispatcher.dispatch(new Command("invoke",
-					"-f com.chenjw.* apply({})"));
-			System.out.println("do finished!");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		init();
+		Context.put(Constants.THIS, getBean("applyService"));
+		// dispatcher.dispatch(new Command("invoke",
+		// "-f com.chenjw.* apply({\"id\":1})"));
+		// dispatcher.dispatch(new Command("invoke", "apply({\"id\":1})"));
+		dispatcher.dispatch(new Command("trace", "-f com.chenjw.* apply"));
+		Agent.println("do finished!");
 	}
 
-	@Override
-	public String getName() {
-		return "do";
-	}
-
-	@Override
-	public void declareArgs(Map<String, Integer> argDecls) {
+	public void declareArgs(ArgDef argDef) {
+		argDef.setCommandName("do");
+		argDef.setDesc("do some test.");
 	}
 }

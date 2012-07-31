@@ -2,9 +2,11 @@ package com.chenjw.knife.agent;
 
 import java.io.IOException;
 import java.lang.instrument.ClassDefinition;
+import java.lang.instrument.UnmodifiableClassException;
 import java.util.jar.JarFile;
 
-import com.chenjw.knife.agent.handler.log.ByteCodeManager;
+import com.chenjw.knife.agent.handler.log.InvokeRecord;
+import com.chenjw.knife.agent.handler.log.TraceCodeBuilder;
 import com.chenjw.knife.core.ClosePacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketResolver;
@@ -20,6 +22,18 @@ public class Agent {
 		}
 
 	};
+
+	public static void redefineClasses(Class<?> clazz, byte[] bytes) {
+		try {
+			info.getInst().redefineClasses(new ClassDefinition(clazz, bytes));
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnmodifiableClassException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * install jars dependent by agent
@@ -53,49 +67,8 @@ public class Agent {
 	}
 
 	public static void clear() {
-		// for (Entry<Class<?>, byte[]> entry : info.getBaseMap().entrySet()) {
-		// try {
-		// NativeHelper.redefineClass(entry.getKey(), entry.getValue());
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		// // send(new TextPacket(entry.getKey().getName() + " recovered!"));
-		// }
-		// info.getBaseMap().clear();
-		ByteCodeManager.getInstance().recoverAll();
-	}
-
-	/**
-	 * 保存原始类
-	 * 
-	 * @param clazz
-	 */
-	private static void backup(Class<?> clazz) {
-		// byte[] base = info.getBaseMap().get(clazz);
-		// if (base == null) {
-		// byte[] bytes = NativeHelper.getClassBytes(clazz);
-		// info.getBaseMap().put(clazz, bytes);
-		// }
-	}
-
-	private static void redefineClass(Class<?> clazz, byte[] bytecode) {
-		try {
-
-			backup(clazz);
-			// System.out.println(clazz.getName() + "(" + bytecode.length
-			// + ") redefining...");
-			info.getInst()
-					.redefineClasses(new ClassDefinition(clazz, bytecode));
-			// NativeHelper.redefineClass(clazz, bytecode);
-			// System.out.println(clazz.getName() + " redefined!");
-
-			// FileUtils.writeByteArrayToFile(new File("/home/chenjw/test/"
-			// + clazz.getName() + ".class"),
-			// NativeHelper.getClassBytes(clazz));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		InvokeRecord.clear();
+		TraceCodeBuilder.clear();
 	}
 
 	public static Class<?>[] getAllLoadedClasses() {
@@ -128,7 +101,7 @@ public class Agent {
 			} catch (InterruptedException e) {
 			}
 			info.getSocket().close();
-		} catch (IOException e) {
+		} catch (Throwable e) {
 		}
 		info = null;
 	}

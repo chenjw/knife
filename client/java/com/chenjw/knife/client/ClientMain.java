@@ -8,6 +8,7 @@ import com.chenjw.knife.core.PacketHandler;
 import com.chenjw.knife.utils.JvmHelper;
 
 public final class ClientMain {
+	private static final String OUT_PREFIX = "knife>";
 
 	public static void main(String args[]) {
 		int port = DEFAULT_PORT;
@@ -21,10 +22,10 @@ public final class ClientMain {
 				@Override
 				public void handle(Packet packet) throws IOException {
 					if (packet instanceof ClosePacket) {
-						System.out.println("knife>agent closed!");
+						System.out.println(OUT_PREFIX + "agent closed!");
 						client.close();
 					} else {
-						System.out.println("knife>" + packet);
+						System.out.println(OUT_PREFIX + packet);
 					}
 				}
 			});

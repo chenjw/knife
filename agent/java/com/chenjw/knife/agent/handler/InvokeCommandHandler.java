@@ -2,6 +2,8 @@ package com.chenjw.knife.agent.handler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javassist.Modifier;
@@ -13,51 +15,51 @@ import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.Context;
+import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
+import com.chenjw.knife.agent.handler.log.Filter;
 import com.chenjw.knife.agent.handler.log.ParseHelper;
 import com.chenjw.knife.agent.handler.log.Profiler;
+import com.chenjw.knife.agent.handler.log.filter.DepthFilter;
+import com.chenjw.knife.agent.handler.log.filter.ExceptionFilter;
+import com.chenjw.knife.agent.handler.log.filter.FixThreadFilter;
+import com.chenjw.knife.agent.handler.log.filter.InvokeFinishFilter;
+import com.chenjw.knife.agent.handler.log.filter.InvokePrintFilter;
 import com.chenjw.knife.agent.handler.log.filter.PatternMethodFilter;
-import com.chenjw.knife.agent.handler.log.listener.DefaultInvocationListener;
+import com.chenjw.knife.agent.handler.log.filter.SystemOperationFilter;
+import com.chenjw.knife.agent.handler.log.filter.TimingFilter;
+import com.chenjw.knife.agent.handler.log.filter.InstrumentFilter;
+import com.chenjw.knife.agent.handler.log.listener.FilterInvocationListener;
 
 public class InvokeCommandHandler implements CommandHandler {
 
-	public void handle(Args args, CommandDispatcher dispatcher) {
-		try {
-			addLogger(args);
-			invokeMethod(args.getArgStr());
-		} catch (Exception e) {
-			e.printStackTrace();
-			Agent.println(e.getClass().getName() + ":"
-					+ e.getLocalizedMessage());
-		} finally {
-			clearLogger();
-		}
+	public void handle(Args args, CommandDispatcher dispatcher)
+			throws Exception {
+		configStrategy(args);
+		invokeMethod(args.arg("invoke-expretion"));
 	}
 
-	private void addLogger(Args args) throws Exception {
+	private void configStrategy(Args args) throws Exception {
+		List<Filter> filters = new ArrayList<Filter>();
+		filters.add(new SystemOperationFilter());
+		filters.add(new FixThreadFilter(Thread.currentThread()));
+		filters.add(new ExceptionFilter());
+		filters.add(new TimingFilter());
+		filters.add(new InstrumentFilter());
 
-		Object thisObject = Context.get(Constants.THIS);
-		if (thisObject != null) {
-			Profiler.checkThread = Thread.currentThread();
+		Map<String, String> options = args.option("-f");
+		if (options != null) {
+			filters.add(new PatternMethodFilter(options.get("filter-expretion")));
 		}
-		String[] arg = args.arg("-f");
-		if (arg != null) {
-			DefaultInvocationListener listener = new DefaultInvocationListener();
-			listener.setMethodFilter(new PatternMethodFilter(arg[0]));
-			Profiler.listener = listener;
-		}
+		filters.add(new DepthFilter());
+		filters.add(new InvokeFinishFilter());
+		filters.add(new InvokePrintFilter());
 
+		Profiler.listener = new FilterInvocationListener(filters);
 	}
 
-	private void clearLogger() {
-		Profiler.clear();
-		Profiler.checkThread = null;
-		Profiler.listener = null;
-	}
-
-	private void invokeMethod(String methodSig)
-			throws IllegalArgumentException, IllegalAccessException {
+	private void invokeMethod(String methodSig) throws Exception {
 
 		String argStr = methodSig;
 		String m = StringUtils.substringBefore(argStr, "(");
@@ -116,7 +118,7 @@ public class InvokeCommandHandler implements CommandHandler {
 	}
 
 	private void invoke(Method method, Object thisObject, Object[] args)
-			throws IllegalArgumentException, IllegalAccessException {
+			throws Exception {
 		boolean isStatic = Modifier.isStatic(method.getModifiers());
 		Class<?> clazz = null;
 		if (isStatic) {
@@ -140,7 +142,7 @@ public class InvokeCommandHandler implements CommandHandler {
 			Profiler.exceptionEnd(thisObject, clazz.getName(),
 					method.getName(), args, t);
 		} catch (Exception e) {
-
+			throw e;
 		}
 	}
 
@@ -152,13 +154,15 @@ public class InvokeCommandHandler implements CommandHandler {
 		return StringUtils.join(classNames, ",");
 	}
 
-	@Override
-	public String getName() {
-		return "invoke";
-	}
+	public void declareArgs(ArgDef argDef) {
+		argDef.setCommandName("invoke");
+		argDef.setDef("[-f <filter-expretion>] <invoke-expretion>");
+		argDef.setDesc("invoke a method of the target object.");
+		argDef.addOptionDesc(
+				"invoke-expretion",
+				"set <classname> to find static fields or methods , if <classname> not set , will apply to target object.");
+		argDef.addOptionDesc("-f",
+				"set <filter-expretion> to filter the invocation you dont care.");
 
-	@Override
-	public void declareArgs(Map<String, Integer> argDecls) {
-		argDecls.put("-f", 1);
 	}
 }

@@ -1,42 +1,40 @@
 package com.chenjw.knife.agent.handler.log;
 
-import com.chenjw.knife.agent.handler.log.listener.DefaultInvocationListener;
-import com.chenjw.knife.utils.TimingHelper;
+import java.lang.reflect.Method;
+
+import com.chenjw.knife.agent.handler.log.event.Event;
+import com.chenjw.knife.agent.handler.log.event.MethodEnterEvent;
+import com.chenjw.knife.agent.handler.log.event.MethodExceptionEndEvent;
+import com.chenjw.knife.agent.handler.log.event.MethodLeaveEvent;
+import com.chenjw.knife.agent.handler.log.event.MethodReturnEndEvent;
+import com.chenjw.knife.agent.handler.log.event.MethodStartEvent;
+import com.chenjw.knife.agent.handler.log.event.MethodTraceEvent;
 
 public class Profiler {
-	private static final InvocationListener DEFAULT_LISTENER = new DefaultInvocationListener();
-	public static InvocationListener listener = null;
-	public static Thread checkThread = null;
-	private static volatile boolean needLogging = true;
+	public static final Object VOID = new Object();
 
-	public static void clear() {
-		InvokeLogUtils.clear();
-	}
-
-	private static boolean canProfile() {
-		return needLogging && isLogThread();
-	}
-
-	private static void enter() {
-		needLogging = false;
-		TimingHelper.stop();
-	}
-
-	private static void leave() {
-		needLogging = true;
-		TimingHelper.resume();
-	}
+	public static volatile ProfilerHandler listener = null;
 
 	public static <T> void traceObject(T obj, String methodName) {
 		// System.out.println("proxy " + methodName);
 		if (obj == null) {
 			return;
 		}
-		traceClass(obj.getClass(), methodName);
+		// System.out.println(obj + "." + methodName);
+		for (Method method : obj.getClass().getDeclaredMethods()) {
+			if (method.getName().equals(methodName)) {
+				traceClass(obj.getClass(), methodName);
+			}
+		}
+		for (Method method : obj.getClass().getMethods()) {
+			if (method.getName().equals(methodName)) {
+				traceClass(method.getDeclaringClass(), methodName);
+			}
+		}
 	}
 
 	public static void traceClass(Class<?> clazz, String methodName) {
-		// System.out.println("proxy " + methodName);
+
 		if (clazz == null) {
 			return;
 		}
@@ -49,85 +47,84 @@ public class Profiler {
 	 * @param dep
 	 * @param clazz
 	 */
-	private static void trace(Class<?> clazz, String methodName) {
-		if (!canProfile()) {
-			return;
-		}
-		try {
-			enter();
-			// System.out.println("trace " + clazz.getName() + "." +
-			// methodName);
-			InvokeLogUtils.buildTraceMethod(clazz, methodName);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			leave();
-		}
+	private static void trace(final Class<?> clazz, final String methodName) {
+		// Agent.println("trace " + clazz + "." + methodName);
+		MethodTraceEvent event = new MethodTraceEvent();
+		event.setClazz(clazz);
+		event.setMethodName(methodName);
+		sendEvent(event, null);
+	}
 
+	public static void enter(Object thisObject, String className,
+			String methodName, Object[] arguments) {
+		// Agent.println("enter " + className + " | " + thisObject.getClass()
+		// + " | " + methodName);
+
+		MethodEnterEvent event = new MethodEnterEvent();
+		event.setThisObject(thisObject);
+		event.setClassName(className);
+		event.setMethodName(methodName);
+		event.setArguments(arguments);
+		sendEvent(event, null);
+	}
+
+	public static void leave(Object thisObject, String className,
+			String methodName, Object[] arguments, Object result) {
+		MethodLeaveEvent event = new MethodLeaveEvent();
+		event.setThisObject(thisObject);
+		event.setClassName(className);
+		event.setMethodName(methodName);
+		event.setArguments(arguments);
+		event.setResult(result);
+		sendEvent(event, null);
 	}
 
 	public static void start(Object thisObject, String className,
 			String methodName, Object[] arguments) {
-		if (!canProfile()) {
-			return;
+		// if ("com.chenjw.knife.server.test.impl.CheckServiceImpl".equals(clazz
+		// .getName())) {
+		if (thisObject != null) {
+			// Agent.println(className + " | " + thisObject.getClass());
 		}
-		try {
-			enter();
-			InvocationListener listener = getListener();
-			listener.onStart(thisObject, className, methodName, arguments);
-		} finally {
-			leave();
-		}
+
+		// }
+		MethodStartEvent event = new MethodStartEvent();
+		event.setThisObject(thisObject);
+		event.setClassName(className);
+		event.setMethodName(methodName);
+		event.setArguments(arguments);
+		sendEvent(event, null);
 	}
 
 	public static void returnEnd(Object thisObject, String className,
 			String methodName, Object[] arguments, Object result) {
-		if (!canProfile()) {
-			return;
-		}
-		try {
-			enter();
-			InvocationListener listener = getListener();
-			listener.onReturnEnd(thisObject, className, methodName, arguments,
-					result);
-		} finally {
-			leave();
-		}
+		MethodReturnEndEvent event = new MethodReturnEndEvent();
+		event.setThisObject(thisObject);
+		event.setClassName(className);
+		event.setMethodName(methodName);
+		event.setArguments(arguments);
+		event.setResult(result);
+		sendEvent(event, null);
 	}
 
 	public static void exceptionEnd(Object thisObject, String className,
 			String methodName, Object[] arguments, Throwable e) {
-		if (!canProfile()) {
-			return;
-		}
-		try {
-			enter();
-			InvocationListener listener = getListener();
-			listener.onExceptionEnd(thisObject, className, methodName,
-					arguments, e);
-		} finally {
-			leave();
-		}
+		MethodExceptionEndEvent event = new MethodExceptionEndEvent();
+		event.setThisObject(thisObject);
+		event.setClassName(className);
+		event.setMethodName(methodName);
+		event.setArguments(arguments);
+		event.setE(e);
+		sendEvent(event, null);
 	}
 
-	private static boolean isLogThread() {
-		if (checkThread == null) {
-			return true;
-		} else {
-			if (checkThread == Thread.currentThread()) {
-				return true;
+	private static void sendEvent(Event event, ProfilerCallback callback) {
+		if (Profiler.listener != null) {
+			try {
+				Profiler.listener.onEvent(event, callback);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
-		return false;
-	}
-
-	private static InvocationListener getListener() {
-		InvocationListener listener = null;
-		if (Profiler.listener != null) {
-			listener = Profiler.listener;
-		} else {
-			listener = Profiler.DEFAULT_LISTENER;
-		}
-		return listener;
 	}
 }

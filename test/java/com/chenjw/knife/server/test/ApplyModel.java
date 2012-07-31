@@ -1,23 +1,23 @@
 package com.chenjw.knife.server.test;
 
 public class ApplyModel {
-	private String name;
-	private String type;
+	private Integer id;
+	private String msg;
 
-	public String getName() {
-		return name;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getMsg() {
+		return msg;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 
 }

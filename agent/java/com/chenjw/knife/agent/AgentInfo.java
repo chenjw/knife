@@ -13,7 +13,6 @@ public class AgentInfo {
 	// will be loaded when enter and unload when close
 	private List<String> bootstrapJars;
 	private List<String> systemJars;
-	private String str = "abc";
 
 	public AgentInfo() {
 	}

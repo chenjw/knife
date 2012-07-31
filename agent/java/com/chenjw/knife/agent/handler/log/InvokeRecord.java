@@ -7,15 +7,10 @@ import java.util.Map;
 
 public class InvokeRecord {
 
-	private static ThreadLocal<Record> record = new ThreadLocal<Record>();
+	private static Record record = new Record();
 
 	private static Record getRecord() {
-		Record r = record.get();
-		if (r == null) {
-			r = new Record();
-			record.set(r);
-		}
-		return r;
+		return record;
 	}
 
 	public static int record(Object obj) {
@@ -38,12 +33,17 @@ public class InvokeRecord {
 	}
 
 	public static void clear() {
-		record.remove();
+		record.clear();
 	}
 
 	private static class Record {
 		private List<Object> list = new ArrayList<Object>();
 		private Map<Object, Integer> map = new IdentityHashMap<Object, Integer>();
+
+		public void clear() {
+			list.clear();
+			map.clear();
+		}
 
 		public Object get(int i) {
 			if (i >= list.size() || i < 0) {

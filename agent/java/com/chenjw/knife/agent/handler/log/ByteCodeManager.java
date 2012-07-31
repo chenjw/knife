@@ -1,7 +1,12 @@
 package com.chenjw.knife.agent.handler.log;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.chenjw.knife.agent.NativeHelper;
 
@@ -56,7 +61,7 @@ public class ByteCodeManager {
 	public void tryRedefineClass(Class<?> clazz, byte[] bytes) {
 		load(clazz);
 		defineingMap.put(clazz, bytes);
-		// System.out.println("redefine " + clazz + "(" + bytes.length + ")");
+		// Agent.println("redefine " + clazz + "(" + bytes.length + ")");
 	}
 
 	public void commitAll() {
@@ -73,12 +78,46 @@ public class ByteCodeManager {
 	public void commit(Class<?> clazz) {
 		byte[] defineingBytes = defineingMap.get(clazz);
 		if (defineingBytes != null) {
+			byte[] bb = backupMap.get(clazz);
+			saveOrignFile(clazz, bb);
+			saveNewFile(clazz, defineingBytes);
+			// System.err.println(clazz.getName());
 			NativeHelper.redefineClass(clazz, defineingBytes);
 			definedMap.put(clazz, defineingBytes);
 			defineingMap.remove(clazz);
+
+			// Agent.println("commited " + clazz.getName() + "("
+			// + defineingBytes.length + ")(" + bb.length + ")");
 		}
 		// System.out.println("redefine " + clazz + "(" + defineingBytes.length
 		// + ")");
+	}
+
+	private void saveOrignFile(Class<?> clazz, byte[] byteCode) {
+		String path = "/tmp/knife/orign/"
+				+ StringUtils
+						.replaceChars(clazz.getName(), ".", File.separator)
+				+ ".class";
+		try {
+			FileUtils.writeByteArrayToFile(new File(path), byteCode);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void saveNewFile(Class<?> clazz, byte[] byteCode) {
+		String path = "/tmp/knife/new/"
+				+ StringUtils
+						.replaceChars(clazz.getName(), ".", File.separator)
+				+ ".class";
+		clazz.getName().replaceAll(".", File.separator);
+		try {
+			FileUtils.writeByteArrayToFile(new File(path), byteCode);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void rollbackAll() {

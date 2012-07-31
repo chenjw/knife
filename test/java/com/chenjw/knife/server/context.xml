@@ -5,20 +5,20 @@
 	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd"
 	default-autowire="byName">
 
-	<bean id="testService" class="com.chenjw.knife.server.test.impl.TestServiceImpl">
+	<bean id="applyService" class="com.chenjw.knife.server.test.impl.ApplyServiceImpl">
 	</bean>
 
-	<bean id="test1Service" class="com.chenjw.knife.server.test.impl.Test1ServiceImpl" />
+	<bean id="checkService" class="com.chenjw.knife.server.test.impl.CheckServiceImpl" />
 	
-	<bean id="helloService" class="com.chenjw.knife.server.test.impl.HelloServiceImpl" />
+	<bean id="dataService" class="com.chenjw.knife.server.test.impl.DataServiceImpl" />
 	
 	
 	
 	<bean id="check" class="com.chenjw.knife.server.test.Check"/> 
 	<!--  proxy-target-class="true"-->
-	<aop:config > 
+	<aop:config proxy-target-class="true"> 
     	<aop:aspect ref="check" > 
-      		<aop:pointcut id="target" expression="execution(* com.chenjw.knife.server.test.impl.Test1ServiceImpl.doApply(..))"/> 
+      		<aop:pointcut id="target" expression="execution(* com.chenjw.knife.server.test.impl.CheckServiceImpl.check(..))"/> 
       		<aop:before method="show" pointcut-ref="target"/> 
     	</aop:aspect> 
   	</aop:config> 
