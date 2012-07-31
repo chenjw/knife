@@ -3,7 +3,6 @@ package com.chenjw.knife.agent;
 import java.io.IOException;
 import java.lang.instrument.ClassDefinition;
 import java.lang.instrument.UnmodifiableClassException;
-import java.util.jar.JarFile;
 
 import com.chenjw.knife.agent.handler.log.InvokeRecord;
 import com.chenjw.knife.agent.handler.log.TraceCodeBuilder;
@@ -33,37 +32,6 @@ public class Agent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * install jars dependent by agent
-	 * 
-	 * @param inst
-	 * @throws IOException
-	 */
-	public static void installJars() throws IOException {
-		if (info.getBootstrapJars() != null) {
-			for (String path : info.getBootstrapJars()) {
-				info.getInst().appendToBootstrapClassLoaderSearch(
-						new JarFile(path));
-
-			}
-		}
-
-		if (info.getSystemJars() != null) {
-			for (String path : info.getSystemJars()) {
-				info.getInst().appendToSystemClassLoaderSearch(
-						new JarFile(path));
-			}
-		}
-
-	}
-
-	/**
-	 * uninstall jars dependent by agent
-	 */
-	public static void uninstallJars() {
-
 	}
 
 	public static void clear() {

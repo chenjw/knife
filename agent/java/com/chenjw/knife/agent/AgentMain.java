@@ -7,33 +7,40 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.instrument.Instrumentation;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.jar.JarFile;
 
 public class AgentMain {
 
-	private static void initJarPath(AgentInfo agentInfo,
+	private static void initJarPath(Instrumentation inst,
 			Map<String, String> args) {
-		String bjs = args.get("bootstrapJars");
-		List<String> bjsL = new ArrayList<String>();
-		if (bjs != null) {
-			String[] bjss = bjs.split(";");
-			for (String s : bjss) {
-				bjsL.add(s);
+		try {
+			String bjs = args.get("bootstrapJars");
+			if (bjs != null) {
+				String[] bjss = bjs.split(";");
+				for (String s : bjss) {
+					JarFile jar = new JarFile(s);
+					if (!JarHelper.isLoaded(jar)) {
+						inst.appendToBootstrapClassLoaderSearch(jar);
+						System.out.println(s + " loaded");
+					}
+				}
 			}
-		}
-		agentInfo.setBootstrapJars(bjsL);
-		String sjs = args.get("systemJars");
-		List<String> sjsL = new ArrayList<String>();
-		if (sjs != null) {
-			String[] sjss = sjs.split(";");
-			for (String s : sjss) {
-				sjsL.add(s);
+			String sjs = args.get("systemJars");
+			if (sjs != null) {
+				String[] sjss = sjs.split(";");
+				for (String s : sjss) {
+					JarFile jar = new JarFile(s);
+					if (!JarHelper.isLoaded(jar)) {
+						inst.appendToSystemClassLoaderSearch(jar);
+						System.out.println(s + " loaded");
+					}
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		agentInfo.setSystemJars(sjsL);
 	}
 
 	private static Map<String, String> parseArgs(String arguments) {
@@ -77,9 +84,11 @@ public class AgentMain {
 			throws Exception {
 		try {
 			Map<String, String> args = parseArgs(readArgs(arguments));
+
+			initJarPath(inst, args);
+
 			AgentInfo agentInfo = new AgentInfo();
 			agentInfo.setInst(inst);
-			initJarPath(agentInfo, args);
 			Thread thread = new Thread(new AgentServer(Integer.parseInt(args
 					.get("port")), agentInfo), "agent-server");
 			thread.setDaemon(true);
