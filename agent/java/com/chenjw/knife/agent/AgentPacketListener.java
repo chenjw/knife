@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import com.chenjw.knife.agent.handler.CdCommandHandler;
 import com.chenjw.knife.agent.handler.ClearCommandHandler;
 import com.chenjw.knife.agent.handler.CloseCommandHandler;
+import com.chenjw.knife.agent.handler.DecodeCommandHandler;
 import com.chenjw.knife.agent.handler.DoCommandHandler;
 import com.chenjw.knife.agent.handler.FindCommandHandler;
 import com.chenjw.knife.agent.handler.GcCommandHandler;
@@ -41,6 +42,7 @@ public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 		addCommandHandler(new GcCommandHandler());
 		addCommandHandler(new SetCommandHandler());
 		addCommandHandler(new TraceCommandHandler());
+		addCommandHandler(new DecodeCommandHandler());
 
 	}
 
