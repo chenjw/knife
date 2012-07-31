@@ -28,6 +28,9 @@ public class FilterChainImpl implements FilterChain {
 			}
 		} else {
 			Filter f = filters.get(index);
+			// Agent.println("[" + f.getClass().getSimpleName() + "] "
+			// + event.getClass().getSimpleName() + " "
+			// + event.getMethodName());
 			this.index++;
 			f.doFilter(event, this);
 		}

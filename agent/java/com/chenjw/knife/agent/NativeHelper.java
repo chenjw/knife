@@ -266,8 +266,15 @@ public class NativeHelper {
 	}
 
 	public static void redefineClass(Class<?> clazz, byte[] newClassBytes) {
-		// Agent.redefineClasses(clazz, newClassBytes);
-		redefineClass0(clazz, newClassBytes);
+		try {
+			Agent.redefineClasses(clazz, newClassBytes);
+			// Agent.println("<REDEFINE> " + clazz.getSimpleName());
+		} catch (VerifyError e) {
+			e.printStackTrace();
+			// System.out.println("<ERROR> " + clazz.getSimpleName());
+			// Agent.println("<ERROR> " + clazz.getSimpleName());
+		}
+		// redefineClass0(clazz, newClassBytes);
 	}
 
 	private native static void redefineClass0(Class<?> clazz,

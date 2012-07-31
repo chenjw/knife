@@ -9,7 +9,7 @@
 	<property name="build.classes.dir" location="${build.dir}/classes"/>
 	<property name="dist.dir" location="${base.dir}/dist"/>
 	<property environment="env"/>
-	<property name="version" value="0.3.2"/>
+	<property name="version" value="0.3.4"/>
 	<property name="appName" value="knife"/>
 	<property name="date" value="2012"/>
 	
@@ -92,7 +92,15 @@
 	<target name="copy-lib">
  		<copy todir="${dist.dir}/knife/lib">
     			<fileset dir="${base.dir}/core/lib">
-   				<include name="**/*.jar"/>
+				<include name="commons-collections-3.2.1.jar"/>
+				<include name="commons-io-1.4.jar"/>
+				<include name="commons-lang-2.4.jar"/>
+				<include name="commons-logging-1.1.1.jar"/>
+				<include name="fastjson-1.1.17.jar"/>
+				<include name="jline-1.0.jar"/>
+				<include name="knife-agent.jar"/>
+				<include name="knife-client.jar"/>
+				<include name="misc.javassist-3.9.0.GA.jar"/>
 			</fileset>
 			<path>
 				<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
@@ -101,7 +109,7 @@
 	</target>
 
 	<target name="tar">
-		<tar destfile="${dist.dir}/knife-v${version}.tar.gz" basedir="${dist.dir}/knife" compression="gzip"/>
+		<tar destfile="${dist.dir}/knife-${version}.tar.gz" basedir="${dist.dir}/knife" compression="gzip"/>
 	</target>
 
 

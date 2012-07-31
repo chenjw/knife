@@ -35,19 +35,9 @@ public class TraceCodeBuilder {
 
 	private static void buildMethodAccess(final ClassGenerator classGenerator,
 			final String methodName) throws Exception {
-		// System.out.println("into class "
-		// + classGenerator.getCtClass().getName());
-		// TimingHelper.start("getMethods");
 		CtMethod[] ctMethods = classGenerator.getCtClass().getMethods();
-		// TimingHelper.printMillis("getMethods");
 		for (final CtMethod method : ctMethods) {
-			// System.out.println("find method "
-			// + method.getDeclaringClass().getName() + "."
-			// + method.getName());
-			// filter trace method
-			// TimingHelper.start("check");
 			if (!methodName.equals(method.getName())) {
-				// System.out.println(methodName + " " + method.getName());
 				continue;
 			}
 			String methodFullName = method.getLongName();
@@ -61,25 +51,30 @@ public class TraceCodeBuilder {
 			if (!isSupportTrace(method.getDeclaringClass().getName(), method)) {
 				continue;
 			}
-			// TimingHelper.printMillis("check");
-			// TimingHelper.start("new1");
 			ClassGenerator newClassGenerator = ClassGenerator
 					.newInstance(ByteCodeManager.getInstance().getByteCode(
 							Helper.findClass(classGenerator.getCtClass())));
-			// TimingHelper.printMillis("new1");
-			// TimingHelper.start("getMethod");
 			CtClass ctClass = newClassGenerator.getCtClass();
 			CtMethod newMethod = ctClass.getMethod(method.getName(),
 					method.getSignature());
-			// TimingHelper.printMillis("getMethod");
-			// TimingHelper.start("replace");
 			newMethod.instrument(new MethodCallExprEditor());
+			// add enter leave code
+			// addEnterLeaveCode(ctClass, newMethod);
+			byte[] classBytes = newClassGenerator.toBytecode();
+			ByteCodeManager.getInstance().tryRedefineClass(
+					Helper.findClass(newClassGenerator.getCtClass()),
+					classBytes);
+		}
+
+	}
+
+	private static void addEnterLeaveCode(CtClass ctClass, CtMethod ctMethod) {
+		try {
 			// ////////////////
 			Class<?> returnClass = null;
 			try {
-				returnClass = Helper.findClass(newMethod.getReturnType());
+				returnClass = Helper.findClass(ctMethod.getReturnType());
 			} catch (NotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -91,84 +86,34 @@ public class TraceCodeBuilder {
 			}
 			//
 			// // /////////
-			if (Modifier.isStatic(method.getModifiers())) {
-				newMethod.insertBefore("{"
-						+ PROFILER_CLASS.getName()
+			if (Modifier.isStatic(ctMethod.getModifiers())) {
+
+				ctMethod.insertBefore("{" + PROFILER_CLASS.getName()
 						+ ".enter(null,\""
-						+ Helper.makeClassName(Helper
-								.findClass(newClassGenerator.getCtClass()))
-						+ "\",\"" + method.getName() + "\",$args);}");
-				newMethod.insertAfter(
-						"{"
-								+ PROFILER_CLASS.getName()
-								+ ".leave(null,\""
-								+ Helper.findClass(
-										newClassGenerator.getCtClass())
-										.getName() + "\",\"" + method.getName()
-								+ "\",$args," + resultExpr + ");}", true);
+						+ Helper.makeClassName(Helper.findClass(ctClass))
+						+ "\",\"" + ctMethod.getName() + "\",$args);}");
+
+				ctMethod.insertAfter(
+						"{" + PROFILER_CLASS.getName() + ".leave(null,\""
+								+ Helper.findClass(ctClass).getName() + "\",\""
+								+ ctMethod.getName() + "\",$args," + resultExpr
+								+ ");}", true);
 			} else {
-				newMethod.insertBefore("{"
-						+ PROFILER_CLASS.getName()
-						+ ".enter($0,\""
-						+ Helper.findClass(newClassGenerator.getCtClass())
-								.getName() + "\",\"" + method.getName()
-						+ "\",$args);}");
-				newMethod.insertAfter(
+				ctMethod.insertBefore("{" + PROFILER_CLASS.getName()
+						+ ".enter($0,\"" + Helper.findClass(ctClass).getName()
+						+ "\",\"" + ctMethod.getName() + "\",$args);}");
+				ctMethod.insertAfter(
 						"{"
 								+ PROFILER_CLASS.getName()
 								+ ".leave($0,\""
 								+ Helper.makeClassName(Helper
-										.findClass(newClassGenerator
-												.getCtClass())) + "\",\""
-								+ method.getName() + "\",$args," + resultExpr
+										.findClass(ctClass)) + "\",\""
+								+ ctMethod.getName() + "\",$args," + resultExpr
 								+ ");}", true);
 			}
-			// ///////////////////
-			// //
-			// newMethod.insertBefore("System.out.println(\"insertBefore\");");
-			// newMethod.insertAfter("{System.out.println(\"insertAfter\");}");
-			//
-			// //
-
-			// System.out.println("newMethod.insertAfter " +
-			// newMethod.getName());
-			// newMethod.insertAfter("{System.out.println(\"insertAfter\");}",
-			// true);
-
-			// String newMethodName = "_aaa" + methodName;
-			// newMethod.setName(newMethodName);
-			// // newMethod.setName(newMethodName);
-			// CtMethod nnMethod = CtNewMethod.copy(newMethod, methodName,
-			// ctClass, null);
-			// nnMethod.setModifiers(newMethod.getModifiers());
-			// System.out.println("getDeclaringClass=");
-			// // CtNewMethod.copy(src, declaring, map)
-			// // newMethod.setName(newMethodName);
-			// nnMethod.setBody("{System.out.println(\"call\");return "
-			// + newMethodName + "($$);}");
-			// //
-			// nnMethod.setModifiers(Modifier.setPrivate(nnMethod.getModifiers()));
-			// // nnMethod.instrument(new MethodCallExprEditor());
-
-			// // nnMethod.
-			// ctClass.addMethod(nnMethod);
-
-			// newMethod.instrument(new FieldAccessExprEditor());
-			// newMethod.setBody("{System.out.println(\"enter\");return _a_"
-			// + newMethod.getName() + "($$);}");
-
-			// TimingHelper.printMillis("replace");
-			// TimingHelper.start("toBytecode");
-
-			byte[] classBytes = newClassGenerator.toBytecode();
-			// TimingHelper.printMillis("toBytecode");
-			// TimingHelper.start("tryRedefineClass");
-			ByteCodeManager.getInstance().tryRedefineClass(
-					Helper.findClass(newClassGenerator.getCtClass()),
-					classBytes);
-			// TimingHelper.printMillis("tryRedefineClass");
+		} catch (CannotCompileException e) {
+			e.printStackTrace();
 		}
-
 	}
 
 	private static boolean isCanTrace(Class<?> clazz) {
@@ -186,27 +131,10 @@ public class TraceCodeBuilder {
 		if (!isCanTrace(clazz)) {
 			return;
 		}
-		// TimingHelper.start("build " + clazz.getName() + "." + methodName);
-		// TimingHelper.start("getByteCode " + clazz.getName() + "." +
-		// methodName);
 		byte[] bytes = ByteCodeManager.getInstance().getByteCode(clazz);
-		// TimingHelper.printMillis("getByteCode " + clazz.getName() + "."
-		// + methodName);
-		// TimingHelper.start("new " + clazz.getName() + "." + methodName);
 		ClassGenerator classGenerator = ClassGenerator.newInstance(bytes);
-		// TimingHelper.printMillis("new " + clazz.getName() + "." +
-		// methodName);
-		// TimingHelper.start("buildMethodAccess " + clazz.getName() + "."
-		// + methodName);
 		buildMethodAccess(classGenerator, methodName);
-		// TimingHelper.printMillis("buildMethodAccess " + clazz.getName() + "."
-		// + methodName);
-		// TimingHelper.printMillis("build " + clazz.getName() + "." +
-		// methodName);
-		// TimingHelper.start("commit " + clazz.getName() + "." + methodName);
 		ByteCodeManager.getInstance().commitAll();
-		// TimingHelper
-		// .printMillis("commit " + clazz.getName() + "." + methodName);
 	}
 
 	private static boolean isSupportClassNameAndMethodName(String className,
@@ -234,22 +162,16 @@ public class TraceCodeBuilder {
 	}
 
 	private static boolean isSupportTrace(String className, CtMethod ctMethod) {
-		try {
-			// TimingHelper.start("check support");
-			// filter name
-			if (!isSupportClassNameAndMethodName(className, ctMethod.getName())) {
-				return false;
-			}
-			// filter native
-			if (Modifier.isNative(ctMethod.getModifiers())) {
-				return false;
-			} else {
-				return true;
-			}
-		} finally {
-			// TimingHelper.printMillis("check support");
+		// filter name
+		if (!isSupportClassNameAndMethodName(className, ctMethod.getName())) {
+			return false;
 		}
-
+		// filter native
+		if (Modifier.isNative(ctMethod.getModifiers())) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	public static class FieldAccessExprEditor extends ExprEditor {
@@ -327,10 +249,7 @@ public class TraceCodeBuilder {
 			code.append(exceptionEndCode);
 			code.append("throw $e;");
 			code.append("}");
-			// TimingHelper.start("doReplace " + className + "." + methodName);
 			methodcall.replace(code.toString());
-			// TimingHelper.printMillis("doReplace " + className + "."
-			// + methodName);
 		}
 
 		private boolean isStatic(CtMethod ctMethod) {

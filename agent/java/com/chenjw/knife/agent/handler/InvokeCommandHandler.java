@@ -21,26 +21,33 @@ import com.chenjw.knife.agent.handler.constants.Constants;
 import com.chenjw.knife.agent.handler.log.Filter;
 import com.chenjw.knife.agent.handler.log.ParseHelper;
 import com.chenjw.knife.agent.handler.log.Profiler;
+import com.chenjw.knife.agent.handler.log.filter.Depth0Filter;
 import com.chenjw.knife.agent.handler.log.filter.DepthFilter;
 import com.chenjw.knife.agent.handler.log.filter.ExceptionFilter;
 import com.chenjw.knife.agent.handler.log.filter.FixThreadFilter;
+import com.chenjw.knife.agent.handler.log.filter.InstrumentFilter;
 import com.chenjw.knife.agent.handler.log.filter.InvokeFinishFilter;
 import com.chenjw.knife.agent.handler.log.filter.InvokePrintFilter;
 import com.chenjw.knife.agent.handler.log.filter.PatternMethodFilter;
 import com.chenjw.knife.agent.handler.log.filter.SystemOperationFilter;
 import com.chenjw.knife.agent.handler.log.filter.TimingFilter;
-import com.chenjw.knife.agent.handler.log.filter.InstrumentFilter;
 import com.chenjw.knife.agent.handler.log.listener.FilterInvocationListener;
 
 public class InvokeCommandHandler implements CommandHandler {
 
 	public void handle(Args args, CommandDispatcher dispatcher)
 			throws Exception {
-		configStrategy(args);
-		invokeMethod(args.arg("invoke-expretion"));
+		boolean isTrace = args.option("-t") != null;
+		if (isTrace) {
+			configTraceStrategy(args);
+		} else {
+			configNoTraceStrategy(args);
+		}
+
+		invokeMethod(isTrace, args.arg("invoke-expretion"));
 	}
 
-	private void configStrategy(Args args) throws Exception {
+	private void configTraceStrategy(Args args) throws Exception {
 		List<Filter> filters = new ArrayList<Filter>();
 		filters.add(new SystemOperationFilter());
 		filters.add(new FixThreadFilter(Thread.currentThread()));
@@ -55,11 +62,29 @@ public class InvokeCommandHandler implements CommandHandler {
 		filters.add(new DepthFilter());
 		filters.add(new InvokeFinishFilter());
 		filters.add(new InvokePrintFilter());
+		Profiler.listener = new FilterInvocationListener(filters);
+	}
+
+	private void configNoTraceStrategy(Args args) throws Exception {
+		List<Filter> filters = new ArrayList<Filter>();
+		filters.add(new SystemOperationFilter());
+		filters.add(new FixThreadFilter(Thread.currentThread()));
+		filters.add(new ExceptionFilter());
+		filters.add(new TimingFilter());
+		Map<String, String> options = args.option("-f");
+		if (options != null) {
+			filters.add(new PatternMethodFilter(options.get("filter-expretion")));
+		}
+		filters.add(new DepthFilter());
+		filters.add(new Depth0Filter());
+		filters.add(new InvokeFinishFilter());
+		filters.add(new InvokePrintFilter());
 
 		Profiler.listener = new FilterInvocationListener(filters);
 	}
 
-	private void invokeMethod(String methodSig) throws Exception {
+	private void invokeMethod(boolean isTrace, String methodSig)
+			throws Exception {
 
 		String argStr = methodSig;
 		String m = StringUtils.substringBefore(argStr, "(");
@@ -111,14 +136,14 @@ public class InvokeCommandHandler implements CommandHandler {
 						StringUtils.substringAfter(argStr, "("), ")"),
 				method.getParameterTypes());
 		if (Modifier.isStatic(method.getModifiers())) {
-			invoke(method, null, mArgs);
+			invoke(isTrace, method, null, mArgs);
 		} else {
-			invoke(method, Context.get(Constants.THIS), mArgs);
+			invoke(isTrace, method, Context.get(Constants.THIS), mArgs);
 		}
 	}
 
-	private void invoke(Method method, Object thisObject, Object[] args)
-			throws Exception {
+	private void invoke(boolean isTrace, Method method, Object thisObject,
+			Object[] args) throws Exception {
 		boolean isStatic = Modifier.isStatic(method.getModifiers());
 		Class<?> clazz = null;
 		if (isStatic) {
@@ -129,10 +154,12 @@ public class InvokeCommandHandler implements CommandHandler {
 		}
 		try {
 			Profiler.start(thisObject, clazz.getName(), method.getName(), args);
-			if (isStatic) {
-				Profiler.traceClass(clazz, method.getName());
-			} else {
-				Profiler.traceObject(thisObject, method.getName());
+			if (isTrace) {
+				if (isStatic) {
+					Profiler.traceClass(clazz, method.getName());
+				} else {
+					Profiler.traceObject(thisObject, method.getName());
+				}
 			}
 			Object r = method.invoke(thisObject, args);
 			Profiler.returnEnd(thisObject, clazz.getName(), method.getName(),
@@ -156,13 +183,14 @@ public class InvokeCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("invoke");
-		argDef.setDef("[-f <filter-expretion>] <invoke-expretion>");
+		argDef.setDef("[-f <filter-expretion>] [-t] <invoke-expretion>");
 		argDef.setDesc("invoke a method of the target object.");
 		argDef.addOptionDesc(
 				"invoke-expretion",
 				"set <classname> to find static fields or methods , if <classname> not set , will apply to target object.");
-		argDef.addOptionDesc("-f",
+		argDef.addOptionDesc("-f <filter-expretion>",
 				"set <filter-expretion> to filter the invocation you dont care.");
+		argDef.addOptionDesc("-t", "to trace the invocation.");
 
 	}
 }
