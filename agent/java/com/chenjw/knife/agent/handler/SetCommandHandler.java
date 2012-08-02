@@ -89,10 +89,10 @@ public class SetCommandHandler implements CommandHandler {
 		argDef.setDesc("set field value to target object.");
 		argDef.addOptionDesc(
 				"fieldname",
-				"input 'package.TestClass.field1' means static field or 'field1' means both static and no-static field.");
+				"input 'package.TestClass.field1' means static field or 'field1' means both static and no-static field of target object.");
 		argDef.addOptionDesc(
 				"new-value",
-				"a expretion which will transfer to object by json tool, or '@1' means direct the object.");
+				"an expretion which will transfer to object by json tool, or '@1' means direct the object by id.");
 		argDef.addOptionDesc("-s",
 				"force set to static field, to avoid misunderstanding");
 

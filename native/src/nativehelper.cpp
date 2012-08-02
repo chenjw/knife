@@ -80,6 +80,16 @@ jvmtiIterationControl JNICALL iterate_markTag
     	return JVMTI_ITERATION_CONTINUE;
 }
 
+jint JNICALL iterate_ref_markTag
+    (jvmtiHeapReferenceKind reference_kind, const jvmtiHeapReferenceInfo* reference_info, jlong class_tag, jlong referrer_class_tag, jlong size, jlong* tag_ptr, jlong* referrer_tag_ptr, jint length, void* user_data) 
+{
+
+	if(*tag_ptr==2 && referrer_tag_ptr!=NULL && referrer_tag_ptr!=tag_ptr){
+		*referrer_tag_ptr=1;
+	}	
+    	return JVMTI_VISIT_OBJECTS;
+}
+
 jvmtiIterationControl JNICALL iterate_cleanTag
     (jlong class_tag, jlong size, jlong* tag_ptr, void* user_data)
 {
@@ -264,6 +274,36 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_NativeHelper_retransformClass
 	if (classArray != NULL) {
 		deallocate(jvmti, (void*)classArray);
     	}
+}
+
+
+JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_NativeHelper_findReferrerByObject0
+  (JNIEnv * env, jclass thisClass, jobject obj)
+{
+	initJvmti(env);
+	jclass loadedObject = env->FindClass("java/lang/Object");
+
+	jvmti->SetTag(obj,2);
+	jvmtiHeapCallbacks callbacks;
+        memset(&callbacks, 0, sizeof(callbacks));
+        callbacks.heap_reference_callback = &iterate_ref_markTag;
+	jvmtiError e=jvmti->FollowReferences(0,NULL,NULL,&callbacks,NULL);
+	jint countObjts=0;
+  	jobject * objs;
+  	jlong * tagResults;
+  	jlong idToQuery=1;  
+   
+  	jvmti->GetObjectsWithTags(1,&idToQuery,&countObjts,&objs,&tagResults);
+  	// Set the object array
+  	jobjectArray arrayReturn = env->NewObjectArray(countObjts,loadedObject,0);
+  	for (jint i=0;i<countObjts;i++) {
+		//printf("~~~%d\n",&objs[i]);
+     		env->SetObjectArrayElement(arrayReturn,i, objs[i]);
+  	} 
+	jvmti->Deallocate((unsigned char *)tagResults);  
+  	jvmti->Deallocate((unsigned char *)objs);  
+  	releaseTags();         
+  	return arrayReturn;
 }
 
 

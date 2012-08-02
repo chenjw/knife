@@ -9,8 +9,8 @@ public class ArgDef {
 	private List<OptionDesc> optionDescs = new ArrayList<OptionDesc>();
 	private List<OptionDesc> argDescs = new ArrayList<OptionDesc>();
 	private String commandName;
-	private String def;
-	private String desc;
+	private String def = "";
+	private String desc = "";
 
 	public OptionDesc getByKey(String name) {
 		for (OptionDesc o : optionDescs) {

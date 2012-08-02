@@ -37,8 +37,8 @@ public class DoCommandHandler implements CommandHandler {
 		Context.put(Constants.THIS, getBean("applyService"));
 		// dispatcher.dispatch(new Command("invoke",
 		// "-f com.chenjw.* apply({\"id\":1})"));
-		// dispatcher.dispatch(new Command("invoke", "apply({\"id\":1})"));
-		dispatcher.dispatch(new Command("trace", "-f com.chenjw.* apply"));
+		dispatcher.dispatch(new Command("invoke", "-t apply({\"id\":1})"));
+		// dispatcher.dispatch(new Command("trace", "-f com.chenjw.* apply"));
 		Agent.println("do finished!");
 	}
 

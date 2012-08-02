@@ -126,7 +126,8 @@ public class LsCommandHandler implements CommandHandler {
 			Agent.println("not found!");
 			return;
 		}
-		Agent.println(ParseHelper.toString(obj));
+		Agent.println(" " + InvokeRecord.toId(obj) + " "
+				+ ParseHelper.toString(obj) + " [" + obj.getClass() + "]");
 		Agent.println("finished!");
 	}
 

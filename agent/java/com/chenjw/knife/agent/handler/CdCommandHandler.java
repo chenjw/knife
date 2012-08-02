@@ -11,7 +11,7 @@ public class CdCommandHandler implements CommandHandler {
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
 
-		String param = args.arg("expretion");
+		String param = args.arg("object-id");
 		Object obj = null;
 		if ("..".equals(param)) {
 			obj = InvokeHistory.pre();
@@ -25,8 +25,8 @@ public class CdCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("cd");
-		argDef.setDef("<expretion>");
-		argDef.setDesc("set the object with the id ,to target object");
-		argDef.addOptionDesc("expretion", "a num as the object id.");
+		argDef.setDef("<object-id>");
+		argDef.setDesc("enter object by id.");
+		argDef.addOptionDesc("object-id", "a num as the object id.");
 	}
 }

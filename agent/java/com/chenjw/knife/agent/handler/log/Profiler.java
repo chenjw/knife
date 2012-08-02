@@ -83,9 +83,9 @@ public class Profiler {
 			String methodName, Object[] arguments) {
 		// if ("com.chenjw.knife.server.test.impl.CheckServiceImpl".equals(clazz
 		// .getName())) {
-		if (thisObject != null) {
-			// Agent.println(className + " | " + thisObject.getClass());
-		}
+		// if (thisObject != null) {
+		// // Agent.println(className + " | " + thisObject.getClass());
+		// }
 
 		// }
 		MethodStartEvent event = new MethodStartEvent();

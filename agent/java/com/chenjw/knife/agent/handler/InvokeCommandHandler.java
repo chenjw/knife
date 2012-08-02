@@ -187,10 +187,10 @@ public class InvokeCommandHandler implements CommandHandler {
 		argDef.setDesc("invoke a method of the target object.");
 		argDef.addOptionDesc(
 				"invoke-expretion",
-				"set <classname> to find static fields or methods , if <classname> not set , will apply to target object.");
-		argDef.addOptionDesc("-f <filter-expretion>",
-				"set <filter-expretion> to filter the invocation you dont care.");
+				"like package.ClassName.method(param1,param2) to invoke static method, or method(param1,param2) to invoke method of target object.");
 		argDef.addOptionDesc("-t", "to trace the invocation.");
+		argDef.addOptionDesc("-f",
+				"set <filter-expretion> to filter the invocation output you dont care.");
 
 	}
 }

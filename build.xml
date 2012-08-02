@@ -9,7 +9,7 @@
 	<property name="build.classes.dir" location="${build.dir}/classes"/>
 	<property name="dist.dir" location="${base.dir}/dist"/>
 	<property environment="env"/>
-	<property name="version" value="0.3.4"/>
+	<property name="version" value="0.4.0"/>
 	<property name="appName" value="knife"/>
 	<property name="date" value="2012"/>
 	
@@ -86,7 +86,7 @@
  		<copy todir="${dist.dir}/knife">
     			<fileset dir="${base.dir}/shell"/>
   		</copy>
-		<chmod dir="${dist.dir}/knife" perm="ugo+rx" includes="**/*.sh"/>
+		<chmod dir="${dist.dir}/knife" perm="774" includes="**/*.sh"/>
 	</target>
 
 	<target name="copy-lib">

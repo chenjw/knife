@@ -181,7 +181,7 @@ public class TraceCommandHandler implements CommandHandler {
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("trace");
 		argDef.setDef("[-f <filter-expretion>] [-n <trace-num>] <trace-expretion>");
-		argDef.setDesc("invoke a method of the target object.");
+		argDef.setDesc("trace an invocation on the target object.");
 
 		argDef.addOptionDesc(
 				"trace-expretion",

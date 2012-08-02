@@ -14,6 +14,7 @@ import com.chenjw.knife.agent.handler.GcCommandHandler;
 import com.chenjw.knife.agent.handler.InvokeCommandHandler;
 import com.chenjw.knife.agent.handler.LogCommandHandler;
 import com.chenjw.knife.agent.handler.LsCommandHandler;
+import com.chenjw.knife.agent.handler.RefCommandHandler;
 import com.chenjw.knife.agent.handler.SetCommandHandler;
 import com.chenjw.knife.agent.handler.TraceCommandHandler;
 import com.chenjw.knife.agent.handler.ViewCommandHandler;
@@ -43,6 +44,7 @@ public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 		addCommandHandler(new SetCommandHandler());
 		addCommandHandler(new TraceCommandHandler());
 		addCommandHandler(new DecodeCommandHandler());
+		addCommandHandler(new RefCommandHandler());
 
 	}
 
@@ -105,15 +107,20 @@ public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 	}
 
 	private void help() {
-		Agent.println("usage: <command> [-h] [<args>]");
 		Agent.println("");
-		Agent.println("The most commonly used commands are:");
-		int maxN = 20;
+		Agent.println("-------------------------------------------------------");
+		Agent.println("  usage: <command> [-h] [<args>]");
+		Agent.println("");
+		Agent.println("  The most commonly used commands are:");
+		Agent.println("");
+		int maxN = 30;
 		for (Entry<String, ArgDef> entry : defMap.entrySet()) {
 			Agent.println("   " + entry.getKey()
 					+ d(maxN - entry.getKey().length())
 					+ entry.getValue().getDesc());
 		}
+		Agent.println("-------------------------------------------------------");
+		Agent.println("");
 	}
 
 	private String d(int n) {
@@ -125,9 +132,13 @@ public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 	}
 
 	private void argHelp(ArgDef def) {
-		Agent.println("usage: " + def.getCommandName() + " " + def.getDef());
 		Agent.println("");
-		int maxN = 20;
+		Agent.println("-------------------------------------------------------");
+		Agent.println("  usage: " + def.getCommandName() + " " + def.getDef());
+		Agent.println("");
+		Agent.println("  " + def.getDesc());
+		Agent.println("");
+		int maxN = 30;
 		for (OptionDesc decs : def.getArgDescs()) {
 			int length = decs.getFullName().length();
 			Agent.println("   " + decs.getFullName() + d(maxN - length)
@@ -138,5 +149,7 @@ public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 			Agent.println("   " + decs.getFullName() + d(maxN - length)
 					+ decs.getDesc());
 		}
+		Agent.println("-------------------------------------------------------");
+		Agent.println("");
 	}
 }

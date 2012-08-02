@@ -22,7 +22,7 @@ public class DecodeCommandHandler implements CommandHandler {
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("decode");
 		argDef.setDef("<string-to-decode>");
-		argDef.setDesc("invoke a method of the target object.");
+		argDef.setDesc("decode string from input code. can be used to input in unsupported encoding.");
 		argDef.addOptionDesc("string-to-decode", "the string to be decoded");
 
 	}

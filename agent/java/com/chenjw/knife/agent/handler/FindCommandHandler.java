@@ -83,7 +83,6 @@ public class FindCommandHandler implements CommandHandler {
 		argDef.setCommandName("find");
 		argDef.setDef("<find-expretion>");
 		argDef.setDesc("find classes and instances from the heap");
-		argDef.addOptionDesc("find-expretion",
-				"className to find or index of the result found before");
+		argDef.addOptionDesc("find-expretion", "className or the object id.");
 	}
 }

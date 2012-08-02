@@ -11,7 +11,6 @@ import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
@@ -20,9 +19,7 @@ import org.apache.commons.lang.StringUtils;
 public class NativeHelper {
 	static {
 		// System.load("/home/chenjw/my_workspace/knife/native/src/.libs/libnativehelper.so");
-
 		NativeHelper.loadNativeLibrary("libnativehelper");
-
 	}
 	private static Object[] retransformLock = new Object[0];
 	private static String jvmClassName = null;
@@ -277,6 +274,10 @@ public class NativeHelper {
 		// redefineClass0(clazz, newClassBytes);
 	}
 
+	public static Object[] findReferrerByObject(Object obj) {
+		return findReferrerByObject0(obj);
+	}
+
 	private native static void redefineClass0(Class<?> clazz,
 			byte[] newClassBytes);
 
@@ -287,6 +288,8 @@ public class NativeHelper {
 	private native static void retransformClasses0(Class<?>[] classes);
 
 	private native static Object[] findInstancesByClass0(Class<?> clazz);
+
+	private native static Object[] findReferrerByObject0(Object obj);
 
 	private native static Object getFieldValue0(Object obj,
 			Class<?> fieldClass, String name, Class<?> returnType);
@@ -439,10 +442,17 @@ public class NativeHelper {
 			NoSuchFieldException {
 
 		Context ai = new Context();
-		for (Entry<Field, Object> entry : NativeHelper.getFieldValues(ai)
-				.entrySet()) {
-			System.out.println(entry.getKey().getName() + "="
-					+ entry.getValue());
+		Object dd = ai.ccc;
+		// System.out.println(ai.ccc);
+		// System.out.println(ai);
+		for (Object entry : NativeHelper.findReferrerByObject0(ai)) {
+			// if (entry == ai) {
+			// System.err.println(entry);
+			// }
+			// if (entry == ai.ccc) {
+			// System.err.println(entry);
+			// }
+			System.err.println(entry);
 		}
 
 	}

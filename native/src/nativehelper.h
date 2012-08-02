@@ -13,6 +13,17 @@ extern "C" {
 JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_NativeHelper_findInstancesByClass0
   (JNIEnv *, jclass, jclass);
 
+
+/*
+ * Class:     com_chenjw_attach_agent_NativeHelper
+ * Method:    findReferrerByObject0
+ * Signature: (Ljava/lang/Object;)[Ljava/lang/Object;
+ */
+JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_NativeHelper_findReferrerByObject0
+  (JNIEnv *, jclass, jobject);
+
+
+
 /*
  * Class:     com_chenjw_knife_agent_NativeHelper
  * Method:    getFieldValue0
