@@ -2,11 +2,10 @@ package com.chenjw.knife.agent.handler.log.listener;
 
 import java.util.List;
 
-import com.chenjw.knife.agent.handler.log.Filter;
-import com.chenjw.knife.agent.handler.log.FilterChain;
-import com.chenjw.knife.agent.handler.log.ProfilerCallback;
 import com.chenjw.knife.agent.handler.log.ProfilerHandler;
 import com.chenjw.knife.agent.handler.log.event.Event;
+import com.chenjw.knife.agent.handler.log.filter.Filter;
+import com.chenjw.knife.agent.handler.log.filter.FilterChain;
 import com.chenjw.knife.agent.handler.log.filter.FilterChainImpl;
 
 public class FilterInvocationListener implements ProfilerHandler {
@@ -17,9 +16,8 @@ public class FilterInvocationListener implements ProfilerHandler {
 	}
 
 	@Override
-	public void onEvent(Event event, ProfilerCallback callback)
-			throws Exception {
-		FilterChain chain = new FilterChainImpl(filters, callback);
+	public void onEvent(Event event) throws Exception {
+		FilterChain chain = new FilterChainImpl(filters);
 		chain.doFilter(event);
 	}
 

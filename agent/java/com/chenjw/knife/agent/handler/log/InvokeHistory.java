@@ -6,19 +6,10 @@ import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.handler.constants.Constants;
 
 public class InvokeHistory {
-	private static ThreadLocal<Stack<Integer>> history = new ThreadLocal<Stack<Integer>>();
-
-	private static Stack<Integer> getHistory() {
-		Stack<Integer> r = history.get();
-		if (r == null) {
-			r = new Stack<Integer>();
-			history.set(r);
-		}
-		return r;
-	}
+	private static Stack<Integer> history = new Stack<Integer>();
 
 	public static Object pre() {
-		Stack<Integer> stack = getHistory();
+		Stack<Integer> stack = history;
 		if (stack.size() <= 1) {
 			stack.empty();
 			Context.put(Constants.THIS, null);
@@ -34,7 +25,7 @@ public class InvokeHistory {
 	public static Object cd(int id) {
 		Object obj = InvokeRecord.get(id);
 		Context.put(Constants.THIS, obj);
-		getHistory().push(id);
+		history.push(id);
 		return obj;
 	}
 

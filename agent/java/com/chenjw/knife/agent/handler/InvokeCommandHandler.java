@@ -18,12 +18,12 @@ import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.handler.log.Filter;
 import com.chenjw.knife.agent.handler.log.ParseHelper;
 import com.chenjw.knife.agent.handler.log.Profiler;
 import com.chenjw.knife.agent.handler.log.filter.Depth0Filter;
 import com.chenjw.knife.agent.handler.log.filter.DepthFilter;
 import com.chenjw.knife.agent.handler.log.filter.ExceptionFilter;
+import com.chenjw.knife.agent.handler.log.filter.Filter;
 import com.chenjw.knife.agent.handler.log.filter.FixThreadFilter;
 import com.chenjw.knife.agent.handler.log.filter.InstrumentFilter;
 import com.chenjw.knife.agent.handler.log.filter.InvokeFinishFilter;
@@ -135,6 +135,7 @@ public class InvokeCommandHandler implements CommandHandler {
 				StringUtils.substringBeforeLast(
 						StringUtils.substringAfter(argStr, "("), ")"),
 				method.getParameterTypes());
+
 		if (Modifier.isStatic(method.getModifiers())) {
 			invoke(isTrace, method, null, mArgs);
 		} else {
@@ -169,6 +170,8 @@ public class InvokeCommandHandler implements CommandHandler {
 			Profiler.exceptionEnd(thisObject, clazz.getName(),
 					method.getName(), args, t);
 		} catch (Exception e) {
+			Profiler.exceptionEnd(thisObject, clazz.getName(),
+					method.getName(), args, e);
 			throw e;
 		}
 	}

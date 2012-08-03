@@ -52,7 +52,7 @@ public class Profiler {
 		MethodTraceEvent event = new MethodTraceEvent();
 		event.setClazz(clazz);
 		event.setMethodName(methodName);
-		sendEvent(event, null);
+		sendEvent(event);
 	}
 
 	public static void enter(Object thisObject, String className,
@@ -65,7 +65,7 @@ public class Profiler {
 		event.setClassName(className);
 		event.setMethodName(methodName);
 		event.setArguments(arguments);
-		sendEvent(event, null);
+		sendEvent(event);
 	}
 
 	public static void leave(Object thisObject, String className,
@@ -76,7 +76,7 @@ public class Profiler {
 		event.setMethodName(methodName);
 		event.setArguments(arguments);
 		event.setResult(result);
-		sendEvent(event, null);
+		sendEvent(event);
 	}
 
 	public static void start(Object thisObject, String className,
@@ -93,7 +93,7 @@ public class Profiler {
 		event.setClassName(className);
 		event.setMethodName(methodName);
 		event.setArguments(arguments);
-		sendEvent(event, null);
+		sendEvent(event);
 	}
 
 	public static void returnEnd(Object thisObject, String className,
@@ -104,7 +104,7 @@ public class Profiler {
 		event.setMethodName(methodName);
 		event.setArguments(arguments);
 		event.setResult(result);
-		sendEvent(event, null);
+		sendEvent(event);
 	}
 
 	public static void exceptionEnd(Object thisObject, String className,
@@ -115,13 +115,13 @@ public class Profiler {
 		event.setMethodName(methodName);
 		event.setArguments(arguments);
 		event.setE(e);
-		sendEvent(event, null);
+		sendEvent(event);
 	}
 
-	private static void sendEvent(Event event, ProfilerCallback callback) {
+	private static void sendEvent(Event event) {
 		if (Profiler.listener != null) {
 			try {
-				Profiler.listener.onEvent(event, callback);
+				Profiler.listener.onEvent(event);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

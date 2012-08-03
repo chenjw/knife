@@ -1,5 +1,6 @@
 package com.chenjw.knife.agent.handler;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -48,7 +49,7 @@ public class LsCommandHandler implements CommandHandler {
 			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
 				Agent.println("[static-field] " + entry.getKey().getName()
 						+ " = " + InvokeRecord.toId(entry.getValue())
-						+ ParseHelper.toString(entry.getValue()));
+						+ toString(args, entry.getValue()));
 			}
 		}
 		if (obj != null) {
@@ -56,7 +57,7 @@ public class LsCommandHandler implements CommandHandler {
 			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
 				Agent.println("[field] " + entry.getKey().getName() + " = "
 						+ InvokeRecord.toId(entry.getValue())
-						+ ParseHelper.toString(entry.getValue()));
+						+ toString(args, entry.getValue()));
 			}
 		}
 		Agent.println("finished!");
@@ -126,9 +127,53 @@ public class LsCommandHandler implements CommandHandler {
 			Agent.println("not found!");
 			return;
 		}
-		Agent.println(" " + InvokeRecord.toId(obj) + " "
-				+ ParseHelper.toString(obj) + " [" + obj.getClass() + "]");
+		Agent.println(" " + InvokeRecord.toId(obj) + toString(args, obj));
 		Agent.println("finished!");
+	}
+
+	private void lsArray(Args args) {
+		Object obj = null;
+		String className = args.arg("classname");
+		if (StringUtils.isBlank(className)) {
+			obj = Context.get(Constants.THIS);
+		} else if (StringUtils.isNumeric(className)) {
+			obj = InvokeRecord.get(Integer.parseInt(className));
+		}
+		if (obj == null) {
+			Agent.println("not found!");
+			return;
+		}
+		if (obj.getClass().isArray()) {
+
+			for (int i = 0; i < Array.getLength(obj); i++) {
+				Object aObj = Array.get(obj, i);
+				Agent.println(i + ". " + InvokeRecord.toId(aObj)
+						+ toString(args, aObj));
+			}
+			Agent.println("finished!");
+		} else {
+			Agent.println("not array!");
+			return;
+		}
+
+	}
+
+	private static String toClassName(Object obj) {
+		if (obj == null) {
+			return null;
+		} else {
+			return obj.getClass().getName();
+		}
+	}
+
+	private static String toString(Args args, Object obj) {
+		String rr = null;
+		if (args.option("-j") != null) {
+			rr = ParseHelper.toJsonString(obj);
+		} else {
+			rr = ParseHelper.toString(obj);
+		}
+		return rr;
 	}
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
@@ -136,6 +181,8 @@ public class LsCommandHandler implements CommandHandler {
 			lsField(args);
 		} else if (args.option("-m") != null) {
 			lsMethod(args);
+		} else if (args.option("-a") != null) {
+			lsArray(args);
 		} else {
 			lsClass(args);
 		}
@@ -152,17 +199,16 @@ public class LsCommandHandler implements CommandHandler {
 	@Override
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("ls");
-		argDef.setDef("[-f] [-m] [<classname>]");
+		argDef.setDef("[-f] [-m] [-a] [-j] [<classname>]");
 		argDef.setDesc("list fields and methods of the target object.");
 		argDef.addOptionDesc(
 				"classname",
 				"set <classname> to find static fields or methods , if <classname> not set , will apply to target object.");
 
-		argDef.addOptionDesc(
-				"-f",
-				"list fields of target object/class, including static , no-static fields, and the fields defined in superclass");
-		argDef.addOptionDesc(
-				"-m",
-				"list methods of target object/class, including static , no-static methods, and the methods defined in superclass");
+		argDef.addOptionDesc("-f", "list fields.");
+		argDef.addOptionDesc("-m", "list methods.");
+		argDef.addOptionDesc("-a", "list array component.");
+		argDef.addOptionDesc("-j", "to json string.");
+
 	}
 }

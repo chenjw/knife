@@ -87,6 +87,7 @@ public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 			try {
 				handler.handle(args, this);
 			} catch (Exception e) {
+				e.printStackTrace();
 				Agent.println(e.getClass().getName() + ":"
 						+ e.getLocalizedMessage());
 				argHelp(def);
