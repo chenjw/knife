@@ -8,12 +8,12 @@ import org.apache.commons.lang.StringUtils;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.Context;
-import com.chenjw.knife.agent.NativeHelper;
 import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.handler.log.InvokeRecord;
+import com.chenjw.knife.agent.service.ContextManager;
+import com.chenjw.knife.agent.service.ObjectRecordManager;
+import com.chenjw.knife.agent.util.NativeHelper;
 
 public class FindCommandHandler implements CommandHandler {
 
@@ -43,7 +43,7 @@ public class FindCommandHandler implements CommandHandler {
 		Class<?> clazz = null;
 		String className = args.arg("find-expretion");
 		if (isNumeric(className)) {
-			Class<?>[] likeClazz = (Class<?>[]) Context
+			Class<?>[] likeClazz = (Class<?>[]) ContextManager.getInstance()
 					.get(Constants.CLASS_LIST);
 			clazz = likeClazz[Integer.parseInt(className)];
 		} else {
@@ -51,7 +51,8 @@ public class FindCommandHandler implements CommandHandler {
 			if (clazz == null) {
 				Class<?>[] likeClazz = findLikeClass(className);
 				if (likeClazz.length > 1) {
-					Context.put(Constants.CLASS_LIST, likeClazz);
+					ContextManager.getInstance().put(Constants.CLASS_LIST,
+							likeClazz);
 					int i = 0;
 					for (Class<?> cc : likeClazz) {
 						Agent.println(i + ". [class] " + cc.getName());
@@ -73,7 +74,8 @@ public class FindCommandHandler implements CommandHandler {
 		Object[] objs = NativeHelper.findInstancesByClass(clazz);
 		int i = 0;
 		for (Object obj : objs) {
-			Agent.println("[instance] " + InvokeRecord.toId(obj) + obj);
+			Agent.println("[instance] "
+					+ ObjectRecordManager.getInstance().toId(obj) + obj);
 			i++;
 		}
 		Agent.println("find " + i + " instances of " + clazz.getName());

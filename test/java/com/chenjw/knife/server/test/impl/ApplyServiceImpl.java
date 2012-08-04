@@ -7,7 +7,8 @@ import com.chenjw.knife.server.test.DataService;
 import com.chenjw.knife.server.test.ResultModel;
 
 public class ApplyServiceImpl implements ApplyService {
-	private final static String testStaticString = "testStaticString";
+	private final static String testStaticFinalString = "testStaticFinalString";
+	private static String testStaticString = "testStaticString";
 	private final static int testStaticInt = 9;
 	private CheckService checkService;
 	private DataService dataService;
@@ -28,11 +29,13 @@ public class ApplyServiceImpl implements ApplyService {
 	}
 
 	public ResultModel apply(ApplyModel apply) {
-		// System.out.println("apply");
+		// System.out.println(testStaticFinalString);
+		// System.out.println(testStaticString);
 		// check
 		try {
 			checkService.check(apply);
 		} catch (Exception e) {
+			// e.printStackTrace();
 			ResultModel r = new ResultModel();
 			r.setSuccess(false);
 			r.setMsg(e.getLocalizedMessage());

@@ -14,11 +14,9 @@ import com.chenjw.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.handler.log.ParseHelper;
 import com.chenjw.knife.agent.handler.log.Profiler;
 import com.chenjw.knife.agent.handler.log.filter.Depth0Filter;
 import com.chenjw.knife.agent.handler.log.filter.DepthFilter;
@@ -31,7 +29,10 @@ import com.chenjw.knife.agent.handler.log.filter.InvokePrintFilter;
 import com.chenjw.knife.agent.handler.log.filter.PatternMethodFilter;
 import com.chenjw.knife.agent.handler.log.filter.SystemOperationFilter;
 import com.chenjw.knife.agent.handler.log.filter.TimingFilter;
+import com.chenjw.knife.agent.handler.log.filter.TimingStopFilter;
 import com.chenjw.knife.agent.handler.log.listener.FilterInvocationListener;
+import com.chenjw.knife.agent.service.ContextManager;
+import com.chenjw.knife.agent.util.ParseHelper;
 
 public class InvokeCommandHandler implements CommandHandler {
 
@@ -52,14 +53,14 @@ public class InvokeCommandHandler implements CommandHandler {
 		filters.add(new SystemOperationFilter());
 		filters.add(new FixThreadFilter(Thread.currentThread()));
 		filters.add(new ExceptionFilter());
-		filters.add(new TimingFilter());
+		filters.add(new TimingStopFilter());
 		filters.add(new InstrumentFilter());
-
 		Map<String, String> options = args.option("-f");
 		if (options != null) {
 			filters.add(new PatternMethodFilter(options.get("filter-expretion")));
 		}
 		filters.add(new DepthFilter());
+		filters.add(new TimingFilter());
 		filters.add(new InvokeFinishFilter());
 		filters.add(new InvokePrintFilter());
 		Profiler.listener = new FilterInvocationListener(filters);
@@ -70,16 +71,12 @@ public class InvokeCommandHandler implements CommandHandler {
 		filters.add(new SystemOperationFilter());
 		filters.add(new FixThreadFilter(Thread.currentThread()));
 		filters.add(new ExceptionFilter());
-		filters.add(new TimingFilter());
-		Map<String, String> options = args.option("-f");
-		if (options != null) {
-			filters.add(new PatternMethodFilter(options.get("filter-expretion")));
-		}
+		filters.add(new TimingStopFilter());
 		filters.add(new DepthFilter());
 		filters.add(new Depth0Filter());
+		filters.add(new TimingFilter());
 		filters.add(new InvokeFinishFilter());
 		filters.add(new InvokePrintFilter());
-
 		Profiler.listener = new FilterInvocationListener(filters);
 	}
 
@@ -91,8 +88,8 @@ public class InvokeCommandHandler implements CommandHandler {
 		m = m.trim();
 		Method method = null;
 		if (StringUtils.isNumeric(m)) {
-			method = ((Method[]) Context.get(Constants.METHOD_LIST))[Integer
-					.parseInt(m)];
+			method = ((Method[]) ContextManager.getInstance().get(
+					Constants.METHOD_LIST))[Integer.parseInt(m)];
 		} else {
 			if (m.indexOf(".") != -1) {
 				String className = StringUtils.substringBeforeLast(m, ".");
@@ -113,7 +110,7 @@ public class InvokeCommandHandler implements CommandHandler {
 				}
 
 			} else {
-				Object obj = Context.get(Constants.THIS);
+				Object obj = ContextManager.getInstance().get(Constants.THIS);
 				if (obj == null) {
 					Agent.println("not found!");
 					return;
@@ -139,7 +136,8 @@ public class InvokeCommandHandler implements CommandHandler {
 		if (Modifier.isStatic(method.getModifiers())) {
 			invoke(isTrace, method, null, mArgs);
 		} else {
-			invoke(isTrace, method, Context.get(Constants.THIS), mArgs);
+			invoke(isTrace, method,
+					ContextManager.getInstance().get(Constants.THIS), mArgs);
 		}
 	}
 
@@ -154,7 +152,8 @@ public class InvokeCommandHandler implements CommandHandler {
 			clazz = thisObject.getClass();
 		}
 		try {
-			Profiler.start(thisObject, clazz.getName(), method.getName(), args);
+			Profiler.start(thisObject, clazz.getName(), method.getName(), args,
+					null, -1);
 			if (isTrace) {
 				if (isStatic) {
 					Profiler.traceClass(clazz, method.getName());
@@ -174,14 +173,6 @@ public class InvokeCommandHandler implements CommandHandler {
 					method.getName(), args, e);
 			throw e;
 		}
-	}
-
-	public static String getParamClassNames(Class<?>[] classes) {
-		String[] classNames = new String[classes.length];
-		for (int i = 0; i < classes.length; i++) {
-			classNames[i] = Helper.makeClassName(classes[i]);
-		}
-		return StringUtils.join(classNames, ",");
 	}
 
 	public void declareArgs(ArgDef argDef) {

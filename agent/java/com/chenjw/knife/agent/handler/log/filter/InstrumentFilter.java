@@ -1,8 +1,8 @@
 package com.chenjw.knife.agent.handler.log.filter;
 
-import com.chenjw.knife.agent.handler.log.TraceCodeBuilder;
 import com.chenjw.knife.agent.handler.log.event.Event;
 import com.chenjw.knife.agent.handler.log.event.MethodTraceEvent;
+import com.chenjw.knife.agent.service.InstrumentManager;
 
 public class InstrumentFilter implements Filter {
 
@@ -10,7 +10,8 @@ public class InstrumentFilter implements Filter {
 	public void doFilter(Event event, FilterChain chain) throws Exception {
 		if (event instanceof MethodTraceEvent) {
 			MethodTraceEvent e = (MethodTraceEvent) event;
-			TraceCodeBuilder.buildTraceMethod(e.getClazz(), e.getMethodName());
+			InstrumentManager.getInstance().buildTraceMethod(e.getClazz(),
+					e.getMethodName());
 		} else {
 			chain.doFilter(event);
 		}

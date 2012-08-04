@@ -5,6 +5,8 @@ public class MethodStartEvent extends Event {
 	private String className;
 	private String methodName;
 	private Object[] arguments;
+	private String fileName;
+	private int lineNum;
 
 	public Object getThisObject() {
 		return thisObject;
@@ -36,6 +38,22 @@ public class MethodStartEvent extends Event {
 
 	public void setArguments(Object[] arguments) {
 		this.arguments = arguments;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public int getLineNum() {
+		return lineNum;
+	}
+
+	public void setLineNum(int lineNum) {
+		this.lineNum = lineNum;
 	}
 
 }

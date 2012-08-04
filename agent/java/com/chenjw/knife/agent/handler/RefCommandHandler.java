@@ -3,13 +3,13 @@ package com.chenjw.knife.agent.handler;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.Context;
-import com.chenjw.knife.agent.NativeHelper;
 import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.handler.log.InvokeRecord;
-import com.chenjw.knife.agent.handler.log.ParseHelper;
+import com.chenjw.knife.agent.service.ContextManager;
+import com.chenjw.knife.agent.service.ObjectRecordManager;
+import com.chenjw.knife.agent.util.NativeHelper;
+import com.chenjw.knife.agent.util.ToStringHelper;
 
 public class RefCommandHandler implements CommandHandler {
 
@@ -18,10 +18,10 @@ public class RefCommandHandler implements CommandHandler {
 		String param = args.arg("object-id");
 		Object obj = null;
 		if (param == null) {
-			obj = Context.get(Constants.THIS);
+			obj = ContextManager.getInstance().get(Constants.THIS);
 		} else {
 			int id = Integer.parseInt(param);
-			obj = InvokeRecord.get(id);
+			obj = ObjectRecordManager.getInstance().get(id);
 		}
 
 		if (obj == null) {
@@ -34,8 +34,9 @@ public class RefCommandHandler implements CommandHandler {
 			return;
 		}
 		for (Object ref : refs) {
-			Agent.println("[ref] " + InvokeRecord.toId(ref)
-					+ ParseHelper.toString(ref));
+			Agent.println("[ref] "
+					+ ObjectRecordManager.getInstance().toId(ref)
+					+ ToStringHelper.toString(ref));
 		}
 		Agent.println("finished!");
 

@@ -1,14 +1,14 @@
 package com.chenjw.knife.agent.handler.log.filter;
 
 import com.chenjw.knife.agent.Agent;
-import com.chenjw.knife.agent.handler.log.InvokeDepth;
-import com.chenjw.knife.agent.handler.log.InvokeRecord;
 import com.chenjw.knife.agent.handler.log.Profiler;
 import com.chenjw.knife.agent.handler.log.event.Event;
 import com.chenjw.knife.agent.handler.log.event.MethodExceptionEndEvent;
 import com.chenjw.knife.agent.handler.log.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.handler.log.event.MethodStartEvent;
-import com.chenjw.knife.utils.TimingHelper;
+import com.chenjw.knife.agent.service.InvokeDepthManager;
+import com.chenjw.knife.agent.service.ObjectRecordManager;
+import com.chenjw.knife.agent.service.TimingManager;
 
 public class InvokePrintFilter implements Filter {
 
@@ -28,7 +28,7 @@ public class InvokePrintFilter implements Filter {
 		StringBuffer msg = new StringBuffer("[invoke] ");
 		String cn = null;
 		if (thisObject != null) {
-			cn = InvokeRecord.toId(thisObject)
+			cn = ObjectRecordManager.getInstance().toId(thisObject)
 					+ thisObject.getClass().getName();
 		} else {
 			cn = className;
@@ -45,14 +45,25 @@ public class InvokePrintFilter implements Filter {
 			if (arg == null) {
 				msg.append("null");
 			} else {
-				msg.append(InvokeRecord.toId(arg) + arg.getClass().getName());
+				msg.append(ObjectRecordManager.getInstance().toId(arg)
+						+ arg.getClass().getSimpleName());
 			}
 		}
 		msg.append(")");
+		int lineNum = event.getLineNum();
+		if (lineNum == -1) {
+			msg.append(" <unknow>");
+		} else {
+			String baseClassName = event.getFileName();
+			msg.append(" <" + baseClassName + ":");
+			msg.append(event.getLineNum());
+			msg.append(">");
+		}
+
 		try {
-			int dep = InvokeDepth.getDep();
+			int dep = InvokeDepthManager.getInstance().getDep();
 			Agent.println(d(dep) + msg);
-			TimingHelper.start(String.valueOf(dep));
+			// TimingManager.getInstance().start(String.valueOf(dep));
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -60,30 +71,33 @@ public class InvokePrintFilter implements Filter {
 
 	protected void onReturnEnd(MethodReturnEndEvent event) {
 		Object result = event.getResult();
-		int dep = InvokeDepth.getDep();
+		int dep = InvokeDepthManager.getInstance().getDep();
 		StringBuffer msg = new StringBuffer("[return] ");
 		if (result == null) {
 			msg.append("null");
 		} else if (result == Profiler.VOID) {
 			msg.append("void");
 		} else {
-			msg.append(InvokeRecord.toId(result) + result.getClass().getName());
+			msg.append(ObjectRecordManager.getInstance().toId(result)
+					+ result.getClass().getName());
 		}
-		msg.append(" [" + TimingHelper.getMillisInterval(String.valueOf(dep))
-				+ " ms]");
+		msg.append(" ["
+				+ TimingManager.getInstance().getMillisInterval(
+						String.valueOf(dep)) + " ms]");
 
 		Agent.println(d(dep) + msg);
 	}
 
 	protected void onExceptionEnd(MethodExceptionEndEvent event) {
 		Throwable e = event.getE();
-		int dep = InvokeDepth.getDep();
+		int dep = InvokeDepthManager.getInstance().getDep();
 		StringBuffer msg = new StringBuffer("[throw] ");
 		// e.printStackTrace();
-		msg.append(InvokeRecord.toId(e));
+		msg.append(ObjectRecordManager.getInstance().toId(e));
 		msg.append(e);
-		msg.append(" [" + TimingHelper.getMillisInterval(String.valueOf(dep))
-				+ " ms]");
+		msg.append(" ["
+				+ TimingManager.getInstance().getMillisInterval(
+						String.valueOf(dep)) + " ms]");
 		Agent.println(d(dep) + msg);
 	}
 

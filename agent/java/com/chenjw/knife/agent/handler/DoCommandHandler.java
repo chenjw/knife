@@ -5,11 +5,11 @@ import org.springframework.context.ApplicationContext;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.Context;
-import com.chenjw.knife.agent.NativeHelper;
 import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
+import com.chenjw.knife.agent.service.ContextManager;
+import com.chenjw.knife.agent.util.NativeHelper;
 import com.chenjw.knife.core.Command;
 
 public class DoCommandHandler implements CommandHandler {
@@ -34,7 +34,8 @@ public class DoCommandHandler implements CommandHandler {
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
 		init();
-		Context.put(Constants.THIS, getBean("applyService"));
+		ContextManager.getInstance().put(Constants.THIS,
+				getBean("applyService"));
 		// dispatcher.dispatch(new Command("invoke",
 		// "-f com.chenjw.* apply({\"id\":1})"));
 		dispatcher.dispatch(new Command("invoke", "-t apply({\"id\":1})"));

@@ -5,12 +5,13 @@ import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
+import com.chenjw.knife.agent.service.ServiceManager;
 
 public class CloseCommandHandler implements CommandHandler {
 
 	@Override
 	public void handle(Args args, CommandDispatcher dispatcher) {
-		Agent.clear();
+		ServiceManager.getInstance().clear();
 		Agent.close();
 	}
 

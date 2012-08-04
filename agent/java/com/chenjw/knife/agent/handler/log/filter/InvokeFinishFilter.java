@@ -1,10 +1,10 @@
 package com.chenjw.knife.agent.handler.log.filter;
 
-import com.chenjw.knife.agent.handler.log.InvokeDepth;
 import com.chenjw.knife.agent.handler.log.Profiler;
 import com.chenjw.knife.agent.handler.log.event.Event;
 import com.chenjw.knife.agent.handler.log.event.MethodExceptionEndEvent;
 import com.chenjw.knife.agent.handler.log.event.MethodReturnEndEvent;
+import com.chenjw.knife.agent.service.InvokeDepthManager;
 
 public class InvokeFinishFilter implements Filter {
 
@@ -16,7 +16,7 @@ public class InvokeFinishFilter implements Filter {
 				chain.doFilter(event);
 			} finally {
 				// Agent.println(InvokeDepth.getDep() + "");
-				if (InvokeDepth.getDep() == 0) {
+				if (InvokeDepthManager.getInstance().getDep() == 0) {
 					Profiler.listener = null;
 				}
 			}

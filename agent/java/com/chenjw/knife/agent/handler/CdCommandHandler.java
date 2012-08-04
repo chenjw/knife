@@ -5,7 +5,9 @@ import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.handler.log.InvokeHistory;
+import com.chenjw.knife.agent.service.HistoryManager;
+import com.chenjw.knife.agent.service.ObjectRecordManager;
+import com.chenjw.knife.agent.util.ToStringHelper;
 
 public class CdCommandHandler implements CommandHandler {
 
@@ -14,12 +16,13 @@ public class CdCommandHandler implements CommandHandler {
 		String param = args.arg("object-id");
 		Object obj = null;
 		if ("..".equals(param)) {
-			obj = InvokeHistory.pre();
+			obj = HistoryManager.getInstance().pre();
 		} else {
 			int index = Integer.parseInt(param);
-			obj = InvokeHistory.cd(index);
+			obj = HistoryManager.getInstance().cd(index);
 		}
-		Agent.println("into " + obj);
+		Agent.println("into " + ObjectRecordManager.getInstance().toId(obj)
+				+ ToStringHelper.toString(obj));
 
 	}
 

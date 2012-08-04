@@ -18,8 +18,8 @@ nativehelper.lo: nativehelper.cpp /usr/include/stdlib.h \
  /usr/include/bits/stdio.h /usr/include/string.h \
  /home/chenjw/software/jdk1.6.0_29/include/jvmti.h \
  /home/chenjw/software/jdk1.6.0_29/include/jni.h \
- /home/chenjw/software/jdk1.6.0_29/include/linux/jni_md.h agent.h \
- nativehelper.h /home/chenjw/software/jdk1.6.0_29/include/jni.h
+ /home/chenjw/software/jdk1.6.0_29/include/linux/jni_md.h nativehelper.h \
+ /home/chenjw/software/jdk1.6.0_29/include/jni.h
 
 /usr/include/stdlib.h:
 
@@ -92,8 +92,6 @@ nativehelper.lo: nativehelper.cpp /usr/include/stdlib.h \
 /home/chenjw/software/jdk1.6.0_29/include/jni.h:
 
 /home/chenjw/software/jdk1.6.0_29/include/linux/jni_md.h:
-
-agent.h:
 
 nativehelper.h:
 

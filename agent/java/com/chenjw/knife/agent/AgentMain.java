@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarFile;
 
+import com.chenjw.knife.agent.util.JarHelper;
+
 public class AgentMain {
 
 	private static void initJarPath(Instrumentation inst,

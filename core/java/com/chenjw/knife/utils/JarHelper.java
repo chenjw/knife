@@ -6,8 +6,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chenjw.knife.utils.JvmHelper;
-
 public class JarHelper {
 	private static final String LIB_FOLDER = "/home/chenjw/my_workspace/knife/dist/knife/lib/";
 

@@ -7,7 +7,7 @@ import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.handler.log.InvokeRecord;
+import com.chenjw.knife.agent.service.ObjectRecordManager;
 
 public class DecodeCommandHandler implements CommandHandler {
 
@@ -15,7 +15,8 @@ public class DecodeCommandHandler implements CommandHandler {
 			throws Exception {
 		String str = args.arg("string-to-decode");
 		String decodeStr = URLDecoder.decode(str, "UTF-8");
-		Agent.println("[decode] " + InvokeRecord.toId(decodeStr) + " "
+		Agent.println("[decode] "
+				+ ObjectRecordManager.getInstance().toId(decodeStr) + " "
 				+ decodeStr);
 	}
 

@@ -36,19 +36,19 @@
 #define LT_OBJDIR ".libs/"
 
 /* Name of package */
-#define PACKAGE "agent"
+#define PACKAGE "nativehelper"
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "cjw1983@gmail.com"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "agent"
+#define PACKAGE_NAME "nativehelper"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "agent 0.0.1"
+#define PACKAGE_STRING "nativehelper 0.0.1"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "agent"
+#define PACKAGE_TARNAME "nativehelper"
 
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "0.0.1"

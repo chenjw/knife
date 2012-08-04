@@ -10,6 +10,14 @@ public class Main {
 	public static int i = 0;
 	public static final String PID_ID = "test_main";
 
+	private Main(int i) {
+		Main.i = i;
+	}
+
+	public Main(String str) {
+		System.out.println(str);
+	}
+
 	public static void main(String[] args) {
 		JvmUtils.writePid(PID_ID);
 		XmlWebApplicationContext context = new XmlWebApplicationContext();

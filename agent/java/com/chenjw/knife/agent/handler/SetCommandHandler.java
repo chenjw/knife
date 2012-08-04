@@ -10,12 +10,12 @@ import com.chenjw.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.Context;
-import com.chenjw.knife.agent.NativeHelper;
 import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.handler.log.ParseHelper;
+import com.chenjw.knife.agent.service.ContextManager;
+import com.chenjw.knife.agent.util.NativeHelper;
+import com.chenjw.knife.agent.util.ParseHelper;
 
 public class SetCommandHandler implements CommandHandler {
 
@@ -36,7 +36,7 @@ public class SetCommandHandler implements CommandHandler {
 			field = NativeHelper.findStaticField(clazz, fieldName);
 
 		} else if (args.arg("-s") != null) {
-			obj = Context.get(Constants.THIS);
+			obj = ContextManager.getInstance().get(Constants.THIS);
 			if (obj == null) {
 				Agent.println("not found!");
 				return;
@@ -48,7 +48,7 @@ public class SetCommandHandler implements CommandHandler {
 			}
 			field = NativeHelper.findStaticField(clazz, fieldName);
 		} else {
-			obj = Context.get(Constants.THIS);
+			obj = ContextManager.getInstance().get(Constants.THIS);
 			if (obj == null) {
 				Agent.println("not found!");
 				return;

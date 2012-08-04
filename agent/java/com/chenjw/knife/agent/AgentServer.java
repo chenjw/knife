@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.chenjw.knife.agent.service.ServiceManager;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
 import com.chenjw.knife.core.PacketResolver;
@@ -69,7 +70,7 @@ public class AgentServer implements Runnable {
 				}
 			}
 			socket = null;
-			Agent.clear();
+			ServiceManager.getInstance().clear();
 			Agent.close();
 			System.out.println("agent uninstalled!");
 		}

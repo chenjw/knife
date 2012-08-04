@@ -13,7 +13,6 @@ import com.chenjw.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.Context;
 import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
@@ -28,8 +27,10 @@ import com.chenjw.knife.agent.handler.log.filter.PatternMethodFilter;
 import com.chenjw.knife.agent.handler.log.filter.SystemOperationFilter;
 import com.chenjw.knife.agent.handler.log.filter.TimesCountFilter;
 import com.chenjw.knife.agent.handler.log.filter.TimingFilter;
+import com.chenjw.knife.agent.handler.log.filter.TimingStopFilter;
 import com.chenjw.knife.agent.handler.log.filter.TraceMethodFilter;
 import com.chenjw.knife.agent.handler.log.listener.FilterInvocationListener;
+import com.chenjw.knife.agent.service.ContextManager;
 
 public class TraceCommandHandler implements CommandHandler {
 
@@ -65,7 +66,9 @@ public class TraceCommandHandler implements CommandHandler {
 		List<Filter> filters = new ArrayList<Filter>();
 		filters.add(new SystemOperationFilter());
 		filters.add(new ExceptionFilter());
-		filters.add(new TimingFilter());
+
+		filters.add(new TimingStopFilter());
+
 		filters.add(new InstrumentFilter());
 		Map<String, String> options = args.option("-f");
 		if (options != null) {
@@ -76,6 +79,7 @@ public class TraceCommandHandler implements CommandHandler {
 		filters.add(new TimesCountFilter(traceNum));
 		filters.add(new EnterLeavePrintFilter());
 		filters.add(new DepthFilter());
+		filters.add(new TimingFilter());
 		filters.add(new InvokePrintFilter());
 
 		Profiler.listener = new FilterInvocationListener(filters);
@@ -118,8 +122,8 @@ public class TraceCommandHandler implements CommandHandler {
 		m = m.trim();
 		Method method = null;
 		if (StringUtils.isNumeric(m)) {
-			method = ((Method[]) Context.get(Constants.METHOD_LIST))[Integer
-					.parseInt(m)];
+			method = ((Method[]) ContextManager.getInstance().get(
+					Constants.METHOD_LIST))[Integer.parseInt(m)];
 
 		} else {
 			if (m.indexOf(".") != -1) {
@@ -140,7 +144,7 @@ public class TraceCommandHandler implements CommandHandler {
 					}
 				}
 			} else {
-				Object obj = Context.get(Constants.THIS);
+				Object obj = ContextManager.getInstance().get(Constants.THIS);
 				if (obj == null) {
 					Agent.println("not found!");
 					return null;
@@ -163,7 +167,8 @@ public class TraceCommandHandler implements CommandHandler {
 			methodInfo.setClazz(method.getDeclaringClass());
 			methodInfo.setThisObject(null);
 		} else {
-			Object thisObject = Context.get(Constants.THIS);
+			Object thisObject = ContextManager.getInstance()
+					.get(Constants.THIS);
 			methodInfo.setThisObject(thisObject);
 			methodInfo.setClazz(thisObject.getClass());
 		}

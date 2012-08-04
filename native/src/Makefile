@@ -16,11 +16,10 @@
 
 
 
-
-pkgdatadir = $(datadir)/agent
-pkgincludedir = $(includedir)/agent
-pkglibdir = $(libdir)/agent
-pkglibexecdir = $(libexecdir)/agent
+pkgdatadir = $(datadir)/nativehelper
+pkgincludedir = $(includedir)/nativehelper
+pkglibdir = $(libdir)/nativehelper
+pkglibexecdir = $(libexecdir)/nativehelper
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -36,8 +35,7 @@ POST_UNINSTALL = :
 build_triplet = x86_64-unknown-linux-gnu
 host_triplet = x86_64-unknown-linux-gnu
 subdir = src
-DIST_COMMON = $(include_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in
+DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -67,11 +65,8 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(includedir)"
+am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
-libagent_la_LIBADD =
-am_libagent_la_OBJECTS = agent.lo
-libagent_la_OBJECTS = $(am_libagent_la_OBJECTS)
 libnativehelper_la_LIBADD =
 am_libnativehelper_la_OBJECTS = nativehelper.lo
 libnativehelper_la_OBJECTS = $(am_libnativehelper_la_OBJECTS)
@@ -97,18 +92,17 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libagent_la_SOURCES) $(libnativehelper_la_SOURCES)
-DIST_SOURCES = $(libagent_la_SOURCES) $(libnativehelper_la_SOURCES)
-HEADERS = $(include_HEADERS)
+SOURCES = $(libnativehelper_la_SOURCES)
+DIST_SOURCES = $(libnativehelper_la_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/chenjw/workspace/jvmtitest/missing --run aclocal-1.11
-AMTAR = ${SHELL} /home/chenjw/workspace/jvmtitest/missing --run tar
+ACLOCAL = ${SHELL} /home/chenjw/my_workspace/knife/native/missing --run aclocal-1.11
+AMTAR = ${SHELL} /home/chenjw/my_workspace/knife/native/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /home/chenjw/workspace/jvmtitest/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/chenjw/workspace/jvmtitest/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/chenjw/workspace/jvmtitest/missing --run automake-1.11
+AUTOCONF = ${SHELL} /home/chenjw/my_workspace/knife/native/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/chenjw/my_workspace/knife/native/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/chenjw/my_workspace/knife/native/missing --run automake-1.11
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
@@ -144,7 +138,7 @@ LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LIPO = 
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/chenjw/workspace/jvmtitest/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/chenjw/my_workspace/knife/native/missing --run makeinfo
 MKDIR_P = /bin/mkdir -p
 NM = /usr/bin/nm -B
 NMEDIT = 
@@ -152,11 +146,11 @@ OBJDUMP = objdump
 OBJEXT = o
 OTOOL = 
 OTOOL64 = 
-PACKAGE = agent
+PACKAGE = nativehelper
 PACKAGE_BUGREPORT = cjw1983@gmail.com
-PACKAGE_NAME = agent
-PACKAGE_STRING = agent 0.0.1
-PACKAGE_TARNAME = agent
+PACKAGE_NAME = nativehelper
+PACKAGE_STRING = nativehelper 0.0.1
+PACKAGE_TARNAME = nativehelper
 PACKAGE_VERSION = 0.0.1
 PATH_SEPARATOR = :
 RANLIB = ranlib
@@ -165,10 +159,10 @@ SET_MAKE =
 SHELL = /bin/sh
 STRIP = strip
 VERSION = 0.0.1
-abs_builddir = /home/chenjw/workspace/jvmtitest/src
-abs_srcdir = /home/chenjw/workspace/jvmtitest/src
-abs_top_builddir = /home/chenjw/workspace/jvmtitest
-abs_top_srcdir = /home/chenjw/workspace/jvmtitest
+abs_builddir = /home/chenjw/my_workspace/knife/native/src
+abs_srcdir = /home/chenjw/my_workspace/knife/native/src
+abs_top_builddir = /home/chenjw/my_workspace/knife/native
+abs_top_srcdir = /home/chenjw/my_workspace/knife/native
 ac_ct_CC = gcc
 ac_ct_CXX = g++
 ac_ct_DUMPBIN = 
@@ -197,7 +191,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/chenjw/workspace/jvmtitest/install-sh
+install_sh = ${SHELL} /home/chenjw/my_workspace/knife/native/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -221,10 +215,8 @@ top_builddir = ..
 top_srcdir = ..
 INCLUDES = -I/home/chenjw/software/jdk1.6.0_29/include -I/home/chenjw/software/jdk1.6.0_29/include/linux
 AUTOMAKE_OPTIONS = foreign
-lib_LTLIBRARIES = libagent.la libnativehelper.la
-libagent_la_SOURCES = agent.cpp agent.h
-libnativehelper_la_SOURCES = nativehelper.cpp nativehelper.h agent.h
-include_HEADERS = agent.h 
+lib_LTLIBRARIES = libnativehelper.la
+libnativehelper_la_SOURCES = nativehelper.cpp nativehelper.h
 all: all-am
 
 .SUFFIXES:
@@ -290,8 +282,6 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-libagent.la: $(libagent_la_OBJECTS) $(libagent_la_DEPENDENCIES) 
-	$(CXXLINK) -rpath $(libdir) $(libagent_la_OBJECTS) $(libagent_la_LIBADD) $(LIBS)
 libnativehelper.la: $(libnativehelper_la_OBJECTS) $(libnativehelper_la_DEPENDENCIES) 
 	$(CXXLINK) -rpath $(libdir) $(libnativehelper_la_OBJECTS) $(libnativehelper_la_LIBADD) $(LIBS)
 
@@ -301,7 +291,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-include ./$(DEPDIR)/agent.Plo
 include ./$(DEPDIR)/nativehelper.Plo
 
 .cpp.o:
@@ -330,26 +319,6 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-includeHEADERS: $(include_HEADERS)
-	@$(NORMAL_INSTALL)
-	test -z "$(includedir)" || $(MKDIR_P) "$(DESTDIR)$(includedir)"
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(includedir)'"; \
-	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(includedir)" || exit $$?; \
-	done
-
-uninstall-includeHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(includedir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(includedir)" && rm -f $$files
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -435,9 +404,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-am: Makefile $(LTLIBRARIES)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(includedir)"; do \
+	for dir in "$(DESTDIR)$(libdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -488,7 +457,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-includeHEADERS
+install-data-am:
 
 install-dvi: install-dvi-am
 
@@ -534,7 +503,7 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-includeHEADERS uninstall-libLTLIBRARIES
+uninstall-am: uninstall-libLTLIBRARIES
 
 .MAKE: install-am install-strip
 
@@ -544,14 +513,13 @@ uninstall-am: uninstall-includeHEADERS uninstall-libLTLIBRARIES
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
 	install install-am install-data install-data-am install-dvi \
 	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-includeHEADERS install-info \
-	install-info-am install-libLTLIBRARIES install-man install-pdf \
-	install-pdf-am install-ps install-ps-am install-strip \
-	installcheck installcheck-am installdirs maintainer-clean \
+	install-html-am install-info install-info-am \
+	install-libLTLIBRARIES install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-includeHEADERS \
-	uninstall-libLTLIBRARIES
+	tags uninstall uninstall-am uninstall-libLTLIBRARIES
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

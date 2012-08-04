@@ -13,7 +13,7 @@ import com.chenjw.knife.agent.handler.log.event.MethodTraceEvent;
 public class Profiler {
 	public static final Object VOID = new Object();
 
-	public static volatile ProfilerHandler listener = null;
+	public static volatile ProfilerListener listener = null;
 
 	public static <T> void traceObject(T obj, String methodName) {
 		// System.out.println("proxy " + methodName);
@@ -80,7 +80,7 @@ public class Profiler {
 	}
 
 	public static void start(Object thisObject, String className,
-			String methodName, Object[] arguments) {
+			String methodName, Object[] arguments, String fileName, int lineNum) {
 		// if ("com.chenjw.knife.server.test.impl.CheckServiceImpl".equals(clazz
 		// .getName())) {
 		// if (thisObject != null) {
@@ -93,6 +93,8 @@ public class Profiler {
 		event.setClassName(className);
 		event.setMethodName(methodName);
 		event.setArguments(arguments);
+		event.setFileName(fileName);
+		event.setLineNum(lineNum);
 		sendEvent(event);
 	}
 

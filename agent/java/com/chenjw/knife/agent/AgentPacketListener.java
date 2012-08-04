@@ -14,6 +14,7 @@ import com.chenjw.knife.agent.handler.GcCommandHandler;
 import com.chenjw.knife.agent.handler.InvokeCommandHandler;
 import com.chenjw.knife.agent.handler.LogCommandHandler;
 import com.chenjw.knife.agent.handler.LsCommandHandler;
+import com.chenjw.knife.agent.handler.NewCommandHandler;
 import com.chenjw.knife.agent.handler.RefCommandHandler;
 import com.chenjw.knife.agent.handler.SetCommandHandler;
 import com.chenjw.knife.agent.handler.TraceCommandHandler;
@@ -45,6 +46,7 @@ public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 		addCommandHandler(new TraceCommandHandler());
 		addCommandHandler(new DecodeCommandHandler());
 		addCommandHandler(new RefCommandHandler());
+		addCommandHandler(new NewCommandHandler());
 
 	}
 

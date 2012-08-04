@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.lang.instrument.ClassDefinition;
 import java.lang.instrument.UnmodifiableClassException;
 
-import com.chenjw.knife.agent.handler.log.InvokeRecord;
-import com.chenjw.knife.agent.handler.log.TraceCodeBuilder;
 import com.chenjw.knife.core.ClosePacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketResolver;
@@ -32,11 +30,6 @@ public class Agent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public static void clear() {
-		InvokeRecord.clear();
-		TraceCodeBuilder.clear();
 	}
 
 	public static Class<?>[] getAllLoadedClasses() {
