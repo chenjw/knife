@@ -4,7 +4,6 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import com.chenjw.knife.server.test.ApplyModel;
 import com.chenjw.knife.server.test.ApplyService;
-import com.chenjw.knife.server.test.utils.JvmUtils;
 
 public class Main {
 	public static int i = 0;
@@ -19,7 +18,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		JvmUtils.writePid(PID_ID);
+		// JvmUtils.writePid(PID_ID);
 		XmlWebApplicationContext context = new XmlWebApplicationContext();
 		context.setConfigLocation("classpath:com/chenjw/knife/server/context.xml");
 		context.refresh();

@@ -3,16 +3,11 @@ package com.chenjw.knife.utils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 
 public class JvmHelper {
 
-	
 	private static final String PID_PATH = "/tmp/java_pid/";
 	private static String pid;
 
@@ -56,8 +51,5 @@ public class JvmHelper {
 		}
 		return pid;
 	}
-
-
-
 
 }

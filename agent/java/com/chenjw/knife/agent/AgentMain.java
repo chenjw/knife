@@ -7,41 +7,45 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.instrument.Instrumentation;
+import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.jar.JarFile;
-
-import com.chenjw.knife.agent.util.JarHelper;
 
 public class AgentMain {
 
-	private static void initJarPath(Instrumentation inst,
+	private static URL[] initJarPath(Instrumentation inst,
 			Map<String, String> args) {
+		List<URL> result = new ArrayList<URL>();
 		try {
-			String bjs = args.get("bootstrapJars");
-			if (bjs != null) {
-				String[] bjss = bjs.split(";");
-				for (String s : bjss) {
-					JarFile jar = new JarFile(s);
-					if (!JarHelper.isLoaded(jar)) {
-						inst.appendToBootstrapClassLoaderSearch(jar);
-						System.out.println(s + " loaded");
-					}
-				}
-			}
+			// String bjs = args.get("bootstrapJars");
+			// if (bjs != null) {
+			// String[] bjss = bjs.split(";");
+			// for (String s : bjss) {
+			// if (!JarHelper.isLoaded(s)) {
+			// result.add(new URL("file", "", s));
+			// // inst.appendToBootstrapClassLoaderSearch(jar);
+			// System.out.println(s + " loaded");
+			// }
+			// }
+			// }
 			String sjs = args.get("systemJars");
 			if (sjs != null) {
 				String[] sjss = sjs.split(";");
 				for (String s : sjss) {
-					JarFile jar = new JarFile(s);
-					if (!JarHelper.isLoaded(jar)) {
-						inst.appendToSystemClassLoaderSearch(jar);
+					if (!JarHelper.isLoaded(s)) {
+						result.add(new URL("file", "", s));
+						// inst.appendToSystemClassLoaderSearch(jar);
 						System.out.println(s + " loaded");
 					}
 				}
 			}
+			return result.toArray(new URL[result.size()]);
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 
@@ -82,24 +86,36 @@ public class AgentMain {
 		}
 	}
 
+	private static ClassLoader backupClassLoader = null;
+
 	public static void agentmain(String arguments, Instrumentation inst)
 			throws Exception {
+
 		try {
+			backupClassLoader = Thread.currentThread().getContextClassLoader();
 			Map<String, String> args = parseArgs(readArgs(arguments));
-
-			initJarPath(inst, args);
-
-			AgentInfo agentInfo = new AgentInfo();
-			agentInfo.setInst(inst);
-			Thread thread = new Thread(new AgentServer(Integer.parseInt(args
-					.get("port")), agentInfo), "agent-server");
+			URL[] urls = initJarPath(inst, args);
+			ClassLoader classLoader = new AgentClassLoader(urls, Thread
+					.currentThread().getContextClassLoader());
+			Thread.currentThread().setContextClassLoader(classLoader);
+			Class<?> classAgentServer = classLoader
+					.loadClass("com.chenjw.knife.agent.AgentServer");
+			Constructor<?> constructor = classAgentServer
+					.getConstructor(new Class<?>[] { int.class,
+							Instrumentation.class });
+			Thread thread = new Thread((Runnable) constructor.newInstance(
+					Integer.parseInt(args.get("port")), inst), "agent-server");
 			thread.setDaemon(true);
 			thread.start();
 			System.out.println("agent installed!");
 		} catch (Throwable e) {
+			e.printStackTrace();
 			storeException(e);
+		} finally {
+			if (backupClassLoader != null) {
+				Thread.currentThread().setContextClassLoader(backupClassLoader);
+			}
 		}
-
 	}
 
 	public static void storeException(Throwable e) {

@@ -21,7 +21,8 @@ import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
 
 public class Client {
-
+	private String[] exceptJars = new String[] { "jline-1.0.jar",
+			"knife-client.jar" };
 	private Socket socket;
 	private InputStream is;
 	private OutputStream os;
@@ -59,10 +60,21 @@ public class Client {
 		String jars = getToolsJarPath();
 		for (String jar : JarHelper.findJars()) {
 			if (jars.length() != 0) {
-				jars += ";" + jar;
+				if (!isExceptJar(jar)) {
+					jars += ";" + jar;
+				}
 			}
 		}
 		return jars;
+	}
+
+	private boolean isExceptJar(String str) {
+		for (String exceptJar : exceptJars) {
+			if (str.indexOf(exceptJar) != -1) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void attachAgent(String agentPath) throws NumberFormatException,

@@ -26,10 +26,10 @@
 		<mkdir dir="${build.classes.dir}/core"/>
 		<mkdir dir="${build.classes.dir}/agent"/>
 		<mkdir dir="${build.classes.dir}/client"/>
+		<mkdir dir="${build.classes.dir}/server"/>
 		<delete dir="${dist.dir}" quiet="true"/>
 		<mkdir dir="${dist.dir}"/>
-		<mkdir dir="${dist.dir}/knife/client-lib"/>
-		<mkdir dir="${dist.dir}/knife/agent-lib"/>
+		<mkdir dir="${dist.dir}/knife/lib"/>
 	</target>
 
     	<target name="build-native">
@@ -60,16 +60,37 @@
   		</jar>
 	</target>
 
-
        	<target name="build-agent">
 		<local name="name"/>
 		<property name="name" value="agent"/>
+  		<javac destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false">
+    			<src path="${base.dir}/${name}/java"/>
+    			<include name="**/*.java"/>
+			<classpath>
+				<path refid="lib.path"/>
+			</classpath>
+  		</javac>
+ 		<copy todir="${build.classes.dir}/${name}">
+    			<fileset dir="${base.dir}/${name}/resources"/>
+  		</copy>
+		<copy todir="${build.classes.dir}/${name}">
+    			<fileset dir="${base.dir}/${name}/java" excludes="**/*.java"/>
+  		</copy>
+		<jar destfile="${dist.dir}/knife/lib/knife-${name}.jar" manifest="${base.dir}/${name}/resources/META-INF/MANIFEST.MF">
+    			<fileset dir="${build.classes.dir}/${name}"/>
+  		</jar>
+	</target>
+
+       	<target name="build-server">
+		<local name="name"/>
+		<property name="name" value="server"/>
   		<javac destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false">
     			<src path="${base.dir}/${name}/java"/>
 			<src path="${base.dir}/core/java"/>
     			<include name="**/*.java"/>
 			<classpath>
 				<path refid="lib.path"/>
+				<pathelement location="${dist.dir}/knife/lib/knife-agent.jar"/>
 			</classpath>
   		</javac>
  		<copy todir="${build.classes.dir}/${name}">
@@ -91,25 +112,22 @@
 	</target>
 
 	<target name="copy-lib">
- 		<copy todir="${dist.dir}/knife/client-lib">
-    			<fileset dir="${base.dir}/core/lib">
-				<include name="jline-1.0.jar"/>
-				<include name="knife-client.jar"/>
-			</fileset>
-			<path>
-				<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
-			</path>
-  		</copy>
-		<copy todir="${dist.dir}/knife/agent-lib">
+ 		<copy todir="${dist.dir}/knife/lib">
     			<fileset dir="${base.dir}/core/lib">
 				<include name="commons-collections-3.2.1.jar"/>
 				<include name="commons-io-1.4.jar"/>
 				<include name="commons-lang-2.4.jar"/>
 				<include name="commons-logging-1.1.1.jar"/>
 				<include name="fastjson-1.1.17.jar"/>
+				<include name="jline-1.0.jar"/>
 				<include name="knife-agent.jar"/>
+				<include name="knife-client.jar"/>
+				<include name="knife-server.jar"/>
 				<include name="misc.javassist-3.9.0.GA.jar"/>
 			</fileset>
+			<path>
+				<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
+			</path>
   		</copy>
 	</target>
 
@@ -145,5 +163,5 @@
  		<rpm specFile="rpm.spec" topDir="${rpmbuildRoot}" cleanBuildDir="true" failOnError="false"/>
 	</target>
     
-    	<target name="main" depends="init,build-native,build-client,build-agent,copy-shell,copy-lib,tar"/>
+    	<target name="main" depends="init,build-native,build-client,build-agent,build-server,copy-shell,copy-lib,tar"/>
 </project>
