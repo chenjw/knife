@@ -9,7 +9,7 @@
 	<property name="build.classes.dir" location="${build.dir}/classes"/>
 	<property name="dist.dir" location="${base.dir}/dist"/>
 	<property environment="env"/>
-	<property name="version" value="0.4.7"/>
+	<property name="version" value="0.4.8"/>
 	<property name="appName" value="knife"/>
 	<property name="date" value="2012"/>
 	
@@ -23,7 +23,6 @@
   		<delete dir="${build.dir}" quiet="true"/>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
-		<mkdir dir="${build.classes.dir}/core"/>
 		<mkdir dir="${build.classes.dir}/agent"/>
 		<mkdir dir="${build.classes.dir}/client"/>
 		<mkdir dir="${build.classes.dir}/server"/>
@@ -35,7 +34,7 @@
     	<target name="build-native">
   		<exec executable="make" dir="${native.dir}">
   		</exec>
-		<copy overwrite="true" file="${native.dir}/src/.libs/libnativehelper.so" todir="${base.dir}/agent/resources"/>
+		<copy overwrite="true" file="${native.dir}/src/.libs/libnativehelper.so" todir="${base.dir}/server/resources"/>
 	</target>
 
        	<target name="build-client">

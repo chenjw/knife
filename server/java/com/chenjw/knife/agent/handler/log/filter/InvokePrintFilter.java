@@ -9,6 +9,7 @@ import com.chenjw.knife.agent.event.MethodStartEvent;
 import com.chenjw.knife.agent.service.InvokeDepthManager;
 import com.chenjw.knife.agent.service.ObjectRecordManager;
 import com.chenjw.knife.agent.service.TimingManager;
+import com.chenjw.knife.agent.util.ToStringHelper;
 
 public class InvokePrintFilter implements Filter {
 
@@ -46,7 +47,7 @@ public class InvokePrintFilter implements Filter {
 				msg.append("null");
 			} else {
 				msg.append(ObjectRecordManager.getInstance().toId(arg)
-						+ arg.getClass().getSimpleName());
+						+ ToStringHelper.toString(arg));
 			}
 		}
 		msg.append(")");
@@ -79,7 +80,7 @@ public class InvokePrintFilter implements Filter {
 			msg.append("void");
 		} else {
 			msg.append(ObjectRecordManager.getInstance().toId(result)
-					+ result.getClass().getName());
+					+ ToStringHelper.toString(result));
 		}
 		msg.append(" ["
 				+ TimingManager.getInstance().getMillisInterval(

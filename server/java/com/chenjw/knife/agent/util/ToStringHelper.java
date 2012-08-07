@@ -45,6 +45,8 @@ public class ToStringHelper {
 					sb.append(obj.toString());
 				} else if (obj instanceof Date) {
 					sb.append(obj.toString());
+				} else if (obj.getClass().isEnum()) {
+					sb.append(obj.toString());
 				} else {
 					if (isDetail) {
 						if (obj.getClass().isArray()) {
@@ -120,7 +122,7 @@ public class ToStringHelper {
 	}
 
 	private static void _getClassString(Object obj, StringBuilder sb) {
-		sb.append("<").append(obj.getClass().getName()).append(">");
+		sb.append("<").append(obj.getClass().getSimpleName()).append(">");
 	}
 
 	public static String toDetailString(Object obj) {

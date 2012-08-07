@@ -18,8 +18,8 @@ import com.chenjw.knife.agent.service.ContextManager;
 
 public class NativeHelper {
 	static {
-		System.load("/home/chenjw/my_workspace/knife/native/src/.libs/libnativehelper.so");
-		// NativeHelper.loadNativeLibrary("libnativehelper");
+		// System.load("/home/chenjw/my_workspace/knife/native/src/.libs/libnativehelper.so");
+		NativeHelper.loadNativeLibrary("libnativehelper");
 	}
 	private static Object[] retransformLock = new Object[0];
 	private static String jvmClassName = null;
