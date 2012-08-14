@@ -13,6 +13,7 @@ import com.chenjw.knife.agent.service.ContextManager;
 import com.chenjw.knife.agent.service.ObjectRecordManager;
 import com.chenjw.knife.agent.util.NativeHelper;
 import com.chenjw.knife.agent.util.StringHelper;
+import com.chenjw.knife.agent.util.ToStringHelper;
 
 public class FindCommandHandler implements CommandHandler {
 
@@ -74,7 +75,8 @@ public class FindCommandHandler implements CommandHandler {
 		int i = 0;
 		for (Object obj : objs) {
 			Agent.println("[instance] "
-					+ ObjectRecordManager.getInstance().toId(obj) + obj);
+					+ ObjectRecordManager.getInstance().toId(obj)
+					+ ToStringHelper.toDetailString(obj));
 			i++;
 		}
 		Agent.println("find " + i + " instances of " + clazz.getName());

@@ -13,5 +13,8 @@
 	<classpathentry kind="lib" path="/knife.core/lib/misc.javassist-3.9.0.GA-sources.zip"/>
 	<classpathentry kind="lib" path="/knife.core/lib/sourceforge.spring-2.5.6-sources.zip"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/knife.agent"/>
+	<classpathentry kind="lib" path="/knife.core/lib/cglib-nodep-2.1_3.jar"/>
+	<classpathentry kind="lib" path="/knife.core/lib/aspectjrt.jar"/>
+	<classpathentry kind="lib" path="/knife.core/lib/aspectjweaver.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

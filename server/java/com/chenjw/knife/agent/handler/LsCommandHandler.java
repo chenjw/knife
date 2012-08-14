@@ -193,9 +193,17 @@ public class LsCommandHandler implements CommandHandler {
 						+ toString(args, aObj));
 			}
 			Agent.println("finished!");
+		} else if (obj instanceof List) {
+			int i = 0;
+			for (Object aObj : (List<Object>) obj) {
+				Agent.println(i + ". "
+						+ ObjectRecordManager.getInstance().toId(aObj)
+						+ toString(args, aObj));
+				i++;
+			}
+			Agent.println("finished!");
 		} else {
 			Agent.println("not array!");
-			return;
 		}
 
 	}
