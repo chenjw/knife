@@ -29,6 +29,8 @@ public class InstrumentManager implements Lifecycle {
 
 	private final Set<String> TRACED_METHOD = new HashSet<String>();
 
+	private final Set<String> ENTER_TRACED_METHOD = new HashSet<String>();
+
 	public static InstrumentManager getInstance() {
 		return INSTANCE;
 	}
@@ -68,6 +70,40 @@ public class InstrumentManager implements Lifecycle {
 
 	}
 
+	private void buildMethodEnterLeave(final ClassGenerator classGenerator,
+			final String methodName) throws Exception {
+		CtMethod[] ctMethods = classGenerator.getCtClass().getMethods();
+		for (final CtMethod method : ctMethods) {
+			if (!methodName.equals(method.getName())) {
+				continue;
+			}
+			String methodFullName = method.getLongName();
+			// filter traced method
+			if (ENTER_TRACED_METHOD.contains(methodFullName)) {
+				return;
+			} else {
+				ENTER_TRACED_METHOD.add(methodFullName);
+			}
+			// filter unsupport method
+			if (!isSupportTrace(method.getDeclaringClass().getName(), method)) {
+				continue;
+			}
+			ClassGenerator newClassGenerator = ClassGenerator
+					.newInstance(ByteCodeManager.getInstance().getByteCode(
+							Helper.findClass(classGenerator.getCtClass())));
+			CtClass ctClass = newClassGenerator.getCtClass();
+			CtMethod newMethod = ctClass.getMethod(method.getName(),
+					method.getSignature());
+			// add enter leave code
+			addEnterLeaveCode(ctClass, newMethod);
+			byte[] classBytes = newClassGenerator.toBytecode();
+			ByteCodeManager.getInstance().tryRedefineClass(
+					Helper.findClass(newClassGenerator.getCtClass()),
+					classBytes);
+		}
+
+	}
+
 	private void addEnterLeaveCode(CtClass ctClass, CtMethod ctMethod) {
 		try {
 			// ////////////////
@@ -88,24 +124,28 @@ public class InstrumentManager implements Lifecycle {
 			// // /////////
 			if (Modifier.isStatic(ctMethod.getModifiers())) {
 
-				ctMethod.insertBefore("{" + PROFILER_CLASS.getName()
-						+ ".enter(null,\""
+				ctMethod.insertBefore("{" + PROFILER_CLASS.getName() + "."
+						+ Profiler.METHOD_NAME_ENTER + "(null,\""
 						+ Helper.makeClassName(Helper.findClass(ctClass))
 						+ "\",\"" + ctMethod.getName() + "\",$args);}");
 
 				ctMethod.insertAfter(
-						"{" + PROFILER_CLASS.getName() + ".leave(null,\""
+						"{" + PROFILER_CLASS.getName() + "."
+								+ Profiler.METHOD_NAME_LEAVE + "(null,\""
 								+ Helper.findClass(ctClass).getName() + "\",\""
 								+ ctMethod.getName() + "\",$args," + resultExpr
 								+ ");}", true);
 			} else {
-				ctMethod.insertBefore("{" + PROFILER_CLASS.getName()
-						+ ".enter($0,\"" + Helper.findClass(ctClass).getName()
-						+ "\",\"" + ctMethod.getName() + "\",$args);}");
+				ctMethod.insertBefore("{" + PROFILER_CLASS.getName() + "."
+						+ Profiler.METHOD_NAME_ENTER + "($0,\""
+						+ Helper.findClass(ctClass).getName() + "\",\""
+						+ ctMethod.getName() + "\",$args);}");
 				ctMethod.insertAfter(
 						"{"
 								+ PROFILER_CLASS.getName()
-								+ ".leave($0,\""
+								+ "."
+								+ Profiler.METHOD_NAME_LEAVE
+								+ "($0,\""
 								+ Helper.makeClassName(Helper
 										.findClass(ctClass)) + "\",\""
 								+ ctMethod.getName() + "\",$args," + resultExpr
@@ -137,9 +177,23 @@ public class InstrumentManager implements Lifecycle {
 		ByteCodeManager.getInstance().commitAll();
 	}
 
+	public void buildEnterLeaveMethod(Class<?> clazz, String methodName)
+			throws Exception {
+		if (!isCanTrace(clazz)) {
+			return;
+		}
+		byte[] bytes = ByteCodeManager.getInstance().getByteCode(clazz);
+		ClassGenerator classGenerator = ClassGenerator.newInstance(bytes);
+		buildMethodEnterLeave(classGenerator, methodName);
+		ByteCodeManager.getInstance().commitAll();
+	}
+
 	private static boolean isSupportClassNameAndMethodName(String className,
 			String methodName) {
 		// filter name
+		if (className.equals(Profiler.class.getName())) {
+			return false;
+		}
 		boolean isLog = true;
 		if (className.startsWith("java.")) {
 			isLog = false;
@@ -148,6 +202,7 @@ public class InstrumentManager implements Lifecycle {
 		} else if (className.startsWith("sun.")) {
 			isLog = false;
 		}
+
 		String name = className + "." + methodName;
 		// pass for white list
 		if (!isLog) {
@@ -220,28 +275,32 @@ public class InstrumentManager implements Lifecycle {
 			String proxyCode = null;
 
 			if (isStatic(ctMethod)) {
-				proxyCode = PROFILER_CLASS.getName() + ".traceClass($class,\""
-						+ methodName + "\");";
+				proxyCode = PROFILER_CLASS.getName() + "."
+						+ Profiler.METHOD_NAME_PROFILE_STATIC_METHOD
+						+ "($class,\"" + methodName + "\");";
 			} else if ("java.lang.reflect.Method".equals(className)
 					&& "invoke".equals(methodName)) {
-				proxyCode = PROFILER_CLASS.getName()
-						+ ".traceObject($1,$0.getName());";
+				proxyCode = PROFILER_CLASS.getName() + "."
+						+ Profiler.METHOD_NAME_PROFILE_METHOD
+						+ "($1,$0.getName());";
 			} else {
-				proxyCode = PROFILER_CLASS.getName() + ".traceObject($0,\""
+				proxyCode = PROFILER_CLASS.getName() + "."
+						+ Profiler.METHOD_NAME_PROFILE_METHOD + "($0,\""
 						+ methodName + "\");";
 			}
 
-			String startCode = PROFILER_CLASS.getName() + ".start($0,\""
-					+ className + "\",\"" + methodName + "\",$args,\""
+			String startCode = PROFILER_CLASS.getName() + "."
+					+ Profiler.METHOD_NAME_START + "($0,\"" + className
+					+ "\",\"" + methodName + "\",$args,\""
 					+ methodcall.getFileName() + "\","
 					+ methodcall.getLineNumber() + ");";
-			String returnEndCode = PROFILER_CLASS.getName()
-					+ ".returnEnd( $0,\"" + className + "\",\"" + methodName
-					+ "\",$args," + resultExpr + ");";
+			String returnEndCode = PROFILER_CLASS.getName() + "."
+					+ Profiler.METHOD_NAME_RETURN_END + "( $0,\"" + className
+					+ "\",\"" + methodName + "\",$args," + resultExpr + ");";
 
-			String exceptionEndCode = PROFILER_CLASS.getName()
-					+ ".exceptionEnd( $0,\"" + className + "\",\"" + methodName
-					+ "\",$args,$e);";
+			String exceptionEndCode = PROFILER_CLASS.getName() + "."
+					+ Profiler.METHOD_NAME_EXCEPTION_END + "( $0,\""
+					+ className + "\",\"" + methodName + "\",$args,$e);";
 			StringBuffer code = new StringBuffer("try{");
 			code.append(startCode);
 			code.append(proxyCode);
@@ -269,5 +328,6 @@ public class InstrumentManager implements Lifecycle {
 	@Override
 	public void clear() {
 		TRACED_METHOD.clear();
+		ENTER_TRACED_METHOD.clear();
 	}
 }

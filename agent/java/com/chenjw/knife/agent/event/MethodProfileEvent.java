@@ -1,6 +1,6 @@
 package com.chenjw.knife.agent.event;
 
-public class MethodTraceEvent extends Event {
+public class MethodProfileEvent extends Event {
 	private Class<?> clazz;
 	private String methodName;
 

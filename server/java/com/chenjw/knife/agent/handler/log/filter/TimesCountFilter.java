@@ -10,7 +10,7 @@ import com.chenjw.knife.agent.event.MethodExceptionEndEvent;
 import com.chenjw.knife.agent.event.MethodLeaveEvent;
 import com.chenjw.knife.agent.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.event.MethodStartEvent;
-import com.chenjw.knife.agent.event.MethodTraceEvent;
+import com.chenjw.knife.agent.event.MethodProfileEvent;
 import com.chenjw.knife.agent.service.InvokeDepthManager;
 
 public class TimesCountFilter implements Filter {
@@ -66,7 +66,7 @@ public class TimesCountFilter implements Filter {
 			if (contains()) {
 				chain.doFilter(event);
 			}
-		} else if (event instanceof MethodTraceEvent) {
+		} else if (event instanceof MethodProfileEvent) {
 			if (contains()) {
 				chain.doFilter(event);
 			}

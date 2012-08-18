@@ -2,6 +2,7 @@ package com.chenjw.knife.agent.handler.log.filter;
 
 import java.util.List;
 
+import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.event.Event;
 
 public class FilterChainImpl implements FilterChain {
@@ -19,9 +20,10 @@ public class FilterChainImpl implements FilterChain {
 			return;
 		} else if (filters.size() > index) {
 			Filter f = filters.get(index);
-			// Agent.println("[" + f.getClass().getSimpleName() + "] "
-			// + event.getClass().getSimpleName() + " "
-			// + event.getMethodName());
+
+//			Agent.println("[" + f.getClass().getSimpleName() + "] "
+//					+ event.getClass().getSimpleName() + " "
+//					+ event.getMethodName());
 			this.index++;
 			f.doFilter(event, this);
 		}

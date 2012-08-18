@@ -37,41 +37,28 @@ public class InvokeCommandHandler implements CommandHandler {
 	public void handle(Args args, CommandDispatcher dispatcher)
 			throws Exception {
 		boolean isTrace = args.option("-t") != null;
-		if (isTrace) {
-			configTraceStrategy(args);
-		} else {
-			configNoTraceStrategy(args);
-		}
-
+		configStrategy(args);
 		invokeMethod(isTrace, args.arg("invoke-expretion"));
 	}
 
-	private void configTraceStrategy(Args args) throws Exception {
+	private void configStrategy(Args args) throws Exception {
 		List<Filter> filters = new ArrayList<Filter>();
 		filters.add(new SystemOperationFilter());
 		filters.add(new FixThreadFilter(Thread.currentThread()));
 		filters.add(new ExceptionFilter());
 		filters.add(new TimingStopFilter());
-		filters.add(new InstrumentFilter());
+		Map<String, String> tOptions = args.option("-t");
+		if (tOptions != null) {
+			filters.add(new InstrumentFilter());
+		}
 		Map<String, String> options = args.option("-f");
 		if (options != null) {
 			filters.add(new PatternMethodFilter(options.get("filter-expretion")));
 		}
 		filters.add(new DepthFilter());
-		filters.add(new TimingFilter());
-		filters.add(new InvokeFinishFilter());
-		filters.add(new InvokePrintFilter());
-		Profiler.listener = new FilterInvocationListener(filters);
-	}
-
-	private void configNoTraceStrategy(Args args) throws Exception {
-		List<Filter> filters = new ArrayList<Filter>();
-		filters.add(new SystemOperationFilter());
-		filters.add(new FixThreadFilter(Thread.currentThread()));
-		filters.add(new ExceptionFilter());
-		filters.add(new TimingStopFilter());
-		filters.add(new DepthFilter());
-		filters.add(new Depth0Filter());
+		if (tOptions == null) {
+			filters.add(new Depth0Filter());
+		}
 		filters.add(new TimingFilter());
 		filters.add(new InvokeFinishFilter());
 		filters.add(new InvokePrintFilter());
@@ -154,9 +141,9 @@ public class InvokeCommandHandler implements CommandHandler {
 					null, -1);
 			if (isTrace) {
 				if (isStatic) {
-					Profiler.traceClass(clazz, method.getName());
+					Profiler.profileStaticMethod(clazz, method.getName());
 				} else {
-					Profiler.traceObject(thisObject, method.getName());
+					Profiler.profileMethod(thisObject, method.getName());
 				}
 			}
 			Object r = method.invoke(thisObject, args);

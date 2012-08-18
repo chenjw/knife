@@ -14,10 +14,12 @@ import com.chenjw.knife.agent.Profiler;
 import com.chenjw.knife.agent.handler.arg.ArgDef;
 import com.chenjw.knife.agent.handler.arg.Args;
 import com.chenjw.knife.agent.handler.constants.Constants;
+import com.chenjw.knife.agent.handler.log.filter.Depth0Filter;
 import com.chenjw.knife.agent.handler.log.filter.DepthFilter;
 import com.chenjw.knife.agent.handler.log.filter.EnterLeavePrintFilter;
 import com.chenjw.knife.agent.handler.log.filter.ExceptionFilter;
 import com.chenjw.knife.agent.handler.log.filter.Filter;
+import com.chenjw.knife.agent.handler.log.filter.InstrumentEnterLeaveFilter;
 import com.chenjw.knife.agent.handler.log.filter.InstrumentFilter;
 import com.chenjw.knife.agent.handler.log.filter.InvokePrintFilter;
 import com.chenjw.knife.agent.handler.log.filter.PatternMethodFilter;
@@ -45,11 +47,11 @@ public class TraceCommandHandler implements CommandHandler {
 
 	private void trace(MethodInfo methodInfo) {
 		if (Modifier.isStatic(methodInfo.getMethod().getModifiers())) {
-			Profiler.traceClass(methodInfo.getClazz(), methodInfo.getMethod()
-					.getName());
+			Profiler.profileEnterLeaveStaticMethod(methodInfo.getClazz(),
+					methodInfo.getMethod().getName());
 		} else {
-			Profiler.traceObject(methodInfo.getThisObject(), methodInfo
-					.getMethod().getName());
+			Profiler.profileEnterLeaveMethod(methodInfo.getThisObject(),
+					methodInfo.getMethod().getName());
 		}
 
 	}
@@ -66,17 +68,25 @@ public class TraceCommandHandler implements CommandHandler {
 		filters.add(new ExceptionFilter());
 
 		filters.add(new TimingStopFilter());
+		Map<String, String> tOptions = args.option("-t");
+		if (tOptions != null) {
+			filters.add(new InstrumentFilter());
+		}
 
-		filters.add(new InstrumentFilter());
-		Map<String, String> options = args.option("-f");
-		if (options != null) {
-			filters.add(new PatternMethodFilter(options.get("filter-expretion")));
+		filters.add(new InstrumentEnterLeaveFilter());
+		Map<String, String> fOptions = args.option("-f");
+		if (fOptions != null) {
+			filters.add(new PatternMethodFilter(fOptions
+					.get("filter-expretion")));
 		}
 		filters.add(new TraceMethodFilter(methodInfo.getThisObject(),
 				methodInfo.getClazz(), methodInfo.getMethod()));
 		filters.add(new TimesCountFilter(traceNum));
 		filters.add(new EnterLeavePrintFilter());
 		filters.add(new DepthFilter());
+		if (tOptions == null) {
+			filters.add(new Depth0Filter());
+		}
 		filters.add(new TimingFilter());
 		filters.add(new InvokePrintFilter());
 
@@ -183,7 +193,7 @@ public class TraceCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("trace");
-		argDef.setDef("[-f <filter-expretion>] [-n <trace-num>] <trace-expretion>");
+		argDef.setDef("[-f <filter-expretion>] [-n <trace-num>] [-t] <trace-expretion>");
 		argDef.setDesc("trace an invocation on the target object.");
 
 		argDef.addOptionDesc(
@@ -191,9 +201,8 @@ public class TraceCommandHandler implements CommandHandler {
 				"set <classname> to find static fields or methods , if <classname> not set , will apply to target object.");
 		argDef.addOptionDesc("-f",
 				"set <filter-expretion> to filter the invocation you dont care.");
-		argDef.addOptionDesc(
-				"-n",
-				"set <classname> to find static fields or methods , if <classname> not set , will apply to target object.");
+		argDef.addOptionDesc("-t", "to trace the invocation.");
+		argDef.addOptionDesc("-n", "trace times");
 
 	}
 }

@@ -6,16 +6,25 @@ import com.chenjw.knife.agent.event.Event;
 import com.chenjw.knife.agent.event.MethodEnterEvent;
 import com.chenjw.knife.agent.event.MethodExceptionEndEvent;
 import com.chenjw.knife.agent.event.MethodLeaveEvent;
+import com.chenjw.knife.agent.event.MethodProfileEnterLeaveEvent;
+import com.chenjw.knife.agent.event.MethodProfileEvent;
 import com.chenjw.knife.agent.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.event.MethodStartEvent;
-import com.chenjw.knife.agent.event.MethodTraceEvent;
 
 public class Profiler {
+	public static final String METHOD_NAME_PROFILE_METHOD = "profileMethod";
+	public static final String METHOD_NAME_PROFILE_STATIC_METHOD = "profileStaticMethod";
+	public static final String METHOD_NAME_ENTER = "enter";
+	public static final String METHOD_NAME_LEAVE = "leave";
+	public static final String METHOD_NAME_START = "start";
+	public static final String METHOD_NAME_RETURN_END = "returnEnd";
+	public static final String METHOD_NAME_EXCEPTION_END = "exceptionEnd";
+
 	public static final Object VOID = new Object();
 
 	public static volatile ProfilerListener listener = null;
 
-	public static <T> void traceObject(T obj, String methodName) {
+	public static <T> void profileMethod(T obj, String methodName) {
 		if (Profiler.listener == null) {
 			return;
 		}
@@ -24,24 +33,54 @@ public class Profiler {
 		}
 		for (Method method : obj.getClass().getDeclaredMethods()) {
 			if (method.getName().equals(methodName)) {
-				traceClass(obj.getClass(), methodName);
+				profile(obj.getClass(), methodName);
 			}
 		}
 		for (Method method : obj.getClass().getMethods()) {
 			if (method.getName().equals(methodName)) {
-				traceClass(method.getDeclaringClass(), methodName);
+				profile(method.getDeclaringClass(), methodName);
 			}
 		}
 	}
 
-	public static void traceClass(Class<?> clazz, String methodName) {
+	public static void profileStaticMethod(Class<?> clazz, String methodName) {
 		if (Profiler.listener == null) {
 			return;
 		}
 		if (clazz == null) {
 			return;
 		}
-		trace(clazz, methodName);
+		profile(clazz, methodName);
+	}
+
+	public static <T> void profileEnterLeaveMethod(T obj, String methodName) {
+		if (Profiler.listener == null) {
+			return;
+		}
+		if (obj == null) {
+			return;
+		}
+		for (Method method : obj.getClass().getDeclaredMethods()) {
+			if (method.getName().equals(methodName)) {
+				profileEnterLeave(obj.getClass(), methodName);
+			}
+		}
+		for (Method method : obj.getClass().getMethods()) {
+			if (method.getName().equals(methodName)) {
+				profileEnterLeave(method.getDeclaringClass(), methodName);
+			}
+		}
+	}
+
+	public static void profileEnterLeaveStaticMethod(Class<?> clazz,
+			String methodName) {
+		if (Profiler.listener == null) {
+			return;
+		}
+		if (clazz == null) {
+			return;
+		}
+		profileEnterLeave(clazz, methodName);
 	}
 
 	/**
@@ -50,8 +89,16 @@ public class Profiler {
 	 * @param dep
 	 * @param clazz
 	 */
-	private static void trace(final Class<?> clazz, final String methodName) {
-		MethodTraceEvent event = new MethodTraceEvent();
+	private static void profile(final Class<?> clazz, final String methodName) {
+		MethodProfileEvent event = new MethodProfileEvent();
+		event.setClazz(clazz);
+		event.setMethodName(methodName);
+		sendEvent(event);
+	}
+
+	private static void profileEnterLeave(final Class<?> clazz,
+			final String methodName) {
+		MethodProfileEnterLeaveEvent event = new MethodProfileEnterLeaveEvent();
 		event.setClazz(clazz);
 		event.setMethodName(methodName);
 		sendEvent(event);
