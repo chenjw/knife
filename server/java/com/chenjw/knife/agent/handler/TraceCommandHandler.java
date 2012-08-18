@@ -198,11 +198,12 @@ public class TraceCommandHandler implements CommandHandler {
 
 		argDef.addOptionDesc(
 				"trace-expretion",
-				"set <classname> to find static fields or methods , if <classname> not set , will apply to target object.");
+				"Input 'package.ClassName.method' to trace static method, or 'method' to trace the method of target object.");
 		argDef.addOptionDesc("-f",
 				"set <filter-expretion> to filter the invocation you dont care.");
-		argDef.addOptionDesc("-t", "to trace the invocation.");
-		argDef.addOptionDesc("-n", "trace times");
+		argDef.addOptionDesc("-t",
+				"is need output the method trace of the invocation.");
+		argDef.addOptionDesc("-n <trace-num>", "trace times");
 
 	}
 }
