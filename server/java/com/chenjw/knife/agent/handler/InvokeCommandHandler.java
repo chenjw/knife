@@ -1,11 +1,16 @@
 package com.chenjw.knife.agent.handler;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 import com.chenjw.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.Agent;
@@ -172,5 +177,19 @@ public class InvokeCommandHandler implements CommandHandler {
 		argDef.addOptionDesc("-f",
 				"set <filter-expretion> to filter the invocation output you dont care.");
 
+	}
+
+	public static void main(String args[]) throws IOException {
+		File f = new File("/home/chenjw/pivot.biz.trustpass-1.0-SNAPSHOT.jar");
+		JarInputStream jar_in = new JarInputStream(new FileInputStream(f));
+		try {
+			JarEntry entry = jar_in.getNextJarEntry();
+			while (entry != null) {
+				System.out.println(entry.getName());
+				entry = jar_in.getNextJarEntry();
+			}
+		} finally {
+			jar_in.close();
+		}
 	}
 }

@@ -1,5 +1,10 @@
 package com.chenjw.knife.agent.handler;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -166,9 +171,27 @@ public class LsCommandHandler implements CommandHandler {
 			Agent.println("not found!");
 			return;
 		}
-		Agent.println(" " + ObjectRecordManager.getInstance().toId(obj)
-				+ toString(args, obj));
+		if ((obj instanceof Throwable) && (args.option("-d") != null)) {
+			Throwable e = (Throwable) obj;
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			String errorTrace = sw.toString();
+			Agent.println(" " + ObjectRecordManager.getInstance().toId(obj));
+			BufferedReader br = new BufferedReader(new StringReader(errorTrace));
+			String line = null;
+			try {
+				while ((line = br.readLine()) != null) {
+					Agent.println(line);
+				}
+			} catch (IOException e1) {
+			}
+		} else {
+			Agent.println(" " + ObjectRecordManager.getInstance().toId(obj)
+					+ toString(args, obj));
+
+		}
 		Agent.println("finished!");
+
 	}
 
 	private void lsArray(Args args) {
