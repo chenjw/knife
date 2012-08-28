@@ -30,6 +30,7 @@ import com.chenjw.knife.agent.handler.log.filter.TimingStopFilter;
 import com.chenjw.knife.agent.handler.log.filter.TraceMethodFilter;
 import com.chenjw.knife.agent.handler.log.listener.FilterInvocationListener;
 import com.chenjw.knife.agent.service.ContextManager;
+import com.chenjw.knife.agent.util.ClassLoaderHelper;
 import com.chenjw.knife.agent.util.StringHelper;
 
 public class TraceCommandHandler implements CommandHandler {
@@ -46,6 +47,8 @@ public class TraceCommandHandler implements CommandHandler {
 	}
 
 	private void trace(MethodInfo methodInfo) {
+		ClassLoaderHelper.resetClassLoader(methodInfo.getMethod()
+				.getDeclaringClass());
 		if (Modifier.isStatic(methodInfo.getMethod().getModifiers())) {
 			Profiler.profileEnterLeaveStaticMethod(methodInfo.getClazz(),
 					methodInfo.getMethod().getName());

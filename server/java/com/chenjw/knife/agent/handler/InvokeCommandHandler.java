@@ -34,6 +34,7 @@ import com.chenjw.knife.agent.handler.log.filter.TimingFilter;
 import com.chenjw.knife.agent.handler.log.filter.TimingStopFilter;
 import com.chenjw.knife.agent.handler.log.listener.FilterInvocationListener;
 import com.chenjw.knife.agent.service.ContextManager;
+import com.chenjw.knife.agent.util.ClassLoaderHelper;
 import com.chenjw.knife.agent.util.ParseHelper;
 import com.chenjw.knife.agent.util.StringHelper;
 
@@ -133,6 +134,8 @@ public class InvokeCommandHandler implements CommandHandler {
 
 	private void invoke(boolean isTrace, Method method, Object thisObject,
 			Object[] args) throws Exception {
+		// 重置classloader
+		ClassLoaderHelper.resetClassLoader(method.getDeclaringClass());
 		boolean isStatic = Modifier.isStatic(method.getModifiers());
 		Class<?> clazz = null;
 		if (isStatic) {
