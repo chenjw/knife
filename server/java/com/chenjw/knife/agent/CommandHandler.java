@@ -1,7 +1,7 @@
 package com.chenjw.knife.agent;
 
-import com.chenjw.knife.agent.handler.arg.ArgDef;
-import com.chenjw.knife.agent.handler.arg.Args;
+import com.chenjw.knife.agent.args.ArgDef;
+import com.chenjw.knife.agent.args.Args;
 
 public interface CommandHandler {
 	public void declareArgs(ArgDef argDef);

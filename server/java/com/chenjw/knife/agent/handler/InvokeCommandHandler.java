@@ -12,31 +12,31 @@ import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import com.chenjw.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.Profiler;
-import com.chenjw.knife.agent.handler.arg.ArgDef;
-import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.handler.log.filter.Depth0Filter;
-import com.chenjw.knife.agent.handler.log.filter.DepthFilter;
-import com.chenjw.knife.agent.handler.log.filter.ExceptionFilter;
-import com.chenjw.knife.agent.handler.log.filter.Filter;
-import com.chenjw.knife.agent.handler.log.filter.FixThreadFilter;
-import com.chenjw.knife.agent.handler.log.filter.InstrumentFilter;
-import com.chenjw.knife.agent.handler.log.filter.InvokeFinishFilter;
-import com.chenjw.knife.agent.handler.log.filter.InvokePrintFilter;
-import com.chenjw.knife.agent.handler.log.filter.PatternMethodFilter;
-import com.chenjw.knife.agent.handler.log.filter.SystemOperationFilter;
-import com.chenjw.knife.agent.handler.log.filter.TimingFilter;
-import com.chenjw.knife.agent.handler.log.filter.TimingStopFilter;
-import com.chenjw.knife.agent.handler.log.listener.FilterInvocationListener;
-import com.chenjw.knife.agent.service.ContextManager;
-import com.chenjw.knife.agent.util.ClassLoaderHelper;
-import com.chenjw.knife.agent.util.ParseHelper;
-import com.chenjw.knife.agent.util.StringHelper;
+import com.chenjw.knife.agent.args.ArgDef;
+import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.bytecode.javassist.Helper;
+import com.chenjw.knife.agent.constants.Constants;
+import com.chenjw.knife.agent.filter.Depth0Filter;
+import com.chenjw.knife.agent.filter.DepthFilter;
+import com.chenjw.knife.agent.filter.ExceptionFilter;
+import com.chenjw.knife.agent.filter.Filter;
+import com.chenjw.knife.agent.filter.FilterInvocationListener;
+import com.chenjw.knife.agent.filter.FixThreadFilter;
+import com.chenjw.knife.agent.filter.InstrumentFilter;
+import com.chenjw.knife.agent.filter.InvokeFinishFilter;
+import com.chenjw.knife.agent.filter.InvokePrintFilter;
+import com.chenjw.knife.agent.filter.PatternMethodFilter;
+import com.chenjw.knife.agent.filter.SystemOperationFilter;
+import com.chenjw.knife.agent.filter.TimingFilter;
+import com.chenjw.knife.agent.filter.TimingStopFilter;
+import com.chenjw.knife.agent.manager.ContextManager;
+import com.chenjw.knife.agent.utils.ClassLoaderHelper;
+import com.chenjw.knife.agent.utils.ParseHelper;
+import com.chenjw.knife.utils.StringHelper;
 
 public class InvokeCommandHandler implements CommandHandler {
 
@@ -87,7 +87,7 @@ public class InvokeCommandHandler implements CommandHandler {
 				m = StringHelper.substringAfterLast(m, ".");
 				Class<?> clazz = Helper.findClass(className);
 				if (clazz == null) {
-					Agent.println("class " + className + " not found!");
+					Agent.info("class " + className + " not found!");
 					return;
 				}
 				Method[] methods = clazz.getMethods();
@@ -103,7 +103,7 @@ public class InvokeCommandHandler implements CommandHandler {
 			} else {
 				Object obj = ContextManager.getInstance().get(Constants.THIS);
 				if (obj == null) {
-					Agent.println("not found!");
+					Agent.info("not found!");
 					return;
 				}
 				Method[] methods = obj.getClass().getMethods();
@@ -116,7 +116,7 @@ public class InvokeCommandHandler implements CommandHandler {
 			}
 		}
 		if (method == null) {
-			Agent.println("cant find method!");
+			Agent.info("cant find method!");
 			return;
 		}
 		Object[] mArgs = ParseHelper.parseMethodArgs(
@@ -148,11 +148,7 @@ public class InvokeCommandHandler implements CommandHandler {
 			Profiler.start(thisObject, clazz.getName(), method.getName(), args,
 					null, -1);
 			if (isTrace) {
-				if (isStatic) {
-					Profiler.profileStaticMethod(clazz, method.getName());
-				} else {
-					Profiler.profileMethod(thisObject, method.getName());
-				}
+				Profiler.profile(method);
 			}
 			Object r = method.invoke(thisObject, args);
 			Profiler.returnEnd(thisObject, clazz.getName(), method.getName(),

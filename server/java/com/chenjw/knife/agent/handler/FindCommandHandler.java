@@ -6,14 +6,14 @@ import java.util.List;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.handler.arg.ArgDef;
-import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.service.ContextManager;
-import com.chenjw.knife.agent.service.ObjectRecordManager;
-import com.chenjw.knife.agent.util.NativeHelper;
-import com.chenjw.knife.agent.util.StringHelper;
-import com.chenjw.knife.agent.util.ToStringHelper;
+import com.chenjw.knife.agent.args.ArgDef;
+import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.constants.Constants;
+import com.chenjw.knife.agent.manager.ContextManager;
+import com.chenjw.knife.agent.manager.ObjectRecordManager;
+import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.ToStringHelper;
+import com.chenjw.knife.utils.StringHelper;
 
 public class FindCommandHandler implements CommandHandler {
 
@@ -55,10 +55,10 @@ public class FindCommandHandler implements CommandHandler {
 							likeClazz);
 					int i = 0;
 					for (Class<?> cc : likeClazz) {
-						Agent.println(i + ". [class] " + cc.getName());
+						Agent.info(i + ". [class] " + cc.getName());
 						i++;
 					}
-					Agent.println("find " + i + " classes like '" + className
+					Agent.info("find " + i + " classes like '" + className
 							+ "', please choose one typing like 'find 0'!");
 					return;
 				} else if (likeClazz.length == 1) {
@@ -66,7 +66,7 @@ public class FindCommandHandler implements CommandHandler {
 				}
 			}
 			if (clazz == null) {
-				Agent.println("not found!");
+				Agent.info("not found!");
 				return;
 			}
 		}
@@ -74,12 +74,12 @@ public class FindCommandHandler implements CommandHandler {
 		Object[] objs = NativeHelper.findInstancesByClass(clazz);
 		int i = 0;
 		for (Object obj : objs) {
-			Agent.println("[instance] "
+			Agent.info("[instance] "
 					+ ObjectRecordManager.getInstance().toId(obj)
 					+ ToStringHelper.toDetailString(obj));
 			i++;
 		}
-		Agent.println("find " + i + " instances of " + clazz.getName());
+		Agent.info("find " + i + " instances of " + clazz.getName());
 	}
 
 	public void declareArgs(ArgDef argDef) {

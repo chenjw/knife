@@ -2,6 +2,7 @@ package com.chenjw.knife.agent;
 
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
 
 public class AgentClassLoader extends URLClassLoader {
 	private ClassLoader parent;
@@ -24,7 +25,8 @@ public class AgentClassLoader extends URLClassLoader {
 				if (parent != null)
 					class1 = parent.loadClass(s);
 			} catch (ClassNotFoundException classnotfoundexception) {
-
+				// System.out.println("parent " + parent.getClass()
+				// + " cant find class " + s);
 			}
 			if (class1 == null)
 				class1 = findClass(s);
@@ -33,4 +35,11 @@ public class AgentClassLoader extends URLClassLoader {
 			resolveClass(class1);
 		return class1;
 	}
+
+	@Override
+	public String toString() {
+		return "AgentClassLoader [parent=" + parent + ", getURLs()="
+				+ Arrays.toString(getURLs()) + "]";
+	}
+
 }

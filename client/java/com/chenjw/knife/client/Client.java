@@ -8,13 +8,12 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-
 import com.chenjw.knife.core.Command;
 import com.chenjw.knife.core.ObjectPacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
 import com.chenjw.knife.core.PacketResolver;
+import com.chenjw.knife.utils.FileHelper;
 import com.chenjw.knife.utils.JarHelper;
 import com.chenjw.knife.utils.JvmHelper;
 import com.sun.tools.attach.VirtualMachine;
@@ -137,7 +136,7 @@ public class Client {
 		File tmpFile = null;
 		try {
 			tmpFile = File.createTempFile("agentArgs", ".dat");
-			FileUtils.writeStringToFile(tmpFile, str);
+			FileHelper.writeStringToFile(tmpFile, str, "UTF-8");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

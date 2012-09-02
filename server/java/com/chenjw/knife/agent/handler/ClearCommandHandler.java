@@ -3,17 +3,17 @@ package com.chenjw.knife.agent.handler;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.handler.arg.ArgDef;
-import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.service.ServiceManager;
+import com.chenjw.knife.agent.args.ArgDef;
+import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.manager.Registry;
 
 public class ClearCommandHandler implements CommandHandler {
 
 	@Override
 	public void handle(Args args, CommandDispatcher dispatcher) {
 
-		ServiceManager.getInstance().clear();
-		Agent.println("clear finished!");
+		Registry.getInstance().clear();
+		Agent.info("clear finished!");
 	}
 
 	public void declareArgs(ArgDef argDef) {

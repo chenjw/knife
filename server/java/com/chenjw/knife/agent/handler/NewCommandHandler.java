@@ -5,13 +5,13 @@ import java.lang.reflect.Constructor;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.handler.arg.ArgDef;
-import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.service.ContextManager;
-import com.chenjw.knife.agent.service.ObjectRecordManager;
-import com.chenjw.knife.agent.util.ParseHelper;
-import com.chenjw.knife.agent.util.StringHelper;
+import com.chenjw.knife.agent.args.ArgDef;
+import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.constants.Constants;
+import com.chenjw.knife.agent.manager.ContextManager;
+import com.chenjw.knife.agent.manager.ObjectRecordManager;
+import com.chenjw.knife.agent.utils.ParseHelper;
+import com.chenjw.knife.utils.StringHelper;
 
 public class NewCommandHandler implements CommandHandler {
 
@@ -30,7 +30,7 @@ public class NewCommandHandler implements CommandHandler {
 					Constants.CONSTRUCTOR_LIST))[Integer.parseInt(m)];
 		}
 		if (constructor == null) {
-			Agent.println("cant find constructor!");
+			Agent.info("cant find constructor!");
 			return;
 		}
 		Object[] mArgs = ParseHelper.parseMethodArgs(
@@ -38,7 +38,7 @@ public class NewCommandHandler implements CommandHandler {
 						StringHelper.substringAfter(argStr, "("), ")"),
 				constructor.getParameterTypes());
 		Object obj = newInstance(constructor, mArgs);
-		Agent.println(ObjectRecordManager.getInstance().toId(obj) + "created!");
+		Agent.info(ObjectRecordManager.getInstance().toId(obj) + "created!");
 	}
 
 	private Object newInstance(Constructor<?> constructor, Object[] args)

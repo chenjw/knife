@@ -9,6 +9,8 @@ jclass nativeHelperClass=NULL;;
 
 jmethodID transformMethodId=NULL;
 
+jmethodID classLoadedMethodId=NULL;
+
 void throwException(JNIEnv * env,char * clazz, char * message)
 {
   	jclass exceptionClass = env->FindClass(clazz);
@@ -50,13 +52,21 @@ void initJvmti(JNIEnv * env){
 }
 
 void initClassInfo(JNIEnv * env){
-	nativeHelperClass = env->FindClass("com/chenjw/knife/agent/util/NativeHelper");
+	nativeHelperClass = env->FindClass("com/chenjw/knife/agent/utils/NativeHelper");
 	if(env->ExceptionCheck()){
 		env->ExceptionDescribe();	
 	}
 	transformMethodId = env->GetStaticMethodID(nativeHelperClass,"transform","(Ljava/lang/ClassLoader;Ljava/lang/String;Ljava/lang/Class;Ljava/security/ProtectionDomain;[B)[B");
 }
 
+
+void initClassLoadedInfo(JNIEnv * env){
+	nativeHelperClass = env->FindClass("com/chenjw/knife/agent/utils/NativeHelper");
+	if(env->ExceptionCheck()){
+		env->ExceptionDescribe();	
+	}
+	classLoadedMethodId = env->GetStaticMethodID(nativeHelperClass,"classLoaded","(Ljava/lang/Class;)V");
+}
 
 
 void * allocate(jvmtiEnv * jvmti, size_t bytecount) {
@@ -225,12 +235,22 @@ eventHandlerClassFileLoadHook(  jvmtiEnv *              jvmti,
 	return;
 }
 
+
+void JNICALL
+eventHandlerClassLoadedHook(jvmtiEnv * jvmti,
+            JNIEnv* env,
+            jthread thread,
+            jclass klass) {
+	env->CallStaticObjectMethod(nativeHelperClass,classLoadedMethodId,klass);
+}
+
+
 /*
- * Class:     com_chenjw_knife_agent_util_NativeHelper
+ * Class:     com_chenjw_knife_agent_utils_NativeHelper
  * Method:    startClassFileLoadHook0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_startClassFileLoadHook0
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_startClassFileLoadHook0
   (JNIEnv * env, jclass thisClass){
 	initJvmti(env);
 	initClassInfo(env);
@@ -243,22 +263,50 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_startClassF
 }
 
 /*
- * Class:     com_chenjw_knife_agent_util_NativeHelper
+ * Class:     com_chenjw_knife_agent_utils_NativeHelper
  * Method:    stopClassFileLoadHook0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_stopClassFileLoadHook0
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_stopClassFileLoadHook0
   (JNIEnv * env, jclass thisClass){
 	initJvmti(env);
 	jvmti->SetEventNotificationMode(JVMTI_DISABLE,JVMTI_EVENT_CLASS_FILE_LOAD_HOOK,NULL);
 }
 
 /*
- * Class:     com_chenjw_knife_agent_util_NativeHelper
+ * Class:     com_chenjw_knife_agent_utils_NativeHelper
+ * Method:    startClassFileLoadHook0
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_startClassLoadHook0
+  (JNIEnv * env, jclass thisClass){
+	initJvmti(env);
+	initClassLoadedInfo(env);
+	jvmtiEventCallbacks callbacks;
+        memset(&callbacks, 0, sizeof(callbacks));
+        callbacks.ClassLoad = &eventHandlerClassLoadedHook;
+        jvmti->SetEventCallbacks(&callbacks,sizeof(callbacks));
+ 	jvmti->SetEventNotificationMode(JVMTI_ENABLE,JVMTI_EVENT_CLASS_LOAD,NULL);
+
+}
+
+/*
+ * Class:     com_chenjw_knife_agent_utils_NativeHelper
+ * Method:    stopClassFileLoadHook0
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_stopClassLoadHook0
+  (JNIEnv * env, jclass thisClass){
+	initJvmti(env);
+	jvmti->SetEventNotificationMode(JVMTI_DISABLE,JVMTI_EVENT_CLASS_LOAD,NULL);
+}
+
+/*
+ * Class:     com_chenjw_knife_agent_utils_NativeHelper
  * Method:    retransformClasses
  * Signature: ([Ljava/lang/Class;)V
  */
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_retransformClasses0
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_retransformClasses0
   (JNIEnv * env, jclass thisClass, jobjectArray classes){
 	initJvmti(env);
     	jsize       numClasses           = 0;
@@ -276,7 +324,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_retransform
 }
 
 
-JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_findReferrerByObject0
+JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_findReferrerByObject0
   (JNIEnv * env, jclass thisClass, jobject obj)
 {
 	initJvmti(env);
@@ -306,7 +354,7 @@ JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_fin
 }
 
 
-JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_findInstancesByClass0
+JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_findInstancesByClass0
   (JNIEnv * env, jclass thisClass, jclass klass)
 { 
 	initJvmti(env);
@@ -335,7 +383,7 @@ JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_fin
 // get field
 /////////////////////////////////////////////////
 
-JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getFieldValue0
+JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getFieldValue0
   (JNIEnv * env, jclass thisClass, jobject obj,jclass fieldClass,jstring fieldName,jclass fieldType)
 {
 	
@@ -372,7 +420,7 @@ JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getField
 }
 
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_redefineClass0
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_redefineClass0
   (JNIEnv * env, jclass thisClass, jclass klass, jbyteArray byteArray)
 {
 	initJvmti(env);
@@ -389,47 +437,47 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_redefineCla
 // set field
 /////////////////////////////////////////////////
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setObjectFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jobject newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setObjectFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jobject newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetObjectField(obj,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setBooleanFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jboolean newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setBooleanFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jboolean newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetBooleanField(obj,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setByteFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jbyte newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setByteFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jbyte newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetByteField(obj,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setCharFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jchar newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setCharFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jchar newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetCharField(obj,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setShortFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jshort newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setShortFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jshort newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetShortField(obj,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setIntFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jint newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setIntFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jint newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetIntField(obj,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setLongFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jlong newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setLongFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jlong newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetLongField(obj,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setFloatFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jfloat newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setFloatFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jfloat newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetFloatField(obj,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setDoubleFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jdouble newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setDoubleFieldValue0 (JNIEnv *env, jclass thisClass, jobject obj, jobject field, jdouble newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetDoubleField(obj,fieldId,newValue);
 }
@@ -438,47 +486,47 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setDoubleFi
 // set static field
 /////////////////////////////////////////////////
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setStaticObjectFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jobject newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setStaticObjectFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jobject newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetStaticObjectField(clazz,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setStaticBooleanFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jboolean newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setStaticBooleanFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jboolean newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetStaticBooleanField(clazz,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setStaticByteFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jbyte newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setStaticByteFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jbyte newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetStaticByteField(clazz,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setStaticCharFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jchar newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setStaticCharFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jchar newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetStaticCharField(clazz,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setStaticShortFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jshort newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setStaticShortFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jshort newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetStaticShortField(clazz,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setStaticIntFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jint newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setStaticIntFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jint newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetStaticIntField(clazz,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setStaticLongFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jlong newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setStaticLongFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jlong newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetStaticLongField(clazz,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setStaticFloatFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jfloat newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setStaticFloatFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jfloat newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetStaticFloatField(clazz,fieldId,newValue);
 }
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setStaticDoubleFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jdouble newValue){
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_setStaticDoubleFieldValue0 (JNIEnv *env, jclass thisClass, jclass clazz, jobject field, jdouble newValue){
 	jfieldID fieldId=env->FromReflectedField(field);
 	env->SetStaticDoubleField(clazz,fieldId,newValue);
 }
@@ -488,55 +536,55 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_setStaticDo
 /////////////////////////////////////////////////
 
 
-JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getObjectFieldValue0
+JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getObjectFieldValue0
   (JNIEnv *env, jclass thisClass, jobject obj, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetObjectField(obj,fieldId);
 }
 
-JNIEXPORT jboolean JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getBooleanFieldValue0
+JNIEXPORT jboolean JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getBooleanFieldValue0
   (JNIEnv *env, jclass thisClass, jobject obj, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetBooleanField(obj,fieldId);
 }
 
-JNIEXPORT jbyte JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getByteFieldValue0
+JNIEXPORT jbyte JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getByteFieldValue0
   (JNIEnv *env, jclass thisClass, jobject obj, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetByteField(obj,fieldId);
 }
 
-JNIEXPORT jchar JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getCharFieldValue0
+JNIEXPORT jchar JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getCharFieldValue0
   (JNIEnv *env, jclass thisClass, jobject obj, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetCharField(obj,fieldId);
 }
 
-JNIEXPORT jshort JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getShortFieldValue0
+JNIEXPORT jshort JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getShortFieldValue0
   (JNIEnv *env, jclass thisClass, jobject obj, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetShortField(obj,fieldId);
 }
 
-JNIEXPORT jint JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getIntFieldValue0
+JNIEXPORT jint JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getIntFieldValue0
   (JNIEnv *env, jclass thisClass, jobject obj, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetIntField(obj,fieldId);
 }
 
-JNIEXPORT jlong JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getLongFieldValue0
+JNIEXPORT jlong JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getLongFieldValue0
   (JNIEnv *env, jclass thisClass, jobject obj, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetLongField(obj,fieldId);
 }
 
-JNIEXPORT jfloat JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getFloatFieldValue0
+JNIEXPORT jfloat JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getFloatFieldValue0
   (JNIEnv *env, jclass thisClass, jobject obj, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetFloatField(obj,fieldId);
 }
 
-JNIEXPORT jdouble JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getDoubleFieldValue0
+JNIEXPORT jdouble JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getDoubleFieldValue0
   (JNIEnv *env, jclass thisClass, jobject obj, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetDoubleField(obj,fieldId);
@@ -546,58 +594,58 @@ JNIEXPORT jdouble JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getDoubl
 // get static field
 /////////////////////////////////////////////////
 
-JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getStaticObjectFieldValue0
+JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStaticObjectFieldValue0
   (JNIEnv *env, jclass thisClass, jclass clazz, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetStaticObjectField(clazz,fieldId);
 }
 
-JNIEXPORT jboolean JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getStaticBooleanFieldValue0
+JNIEXPORT jboolean JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStaticBooleanFieldValue0
   (JNIEnv *env, jclass thisClass, jclass clazz, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetStaticBooleanField(clazz,fieldId);
 }
 
-JNIEXPORT jbyte JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getStaticByteFieldValue0
+JNIEXPORT jbyte JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStaticByteFieldValue0
   (JNIEnv *env, jclass thisClass, jclass clazz, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetStaticByteField(clazz,fieldId);
 }
 
 
-JNIEXPORT jchar JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getStaticCharFieldValue0
+JNIEXPORT jchar JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStaticCharFieldValue0
   (JNIEnv *env, jclass thisClass, jclass clazz, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetStaticCharField(clazz,fieldId);
 }
 
-JNIEXPORT jshort JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getStaticShortFieldValue0
+JNIEXPORT jshort JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStaticShortFieldValue0
   (JNIEnv *env, jclass thisClass, jclass clazz, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetStaticShortField(clazz,fieldId);
 }
 
-JNIEXPORT jint JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getStaticIntFieldValue0
+JNIEXPORT jint JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStaticIntFieldValue0
   (JNIEnv *env, jclass thisClass, jclass clazz, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetStaticIntField(clazz,fieldId);
 }
 
-JNIEXPORT jlong JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getStaticLongFieldValue0
+JNIEXPORT jlong JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStaticLongFieldValue0
   (JNIEnv *env, jclass thisClass, jclass clazz, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetStaticLongField(clazz,fieldId);
 }
 
 
-JNIEXPORT jfloat JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getStaticFloatFieldValue0
+JNIEXPORT jfloat JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStaticFloatFieldValue0
   (JNIEnv *env, jclass thisClass, jclass clazz, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetStaticFloatField(clazz,fieldId);
 }
 
 
-JNIEXPORT jdouble JNICALL Java_com_chenjw_knife_agent_util_NativeHelper_getStaticDoubleFieldValue0
+JNIEXPORT jdouble JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStaticDoubleFieldValue0
   (JNIEnv *env, jclass thisClass, jclass clazz, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetStaticDoubleField(clazz,fieldId);

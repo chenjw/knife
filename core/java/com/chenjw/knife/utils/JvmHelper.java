@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
-import org.apache.commons.io.FileUtils;
-
 public class JvmHelper {
 
 	private static final String PID_PATH = "/tmp/java_pid/";
@@ -14,7 +12,7 @@ public class JvmHelper {
 	private static void mkDir(String path) {
 		File folder = new File(path);
 		try {
-			FileUtils.forceMkdir(folder);
+			FileHelper.forceMkdir(folder);
 		} catch (IOException e) {
 		}
 	}
@@ -24,7 +22,7 @@ public class JvmHelper {
 		String pid = getPID();
 		File f = new File(PID_PATH + File.pathSeparator + key);
 		try {
-			FileUtils.writeStringToFile(f, pid, "UTF-8");
+			FileHelper.writeStringToFile(f, pid, "UTF-8");
 		} catch (IOException e) {
 		}
 	}
@@ -34,7 +32,7 @@ public class JvmHelper {
 		File f = new File(PID_PATH + File.pathSeparator + key);
 		if (f.exists()) {
 			try {
-				return FileUtils.readFileToString(f, "UTF-8");
+				return FileHelper.readFileToString(f, "UTF-8");
 			} catch (IOException e) {
 				return null;
 			}

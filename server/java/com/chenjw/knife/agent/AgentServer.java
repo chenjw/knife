@@ -8,7 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.chenjw.knife.agent.service.ServiceManager;
+import com.chenjw.knife.agent.manager.Registry;
+import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
 import com.chenjw.knife.core.PacketResolver;
@@ -20,10 +21,12 @@ public class AgentServer implements Runnable {
 	public PacketHandler handler = null;
 	private AgentInfo agentInfo;
 
-	public AgentServer(int port, Instrumentation inst) throws IOException {
+	public AgentServer(int port, Instrumentation inst,
+			ClassLoader baseClassLoader) throws IOException {
 		try {
 			AgentInfo agentInfo = new AgentInfo();
 			agentInfo.setInst(inst);
+			agentInfo.setBaseClassLoader(baseClassLoader);
 			this.agentInfo = agentInfo;
 			handler = new AgentPacketListener();
 			serverSocket = new ServerSocket(port, 1,
@@ -41,13 +44,16 @@ public class AgentServer implements Runnable {
 
 	@Override
 	public void run() {
+		NativeHelper.startClassLoadHook();
 		Socket socket = null;
 		try {
 			socket = serverSocket.accept();
 			InputStream is = socket.getInputStream();
 			agentInfo.setSocket(socket);
-			Agent.setInfo(agentInfo);
-			Agent.println("connected!");
+			Agent.setAgentInfo(agentInfo);
+			Agent.info("connected!");
+
+			Registry.getInstance().init();
 			Packet command = null;
 			while (true) {
 				command = PacketResolver.read(is);
@@ -73,22 +79,12 @@ public class AgentServer implements Runnable {
 				}
 			}
 			socket = null;
-			ServiceManager.getInstance().clear();
+			Registry.getInstance().clear();
+			Registry.getInstance().close();
 			Agent.close();
 			System.out.println("agent uninstalled!");
 		}
 
 	}
 
-	public static void main(String[] args) throws IOException {
-		new Thread(new AgentServer(1111, null)).start();
-		while (true) {
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
 }

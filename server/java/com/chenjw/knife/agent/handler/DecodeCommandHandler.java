@@ -5,9 +5,9 @@ import java.net.URLDecoder;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.handler.arg.ArgDef;
-import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.service.ObjectRecordManager;
+import com.chenjw.knife.agent.args.ArgDef;
+import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.manager.ObjectRecordManager;
 
 public class DecodeCommandHandler implements CommandHandler {
 
@@ -15,7 +15,7 @@ public class DecodeCommandHandler implements CommandHandler {
 			throws Exception {
 		String str = args.arg("string-to-decode");
 		String decodeStr = URLDecoder.decode(str, "UTF-8");
-		Agent.println("[decode] "
+		Agent.info("[decode] "
 				+ ObjectRecordManager.getInstance().toId(decodeStr) + " "
 				+ decodeStr);
 	}

@@ -5,11 +5,12 @@ import org.springframework.context.ApplicationContext;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.handler.arg.ArgDef;
-import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.service.ContextManager;
-import com.chenjw.knife.agent.util.NativeHelper;
+import com.chenjw.knife.agent.args.ArgDef;
+import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.constants.Constants;
+import com.chenjw.knife.agent.manager.ContextManager;
+import com.chenjw.knife.agent.utils.ClassLoaderHelper;
+import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.core.Command;
 
 public class DoCommandHandler implements CommandHandler {
@@ -33,6 +34,13 @@ public class DoCommandHandler implements CommandHandler {
 	}
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
+		ClassLoaderHelper.view();
+
+		do4(args, dispatcher);
+		Agent.info("do finished!");
+	}
+
+	private void do1(Args args, CommandDispatcher dispatcher) {
 		init();
 		ContextManager.getInstance().put(Constants.THIS,
 				getBean("applyService"));
@@ -40,7 +48,45 @@ public class DoCommandHandler implements CommandHandler {
 		// "-f com.chenjw.* apply({\"id\":1})"));
 		dispatcher.dispatch(new Command("invoke", "-t apply({\"id\":1})"));
 		// dispatcher.dispatch(new Command("trace", "-f com.chenjw.* apply"));
-		Agent.println("do finished!");
+	}
+
+	private void do4(Args args, CommandDispatcher dispatcher) {
+		init();
+		ContextManager.getInstance().put(Constants.THIS,
+				getBean("applyService"));
+		// dispatcher.dispatch(new Command("invoke",
+		// "-f com.chenjw.* apply({\"id\":1})"));
+		// dispatcher.dispatch(new Command("invoke", "-t apply({\"id\":1})"));
+		dispatcher.dispatch(new Command("trace", "-t apply"));
+	}
+
+	private void do2(Args args, CommandDispatcher dispatcher) {
+		init();
+		ContextManager.getInstance().put(Constants.THIS,
+				getBean("pageCommonDataFeeder"));
+		dispatcher.dispatch(new Command("trace", "getData"));
+	}
+
+	private void do3(Args args, CommandDispatcher dispatcher) {
+		for (Class<?> clazz : Agent.getAllLoadedClasses()) {
+			if ("com.alibaba.china.credit.profile.dataFeeder.PageCommonDataFeeder"
+					.equals(clazz.getName())) {
+				ClassLoaderHelper.resetClassLoader(clazz);
+				try {
+					Class<?> cc = clazz
+							.getClassLoader()
+							.loadClass(
+									"com.alibaba.china.credit.profile.param.DetailParametersVO");
+					System.out.println("cc" + cc.getClassLoader());
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println(clazz.getClassLoader());
+			}
+		}
+
+		dispatcher.dispatch(new Command("trace", "getData"));
 	}
 
 	public void declareArgs(ArgDef argDef) {

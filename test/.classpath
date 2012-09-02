@@ -3,15 +3,13 @@
 	<classpathentry kind="src" path="java"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/knife.core/lib/java.j2ee-1.4.jar"/>
-	<classpathentry kind="lib" path="/knife.core/lib/sourceforge.spring-2.5.6.jar"/>
-	<classpathentry kind="lib" path="/home/chenjw/software/jdk1.6.0_29/lib/tools.jar"/>
-	<classpathentry kind="lib" path="/knife.core/lib/aspectjrt.jar"/>
-	<classpathentry kind="lib" path="/knife.core/lib/aspectjweaver.jar"/>
-	<classpathentry kind="lib" path="/knife.core/lib/cglib-nodep-2.1_3.jar"/>
-	<classpathentry kind="lib" path="/knife.core/lib/sourceforge.spring-2.5.6-sources.zip"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/knife.agent"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/knife.core"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/knife.server"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/aspectjrt.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/aspectjweaver.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/cglib-nodep-2.1_3.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/sourceforge.spring-2.5.6-sources.zip"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/sourceforge.spring-2.5.6.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/java.j2ee-1.4.jar"/>
+	<classpathentry kind="lib" path="/home/chenjw/桌面/jetty-distribution-8.1.5.v20120716/lib/jetty-webapp-8.1.5.v20120716.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

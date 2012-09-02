@@ -3,11 +3,11 @@ package com.chenjw.knife.agent.handler;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.handler.arg.ArgDef;
-import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.service.HistoryManager;
-import com.chenjw.knife.agent.service.ObjectRecordManager;
-import com.chenjw.knife.agent.util.ToStringHelper;
+import com.chenjw.knife.agent.args.ArgDef;
+import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.manager.HistoryManager;
+import com.chenjw.knife.agent.manager.ObjectRecordManager;
+import com.chenjw.knife.agent.utils.ToStringHelper;
 
 public class CdCommandHandler implements CommandHandler {
 
@@ -21,7 +21,7 @@ public class CdCommandHandler implements CommandHandler {
 			int index = Integer.parseInt(param);
 			obj = HistoryManager.getInstance().cd(index);
 		}
-		Agent.println("into " + ObjectRecordManager.getInstance().toId(obj)
+		Agent.info("into " + ObjectRecordManager.getInstance().toId(obj)
 				+ ToStringHelper.toString(obj));
 
 	}

@@ -16,8 +16,7 @@ import java.util.Map;
 
 public class AgentMain {
 
-	private static URL[] initJarPath(Instrumentation inst,
-			Map<String, String> args) {
+	private static URL[] initJarPath(Map<String, String> args) {
 		List<URL> result = new ArrayList<URL>();
 		try {
 			// String bjs = args.get("bootstrapJars");
@@ -94,7 +93,7 @@ public class AgentMain {
 		try {
 			backupClassLoader = Thread.currentThread().getContextClassLoader();
 			Map<String, String> args = parseArgs(readArgs(arguments));
-			URL[] urls = initJarPath(inst, args);
+			URL[] urls = initJarPath(args);
 			ClassLoader classLoader = new AgentClassLoader(urls, Thread
 					.currentThread().getContextClassLoader());
 			Thread.currentThread().setContextClassLoader(classLoader);
@@ -102,9 +101,11 @@ public class AgentMain {
 					.loadClass("com.chenjw.knife.agent.AgentServer");
 			Constructor<?> constructor = classAgentServer
 					.getConstructor(new Class<?>[] { int.class,
-							Instrumentation.class });
-			Thread thread = new Thread((Runnable) constructor.newInstance(
-					Integer.parseInt(args.get("port")), inst), "agent-server");
+							Instrumentation.class, ClassLoader.class });
+			Thread thread = new Thread(
+					(Runnable) constructor.newInstance(
+							Integer.parseInt(args.get("port")), inst,
+							backupClassLoader), "agent-server");
 			thread.setDaemon(true);
 			thread.start();
 			System.out.println("agent installed!");

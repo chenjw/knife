@@ -3,17 +3,17 @@ package com.chenjw.knife.agent.handler;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import com.chenjw.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.handler.arg.ArgDef;
-import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.service.ContextManager;
-import com.chenjw.knife.agent.util.NativeHelper;
-import com.chenjw.knife.agent.util.ParseHelper;
-import com.chenjw.knife.agent.util.StringHelper;
+import com.chenjw.knife.agent.args.ArgDef;
+import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.bytecode.javassist.Helper;
+import com.chenjw.knife.agent.constants.Constants;
+import com.chenjw.knife.agent.manager.ContextManager;
+import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.ParseHelper;
+import com.chenjw.knife.utils.StringHelper;
 
 public class SetCommandHandler implements CommandHandler {
 
@@ -28,7 +28,7 @@ public class SetCommandHandler implements CommandHandler {
 			fieldName = StringHelper.substringAfterLast(fieldName, ".");
 			Class<?> clazz = Helper.findClass(className);
 			if (clazz == null) {
-				Agent.println("class not found!");
+				Agent.info("class not found!");
 				return;
 			}
 			field = NativeHelper.findStaticField(clazz, fieldName);
@@ -36,19 +36,19 @@ public class SetCommandHandler implements CommandHandler {
 		} else if (args.arg("-s") != null) {
 			obj = ContextManager.getInstance().get(Constants.THIS);
 			if (obj == null) {
-				Agent.println("not found!");
+				Agent.info("not found!");
 				return;
 			}
 			Class<?> clazz = obj.getClass();
 			if (clazz == null) {
-				Agent.println("class not found!");
+				Agent.info("class not found!");
 				return;
 			}
 			field = NativeHelper.findStaticField(clazz, fieldName);
 		} else {
 			obj = ContextManager.getInstance().get(Constants.THIS);
 			if (obj == null) {
-				Agent.println("not found!");
+				Agent.info("not found!");
 				return;
 			}
 			field = NativeHelper.findField(obj, fieldName);
@@ -58,13 +58,13 @@ public class SetCommandHandler implements CommandHandler {
 			}
 		}
 		if (field == null) {
-			Agent.println("field " + fieldName + " not found!");
+			Agent.info("field " + fieldName + " not found!");
 			return;
 		}
 		Object newValue = ParseHelper.parseValue(value, field.getType());
 		setFieldValue(obj, field, newValue);
 
-		Agent.println("finished!");
+		Agent.info("finished!");
 	}
 
 	public void setFieldValue(Object obj, Field field, Object newValue) {

@@ -3,18 +3,14 @@
 	<classpathentry kind="src" path="java"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/chenjw/software/jdk1.6.0_29/lib/tools.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/knife.core"/>
-	<classpathentry kind="lib" path="/knife.core/lib/java.j2ee-1.4.jar"/>
-	<classpathentry kind="lib" path="/knife.core/lib/misc.javassist-3.9.0.GA.jar"/>
-	<classpathentry kind="lib" path="/knife.core/lib/sourceforge.spring-2.5.6.jar"/>
-	<classpathentry kind="lib" path="/knife.core/lib/fastjson-1.1.17.jar"/>
-	<classpathentry kind="lib" path="/knife.core/lib/fastjson-1.1.17-sources.zip"/>
-	<classpathentry kind="lib" path="/knife.core/lib/misc.javassist-3.9.0.GA-sources.zip"/>
-	<classpathentry kind="lib" path="/knife.core/lib/sourceforge.spring-2.5.6-sources.zip"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/knife.agent"/>
-	<classpathentry kind="lib" path="/knife.core/lib/cglib-nodep-2.1_3.jar"/>
-	<classpathentry kind="lib" path="/knife.core/lib/aspectjrt.jar"/>
-	<classpathentry kind="lib" path="/knife.core/lib/aspectjweaver.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/misc.javassist-3.9.0.GA-sources.zip"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/misc.javassist-3.9.0.GA.jar" sourcepath="/knife.lib/lib/misc.javassist-3.9.0.GA-sources.zip"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/tools.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/sourceforge.spring-2.5.6-sources.zip"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/sourceforge.spring-2.5.6.jar" sourcepath="/knife.lib/lib/sourceforge.spring-2.5.6-sources.zip"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17-sources.zip"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

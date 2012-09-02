@@ -1,10 +1,5 @@
 package com.chenjw.knife.agent.handler;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -15,18 +10,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.chenjw.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.handler.arg.ArgDef;
-import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.service.ContextManager;
-import com.chenjw.knife.agent.service.ObjectRecordManager;
-import com.chenjw.knife.agent.util.NativeHelper;
-import com.chenjw.knife.agent.util.StringHelper;
-import com.chenjw.knife.agent.util.ToStringHelper;
+import com.chenjw.knife.agent.args.ArgDef;
+import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.bytecode.javassist.Helper;
+import com.chenjw.knife.agent.constants.Constants;
+import com.chenjw.knife.agent.manager.ContextManager;
+import com.chenjw.knife.agent.manager.ObjectRecordManager;
+import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.ToStringHelper;
+import com.chenjw.knife.utils.StringHelper;
 
 public class LsCommandHandler implements CommandHandler {
 
@@ -37,14 +32,14 @@ public class LsCommandHandler implements CommandHandler {
 		if (StringHelper.isBlank(className)) {
 			obj = ContextManager.getInstance().get(Constants.THIS);
 			if (obj == null) {
-				Agent.println("not found!");
+				Agent.info("not found!");
 				return;
 			}
 			clazz = obj.getClass();
 		} else {
 			clazz = Helper.findClass(className);
 			if (clazz == null) {
-				Agent.println("not found!");
+				Agent.info("not found!");
 				return;
 			}
 		}
@@ -52,7 +47,7 @@ public class LsCommandHandler implements CommandHandler {
 			Map<Field, Object> fieldMap = NativeHelper
 					.getStaticFieldValues(clazz);
 			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
-				Agent.println("[static-field] "
+				Agent.info("[static-field] "
 						+ entry.getKey().getName()
 						+ " = "
 						+ ObjectRecordManager.getInstance().toId(
@@ -63,7 +58,7 @@ public class LsCommandHandler implements CommandHandler {
 		if (obj != null) {
 			Map<Field, Object> fieldMap = NativeHelper.getFieldValues(obj);
 			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
-				Agent.println("[field] "
+				Agent.info("[field] "
 						+ entry.getKey().getName()
 						+ " = "
 						+ ObjectRecordManager.getInstance().toId(
@@ -71,7 +66,7 @@ public class LsCommandHandler implements CommandHandler {
 						+ toString(args, entry.getValue()));
 			}
 		}
-		Agent.println("finished!");
+		Agent.info("finished!");
 	}
 
 	private void lsMethod(Args args) {
@@ -82,14 +77,14 @@ public class LsCommandHandler implements CommandHandler {
 		if (StringHelper.isBlank(className)) {
 			obj = ContextManager.getInstance().get(Constants.THIS);
 			if (obj == null) {
-				Agent.println("not found!");
+				Agent.info("not found!");
 				return;
 			}
 			clazz = obj.getClass();
 		} else {
 			clazz = Helper.findClass(className);
 			if (clazz == null) {
-				Agent.println("not found!");
+				Agent.info("not found!");
 				return;
 			}
 		}
@@ -99,7 +94,7 @@ public class LsCommandHandler implements CommandHandler {
 			Method[] methods = clazz.getMethods();
 			for (Method method : methods) {
 				if (Modifier.isStatic(method.getModifiers())) {
-					Agent.println(i + ". [static-method] " + method.getName()
+					Agent.info(i + ". [static-method] " + method.getName()
 							+ "("
 							+ getParamClassNames(method.getParameterTypes())
 							+ ")");
@@ -112,7 +107,7 @@ public class LsCommandHandler implements CommandHandler {
 			Method[] methods = obj.getClass().getMethods();
 			for (Method method : methods) {
 				if (!Modifier.isStatic(method.getModifiers())) {
-					Agent.println(i + ". [method] " + method.getName() + "("
+					Agent.info(i + ". [method] " + method.getName() + "("
 							+ getParamClassNames(method.getParameterTypes())
 							+ ")");
 					list.add(method);
@@ -122,7 +117,7 @@ public class LsCommandHandler implements CommandHandler {
 		}
 		ContextManager.getInstance().put(Constants.METHOD_LIST,
 				list.toArray(new Method[list.size()]));
-		Agent.println("finished!");
+		Agent.info("finished!");
 	}
 
 	private void lsConstruct(Args args) {
@@ -132,14 +127,14 @@ public class LsCommandHandler implements CommandHandler {
 		if (StringHelper.isBlank(className)) {
 			obj = ContextManager.getInstance().get(Constants.THIS);
 			if (obj == null) {
-				Agent.println("not found!");
+				Agent.info("not found!");
 				return;
 			}
 			clazz = obj.getClass();
 		} else {
 			clazz = Helper.findClass(className);
 			if (clazz == null) {
-				Agent.println("not found!");
+				Agent.info("not found!");
 				return;
 			}
 		}
@@ -147,14 +142,14 @@ public class LsCommandHandler implements CommandHandler {
 		int i = 0;
 		Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 		for (Constructor<?> constructor : constructors) {
-			Agent.println(i + ". [constructor] " + clazz.getSimpleName() + "("
+			Agent.info(i + ". [constructor] " + clazz.getSimpleName() + "("
 					+ getParamClassNames(constructor.getParameterTypes()) + ")");
 			list.add(constructor);
 			i++;
 		}
 		ContextManager.getInstance().put(Constants.CONSTRUCTOR_LIST,
 				list.toArray(new Constructor[list.size()]));
-		Agent.println("finished!");
+		Agent.info("finished!");
 
 	}
 
@@ -168,32 +163,22 @@ public class LsCommandHandler implements CommandHandler {
 					Integer.parseInt(className));
 		}
 		if (obj == null) {
-			Agent.println("not found!");
+			Agent.info("not found!");
 			return;
 		}
 		if ((obj instanceof Throwable) && (args.option("-d") != null)) {
-			Throwable e = (Throwable) obj;
-			StringWriter sw = new StringWriter();
-			e.printStackTrace(new PrintWriter(sw));
-			String errorTrace = sw.toString();
-			Agent.println(" " + ObjectRecordManager.getInstance().toId(obj));
-			BufferedReader br = new BufferedReader(new StringReader(errorTrace));
-			String line = null;
-			try {
-				while ((line = br.readLine()) != null) {
-					Agent.println(line);
-				}
-			} catch (IOException e1) {
-			}
+			Agent.info(" " + ObjectRecordManager.getInstance().toId(obj));
+			Agent.print((Throwable) obj);
 		} else {
-			Agent.println(" " + ObjectRecordManager.getInstance().toId(obj)
+			Agent.info(" " + ObjectRecordManager.getInstance().toId(obj)
 					+ toString(args, obj));
 
 		}
-		Agent.println("finished!");
+		Agent.info("finished!");
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private void lsArray(Args args) {
 		Object obj = null;
 		String className = args.arg("classname");
@@ -204,29 +189,29 @@ public class LsCommandHandler implements CommandHandler {
 					Integer.parseInt(className));
 		}
 		if (obj == null) {
-			Agent.println("not found!");
+			Agent.info("not found!");
 			return;
 		}
 		if (obj.getClass().isArray()) {
 
 			for (int i = 0; i < Array.getLength(obj); i++) {
 				Object aObj = Array.get(obj, i);
-				Agent.println(i + ". "
+				Agent.info(i + ". "
 						+ ObjectRecordManager.getInstance().toId(aObj)
 						+ toString(args, aObj));
 			}
-			Agent.println("finished!");
+			Agent.info("finished!");
 		} else if (obj instanceof List) {
 			int i = 0;
 			for (Object aObj : (List<Object>) obj) {
-				Agent.println(i + ". "
+				Agent.info(i + ". "
 						+ ObjectRecordManager.getInstance().toId(aObj)
 						+ toString(args, aObj));
 				i++;
 			}
-			Agent.println("finished!");
+			Agent.info("finished!");
 		} else {
-			Agent.println("not array!");
+			Agent.info("not array!");
 		}
 
 	}

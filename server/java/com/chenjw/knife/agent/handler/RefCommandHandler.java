@@ -3,13 +3,13 @@ package com.chenjw.knife.agent.handler;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
-import com.chenjw.knife.agent.handler.arg.ArgDef;
-import com.chenjw.knife.agent.handler.arg.Args;
-import com.chenjw.knife.agent.handler.constants.Constants;
-import com.chenjw.knife.agent.service.ContextManager;
-import com.chenjw.knife.agent.service.ObjectRecordManager;
-import com.chenjw.knife.agent.util.NativeHelper;
-import com.chenjw.knife.agent.util.ToStringHelper;
+import com.chenjw.knife.agent.args.ArgDef;
+import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.constants.Constants;
+import com.chenjw.knife.agent.manager.ContextManager;
+import com.chenjw.knife.agent.manager.ObjectRecordManager;
+import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.ToStringHelper;
 
 public class RefCommandHandler implements CommandHandler {
 
@@ -25,20 +25,20 @@ public class RefCommandHandler implements CommandHandler {
 		}
 
 		if (obj == null) {
-			Agent.println("id not found! ");
+			Agent.info("id not found! ");
 			return;
 		}
 		Object[] refs = NativeHelper.findReferrerByObject(obj);
 		if (refs == null || refs.length == 0) {
-			Agent.println("not found! ");
+			Agent.info("not found! ");
 			return;
 		}
 		for (Object ref : refs) {
-			Agent.println("[ref] "
+			Agent.info("[ref] "
 					+ ObjectRecordManager.getInstance().toId(ref)
 					+ ToStringHelper.toString(ref));
 		}
-		Agent.println("finished!");
+		Agent.info("finished!");
 
 	}
 

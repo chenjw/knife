@@ -18,6 +18,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
+
 		// JvmUtils.writePid(PID_ID);
 		XmlWebApplicationContext context = new XmlWebApplicationContext();
 		context.setConfigLocation("classpath:com/chenjw/knife/server/context.xml");

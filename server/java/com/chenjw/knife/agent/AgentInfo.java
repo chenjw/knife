@@ -13,6 +13,9 @@ public class AgentInfo {
 	// will be loaded when enter and unload when close
 	private List<String> bootstrapJars;
 	private List<String> systemJars;
+	private boolean isDebugOn = false;
+
+	private ClassLoader baseClassLoader;
 
 	public AgentInfo() {
 	}
@@ -60,6 +63,22 @@ public class AgentInfo {
 
 	public void setSystemJars(List<String> systemJars) {
 		this.systemJars = systemJars;
+	}
+
+	public boolean isDebugOn() {
+		return isDebugOn;
+	}
+
+	public void setDebugOn(boolean isDebugOn) {
+		this.isDebugOn = isDebugOn;
+	}
+
+	public ClassLoader getBaseClassLoader() {
+		return baseClassLoader;
+	}
+
+	public void setBaseClassLoader(ClassLoader baseClassLoader) {
+		this.baseClassLoader = baseClassLoader;
 	}
 
 }
