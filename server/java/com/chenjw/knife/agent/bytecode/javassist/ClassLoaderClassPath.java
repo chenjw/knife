@@ -27,8 +27,10 @@ public class ClassLoaderClassPath implements ClassPath {
 
 		Class<?> clazz;
 		try {
+
 			clazz = classLoader.loadClass(classname);
 		} catch (ClassNotFoundException e) {
+			System.out.println(classLoader + " load " + classname + " fail");
 			return null;
 		}
 		if (clazz == null) {

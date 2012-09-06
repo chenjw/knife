@@ -274,6 +274,12 @@ public class NativeHelper {
 		return fieldList.toArray(new Field[fieldList.size()]);
 	}
 
+	public static String getClassSourceFileName(Class<?> clazz) {
+		String str = getClassSourceFileName0(clazz);
+		System.out.println("returnd " + str);
+		return str;
+	}
+
 	public static byte[] getClassBytes(Class<?> clazz) {
 		if (clazz == null) {
 			return null;
@@ -446,6 +452,10 @@ public class NativeHelper {
 	private native static double getStaticDoubleFieldValue0(Class<?> clazz,
 			Field field);
 
+	private native static String getClassSourceFileName0(Class<?> clazz);
+
+	private native static ClassLoader getCallerClassLoader0();
+
 	/**
 	 * invoke by native code
 	 * 
@@ -497,10 +507,8 @@ public class NativeHelper {
 	}
 
 	private static void do1() throws ClassNotFoundException {
-		System.out
-				.println(NativeHelper.getClassBytes(OutputStream.class).length);
-
-		Class.forName("com.chenjw.knife.agent.handler.arg.Args");
+		System.out.println((byte) NativeHelper.getClassSourceFileName(
+				String.class).toCharArray()[0]);
 
 	}
 

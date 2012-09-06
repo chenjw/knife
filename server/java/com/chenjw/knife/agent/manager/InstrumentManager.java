@@ -13,6 +13,7 @@ import javassist.expr.ExprEditor;
 import javassist.expr.FieldAccess;
 import javassist.expr.MethodCall;
 
+import com.chenjw.knife.agent.AgentClassLoader;
 import com.chenjw.knife.agent.Profiler;
 import com.chenjw.knife.agent.bytecode.javassist.ClassGenerator;
 import com.chenjw.knife.agent.bytecode.javassist.ClassLoaderClassPath;
@@ -36,7 +37,7 @@ public class InstrumentManager implements Lifecycle {
 	}
 
 	private void buildMethodAccess(Method method) throws Exception {
-
+		System.out.println(InstrumentManager.class.getClassLoader());
 		String methodFullName = method.toGenericString();
 		// filter traced method
 		if (TRACED_METHOD.contains(methodFullName)) {
@@ -51,8 +52,8 @@ public class InstrumentManager implements Lifecycle {
 		}
 
 		ClassGenerator newClassGenerator = ClassGenerator.newInstance(method
-				.getDeclaringClass().getName(), new ClassLoaderClassPath(Thread
-				.currentThread().getContextClassLoader()));
+				.getDeclaringClass().getName(), new ClassLoaderClassPath(
+				AgentClassLoader.getAgentClassLoader()));
 		CtClass ctClass = newClassGenerator.getCtClass();
 		CtMethod newMethod = Helper.findCtMethod(ctClass, method);
 
@@ -81,8 +82,8 @@ public class InstrumentManager implements Lifecycle {
 			return;
 		}
 		ClassGenerator newClassGenerator = ClassGenerator.newInstance(method
-				.getDeclaringClass().getName(), new ClassLoaderClassPath(Thread
-				.currentThread().getContextClassLoader()));
+				.getDeclaringClass().getName(), new ClassLoaderClassPath(
+				AgentClassLoader.getAgentClassLoader()));
 		CtClass ctClass = newClassGenerator.getCtClass();
 		CtMethod newMethod = Helper.findCtMethod(ctClass, method);
 		if (newMethod != null) {

@@ -36,7 +36,7 @@ public class DoCommandHandler implements CommandHandler {
 	public void handle(Args args, CommandDispatcher dispatcher) {
 		ClassLoaderHelper.view();
 
-		do4(args, dispatcher);
+		do5(args, dispatcher);
 		Agent.info("do finished!");
 	}
 
@@ -48,6 +48,16 @@ public class DoCommandHandler implements CommandHandler {
 		// "-f com.chenjw.* apply({\"id\":1})"));
 		dispatcher.dispatch(new Command("invoke", "-t apply({\"id\":1})"));
 		// dispatcher.dispatch(new Command("trace", "-f com.chenjw.* apply"));
+	}
+
+	private void do5(Args args, CommandDispatcher dispatcher) {
+
+		// dispatcher.dispatch(new Command("invoke",
+		// "-f com.chenjw.* apply({\"id\":1})"));
+		// dispatcher.dispatch(new Command("invoke", "-t apply({\"id\":1})"));
+		dispatcher.dispatch(new Command("find", "ApplyServiceImpl"));
+		dispatcher.dispatch(new Command("cd", "0"));
+		dispatcher.dispatch(new Command("trace", "-t apply"));
 	}
 
 	private void do4(Args args, CommandDispatcher dispatcher) {

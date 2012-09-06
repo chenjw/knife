@@ -21,12 +21,10 @@ public class AgentServer implements Runnable {
 	public PacketHandler handler = null;
 	private AgentInfo agentInfo;
 
-	public AgentServer(int port, Instrumentation inst,
-			ClassLoader baseClassLoader) throws IOException {
+	public AgentServer(int port, Instrumentation inst) throws IOException {
 		try {
 			AgentInfo agentInfo = new AgentInfo();
 			agentInfo.setInst(inst);
-			agentInfo.setBaseClassLoader(baseClassLoader);
 			this.agentInfo = agentInfo;
 			handler = new AgentPacketListener();
 			serverSocket = new ServerSocket(port, 1,

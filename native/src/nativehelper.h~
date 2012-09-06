@@ -369,6 +369,23 @@ JNIEXPORT jfloat JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStati
 JNIEXPORT jdouble JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStaticDoubleFieldValue0
   (JNIEnv *, jclass, jclass, jobject);
 
+/*
+ * Class:     com_chenjw_knife_agent_utils_NativeHelper
+ * Method:    getClassSourceFileName0
+ * Signature: (Ljava/lang/Class;)Ljava/lang/Object;
+ */
+JNIEXPORT jstring JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getClassSourceFileName0
+  (JNIEnv *, jclass, jclass);
+
+/*
+ * Class:     com_chenjw_knife_agent_utils_NativeHelper
+ * Method:    getCallerClassLoader0
+ * Signature: ()Ljava/lang/ClassLoader;
+ */
+JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getCallerClassLoader0
+  (JNIEnv *, jclass);
+
+
 #ifdef __cplusplus
 }
 #endif

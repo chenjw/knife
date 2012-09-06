@@ -1,6 +1,5 @@
 package com.chenjw.knife.agent.utils;
 
-import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.AgentClassLoader;
 import com.chenjw.knife.core.Printer;
 
@@ -17,7 +16,7 @@ public class ClassLoaderHelper {
 			AgentClassLoader loader = (AgentClassLoader) currentClassLoader;
 			ClassLoader baseLoader = clazz.getClassLoader();
 			if (baseLoader == null) {
-				baseLoader = Agent.getBaseClassLoader();
+				baseLoader = ClassLoader.getSystemClassLoader();
 			}
 			loader.setParent(baseLoader);
 			if (printer != null) {

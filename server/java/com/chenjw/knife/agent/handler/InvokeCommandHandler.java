@@ -26,6 +26,7 @@ import com.chenjw.knife.agent.filter.ExceptionFilter;
 import com.chenjw.knife.agent.filter.Filter;
 import com.chenjw.knife.agent.filter.FilterInvocationListener;
 import com.chenjw.knife.agent.filter.FixThreadFilter;
+import com.chenjw.knife.agent.filter.InstrumentClassLoaderFilter;
 import com.chenjw.knife.agent.filter.InstrumentFilter;
 import com.chenjw.knife.agent.filter.InvokeFinishFilter;
 import com.chenjw.knife.agent.filter.InvokePrintFilter;
@@ -55,6 +56,7 @@ public class InvokeCommandHandler implements CommandHandler {
 		filters.add(new TimingStopFilter());
 		Map<String, String> tOptions = args.option("-t");
 		if (tOptions != null) {
+			filters.add(new InstrumentClassLoaderFilter());
 			filters.add(new InstrumentFilter());
 		}
 		Map<String, String> options = args.option("-f");

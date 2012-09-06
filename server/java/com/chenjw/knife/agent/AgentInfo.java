@@ -15,8 +15,6 @@ public class AgentInfo {
 	private List<String> systemJars;
 	private boolean isDebugOn = false;
 
-	private ClassLoader baseClassLoader;
-
 	public AgentInfo() {
 	}
 
@@ -71,14 +69,6 @@ public class AgentInfo {
 
 	public void setDebugOn(boolean isDebugOn) {
 		this.isDebugOn = isDebugOn;
-	}
-
-	public ClassLoader getBaseClassLoader() {
-		return baseClassLoader;
-	}
-
-	public void setBaseClassLoader(ClassLoader baseClassLoader) {
-		this.baseClassLoader = baseClassLoader;
 	}
 
 }

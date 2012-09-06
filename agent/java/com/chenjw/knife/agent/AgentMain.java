@@ -85,27 +85,23 @@ public class AgentMain {
 		}
 	}
 
-	private static ClassLoader backupClassLoader = null;
-
 	public static void agentmain(String arguments, Instrumentation inst)
 			throws Exception {
 
 		try {
-			backupClassLoader = Thread.currentThread().getContextClassLoader();
+
 			Map<String, String> args = parseArgs(readArgs(arguments));
 			URL[] urls = initJarPath(args);
-			ClassLoader classLoader = new AgentClassLoader(urls, Thread
-					.currentThread().getContextClassLoader());
-			Thread.currentThread().setContextClassLoader(classLoader);
-			Class<?> classAgentServer = classLoader
+			AgentClassLoader.setAgentClassLoader(new AgentClassLoader(urls,
+					ClassLoader.getSystemClassLoader()));
+			// Thread.currentThread().setContextClassLoader(classLoader);
+			Class<?> classAgentServer = AgentClassLoader.getAgentClassLoader()
 					.loadClass("com.chenjw.knife.agent.AgentServer");
 			Constructor<?> constructor = classAgentServer
 					.getConstructor(new Class<?>[] { int.class,
-							Instrumentation.class, ClassLoader.class });
-			Thread thread = new Thread(
-					(Runnable) constructor.newInstance(
-							Integer.parseInt(args.get("port")), inst,
-							backupClassLoader), "agent-server");
+							Instrumentation.class });
+			Thread thread = new Thread((Runnable) constructor.newInstance(
+					Integer.parseInt(args.get("port")), inst), "agent-server");
 			thread.setDaemon(true);
 			thread.start();
 			System.out.println("agent installed!");
@@ -113,9 +109,7 @@ public class AgentMain {
 			e.printStackTrace();
 			storeException(e);
 		} finally {
-			if (backupClassLoader != null) {
-				Thread.currentThread().setContextClassLoader(backupClassLoader);
-			}
+
 		}
 	}
 

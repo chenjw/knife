@@ -47,6 +47,7 @@ void initJvmti(JNIEnv * env){
 		capabilities.can_retransform_any_class = 1;
 		capabilities.can_redefine_classes = 1;
 		capabilities.can_redefine_any_class = 1;
+		capabilities.can_get_source_file_name = 1;
 	  	error= jvmti->AddCapabilities(&capabilities);
 	}	
 }
@@ -649,6 +650,25 @@ JNIEXPORT jdouble JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getStat
   (JNIEnv *env, jclass thisClass, jclass clazz, jobject field){
 	jfieldID fieldId=env->FromReflectedField(field);
 	return env->GetStaticDoubleField(clazz,fieldId);
+}
+
+
+JNIEXPORT jstring JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getClassSourceFileName0
+  (JNIEnv *env, jclass thisClass, jclass clazz){
+	initJvmti(env);
+	char* source_name_ptr;
+	jvmti->GetSourceFileName(clazz,&source_name_ptr);
+	jstring result=env->NewStringUTF(source_name_ptr);
+	return result;
+}
+
+JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getCallerClassLoader0
+  (JNIEnv *env, jclass thisClass){
+	//jclass caller = JVM_GetCallerClass(env,2);
+	//return caller != 0 ? JVM_GetClassLoader(env,caller) : 0;
+
+	// not implemented
+	return NULL;
 }
 
 

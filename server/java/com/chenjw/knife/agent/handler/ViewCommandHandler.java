@@ -9,6 +9,7 @@ import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.manager.ContextManager;
+import com.chenjw.knife.agent.utils.NativeHelper;
 
 public class ViewCommandHandler implements CommandHandler {
 
@@ -22,6 +23,9 @@ public class ViewCommandHandler implements CommandHandler {
 			if (args.option("-c") != null) {
 				Agent.info(thisObject.getClass().getClassLoader().getClass()
 						.toString());
+			} else if (args.option("-s") != null) {
+				Agent.info(NativeHelper.getClassSourceFileName(thisObject
+						.getClass()));
 			}
 			Agent.info("option not found");
 		}
@@ -31,8 +35,9 @@ public class ViewCommandHandler implements CommandHandler {
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("view");
 		argDef.setDesc("trace an invocation on the target object.");
-		argDef.setDef("[-c]");
+		argDef.setDef("[-c] [-s]");
 		argDef.addOptionDesc("-c", "view classloader");
+		argDef.addOptionDesc("-s", "view class file name");
 	}
 
 }

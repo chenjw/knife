@@ -20,6 +20,7 @@ import com.chenjw.knife.agent.filter.EnterLeavePrintFilter;
 import com.chenjw.knife.agent.filter.ExceptionFilter;
 import com.chenjw.knife.agent.filter.Filter;
 import com.chenjw.knife.agent.filter.FilterInvocationListener;
+import com.chenjw.knife.agent.filter.InstrumentClassLoaderFilter;
 import com.chenjw.knife.agent.filter.InstrumentEnterLeaveFilter;
 import com.chenjw.knife.agent.filter.InstrumentFilter;
 import com.chenjw.knife.agent.filter.InvokePrintFilter;
@@ -65,10 +66,10 @@ public class TraceCommandHandler implements CommandHandler {
 
 		filters.add(new TimingStopFilter());
 		Map<String, String> tOptions = args.option("-t");
+		filters.add(new InstrumentClassLoaderFilter());
 		if (tOptions != null) {
 			filters.add(new InstrumentFilter());
 		}
-
 		filters.add(new InstrumentEnterLeaveFilter());
 		Map<String, String> fOptions = args.option("-f");
 		if (fOptions != null) {

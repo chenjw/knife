@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="java"/>
 	<classpathentry kind="src" path="resources"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/knife.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/knife.agent"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/misc.javassist-3.9.0.GA-sources.zip"/>
@@ -12,5 +11,6 @@
 	<classpathentry kind="lib" path="/knife.lib/lib/sourceforge.spring-2.5.6.jar" sourcepath="/knife.lib/lib/sourceforge.spring-2.5.6-sources.zip"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17-sources.zip"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -29,14 +29,6 @@ public class Agent {
 		}
 	};
 
-	public static ClassLoader getBaseClassLoader() {
-		if (agentInfo == null) {
-			return null;
-		} else {
-			return agentInfo.getBaseClassLoader();
-		}
-	}
-
 	public static void redefineClasses(Class<?> clazz, byte[] bytes) {
 		try {
 			agentInfo.getInst().redefineClasses(

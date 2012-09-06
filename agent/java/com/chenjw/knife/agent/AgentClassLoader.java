@@ -5,7 +5,16 @@ import java.net.URLClassLoader;
 import java.util.Arrays;
 
 public class AgentClassLoader extends URLClassLoader {
+	private static AgentClassLoader instance = null;
 	private ClassLoader parent;
+
+	public static AgentClassLoader getAgentClassLoader() {
+		return instance;
+	}
+
+	public static void setAgentClassLoader(AgentClassLoader agentClassLoader) {
+		instance = agentClassLoader;
+	}
 
 	public AgentClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, null);
@@ -13,23 +22,29 @@ public class AgentClassLoader extends URLClassLoader {
 	}
 
 	public void setParent(ClassLoader parent) {
-		this.parent = parent;
+		if (parent == null) {
+			this.parent = ClassLoader.getSystemClassLoader();
+		} else {
+			this.parent = parent;
+		}
+
 	}
 
 	@Override
 	protected synchronized Class<?> loadClass(String s, boolean flag)
 			throws ClassNotFoundException {
 		Class<?> class1 = this.findLoadedClass(s);
-		if (class1 == null) {
+		if (class1 == null)
 			try {
-				if (parent != null)
-					class1 = parent.loadClass(s);
+				class1 = findClass(s);
 			} catch (ClassNotFoundException classnotfoundexception) {
 				// System.out.println("parent " + parent.getClass()
 				// + " cant find class " + s);
 			}
-			if (class1 == null)
-				class1 = findClass(s);
+		if (class1 == null) {
+			if (parent != null) {
+				class1 = parent.loadClass(s);
+			}
 		}
 		if (flag)
 			resolveClass(class1);

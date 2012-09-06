@@ -55,7 +55,8 @@ public class FindCommandHandler implements CommandHandler {
 							likeClazz);
 					int i = 0;
 					for (Class<?> cc : likeClazz) {
-						Agent.info(i + ". [class] " + cc.getName());
+						Agent.info(i + ". [class] " + cc.getName() + "\t "
+								+ cc.getClassLoader().getClass().getName());
 						i++;
 					}
 					Agent.info("find " + i + " classes like '" + className
