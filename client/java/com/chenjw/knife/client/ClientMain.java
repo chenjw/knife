@@ -2,17 +2,17 @@ package com.chenjw.knife.client;
 
 import java.io.IOException;
 
-import com.chenjw.knife.core.ClosePacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
-import com.chenjw.knife.utils.JvmHelper;
+import com.chenjw.knife.core.packet.ClosePacket;
 
 public final class ClientMain {
 	private static final String OUT_PREFIX = "knife>";
+	public static final int DEFAULT_PORT = 2222;
 
 	public static void main(String args[]) {
 		int port = DEFAULT_PORT;
-		String pid = JvmHelper.findPid("test_main");
+		String // pid = JvmHelper.findPid("test_main");
 		pid = null;
 		try {
 			final Client client = new Client(port);
@@ -43,7 +43,5 @@ public final class ClientMain {
 		System.err.println(msg);
 		System.exit(code);
 	}
-
-	public static final int DEFAULT_PORT = 2222;
 
 }

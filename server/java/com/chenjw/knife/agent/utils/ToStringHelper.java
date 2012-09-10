@@ -10,6 +10,21 @@ import com.chenjw.knife.agent.manager.SystemTagManager;
 
 public class ToStringHelper {
 
+	public static String toFixSizeString(String str, int size) {
+		if (str == null) {
+			str = "null";
+		}
+		int num = size;
+		num -= str.length();
+		if (num < 0) {
+			num = 0;
+		}
+		for (int i = 0; i < num; i++) {
+			str += " ";
+		}
+		return str;
+	}
+
 	public static String toString(Object obj) {
 		if (obj == null) {
 			return null;

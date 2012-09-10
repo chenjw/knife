@@ -32,6 +32,7 @@ import com.chenjw.knife.agent.filter.TimingStopFilter;
 import com.chenjw.knife.agent.filter.TraceMethodFilter;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
+import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public class TraceCommandHandler implements CommandHandler {
@@ -134,7 +135,10 @@ public class TraceCommandHandler implements CommandHandler {
 			if (m.indexOf(".") != -1) {
 				String className = StringHelper.substringBeforeLast(m, ".");
 				m = StringHelper.substringAfterLast(m, ".");
-				Class<?> clazz = Helper.findClass(className);
+				Class<?> clazz = NativeHelper.findLoadedClass(className);
+				if (clazz == null) {
+					clazz = Helper.findClass(className);
+				}
 				if (clazz == null) {
 					Agent.info("class " + className + " not found!");
 					return null;

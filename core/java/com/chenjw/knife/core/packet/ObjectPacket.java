@@ -1,4 +1,4 @@
-package com.chenjw.knife.core;
+package com.chenjw.knife.core.packet;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -6,8 +6,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import com.chenjw.knife.core.Packet;
+import com.chenjw.knife.core.PacketResolver;
+
 public class ObjectPacket<T> implements Packet {
 	static final byte CODE = 1;
+	static {
+		PacketResolver.register(CODE, ObjectPacket.class);
+	}
 	private T object;
 
 	public ObjectPacket(T object) {

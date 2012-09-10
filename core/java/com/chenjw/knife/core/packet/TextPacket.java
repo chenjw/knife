@@ -1,9 +1,15 @@
-package com.chenjw.knife.core;
+package com.chenjw.knife.core.packet;
 
 import java.io.UnsupportedEncodingException;
 
+import com.chenjw.knife.core.Packet;
+import com.chenjw.knife.core.PacketResolver;
+
 public class TextPacket implements Packet {
 	static final byte CODE = 0;
+	static {
+		PacketResolver.register(CODE, TextPacket.class);
+	}
 	private String message;
 
 	public TextPacket(String message) {

@@ -36,6 +36,14 @@ public class LsCommandHandler implements CommandHandler {
 				return;
 			}
 			clazz = obj.getClass();
+		} else if (StringHelper.isNumeric(className)) {
+			obj = ObjectRecordManager.getInstance().get(
+					Integer.parseInt(className));
+			if (obj == null) {
+				Agent.info("not found!");
+				return;
+			}
+			clazz = obj.getClass();
 		} else {
 			clazz = Helper.findClass(className);
 			if (clazz == null) {
@@ -76,6 +84,14 @@ public class LsCommandHandler implements CommandHandler {
 		String className = args.arg("classname");
 		if (StringHelper.isBlank(className)) {
 			obj = ContextManager.getInstance().get(Constants.THIS);
+			if (obj == null) {
+				Agent.info("not found!");
+				return;
+			}
+			clazz = obj.getClass();
+		} else if (StringHelper.isNumeric(className)) {
+			obj = ObjectRecordManager.getInstance().get(
+					Integer.parseInt(className));
 			if (obj == null) {
 				Agent.info("not found!");
 				return;
@@ -126,6 +142,14 @@ public class LsCommandHandler implements CommandHandler {
 		String className = args.arg("classname");
 		if (StringHelper.isBlank(className)) {
 			obj = ContextManager.getInstance().get(Constants.THIS);
+			if (obj == null) {
+				Agent.info("not found!");
+				return;
+			}
+			clazz = obj.getClass();
+		} else if (StringHelper.isNumeric(className)) {
+			obj = ObjectRecordManager.getInstance().get(
+					Integer.parseInt(className));
 			if (obj == null) {
 				Agent.info("not found!");
 				return;

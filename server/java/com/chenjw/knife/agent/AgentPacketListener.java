@@ -21,12 +21,13 @@ import com.chenjw.knife.agent.handler.NewCommandHandler;
 import com.chenjw.knife.agent.handler.PropCommandHandler;
 import com.chenjw.knife.agent.handler.RefCommandHandler;
 import com.chenjw.knife.agent.handler.SetCommandHandler;
+import com.chenjw.knife.agent.handler.TopCommandHandler;
 import com.chenjw.knife.agent.handler.TraceCommandHandler;
 import com.chenjw.knife.agent.handler.ViewCommandHandler;
 import com.chenjw.knife.core.Command;
-import com.chenjw.knife.core.ObjectPacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
+import com.chenjw.knife.core.packet.ObjectPacket;
 
 public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 	private Map<String, CommandHandler> handlerMap = new HashMap<String, CommandHandler>();
@@ -49,6 +50,7 @@ public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 		addCommandHandler(new RefCommandHandler());
 		addCommandHandler(new NewCommandHandler());
 		addCommandHandler(new PropCommandHandler());
+		addCommandHandler(new TopCommandHandler());
 
 	}
 

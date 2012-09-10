@@ -16,12 +16,28 @@ JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_fi
 
 /*
  * Class:     com_chenjw_knife_agent_utils_NativeHelper
+ * Method:    countReference0
+ * Signature: (Ljava/lang/Object;)[Ljava/lang/Object;
+ */
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_countReferree0
+  (JNIEnv *, jclass, jint,jlongArray,jobjectArray);
+
+
+/*
+ * Class:     com_chenjw_knife_agent_utils_NativeHelper
  * Method:    findReferrerByObject0
  * Signature: (Ljava/lang/Object;)[Ljava/lang/Object;
  */
 JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_findReferrerByObject0
   (JNIEnv *, jclass, jobject);
 
+/*
+ * Class:     com_chenjw_knife_agent_utils_NativeHelper
+ * Method:    findReferreeByObject0
+ * Signature: (Ljava/lang/Object;)[Ljava/lang/Object;
+ */
+JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_findReferreeByObject0
+  (JNIEnv *, jclass, jobject);
 
 
 /*

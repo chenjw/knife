@@ -3,6 +3,7 @@ package com.chenjw.knife.utils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
 
 public class JvmHelper {
 
@@ -48,6 +49,26 @@ public class JvmHelper {
 			pid = items[0];
 		}
 		return pid;
+	}
+
+	private final static String getPID1() {
+		if (pid == null) {
+
+			for (ThreadInfo id : ManagementFactory.getThreadMXBean()
+					.dumpAllThreads(false, false)) {
+				System.out.println(id.getThreadId());
+				System.out.println(id.getStackTrace()[0].getClassName());
+			}
+
+		}
+		return pid;
+	}
+
+	public static void main(String[] args) throws InterruptedException {
+		JvmHelper.getPID1();
+		while (true) {
+			Thread.sleep(5000);
+		}
 	}
 
 }

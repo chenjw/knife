@@ -28,15 +28,28 @@ public class RefCommandHandler implements CommandHandler {
 			Agent.info("id not found! ");
 			return;
 		}
-		Object[] refs = NativeHelper.findReferrerByObject(obj);
+		Object[] refs = null;
+		if (args.option("-r") != null) {
+			refs = NativeHelper.findReferreeByObject(obj);
+		} else {
+			refs = NativeHelper.findReferrerByObject(obj);
+		}
+
 		if (refs == null || refs.length == 0) {
 			Agent.info("not found! ");
 			return;
 		}
 		for (Object ref : refs) {
-			Agent.info("[ref] "
-					+ ObjectRecordManager.getInstance().toId(ref)
-					+ ToStringHelper.toString(ref));
+			if (args.option("-r") != null) {
+				Agent.info("[referree] "
+						+ ObjectRecordManager.getInstance().toId(ref)
+						+ ToStringHelper.toString(ref));
+			} else {
+				Agent.info("[referrer] "
+						+ ObjectRecordManager.getInstance().toId(ref)
+						+ ToStringHelper.toString(ref));
+			}
+
 		}
 		Agent.info("finished!");
 
@@ -44,8 +57,9 @@ public class RefCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("ref");
-		argDef.setDef("<object-id>");
-		argDef.setDesc("find references of target object.");
+		argDef.setDef("[-r] <object-id>");
+		argDef.setDesc("find Referrers of target object.");
 		argDef.addOptionDesc("object-id", "a num as the object id.");
+		argDef.addOptionDesc("-r", "find Referree not Referrer");
 	}
 }

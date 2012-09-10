@@ -8,13 +8,23 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.chenjw.knife.core.packet.TextPacket;
+
 public class PacketResolver {
 	private static Map<Byte, Class<? extends Packet>> packetMap = new HashMap<Byte, Class<? extends Packet>>();;
-
 	static {
-		packetMap.put(TextPacket.CODE, TextPacket.class);
-		packetMap.put(ObjectPacket.CODE, ObjectPacket.class);
-		packetMap.put(ClosePacket.CODE, ClosePacket.class);
+		try {
+			Class.forName("com.chenjw.knife.core.packet.ClosePacket");
+			Class.forName("com.chenjw.knife.core.packet.ObjectPacket");
+			Class.forName("com.chenjw.knife.core.packet.TextPacket");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void register(byte type, Class<? extends Packet> clazz) {
+		packetMap.put(type, clazz);
 	}
 
 	private static Packet netInstance(Class<? extends Packet> clazz) {
@@ -36,8 +46,7 @@ public class PacketResolver {
 		return packet;
 	}
 
-	public static void write(Packet packet, OutputStream os)
-			throws IOException {
+	public static void write(Packet packet, OutputStream os) throws IOException {
 		os.write(new byte[] { packet.getCode() });
 		byte[] bytes = packet.toBytes();
 		os.write(long2bytes(bytes.length));

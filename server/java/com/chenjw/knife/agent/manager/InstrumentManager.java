@@ -64,6 +64,8 @@ public class InstrumentManager implements Lifecycle {
 			byte[] classBytes = newClassGenerator.toBytecode();
 			ByteCodeManager.getInstance().tryRedefineClass(
 					method.getDeclaringClass(), classBytes);
+			ByteCodeManager.getInstance().commitAll();
+
 		}
 
 	}
@@ -93,6 +95,7 @@ public class InstrumentManager implements Lifecycle {
 			ByteCodeManager.getInstance().tryRedefineClass(
 					Helper.findClass(newClassGenerator.getCtClass()),
 					classBytes);
+			ByteCodeManager.getInstance().commitAll();
 		}
 
 	}
@@ -164,7 +167,7 @@ public class InstrumentManager implements Lifecycle {
 			return;
 		}
 		buildMethodAccess(method);
-		ByteCodeManager.getInstance().commitAll();
+
 	}
 
 	private static boolean isSupportClassNameAndMethodName(String className,

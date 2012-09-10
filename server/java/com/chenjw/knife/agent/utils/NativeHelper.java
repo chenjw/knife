@@ -8,8 +8,10 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,8 +22,8 @@ import com.chenjw.knife.utils.StringHelper;
 
 public class NativeHelper {
 	static {
-		// System.load("/home/chenjw/my_workspace/knife/native/src/.libs/libnativehelper.so");
-		NativeHelper.loadNativeLibrary("libnativehelper");
+		System.load("/home/chenjw/my_workspace/knife/native/src/.libs/libnativehelper.so");
+		// NativeHelper.loadNativeLibrary("libnativehelper");
 	}
 	private static Object[] retransformLock = new Object[0];
 	private static String jvmClassName = null;
@@ -60,6 +62,32 @@ public class NativeHelper {
 			IOHelper.closeQuietly(os);
 		}
 
+	}
+
+	public static Class<?> findLoadedClass(String className) {
+
+		for (Class<?> clazz : Agent.getAllLoadedClasses()) {
+			if (clazz.getName().equals(className)) {
+				return clazz;
+			}
+		}
+		return null;
+
+	}
+
+	public static List<ReferenceCount> countReferree(int num) {
+
+		long[] counts = new long[num];
+		Object[] objs = new Object[num];
+		NativeHelper.countReferree0(num, counts, objs);
+		List<ReferenceCount> result = new ArrayList<ReferenceCount>();
+		for (int i = 0; i < num; i++) {
+			ReferenceCount referenceCount = new ReferenceCount();
+			referenceCount.setCount(counts[i]);
+			referenceCount.setObj(objs[i]);
+			result.add(referenceCount);
+		}
+		return result;
 	}
 
 	/**
@@ -313,6 +341,10 @@ public class NativeHelper {
 		return findReferrerByObject0(obj);
 	}
 
+	public static Object[] findReferreeByObject(Object obj) {
+		return findReferreeByObject0(obj);
+	}
+
 	public static void startClassLoadHook() {
 		startClassLoadHook0();
 	}
@@ -337,6 +369,11 @@ public class NativeHelper {
 	private native static Object[] findInstancesByClass0(Class<?> clazz);
 
 	private native static Object[] findReferrerByObject0(Object obj);
+
+	private native static Object[] findReferreeByObject0(Object obj);
+
+	private native static void countReferree0(int num, long[] nums,
+			Object[] objs);
 
 	private native static Object getFieldValue0(Object obj,
 			Class<?> fieldClass, String name, Class<?> returnType);
@@ -507,8 +544,23 @@ public class NativeHelper {
 	}
 
 	private static void do1() throws ClassNotFoundException {
-		System.out.println((byte) NativeHelper.getClassSourceFileName(
-				String.class).toCharArray()[0]);
+		int num = 10;
+		Object[] objs = new Object[num];
+		long[] counts = new long[num];
+
+		NativeHelper.countReferree0(num, counts, objs);
+		System.out.println(objs);
+		System.out.println(objs.length);
+		for (int i = 0; i < objs.length; i++) {
+			System.out.println(counts[i] + " " + objs[i] + " "
+					+ NativeHelper.findReferreeByObject0(objs[i]).length);
+
+		}
+		for (Object oo : NativeHelper.findReferreeByObject0(objs)) {
+			System.out.println(">>" + oo);
+		}
+
+		System.out.println(objs[5] == objs[6]);
 
 	}
 
@@ -516,5 +568,27 @@ public class NativeHelper {
 			SecurityException, NoSuchFieldException {
 		do1();
 		System.out.println("finished!");
+	}
+
+	public static class ReferenceCount {
+		private long count;
+		private Object obj;
+
+		public long getCount() {
+			return count;
+		}
+
+		public void setCount(long count) {
+			this.count = count;
+		}
+
+		public Object getObj() {
+			return obj;
+		}
+
+		public void setObj(Object obj) {
+			this.obj = obj;
+		}
+
 	}
 }

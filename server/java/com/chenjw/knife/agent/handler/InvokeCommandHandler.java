@@ -36,6 +36,7 @@ import com.chenjw.knife.agent.filter.TimingFilter;
 import com.chenjw.knife.agent.filter.TimingStopFilter;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
+import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ParseHelper;
 import com.chenjw.knife.utils.StringHelper;
 
@@ -59,9 +60,9 @@ public class InvokeCommandHandler implements CommandHandler {
 			filters.add(new InstrumentClassLoaderFilter());
 			filters.add(new InstrumentFilter());
 		}
-		Map<String, String> options = args.option("-f");
-		if (options != null) {
-			filters.add(new PatternMethodFilter(options.get("filter-expretion")));
+		Map<String, String> fOptions = args.option("-f");
+		if (fOptions != null) {
+			filters.add(new PatternMethodFilter(fOptions.get("filter-expretion")));
 		}
 		filters.add(new DepthFilter());
 		if (tOptions == null) {
@@ -87,7 +88,10 @@ public class InvokeCommandHandler implements CommandHandler {
 			if (m.indexOf(".") != -1) {
 				String className = StringHelper.substringBeforeLast(m, ".");
 				m = StringHelper.substringAfterLast(m, ".");
-				Class<?> clazz = Helper.findClass(className);
+				Class<?> clazz = NativeHelper.findLoadedClass(className);
+				if (clazz == null) {
+					clazz = Helper.findClass(className);
+				}
 				if (clazz == null) {
 					Agent.info("class " + className + " not found!");
 					return;

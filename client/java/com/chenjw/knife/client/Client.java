@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chenjw.knife.core.Command;
-import com.chenjw.knife.core.ObjectPacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
 import com.chenjw.knife.core.PacketResolver;
+import com.chenjw.knife.core.packet.ObjectPacket;
 import com.chenjw.knife.utils.FileHelper;
 import com.chenjw.knife.utils.JarHelper;
 import com.chenjw.knife.utils.JvmHelper;

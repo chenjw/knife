@@ -11,6 +11,76 @@ jmethodID transformMethodId=NULL;
 
 jmethodID classLoadedMethodId=NULL;
 
+struct ObjectReferrer{
+	jlong count;
+	ObjectReferrer * next;
+	jlong* tagPtr;
+};
+
+struct ObjectReferrerList{  
+	jint maxNum;
+	jint num;
+  	ObjectReferrer * root;
+};
+
+void * allocate( size_t bytecount) {
+	void * resultBuffer = NULL;
+	jvmtiError error = jvmti->Allocate(bytecount,(unsigned char**) &resultBuffer);
+	if ( error != JVMTI_ERROR_NONE ) {
+		resultBuffer = NULL;
+	}
+	return resultBuffer;
+}
+
+void deallocate( void * buffer) {
+	jvmti->Deallocate((unsigned char*)buffer);
+}
+
+void addObjectReferrer(ObjectReferrerList * list,jlong count){
+	ObjectReferrer ** pBefore = &list->root;
+	ObjectReferrer * after = NULL;
+	
+	while(true){
+		
+		ObjectReferrer * current=*pBefore;
+		
+		if(current == NULL){
+			break;			
+		}
+		if(count < current->count){
+			pBefore = &(current->next);
+		}
+		else{
+			after=current;
+			break;
+		}
+	}
+	
+	if(list->num >= list->maxNum){
+
+		if(pBefore == &list->root){
+			return;
+		}
+		else{
+			ObjectReferrer * referrer = NULL;
+			referrer = (ObjectReferrer *) allocate(sizeof(ObjectReferrer));
+			referrer->count=count;
+			referrer->next = after;
+			*pBefore=referrer;
+			/// 
+			list->root = list->root->next;
+		}		
+	}
+	else{
+		list->num++;
+		ObjectReferrer * referrer = NULL;
+		referrer = (ObjectReferrer *) allocate(sizeof(ObjectReferrer));
+		referrer->count=count;
+		referrer->next = after;
+		*pBefore=referrer;
+	}
+}
+
 void throwException(JNIEnv * env,char * clazz, char * message)
 {
   	jclass exceptionClass = env->FindClass(clazz);
@@ -34,7 +104,7 @@ void initJvmti(JNIEnv * env){
 		if (res < 0 || jvm == 0) {
 			throwException(env,"java/lang/RuntimeException","GetJavaVM fail");
 		}
-		res = jvm->GetEnv((void **)&jvmti, JVMTI_VERSION_1_0);
+		res = jvm->GetEnv((void **)&jvmti, JVMTI_VERSION_1_1);
 		if (res != JNI_OK || jvmti == 0) {
 			throwException(env,"java/lang/RuntimeException","GetEnv fail");
 		}
@@ -70,41 +140,77 @@ void initClassLoadedInfo(JNIEnv * env){
 }
 
 
-void * allocate(jvmtiEnv * jvmti, size_t bytecount) {
-	void * resultBuffer = NULL;
-	jvmtiError error = jvmti->Allocate(bytecount,(unsigned char**) &resultBuffer);
-	if ( error != JVMTI_ERROR_NONE ) {
-		resultBuffer = NULL;
-	}
-	return resultBuffer;
-}
 
-void deallocate(jvmtiEnv * jvmti, void * buffer) {
-	jvmti->Deallocate((unsigned char*)buffer);
-}
 
 jvmtiIterationControl JNICALL iterate_markTag
     (jlong class_tag, jlong size, jlong* tag_ptr, void* user_data) 
 {
-    	*tag_ptr=1;
-    	return JVMTI_ITERATION_CONTINUE;
+	if(tag_ptr!=NULL){
+		*tag_ptr=1;
+	}
+    	
+    	return JVMTI_ITERATION_IGNORE;
 }
 
-jint JNICALL iterate_ref_markTag
+jint JNICALL iterate_ref_markReferrer
     (jvmtiHeapReferenceKind reference_kind, const jvmtiHeapReferenceInfo* reference_info, jlong class_tag, jlong referrer_class_tag, jlong size, jlong* tag_ptr, jlong* referrer_tag_ptr, jint length, void* user_data) 
 {
-
-	if(*tag_ptr==2 && referrer_tag_ptr!=NULL && referrer_tag_ptr!=tag_ptr){
+	if(reference_kind!=JVMTI_REFERENCE_FIELD && reference_kind!=JVMTI_REFERENCE_ARRAY_ELEMENT){
+		return JVMTI_VISIT_OBJECTS;
+	}		
+	if(referrer_tag_ptr!=NULL && tag_ptr!=NULL && *tag_ptr==2 && referrer_tag_ptr!=tag_ptr){
 		*referrer_tag_ptr=1;
 	}	
     	return JVMTI_VISIT_OBJECTS;
 }
 
+jint JNICALL iterate_ref_markReferree
+    (jvmtiHeapReferenceKind reference_kind, const jvmtiHeapReferenceInfo* reference_info, jlong class_tag, jlong referrer_class_tag, jlong size, jlong* tag_ptr, jlong* referrer_tag_ptr, jint length, void* user_data) 
+{
+	if(reference_kind!=JVMTI_REFERENCE_FIELD && reference_kind!=JVMTI_REFERENCE_ARRAY_ELEMENT){
+		return JVMTI_VISIT_OBJECTS;
+	}		
+	if(referrer_tag_ptr!=NULL && tag_ptr!=NULL && *referrer_tag_ptr==2 && referrer_tag_ptr!=tag_ptr){
+		*tag_ptr=1;
+	}	
+    	return JVMTI_VISIT_OBJECTS;
+}
+
+jint JNICALL iterate_ref_markCountReference
+    (jvmtiHeapReferenceKind reference_kind, const jvmtiHeapReferenceInfo* reference_info, jlong class_tag, jlong referrer_class_tag, jlong size, jlong* tag_ptr, jlong* referrer_tag_ptr, jint length, void* user_data) 
+{
+	if(reference_kind!=JVMTI_REFERENCE_FIELD && reference_kind!=JVMTI_REFERENCE_ARRAY_ELEMENT){
+		return JVMTI_VISIT_OBJECTS;
+	}	
+	if(referrer_tag_ptr!=NULL && tag_ptr!=NULL){
+		(*referrer_tag_ptr)--;
+		//printf("ccc%d\n",*referrer_tag_ptr);
+	}	
+    	return JVMTI_VISIT_OBJECTS;
+}
+
+	
+jvmtiIterationControl JNICALL iterate_countReference
+    (jlong class_tag, jlong size, jlong* tag_ptr, void* user_data)
+{
+
+	//printf("bbbb\n");
+	if(tag_ptr!=NULL && *tag_ptr<0){
+		ObjectReferrerList * list=(ObjectReferrerList *)user_data;
+		//printf("before tagPtr=%d,count=%d\n",tag_ptr,*tag_ptr);
+		addObjectReferrer(list,*tag_ptr);
+		*tag_ptr=-(*tag_ptr);	
+		//printf("after tagPtr=%d,count=%d\n",tag_ptr,*tag_ptr);
+	}
+   	return JVMTI_ITERATION_IGNORE;   
+}
+
+
 jvmtiIterationControl JNICALL iterate_cleanTag
     (jlong class_tag, jlong size, jlong* tag_ptr, void* user_data)
 {
 	*tag_ptr=0;
-   	return JVMTI_ITERATION_CONTINUE;   
+   	return JVMTI_ITERATION_IGNORE;   
 }
 
 
@@ -313,17 +419,91 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_retransfor
     	jsize       numClasses           = 0;
     	jclass *    classArray           = NULL;
 	numClasses = env->GetArrayLength(classes);
-        classArray = (jclass *) allocate(jvmti,numClasses * sizeof(jclass));
+        classArray = (jclass *) allocate(numClasses * sizeof(jclass));
         jint index;
         for (index = 0; index < numClasses; index++) {
       		classArray[index] = (jclass)env->GetObjectArrayElement(classes, index);
         }
  	jvmti->RetransformClasses(numClasses, classArray);
 	if (classArray != NULL) {
-		deallocate(jvmti, (void*)classArray);
+		deallocate((void*)classArray);
     	}
 }
 
+
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_countReferree0
+  (JNIEnv * env, jclass thisClass, jint maxNum,jlongArray countArray,jobjectArray objArray)
+{
+
+	initJvmti(env);
+	jclass loadedObject = env->FindClass("java/lang/Object");
+
+	jvmtiHeapCallbacks * callbacks;
+        callbacks=(jvmtiHeapCallbacks *)allocate(sizeof(jvmtiHeapCallbacks));
+        callbacks->heap_reference_callback = &iterate_ref_markCountReference;
+	callbacks->primitive_field_callback =NULL;
+	callbacks->array_primitive_value_callback =NULL;
+	callbacks->string_primitive_value_callback =NULL;
+	jvmti->FollowReferences(0,NULL,NULL,callbacks,NULL);
+	jint countObjts=0;
+  	jobject * objs;
+  	jlong * tagResults;
+printf("~~~1\n");
+	ObjectReferrerList * list=NULL;
+ 	list = (ObjectReferrerList *) allocate( sizeof(ObjectReferrerList));
+	list->maxNum=maxNum;
+	list->num=0;
+	list->root=NULL;
+	jvmti->IterateOverHeap(JVMTI_HEAP_OBJECT_TAGGED,iterate_countReference,list);
+	jlong* idToQuery;
+printf("~~~2\n");
+	idToQuery = (jlong*) allocate(list->num*sizeof(jlong));
+	ObjectReferrer* referrer=list->root;
+	jint i=0;
+	while(referrer!=NULL){
+		jlong count=-(referrer->count);
+		bool exist=false;
+		for(jint j=0;j<i;j++){
+			if(idToQuery[j]==count){
+				exist=true;
+				break;
+			}
+		}
+		if(!exist){
+			idToQuery[i]=count;
+			i++;
+			//printf("~~~%d\n",count);
+		}
+		referrer=referrer->next;
+		
+	}
+printf("~~~3\n");
+	jvmti->GetObjectsWithTags(list->num,idToQuery,&countObjts,&objs,&tagResults);
+  	// Set the object array
+  	for (jint i=0;i<maxNum;i++) {
+		jint n=-1;
+		jlong nn=-1;
+		for(jint j=0;j<countObjts;j++){
+			if(tagResults[j]>nn){
+				n=j;
+				nn=tagResults[j];
+			}
+		}
+		env->SetLongArrayRegion(countArray,i,1, &tagResults[n]);
+		env->SetObjectArrayElement(objArray,i, objs[n]);
+		
+		tagResults[n]=-1;
+		
+
+  	} 
+
+	deallocate((void *)tagResults);  
+  	deallocate((void *)objs);  
+	deallocate((void *)callbacks);
+	deallocate((void *)idToQuery);
+	deallocate((void *)list);
+ 	releaseTags();       
+}
 
 JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_findReferrerByObject0
   (JNIEnv * env, jclass thisClass, jobject obj)
@@ -334,13 +514,47 @@ JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_fi
 	jvmti->SetTag(obj,2);
 	jvmtiHeapCallbacks callbacks;
         memset(&callbacks, 0, sizeof(callbacks));
-        callbacks.heap_reference_callback = &iterate_ref_markTag;
+        callbacks.heap_reference_callback = &iterate_ref_markReferrer;
 	jvmtiError e=jvmti->FollowReferences(0,NULL,NULL,&callbacks,NULL);
 	jint countObjts=0;
   	jobject * objs;
   	jlong * tagResults;
   	jlong idToQuery=1;  
    
+  	jvmti->GetObjectsWithTags(1,&idToQuery,&countObjts,&objs,&tagResults);
+  	// Set the object array
+  	jobjectArray arrayReturn = env->NewObjectArray(countObjts,loadedObject,0);
+  	for (jint i=0;i<countObjts;i++) {
+		//printf("~~~%d\n",&objs[i]);
+     		env->SetObjectArrayElement(arrayReturn,i, objs[i]);
+  	} 
+	jvmti->Deallocate((unsigned char *)tagResults);  
+  	jvmti->Deallocate((unsigned char *)objs);  
+  	releaseTags();         
+  	return arrayReturn;
+}
+
+JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_findReferreeByObject0
+  (JNIEnv * env, jclass thisClass, jobject obj)
+{
+
+	initJvmti(env);
+	jclass loadedObject = env->FindClass("java/lang/Object");
+
+	jvmti->SetTag(obj,2);
+
+	jvmtiHeapCallbacks callbacks;
+
+        memset(&callbacks, 0, sizeof(callbacks));
+
+        callbacks.heap_reference_callback = &iterate_ref_markReferree;
+
+	jvmtiError e=jvmti->FollowReferences(0,NULL,NULL,&callbacks,NULL);
+	jint countObjts=0;
+  	jobject * objs;
+  	jlong * tagResults;
+  	jlong idToQuery=1;  
+ 	
   	jvmti->GetObjectsWithTags(1,&idToQuery,&countObjts,&objs,&tagResults);
   	// Set the object array
   	jobjectArray arrayReturn = env->NewObjectArray(countObjts,loadedObject,0);

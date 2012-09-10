@@ -27,7 +27,7 @@ public class Main {
 			// System.out.println(i++);
 			try {
 
-				Thread.sleep(3000);
+				Thread.sleep(10);
 				try {
 					ApplyService testService = (ApplyService) context
 							.getBean("applyService");
@@ -38,7 +38,7 @@ public class Main {
 					e.printStackTrace();
 				}
 
-			} catch (InterruptedException e) {
+			} catch (Exception e) {
 			}
 		}
 	}

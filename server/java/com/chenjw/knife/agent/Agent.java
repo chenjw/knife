@@ -8,11 +8,11 @@ import java.io.StringWriter;
 import java.lang.instrument.ClassDefinition;
 import java.lang.instrument.UnmodifiableClassException;
 
-import com.chenjw.knife.core.ClosePacket;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketResolver;
 import com.chenjw.knife.core.Printer;
-import com.chenjw.knife.core.TextPacket;
+import com.chenjw.knife.core.packet.ClosePacket;
+import com.chenjw.knife.core.packet.TextPacket;
 
 public class Agent {
 	private static AgentInfo agentInfo = null;
