@@ -21,12 +21,15 @@ public class OSHelper {
 			List<ThreadInfo> threadInfos = execTop(pid);
 			Map<String, ThreadInfo> threadInfoMap = new HashMap<String, ThreadInfo>();
 			for (ThreadInfo threadInfo : threadInfos) {
+
 				threadInfoMap.put(threadInfo.getPid(), threadInfo);
 			}
 			threadDump(pid, threadInfoMap);
 			List<ThreadInfo> result = new ArrayList<ThreadInfo>();
 			for (ThreadInfo threadInfo : threadInfos) {
+				// System.out.println(threadInfo.getName());
 				if (threadInfo.getName() != null) {
+
 					result.add(threadInfo);
 				}
 			}
@@ -50,7 +53,6 @@ public class OSHelper {
 			String line;
 			int status = 1;
 			while ((line = input.readLine()) != null) {
-				// System.out.println(line);
 				if (status == 1) {
 					if (StringHelper.isBlank(line)) {
 						status = 2;
@@ -68,7 +70,7 @@ public class OSHelper {
 			}
 			int pidIndex = 0;
 			int cpuIndex = 0;
-			title = title.replace("  ", " ");
+			title = title.replace("  ", " ").trim();
 			String[] ts = title.split(" ");
 			for (int i = 0; i < ts.length; i++) {
 				if ("%CPU".equals(ts[i])) {
@@ -78,14 +80,14 @@ public class OSHelper {
 				}
 			}
 			for (String threadLine : threadLines) {
-				threadLine = threadLine.replace("  ", " ");
+				threadLine = threadLine.replace("  ", " ").trim();
 				String[] values = threadLine.split(" ");
 
-				String id = values[pidIndex - 1];
+				String id = values[pidIndex];
 				if (pid.equals(id)) {
 					continue;
 				}
-				String cpu = values[cpuIndex - 1];
+				String cpu = values[cpuIndex];
 				ThreadInfo threadInfo = new ThreadInfo();
 				threadInfo.setCpu(cpu);
 				threadInfo.setPid(id);

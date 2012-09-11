@@ -11,5 +11,8 @@
 	<classpathentry kind="lib" path="/knife.lib/lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/java.j2ee-1.4.jar"/>
 	<classpathentry kind="lib" path="/home/chenjw/桌面/jetty-distribution-8.1.5.v20120716/lib/jetty-webapp-8.1.5.v20120716.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/knife.agent"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/knife.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/knife.server"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
