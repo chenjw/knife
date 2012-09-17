@@ -17,6 +17,7 @@ import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
+import com.chenjw.knife.agent.formater.PreparedTableFormater;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
@@ -51,29 +52,30 @@ public class LsCommandHandler implements CommandHandler {
 				return;
 			}
 		}
+
+		PreparedTableFormater table = new PreparedTableFormater();
+
+		table.setTitle("type", "field-name", "obj-id", "value");
 		if (clazz != null) {
 			Map<Field, Object> fieldMap = NativeHelper
 					.getStaticFieldValues(clazz);
 			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
-				Agent.info("[static-field] "
-						+ entry.getKey().getName()
-						+ " = "
-						+ ObjectRecordManager.getInstance().toId(
-								entry.getValue())
-						+ toString(args, entry.getValue()));
+				table.addLine("[static-field]", entry.getKey().getName(),
+						ObjectRecordManager.getInstance()
+								.toId(entry.getValue()),
+						toString(args, entry.getValue()));
 			}
 		}
 		if (obj != null) {
 			Map<Field, Object> fieldMap = NativeHelper.getFieldValues(obj);
 			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
-				Agent.info("[field] "
-						+ entry.getKey().getName()
-						+ " = "
-						+ ObjectRecordManager.getInstance().toId(
-								entry.getValue())
-						+ toString(args, entry.getValue()));
+				table.addLine("[field]", entry.getKey().getName(),
+						ObjectRecordManager.getInstance()
+								.toId(entry.getValue()),
+						toString(args, entry.getValue()));
 			}
 		}
+		table.print(Agent.printer);
 		Agent.info("finished!");
 	}
 
@@ -106,14 +108,21 @@ public class LsCommandHandler implements CommandHandler {
 		}
 		List<Method> list = new ArrayList<Method>();
 		int i = 0;
+		PreparedTableFormater table = new PreparedTableFormater();
+
+		table.setTitle("idx", "type", "method");
 		if (clazz != null) {
 			Method[] methods = clazz.getMethods();
+
 			for (Method method : methods) {
 				if (Modifier.isStatic(method.getModifiers())) {
-					Agent.info(i + ". [static-method] " + method.getName()
-							+ "("
-							+ getParamClassNames(method.getParameterTypes())
-							+ ")");
+					table.addLine(
+							String.valueOf(i),
+							"[static-method]",
+							method.getName()
+									+ "("
+									+ getParamClassNames(method
+											.getParameterTypes()) + ")");
 					list.add(method);
 					i++;
 				}
@@ -123,14 +132,19 @@ public class LsCommandHandler implements CommandHandler {
 			Method[] methods = obj.getClass().getMethods();
 			for (Method method : methods) {
 				if (!Modifier.isStatic(method.getModifiers())) {
-					Agent.info(i + ". [method] " + method.getName() + "("
-							+ getParamClassNames(method.getParameterTypes())
-							+ ")");
+					table.addLine(
+							String.valueOf(i),
+							"[method]",
+							method.getName()
+									+ "("
+									+ getParamClassNames(method
+											.getParameterTypes()) + ")");
 					list.add(method);
 					i++;
 				}
 			}
 		}
+		table.print(Agent.printer);
 		ContextManager.getInstance().put(Constants.METHOD_LIST,
 				list.toArray(new Method[list.size()]));
 		Agent.info("finished!");
@@ -164,13 +178,22 @@ public class LsCommandHandler implements CommandHandler {
 		}
 		List<Constructor<?>> list = new ArrayList<Constructor<?>>();
 		int i = 0;
+		PreparedTableFormater table = new PreparedTableFormater();
+
+		table.setTitle("idx", "type", "method");
 		Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 		for (Constructor<?> constructor : constructors) {
-			Agent.info(i + ". [constructor] " + clazz.getSimpleName() + "("
-					+ getParamClassNames(constructor.getParameterTypes()) + ")");
+			table.addLine(
+					String.valueOf(i),
+					"[constructor]",
+					clazz.getSimpleName()
+							+ "("
+							+ getParamClassNames(constructor
+									.getParameterTypes()) + ")");
 			list.add(constructor);
 			i++;
 		}
+		table.print(Agent.printer);
 		ContextManager.getInstance().put(Constants.CONSTRUCTOR_LIST,
 				list.toArray(new Constructor[list.size()]));
 		Agent.info("finished!");
@@ -217,22 +240,27 @@ public class LsCommandHandler implements CommandHandler {
 			return;
 		}
 		if (obj.getClass().isArray()) {
+			PreparedTableFormater table = new PreparedTableFormater();
 
+			table.setTitle("idx", "obj-id", "element");
 			for (int i = 0; i < Array.getLength(obj); i++) {
 				Object aObj = Array.get(obj, i);
-				Agent.info(i + ". "
-						+ ObjectRecordManager.getInstance().toId(aObj)
-						+ toString(args, aObj));
+				table.addLine(String.valueOf(i), ObjectRecordManager
+						.getInstance().toId(aObj), toString(args, aObj));
 			}
+			table.print(Agent.printer);
 			Agent.info("finished!");
 		} else if (obj instanceof List) {
+			PreparedTableFormater table = new PreparedTableFormater();
+
+			table.setTitle("idx", "obj-id", "element");
 			int i = 0;
 			for (Object aObj : (List<Object>) obj) {
-				Agent.info(i + ". "
-						+ ObjectRecordManager.getInstance().toId(aObj)
-						+ toString(args, aObj));
+				table.addLine(String.valueOf(i), ObjectRecordManager
+						.getInstance().toId(aObj), toString(args, aObj));
 				i++;
 			}
+			table.print(Agent.printer);
 			Agent.info("finished!");
 		} else {
 			Agent.info("not array!");
@@ -241,6 +269,9 @@ public class LsCommandHandler implements CommandHandler {
 	}
 
 	private static String toString(Args args, Object obj) {
+		if (obj == null) {
+			return "null";
+		}
 		String rr = null;
 		if (args.option("-d") != null) {
 			rr = ToStringHelper.toDetailString(obj);

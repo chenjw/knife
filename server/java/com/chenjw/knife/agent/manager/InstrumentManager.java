@@ -37,7 +37,7 @@ public class InstrumentManager implements Lifecycle {
 	}
 
 	private void buildMethodAccess(Method method) throws Exception {
-		System.out.println(InstrumentManager.class.getClassLoader());
+		// System.out.println(InstrumentManager.class.getClassLoader());
 		String methodFullName = method.toGenericString();
 		// filter traced method
 		if (TRACED_METHOD.contains(methodFullName)) {

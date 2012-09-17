@@ -24,8 +24,13 @@ public class ApplyServiceImpl implements ApplyService {
 
 	private String testStr = "8";
 
-	public static String hello(String name) {
-		return "hello " + name;
+	public static String hello(String[] names) {
+		String str = "";
+		for (String name : names) {
+			str += "hello " + name + "\n";
+		}
+		return str;
+
 	}
 
 	public ResultModel apply(ApplyModel apply) {

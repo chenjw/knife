@@ -7,6 +7,7 @@ import com.chenjw.knife.agent.CommandDispatcher;
 import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.formater.PreparedTableFormater;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.NativeHelper.ReferenceCount;
@@ -22,22 +23,18 @@ public class TopCommandHandler implements CommandHandler {
 			num = Integer.parseInt(nOptions.get("num"));
 		}
 		int i = 0;
-		int nameSize = 40;
-		int indexSize = 4;
+
+		PreparedTableFormater table = new PreparedTableFormater();
+
+		table.setTitle("idx", "obj-id", "info", "ref-count");
 		for (ReferenceCount referenceCount : NativeHelper.countReferree(num)) {
-			Agent.info(ToStringHelper.toFixSizeString(String.valueOf(i),
-					indexSize)
-					+ "[top-ref] "
-					+ ToStringHelper.toFixSizeString(ObjectRecordManager
-							.getInstance().toId(referenceCount.getObj())
-							+ ToStringHelper.toString(referenceCount.getObj()),
-							nameSize)
-					+ " \t["
-					+ referenceCount.getCount()
-					+ "]");
+			table.addLine(String.valueOf(i), ObjectRecordManager.getInstance()
+					.toId(referenceCount.getObj()), ToStringHelper
+					.toString(referenceCount.getObj()),
+					"[" + referenceCount.getCount() + "]");
 			i++;
 		}
-
+		table.print(Agent.printer);
 	}
 
 	private void handleThread(Args args, CommandDispatcher dispatcher) {
@@ -47,18 +44,15 @@ public class TopCommandHandler implements CommandHandler {
 			num = Integer.parseInt(nOptions.get("num"));
 		}
 		int i = 0;
-		int nameSize = 40;
-		int indexSize = 4;
+		PreparedTableFormater table = new PreparedTableFormater();
+
+		table.setTitle("idx", "pid", "thread-name", "cpu%");
 		for (ThreadInfo threadInfo : OSHelper.findTopThread(num)) {
-			Agent.info(ToStringHelper.toFixSizeString(String.valueOf(i),
-					indexSize)
-					+ "[top-thread] "
-					+ ToStringHelper.toFixSizeString(threadInfo.getPid() + " "
-							+ threadInfo.getName(), nameSize)
-					+ " \t["
-					+ threadInfo.getCpu() + "%]");
+			table.addLine(String.valueOf(i), threadInfo.getPid(),
+					threadInfo.getName(), "[" + threadInfo.getCpu() + "%]");
 			i++;
 		}
+		table.print(Agent.printer);
 
 	}
 
@@ -80,5 +74,11 @@ public class TopCommandHandler implements CommandHandler {
 		argDef.setDesc("find references of target object.");
 		argDef.addOptionDesc("type", "ref,thread");
 		argDef.addOptionDesc("-n", "top num,default is 10");
+	}
+
+	public static void main(String[] args) {
+		Integer i1 = 1234;
+		Integer i2 = 1234;
+		System.out.println(i1 == i2);
 	}
 }

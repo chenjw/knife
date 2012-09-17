@@ -1,6 +1,14 @@
 package com.chenjw.knife.utils;
 
 public class StringHelper {
+	public static String defaultString(String str) {
+		return str != null ? str : "";
+	}
+
+	public static String defaultString(String str, String defaultStr) {
+		return str != null ? str : defaultStr;
+	}
+
 	public static boolean isNumeric(String str) {
 		if (str == null)
 			return false;

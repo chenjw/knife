@@ -8,6 +8,13 @@ import com.chenjw.knife.utils.StringHelper;
 
 public class ParseHelper {
 
+	public static void main(String[] args) {
+		Object o = JSON.parseObject("[]", String[].class);
+
+		System.out.println(o);
+
+	}
+
 	public static Object parseValue(String expr, Class<?> type) {
 		Object obj = null;
 		if (expr.startsWith("@")) {
@@ -19,6 +26,7 @@ public class ParseHelper {
 			}
 		} else {
 			obj = JSON.parseObject(expr, type);
+
 		}
 		if (obj != null && !(Helper.getBoxClazz(type).isInstance(obj))) {
 			throw new java.lang.IllegalArgumentException("cant parse expr ["

@@ -9,6 +9,7 @@ import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
+import com.chenjw.knife.agent.formater.PreparedTableFormater;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
@@ -53,12 +54,20 @@ public class FindCommandHandler implements CommandHandler {
 				if (likeClazz.length > 1) {
 					ContextManager.getInstance().put(Constants.CLASS_LIST,
 							likeClazz);
+
 					int i = 0;
+					PreparedTableFormater table = new PreparedTableFormater();
+
+					table.setTitle("idx", "type", "name", "classloader");
 					for (Class<?> cc : likeClazz) {
-						Agent.info(i + ". [class] " + cc.getName() + "\t "
-								+ cc.getClassLoader().getClass().getName());
+						table.addLine(String.valueOf(i),
+								cc.isInterface() ? "[interface]" : "[class]",
+								cc.getName(), "["
+										+ cc.getClassLoader().getClass()
+												.getName() + "]");
 						i++;
 					}
+					table.print(Agent.printer);
 					Agent.info("find " + i + " classes like '" + className
 							+ "', please choose one typing like 'find 0'!");
 					return;
@@ -73,13 +82,18 @@ public class FindCommandHandler implements CommandHandler {
 		}
 		// //
 		Object[] objs = NativeHelper.findInstancesByClass(clazz);
+
 		int i = 0;
+		PreparedTableFormater table = new PreparedTableFormater();
+
+		table.setTitle("type", "obj-id", "detail");
 		for (Object obj : objs) {
-			Agent.info("[instance] "
-					+ ObjectRecordManager.getInstance().toId(obj)
-					+ ToStringHelper.toDetailString(obj));
+			table.addLine("[instance]",
+					ObjectRecordManager.getInstance().toId(obj),
+					ToStringHelper.toDetailString(obj));
 			i++;
 		}
+		table.print(Agent.printer);
 		Agent.info("find " + i + " instances of " + clazz.getName());
 	}
 

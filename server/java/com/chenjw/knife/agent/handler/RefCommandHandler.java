@@ -6,6 +6,7 @@ import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
+import com.chenjw.knife.agent.formater.PreparedTableFormater;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
@@ -39,18 +40,20 @@ public class RefCommandHandler implements CommandHandler {
 			Agent.info("not found! ");
 			return;
 		}
+		PreparedTableFormater table = new PreparedTableFormater();
+
+		table.setTitle("type", "obj-id", "obj");
+
 		for (Object ref : refs) {
 			if (args.option("-r") != null) {
-				Agent.info("[referree] "
-						+ ObjectRecordManager.getInstance().toId(ref)
-						+ ToStringHelper.toString(ref));
+				table.addLine("[referree]", ObjectRecordManager.getInstance()
+						.toId(ref), ToStringHelper.toString(ref));
 			} else {
-				Agent.info("[referrer] "
-						+ ObjectRecordManager.getInstance().toId(ref)
-						+ ToStringHelper.toString(ref));
+				table.addLine("[referrer]", ObjectRecordManager.getInstance()
+						.toId(ref), ToStringHelper.toString(ref));
 			}
-
 		}
+		table.print(Agent.printer);
 		Agent.info("finished!");
 
 	}

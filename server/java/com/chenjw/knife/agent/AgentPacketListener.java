@@ -21,6 +21,7 @@ import com.chenjw.knife.agent.handler.NewCommandHandler;
 import com.chenjw.knife.agent.handler.PropCommandHandler;
 import com.chenjw.knife.agent.handler.RefCommandHandler;
 import com.chenjw.knife.agent.handler.SetCommandHandler;
+import com.chenjw.knife.agent.handler.SpringCommandHandler;
 import com.chenjw.knife.agent.handler.TopCommandHandler;
 import com.chenjw.knife.agent.handler.TraceCommandHandler;
 import com.chenjw.knife.agent.handler.ViewCommandHandler;
@@ -40,7 +41,7 @@ public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 		addCommandHandler(new DoCommandHandler());
 		addCommandHandler(new ViewCommandHandler());
 		addCommandHandler(new LsCommandHandler());
-		addCommandHandler(new CdCommandHandler());
+		addCommandHandler(new SpringCommandHandler());
 		addCommandHandler(new FindCommandHandler());
 		addCommandHandler(new InvokeCommandHandler());
 		addCommandHandler(new GcCommandHandler());
@@ -51,7 +52,7 @@ public class AgentPacketListener implements PacketHandler, CommandDispatcher {
 		addCommandHandler(new NewCommandHandler());
 		addCommandHandler(new PropCommandHandler());
 		addCommandHandler(new TopCommandHandler());
-
+		addCommandHandler(new CdCommandHandler());
 	}
 
 	private void addCommandHandler(CommandHandler commandHandler) {
