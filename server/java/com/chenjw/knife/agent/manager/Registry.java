@@ -1,52 +1,45 @@
 package com.chenjw.knife.agent.manager;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.chenjw.knife.agent.utils.NativeHelper;
 
 public class Registry implements Lifecycle {
 	private static final Registry INSTANCE = new Registry();
-
-	private List<Lifecycle> services = new ArrayList<Lifecycle>();
-	{
-		register(ByteCodeManager.getInstance());
-		register(ContextManager.getInstance());
-		register(HistoryManager.getInstance());
-		register(InstrumentManager.getInstance());
-		register(InvokeDepthManager.getInstance());
-		register(ObjectRecordManager.getInstance());
-		register(PrinterManager.getInstance());
-		register(SystemTagManager.getInstance());
-		register(TimingManager.getInstance());
-	}
 
 	public static Registry getInstance() {
 		return INSTANCE;
 	}
 
-	public void register(Lifecycle service) {
-		services.add(service);
-	}
-
 	@Override
 	public void init() {
+		Lifecycle[] services = NativeHelper
+				.findInstancesByClass(Lifecycle.class);
 		for (Lifecycle service : services) {
-			service.init();
+			if (service != INSTANCE) {
+				service.init();
+			}
 		}
-
 	}
 
 	@Override
 	public void clear() {
+		Lifecycle[] services = NativeHelper
+				.findInstancesByClass(Lifecycle.class);
 		for (Lifecycle service : services) {
-			service.clear();
+			if (service != INSTANCE) {
+				service.clear();
+			}
 		}
 
 	}
 
 	@Override
 	public void close() {
+		Lifecycle[] services = NativeHelper
+				.findInstancesByClass(Lifecycle.class);
 		for (Lifecycle service : services) {
-			service.close();
+			if (service != INSTANCE) {
+				service.close();
+			}
 		}
 	}
 

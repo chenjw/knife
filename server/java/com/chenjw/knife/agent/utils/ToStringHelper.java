@@ -62,6 +62,8 @@ public class ToStringHelper {
 					sb.append(obj.toString());
 				} else if (obj.getClass().isEnum()) {
 					sb.append(obj.toString());
+				} else if (obj instanceof Class) {
+					sb.append(obj.toString());
 				} else {
 					if (isDetail) {
 						if (obj.getClass().isArray()) {

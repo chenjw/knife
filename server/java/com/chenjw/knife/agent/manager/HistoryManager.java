@@ -40,7 +40,6 @@ public class HistoryManager implements Lifecycle {
 
 	@Override
 	public void init() {
-		// TODO Auto-generated method stub
 
 	}
 

@@ -22,6 +22,7 @@ import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
+import com.chenjw.knife.core.Printer.Level;
 import com.chenjw.knife.utils.StringHelper;
 
 public class LsCommandHandler implements CommandHandler {
@@ -53,7 +54,8 @@ public class LsCommandHandler implements CommandHandler {
 			}
 		}
 
-		PreparedTableFormater table = new PreparedTableFormater();
+		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
+				Agent.printer, args.getGrep());
 
 		table.setTitle("type", "field-name", "obj-id", "value");
 		if (clazz != null) {
@@ -75,7 +77,7 @@ public class LsCommandHandler implements CommandHandler {
 						toString(args, entry.getValue()));
 			}
 		}
-		table.print(Agent.printer);
+		table.print();
 		Agent.info("finished!");
 	}
 
@@ -108,7 +110,8 @@ public class LsCommandHandler implements CommandHandler {
 		}
 		List<Method> list = new ArrayList<Method>();
 		int i = 0;
-		PreparedTableFormater table = new PreparedTableFormater();
+		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
+				Agent.printer, args.getGrep());
 
 		table.setTitle("idx", "type", "method");
 		if (clazz != null) {
@@ -144,7 +147,7 @@ public class LsCommandHandler implements CommandHandler {
 				}
 			}
 		}
-		table.print(Agent.printer);
+		table.print();
 		ContextManager.getInstance().put(Constants.METHOD_LIST,
 				list.toArray(new Method[list.size()]));
 		Agent.info("finished!");
@@ -178,7 +181,8 @@ public class LsCommandHandler implements CommandHandler {
 		}
 		List<Constructor<?>> list = new ArrayList<Constructor<?>>();
 		int i = 0;
-		PreparedTableFormater table = new PreparedTableFormater();
+		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
+				Agent.printer, args.getGrep());
 
 		table.setTitle("idx", "type", "method");
 		Constructor<?>[] constructors = clazz.getDeclaredConstructors();
@@ -193,7 +197,7 @@ public class LsCommandHandler implements CommandHandler {
 			list.add(constructor);
 			i++;
 		}
-		table.print(Agent.printer);
+		table.print();
 		ContextManager.getInstance().put(Constants.CONSTRUCTOR_LIST,
 				list.toArray(new Constructor[list.size()]));
 		Agent.info("finished!");
@@ -240,7 +244,8 @@ public class LsCommandHandler implements CommandHandler {
 			return;
 		}
 		if (obj.getClass().isArray()) {
-			PreparedTableFormater table = new PreparedTableFormater();
+			PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
+					Agent.printer, args.getGrep());
 
 			table.setTitle("idx", "obj-id", "element");
 			for (int i = 0; i < Array.getLength(obj); i++) {
@@ -248,10 +253,11 @@ public class LsCommandHandler implements CommandHandler {
 				table.addLine(String.valueOf(i), ObjectRecordManager
 						.getInstance().toId(aObj), toString(args, aObj));
 			}
-			table.print(Agent.printer);
+			table.print();
 			Agent.info("finished!");
 		} else if (obj instanceof List) {
-			PreparedTableFormater table = new PreparedTableFormater();
+			PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
+					Agent.printer, args.getGrep());
 
 			table.setTitle("idx", "obj-id", "element");
 			int i = 0;
@@ -260,7 +266,7 @@ public class LsCommandHandler implements CommandHandler {
 						.getInstance().toId(aObj), toString(args, aObj));
 				i++;
 			}
-			table.print(Agent.printer);
+			table.print();
 			Agent.info("finished!");
 		} else {
 			Agent.info("not array!");

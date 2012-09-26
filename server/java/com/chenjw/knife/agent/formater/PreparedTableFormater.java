@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chenjw.knife.core.Printer;
+import com.chenjw.knife.core.Printer.Level;
 
-public class PreparedTableFormater {
+public class PreparedTableFormater extends AbstractPrintFormater {
+
 	private static final int BORDER = 2;
 	private int[] width;
 	private String[] title;
 	private List<String[]> lines = new ArrayList<String[]>();
+
+	public PreparedTableFormater(Level level, Printer printer, String grep) {
+		super(level, printer, grep);
+	}
 
 	public void setTitle(String... title) {
 		this.title = title;
@@ -20,9 +26,6 @@ public class PreparedTableFormater {
 	}
 
 	private void doPrepare() {
-		if (lines.size() == 0) {
-			throw new RuntimeException("no line found");
-		}
 		int size = 0;
 		if (title != null) {
 			size = title.length;
@@ -76,20 +79,20 @@ public class PreparedTableFormater {
 		}
 	}
 
-	public void print(Printer printer) {
+	public void print() {
 		doPrepare();
-		doPrint(printer);
+		doPrint();
 	}
 
-	private void printSeparatLine(Printer printer) {
+	private void printSeparatLine() {
 		StringBuffer ss = new StringBuffer();
 		for (int w : width) {
 			appendBlank(ss, w + BORDER, "-");
 		}
-		printer.info(ss.toString());
+		print(ss.toString());
 	}
 
-	private void doPrint(Printer printer) {
+	private void doPrint() {
 		if (title != null) {
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < title.length; i++) {
@@ -97,18 +100,24 @@ public class PreparedTableFormater {
 				sb.append(title[i]);
 				appendBlank(sb, d + BORDER, " ");
 			}
-			printer.info(sb.toString());
+			print(sb.toString());
 		}
-		printSeparatLine(printer);
-		for (String[] line : lines) {
-			StringBuffer sb = new StringBuffer();
-			for (int i = 0; i < line.length; i++) {
-				int d = width[i] - line[i].length();
-				sb.append(line[i]);
-				appendBlank(sb, d + BORDER, " ");
+		printSeparatLine();
+		if (!lines.isEmpty()) {
+			for (String[] line : lines) {
+				StringBuffer sb = new StringBuffer();
+				for (int i = 0; i < line.length; i++) {
+					int d = width[i] - line[i].length();
+					sb.append(line[i]);
+					appendBlank(sb, d + BORDER, " ");
+				}
+				print(sb.toString());
 			}
-			printer.info(sb.toString());
+		} else {
+
+			print("not found!");
 		}
-		printSeparatLine(printer);
+		printSeparatLine();
 	}
+
 }

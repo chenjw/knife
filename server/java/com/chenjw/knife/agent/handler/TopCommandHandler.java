@@ -14,6 +14,7 @@ import com.chenjw.knife.agent.utils.NativeHelper.ReferenceCount;
 import com.chenjw.knife.agent.utils.OSHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
 import com.chenjw.knife.agent.utils.info.ThreadInfo;
+import com.chenjw.knife.core.Printer.Level;
 
 public class TopCommandHandler implements CommandHandler {
 	private void handleRef(Args args, CommandDispatcher dispatcher) {
@@ -24,7 +25,8 @@ public class TopCommandHandler implements CommandHandler {
 		}
 		int i = 0;
 
-		PreparedTableFormater table = new PreparedTableFormater();
+		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
+				Agent.printer, args.getGrep());
 
 		table.setTitle("idx", "obj-id", "info", "ref-count");
 		for (ReferenceCount referenceCount : NativeHelper.countReferree(num)) {
@@ -34,7 +36,7 @@ public class TopCommandHandler implements CommandHandler {
 					"[" + referenceCount.getCount() + "]");
 			i++;
 		}
-		table.print(Agent.printer);
+		table.print();
 	}
 
 	private void handleThread(Args args, CommandDispatcher dispatcher) {
@@ -44,7 +46,8 @@ public class TopCommandHandler implements CommandHandler {
 			num = Integer.parseInt(nOptions.get("num"));
 		}
 		int i = 0;
-		PreparedTableFormater table = new PreparedTableFormater();
+		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
+				Agent.printer, args.getGrep());
 
 		table.setTitle("idx", "pid", "thread-name", "cpu%");
 		for (ThreadInfo threadInfo : OSHelper.findTopThread(num)) {
@@ -52,7 +55,7 @@ public class TopCommandHandler implements CommandHandler {
 					threadInfo.getName(), "[" + threadInfo.getCpu() + "%]");
 			i++;
 		}
-		table.print(Agent.printer);
+		table.print();
 
 	}
 

@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.chenjw.knife.agent.Agent;
+import com.chenjw.knife.agent.utils.info.ThreadInfo;
 import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.utils.IOHelper;
 import com.chenjw.knife.utils.StringHelper;
@@ -489,9 +491,15 @@ public class NativeHelper {
 	private native static double getStaticDoubleFieldValue0(Class<?> clazz,
 			Field field);
 
+	// /////////////////////
+
 	private native static String getClassSourceFileName0(Class<?> clazz);
 
 	private native static ClassLoader getCallerClassLoader0();
+
+	private native static void startMethodTrace0();
+
+	private native static void stopMethodTrace0();
 
 	/**
 	 * invoke by native code
@@ -521,12 +529,6 @@ public class NativeHelper {
 	/**
 	 * invoke by native code
 	 * 
-	 * @param loader
-	 * @param classname
-	 * @param classBeingRedefined
-	 * @param protectionDomain
-	 * @param classfileBuffer
-	 * @param isRetransformer
 	 * @return
 	 */
 	private static void classLoaded(Class<?> clazz) {
@@ -541,6 +543,36 @@ public class NativeHelper {
 			}
 		}
 
+	}
+
+	private static void methodEnter(Method method) {
+		System.out.println(method.getName());
+
+	}
+
+	private static void do2() {
+		NativeHelper.startMethodTrace0();
+		// NativeHelper.stopMethodTrace0();
+		// while (true) {
+		ThreadInfo t = new ThreadInfo();
+		t.setCpu("cpu");
+		// }
+
+		System.out.println(t.getCpu());
+	}
+
+	private static void do3() {
+		ThreadInfo t = new ThreadInfo();
+		t.setCpu("cpu");
+		System.out
+				.println(NativeHelper.findInstancesByClass0(ThreadInfo.class).length);
+
+		// NativeHelper.stopMethodTrace0();
+		// while (true) {
+
+		// }
+
+		System.out.println(t.getCpu());
 	}
 
 	private static void do1() throws ClassNotFoundException {
@@ -566,7 +598,7 @@ public class NativeHelper {
 
 	public static void main(String[] args) throws ClassNotFoundException,
 			SecurityException, NoSuchFieldException {
-		do1();
+		do3();
 		System.out.println("finished!");
 	}
 

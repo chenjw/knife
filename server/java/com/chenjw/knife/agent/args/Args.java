@@ -6,9 +6,13 @@ import java.util.Map;
 import com.chenjw.knife.utils.StringHelper;
 
 public class Args {
+	private static final String GREP_STR = " | grep ";
+
 	private Map<String, Map<String, String>> optionMap = new HashMap<String, Map<String, String>>();
 
 	private Map<String, String> argMap = new HashMap<String, String>();
+
+	private String grep;
 
 	public Args() {
 
@@ -19,6 +23,10 @@ public class Args {
 			return;
 		}
 		String tmp = argStr;
+		if (tmp.indexOf(GREP_STR) != -1) {
+			grep = StringHelper.substringAfterLast(tmp, GREP_STR);
+			tmp = StringHelper.substringBeforeLast(tmp, GREP_STR).trim();
+		}
 		// read options
 		int i = 0;
 		for (i = 0; i < tmp.length();) {
@@ -97,5 +105,9 @@ public class Args {
 
 	public String arg(String argName) {
 		return argMap.get(argName);
+	}
+
+	public String getGrep() {
+		return grep;
 	}
 }

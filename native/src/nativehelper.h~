@@ -401,6 +401,23 @@ JNIEXPORT jstring JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getClas
 JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getCallerClassLoader0
   (JNIEnv *, jclass);
 
+/*
+ * Class:     com_chenjw_knife_agent_utils_NativeHelper
+ * Method:    startMethodTrace0
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_startMethodTrace0
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_chenjw_knife_agent_utils_NativeHelper
+ * Method:    stopMethodTrace0
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_stopMethodTrace0
+  (JNIEnv *, jclass);
+
+
 
 #ifdef __cplusplus
 }

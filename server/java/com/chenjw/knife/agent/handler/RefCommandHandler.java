@@ -11,6 +11,7 @@ import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
+import com.chenjw.knife.core.Printer.Level;
 
 public class RefCommandHandler implements CommandHandler {
 
@@ -40,7 +41,8 @@ public class RefCommandHandler implements CommandHandler {
 			Agent.info("not found! ");
 			return;
 		}
-		PreparedTableFormater table = new PreparedTableFormater();
+		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
+				Agent.printer, args.getGrep());
 
 		table.setTitle("type", "obj-id", "obj");
 
@@ -53,7 +55,7 @@ public class RefCommandHandler implements CommandHandler {
 						.toId(ref), ToStringHelper.toString(ref));
 			}
 		}
-		table.print(Agent.printer);
+		table.print();
 		Agent.info("finished!");
 
 	}
