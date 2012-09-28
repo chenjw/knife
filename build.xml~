@@ -9,7 +9,7 @@
 	<property name="build.classes.dir" location="${build.dir}/classes"/>
 	<property name="dist.dir" location="${base.dir}/dist"/>
 	<property environment="env"/>
-	<property name="version" value="0.6.3"/>
+	<property name="version" value="0.6.2"/>
 	<property name="appName" value="knife"/>
 	<property name="date" value="2012"/>
 	
