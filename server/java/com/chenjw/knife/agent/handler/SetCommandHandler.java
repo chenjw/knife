@@ -4,12 +4,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import com.chenjw.knife.agent.Agent;
-import com.chenjw.knife.agent.CommandDispatcher;
-import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
+import com.chenjw.knife.agent.core.CommandDispatcher;
+import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ParseHelper;

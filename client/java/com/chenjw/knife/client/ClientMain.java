@@ -1,47 +1,24 @@
 package com.chenjw.knife.client;
 
-import java.io.IOException;
-
-import com.chenjw.knife.core.Packet;
-import com.chenjw.knife.core.PacketHandler;
-import com.chenjw.knife.core.packet.ClosePacket;
+import com.chenjw.knife.client.client.ConsoleClient;
+import com.chenjw.knife.client.connector.LocalVMConnector;
+import com.chenjw.knife.client.connector.RemoteVMConnector;
+import com.chenjw.knife.client.constants.Constants;
+import com.chenjw.knife.client.core.Client;
+import com.chenjw.knife.client.core.VMConnector;
 
 public final class ClientMain {
-	private static final String OUT_PREFIX = "knife>";
-	public static final int DEFAULT_PORT = 2222;
 
-	public static void main(String args[]) {
-		int port = DEFAULT_PORT;
-		String // pid = JvmHelper.findPid("test_main");
-		pid = null;
-		try {
-			final Client client = new Client(port);
-			client.attach(pid);
-
-			client.startHandler(new PacketHandler() {
-				@Override
-				public void handle(Packet packet) throws IOException {
-					if (packet instanceof ClosePacket) {
-						System.out.println(OUT_PREFIX + "agent closed!");
-						client.close();
-					} else {
-						System.out.println(OUT_PREFIX + packet);
-					}
-				}
-			});
-			client.startConsole();
-			while (!client.isClosed()) {
-				Thread.sleep(2000);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			errorExit(e.getMessage(), 1);
+	public static void main(String args[]) throws Exception {
+		Client client = new ConsoleClient();
+		VMConnector connector = null;
+		if (args == null || args.length == 0) {
+			connector = new LocalVMConnector();
+		} else {
+			connector = new RemoteVMConnector(args[0],
+					Constants.DEFAULT_PROXY_PORT);
 		}
-	}
-
-	private static void errorExit(String msg, int code) {
-		System.err.println(msg);
-		System.exit(code);
+		client.start(connector);
 	}
 
 }

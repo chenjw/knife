@@ -10,6 +10,18 @@ import com.chenjw.knife.agent.manager.SystemTagManager;
 
 public class ToStringHelper {
 
+	public static String toClassLoaderString(Class<?> obj) {
+		String r = "";
+		if (obj == null) {
+			return r;
+		}
+		if (obj.getClassLoader() == null) {
+			return r;
+		} else {
+			return obj.getClassLoader().getClass().getName();
+		}
+	}
+
 	public static String toFixSizeString(String str, int size) {
 		if (str == null) {
 			str = "null";

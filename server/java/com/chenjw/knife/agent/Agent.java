@@ -56,7 +56,7 @@ public class Agent {
 		try {
 			PacketResolver.write(command, agentInfo.getOs());
 		} catch (IOException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
 

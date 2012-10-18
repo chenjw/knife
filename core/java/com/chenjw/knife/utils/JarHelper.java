@@ -46,4 +46,30 @@ public class JarHelper {
 		File file = new File(folder, fileName);
 		return file.getAbsolutePath();
 	}
+
+	public static String getToolsJarPath() {
+		String components[] = System.getProperty("java.class.path").split(
+				File.pathSeparator);
+		String arr$[] = components;
+		int len$ = arr$.length;
+		for (int i$ = 0; i$ < len$; i$++) {
+			String c = arr$[i$];
+			if (c.endsWith("tools.jar"))
+				return (new File(c)).getAbsolutePath();
+			if (c.endsWith("classes.jar"))
+				return (new File(c)).getAbsolutePath();
+		}
+
+		if (System.getProperty("os.name").startsWith("Mac")) {
+			String java_home = System.getProperty("java.home");
+			String java_mac_home = java_home.substring(0,
+					java_home.indexOf("/Home"));
+			return (new StringBuilder()).append(java_mac_home)
+					.append("/Classes/classes.jar").toString();
+		} else {
+			return (new StringBuilder())
+					.append(System.getProperty("java.home"))
+					.append("../lib/tools.jar").toString();
+		}
+	}
 }

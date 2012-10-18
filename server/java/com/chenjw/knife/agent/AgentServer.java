@@ -3,20 +3,18 @@ package com.chenjw.knife.agent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.instrument.Instrumentation;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 import com.chenjw.knife.agent.manager.Registry;
-import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
 import com.chenjw.knife.core.PacketResolver;
 
 public class AgentServer implements Runnable {
 	// 服务器channel对象，负责接受用户的连接
-	private static String LOCAL_ADDR = "127.0.0.1";
 	private ServerSocket serverSocket;
 	public PacketHandler handler = null;
 	private AgentInfo agentInfo;
@@ -26,10 +24,9 @@ public class AgentServer implements Runnable {
 			AgentInfo agentInfo = new AgentInfo();
 			agentInfo.setInst(inst);
 			this.agentInfo = agentInfo;
-			handler = new AgentPacketListener();
-			serverSocket = new ServerSocket(port, 1,
-					InetAddress.getByName(LOCAL_ADDR));
-
+			handler = new AgentPacketHandler();
+			serverSocket = new ServerSocket();
+			serverSocket.bind(new InetSocketAddress(port));
 			if (port == 0) {
 				port = serverSocket.getLocalPort();
 
@@ -42,7 +39,7 @@ public class AgentServer implements Runnable {
 
 	@Override
 	public void run() {
-		NativeHelper.startClassLoadHook();
+		// NativeHelper.startClassLoadHook();
 		Socket socket = null;
 		try {
 			socket = serverSocket.accept();

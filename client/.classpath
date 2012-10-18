@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/knife.core"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/tools.jar"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/jline-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jmxtools.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

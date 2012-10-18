@@ -3,31 +3,22 @@ package com.chenjw.knife.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
 
-import com.chenjw.knife.core.packet.TextPacket;
-
+/**
+ * 格式
+ * 
+ * magic(5位) 类型长度(8位) 类型 内容长度(8位) 内容
+ * 
+ * 
+ * @author chenjw
+ * 
+ */
 public class PacketResolver {
-	private static Map<Byte, Class<? extends Packet>> packetMap = new HashMap<Byte, Class<? extends Packet>>();;
-	static {
-		try {
-			Class.forName("com.chenjw.knife.core.packet.ClosePacket");
-			Class.forName("com.chenjw.knife.core.packet.ObjectPacket");
-			Class.forName("com.chenjw.knife.core.packet.TextPacket");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
-	}
+	private static final String MAGIC = "KNIFE";
+	private static final int MAGIC_LENGTH = MAGIC.getBytes().length;
 
-	public static void register(byte type, Class<? extends Packet> clazz) {
-		packetMap.put(type, clazz);
-	}
-
-	private static Packet netInstance(Class<? extends Packet> clazz) {
+	private static Object netInstance(Class<?> clazz) {
 		try {
 			return clazz.newInstance();
 		} catch (Exception e) {
@@ -37,20 +28,32 @@ public class PacketResolver {
 
 	public static Packet read(InputStream is) throws IOException {
 		Packet packet = null;
-		byte code = readCode(is);
-		int size = (int) readLong(is);
-		byte[] bytes = new byte[size];
-		is.read(bytes, 0, size);
-		packet = netInstance(packetMap.get(code));
+		checkMagic(is);
+		int typeLength = (int) readLong(is);
+		String type = readType(is, typeLength);
+		packet = initPacket(type);
+		int contentLength = (int) readLong(is);
+		byte[] bytes = null;
+		if (contentLength == 0) {
+			bytes = new byte[0];
+		} else {
+			bytes = new byte[contentLength];
+			is.read(bytes, 0, contentLength);
+		}
 		packet.fromBytes(bytes);
 		return packet;
 	}
 
 	public static void write(Packet packet, OutputStream os) throws IOException {
-		os.write(new byte[] { packet.getCode() });
-		byte[] bytes = packet.toBytes();
-		os.write(long2bytes(bytes.length));
-		os.write(bytes);
+		os.write(MAGIC.getBytes());
+		byte[] type = packet.getClass().getName().getBytes();
+		os.write(long2bytes(type.length));
+		os.write(type);
+		byte[] content = packet.toBytes();
+		os.write(long2bytes(content.length));
+		if (content.length > 0) {
+			os.write(content);
+		}
 	}
 
 	private static long readLong(InputStream is) throws IOException {
@@ -62,27 +65,35 @@ public class PacketResolver {
 		return bytes2long(bytes);
 	}
 
-	private static byte readCode(InputStream is) throws IOException {
-		byte[] b = new byte[1];
-		int i = is.read(b);
-		if (i != -1) {
-			return b[0];
-		} else {
-			throw new IOException();
+	private static void checkMagic(InputStream is) throws IOException {
+		byte[] bytes = new byte[MAGIC_LENGTH];
+		int size = is.read(bytes);
+		if (size == -1) {
+			throw new IOException("read -1");
+		}
+		if (!MAGIC.equals(new String(bytes))) {
+			throw new IOException("MAGIC check fail (" + new String(bytes)
+					+ ")");
 		}
 	}
 
-	public static void main(String[] args) throws UnknownHostException,
-			IOException {
-		send(new TextPacket("aaa"));
-		// send(new ObjectCommand(new NewObject()));
+	private static Packet initPacket(String type) throws IOException {
+		try {
+			Class<?> clazz = Class.forName(type);
+			return (Packet) netInstance(clazz);
+		} catch (ClassNotFoundException e) {
+			throw new IOException("type not found (" + type + ")");
+		}
 	}
 
-	private static void send(Packet packet) throws IOException {
-		Socket socket = new Socket("127.0.0.1", 1111);
-		OutputStream os = socket.getOutputStream();
-		PacketResolver.write(packet, os);
-		socket.close();
+	private static String readType(InputStream is, int length)
+			throws IOException {
+		byte[] bytes = new byte[length];
+		int size = is.read(bytes);
+		if (size == -1) {
+			throw new IOException("read -1");
+		}
+		return new String(bytes);
 	}
 
 	public static long bytes2long(byte[] b) {

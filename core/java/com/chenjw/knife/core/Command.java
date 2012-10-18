@@ -31,4 +31,9 @@ public class Command implements Serializable {
 		this.args = args;
 	}
 
+	@Override
+	public String toString() {
+		return name + " " + args;
+	}
+
 }

@@ -3,10 +3,10 @@ package com.chenjw.knife.agent.handler;
 import java.util.Map;
 
 import com.chenjw.knife.agent.Agent;
-import com.chenjw.knife.agent.CommandDispatcher;
-import com.chenjw.knife.agent.CommandHandler;
 import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
+import com.chenjw.knife.agent.core.CommandDispatcher;
+import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.formater.PreparedTableFormater;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;

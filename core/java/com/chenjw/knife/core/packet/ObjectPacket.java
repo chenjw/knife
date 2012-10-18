@@ -5,15 +5,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import com.chenjw.knife.core.Packet;
-import com.chenjw.knife.core.PacketResolver;
 
-public class ObjectPacket<T> implements Packet {
-	static final byte CODE = 1;
-	static {
-		PacketResolver.register(CODE, ObjectPacket.class);
-	}
+public abstract class ObjectPacket<T extends Serializable> implements Packet {
+
 	private T object;
 
 	public ObjectPacket(T object) {
@@ -25,6 +22,9 @@ public class ObjectPacket<T> implements Packet {
 
 	@Override
 	public byte[] toBytes() {
+		if (object == null) {
+			return new byte[0];
+		}
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos;
 		try {
@@ -39,6 +39,10 @@ public class ObjectPacket<T> implements Packet {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void fromBytes(byte[] bytes) {
+		if (bytes.length == 0) {
+			this.object = null;
+			return;
+		}
 		ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
 		ObjectInputStream ois;
 		try {
@@ -49,11 +53,6 @@ public class ObjectPacket<T> implements Packet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public byte getCode() {
-		return CODE;
 	}
 
 	public T getObject() {
