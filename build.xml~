@@ -34,7 +34,7 @@
   		<!--exec executable="make" dir="${native.dir}">
   		</exec-->
 		<copy overwrite="true" file="${native.dir}/Default/libnativehelper.so" todir="${base.dir}/server/resources" failonerror="false"/>
-		<copy overwrite="true" file="${native.dir}/Default/libnativehelper.dll" todir="${base.dir}/server/resources" failonerror="false"/>
+		<copy overwrite="true" file="${native.dir}/Default/libnativehelper.dll" todir="${base.dir}/server/resources" failonerror="true"/>
 	</target>
 
        	<target name="build-client">
