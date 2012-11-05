@@ -22,15 +22,19 @@ public class OSHelper {
 			Map<String, ThreadInfo> threadInfoMap = new HashMap<String, ThreadInfo>();
 			for (ThreadInfo threadInfo : threadInfos) {
 
-				threadInfoMap.put(threadInfo.getPid(), threadInfo);
+				threadInfoMap.put(threadInfo.getTid(), threadInfo);
 			}
 			threadDump(pid, threadInfoMap);
 			List<ThreadInfo> result = new ArrayList<ThreadInfo>();
+			int n = 0;
 			for (ThreadInfo threadInfo : threadInfos) {
+				if (n > num) {
+					break;
+				}
 				// System.out.println(threadInfo.getName());
 				if (threadInfo.getName() != null) {
-
 					result.add(threadInfo);
+					n++;
 				}
 			}
 			return result;
@@ -72,25 +76,38 @@ public class OSHelper {
 			int cpuIndex = 0;
 			title = title.replace("  ", " ").trim();
 			String[] ts = title.split(" ");
-			for (int i = 0; i < ts.length; i++) {
-				if ("%CPU".equals(ts[i])) {
+			int i = 0;
+			for (String tsi : ts) {
+				if (StringHelper.isBlank(tsi)) {
+					continue;
+				}
+				tsi = tsi.trim();
+
+				if ("%CPU".equals(tsi)) {
 					cpuIndex = i;
-				} else if ("PID".equals(ts[i])) {
+				} else if ("PID".equals(tsi)) {
 					pidIndex = i;
 				}
+				i++;
 			}
 			for (String threadLine : threadLines) {
 				threadLine = threadLine.replace("  ", " ").trim();
-				String[] values = threadLine.split(" ");
-
-				String id = values[pidIndex];
+				String[] valueSplit = threadLine.split(" ");
+				List<String> valueList = new ArrayList<String>();
+				for (String v : valueSplit) {
+					if (StringHelper.isBlank(v)) {
+						continue;
+					}
+					valueList.add(v.trim());
+				}
+				String id = valueList.get(pidIndex);
 				if (pid.equals(id)) {
 					continue;
 				}
-				String cpu = values[cpuIndex];
+				String cpu = valueList.get(cpuIndex);
 				ThreadInfo threadInfo = new ThreadInfo();
 				threadInfo.setCpu(cpu);
-				threadInfo.setPid(id);
+				threadInfo.setTid(id);
 				result.add(threadInfo);
 			}
 			return result;
@@ -149,8 +166,10 @@ public class OSHelper {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
+		for (ThreadInfo tinfo : findTopThread(10)) {
+			System.out.println(tinfo.getCpu());
+		}
 
-		System.out.println(Integer.parseInt("628688", 16));
 		System.out.println("finished!");
 	}
 }

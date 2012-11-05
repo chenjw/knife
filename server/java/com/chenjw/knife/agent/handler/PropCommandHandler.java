@@ -23,7 +23,7 @@ public class PropCommandHandler implements CommandHandler {
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("prop");
 		argDef.setDef("<type> <status>");
-		argDef.setDesc("set field value to target object.");
+		argDef.setDesc("some knife settings");
 		argDef.addOptionDesc("type", "debug");
 		argDef.addOptionDesc("status", "on/off");
 

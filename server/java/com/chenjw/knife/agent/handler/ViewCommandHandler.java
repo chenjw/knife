@@ -34,7 +34,7 @@ public class ViewCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("view");
-		argDef.setDesc("trace an invocation on the target object.");
+		argDef.setDesc("view classloader or classfilename");
 		argDef.setDef("[-c] [-s]");
 		argDef.addOptionDesc("-c", "view classloader");
 		argDef.addOptionDesc("-s", "view class file name");

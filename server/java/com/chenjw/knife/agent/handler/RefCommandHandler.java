@@ -63,8 +63,8 @@ public class RefCommandHandler implements CommandHandler {
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("ref");
 		argDef.setDef("[-r] <object-id>");
-		argDef.setDesc("find Referrers of target object.");
+		argDef.setDesc("find referrers or referrees of target object.");
 		argDef.addOptionDesc("object-id", "a num as the object id.");
-		argDef.addOptionDesc("-r", "find Referree not Referrer");
+		argDef.addOptionDesc("-r", "find referree not Referrer");
 	}
 }

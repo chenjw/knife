@@ -2,16 +2,16 @@ package com.chenjw.knife.agent.utils.info;
 
 public class ThreadInfo {
 
-	private String pid;
+	private String tid;
 	private String cpu;
 	private String name;
 
-	public String getPid() {
-		return pid;
+	public String getTid() {
+		return tid;
 	}
 
-	public void setPid(String pid) {
-		this.pid = pid;
+	public void setTid(String tid) {
+		this.tid = tid;
 	}
 
 	public String getCpu() {

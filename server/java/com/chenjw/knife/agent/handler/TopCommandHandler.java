@@ -49,9 +49,9 @@ public class TopCommandHandler implements CommandHandler {
 		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
 				Agent.printer, args.getGrep());
 
-		table.setTitle("idx", "pid", "thread-name", "cpu%");
+		table.setTitle("idx", "tid", "thread-name", "cpu%");
 		for (ThreadInfo threadInfo : OSHelper.findTopThread(num)) {
-			table.addLine(String.valueOf(i), threadInfo.getPid(),
+			table.addLine(String.valueOf(i), threadInfo.getTid(),
 					threadInfo.getName(), "[" + threadInfo.getCpu() + "%]");
 			i++;
 		}
@@ -74,14 +74,9 @@ public class TopCommandHandler implements CommandHandler {
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("top");
 		argDef.setDef("[-n <num>] [<type>]");
-		argDef.setDesc("find references of target object.");
+		argDef.setDesc("find the top cpu-used thread. and the top mem-used object.");
 		argDef.addOptionDesc("type", "ref,thread");
 		argDef.addOptionDesc("-n", "top num,default is 10");
 	}
 
-	public static void main(String[] args) {
-		Integer i1 = 1234;
-		Integer i2 = 1234;
-		System.out.println(i1 == i2);
-	}
 }
