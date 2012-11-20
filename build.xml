@@ -8,6 +8,7 @@
 	<property name="build.dir" location="${base.dir}/build"/>
 	<property name="build.classes.dir" location="${build.dir}/classes"/>
 	<property name="dist.dir" location="${base.dir}/dist"/>
+	<property name="doc.dir" location="${base.dir}/doc"/>
 	<property environment="env"/>
 	<property name="version" value="0.6.12"/>
 	<property name="appName" value="knife"/>
@@ -28,6 +29,7 @@
 		<delete dir="${dist.dir}" quiet="true"/>
 		<mkdir dir="${dist.dir}"/>
 		<mkdir dir="${dist.dir}/knife/lib"/>
+		<mkdir dir="${dist.dir}/doc"/>
 	</target>
 
     	<target name="build-native">
@@ -126,7 +128,25 @@
 	<target name="tar">
 		<tar destfile="${dist.dir}/knife-${version}.tar.gz" basedir="${dist.dir}/knife" compression="gzip"/>
 	</target>
-
+	
+	<target name="build-update-doc">
+		<!-- build doc-->
+		<exec executable="doxygen">
+    			<arg value="${doc.dir}/config/doxygen/setting.cfg"/>
+ 		</exec>
+		<copy todir="${dist.dir}/doc">
+    			<fileset dir="${doc.dir}/config/deploy">
+				<include name="manifest.yml"/>
+			</fileset>
+  		</copy>
+		<war destfile="${dist.dir}/doc/knife-doc.war" webxml="${doc.dir}/config/deploy/web.xml" basedir="${doc.dir}/html" encoding="utf-8"/>
+		<!-- upload to cloudfoundry-->
+		<exec executable="vmc">
+    			<arg value="--path"/>
+			<arg value="${dist.dir}/doc/"/>
+			<arg value="update"/>
+ 		</exec>
+	</target>
 
 
 	<target name="make-rpm">
@@ -156,4 +176,6 @@
 	</target>
     
     	<target name="main" depends="init,build-native,build-client,build-agent,build-server,copy-shell,copy-lib,tar"/>
+
+	<target name="all" depends="main,build-update-doc"/>
 </project>
