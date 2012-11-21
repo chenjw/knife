@@ -131,9 +131,9 @@
 	
 	<target name="build-update-doc">
 		<!-- build doc-->
-		<exec executable="doxygen">
+		<!--exec executable="doxygen">
     			<arg value="${doc.dir}/config/doxygen/setting.cfg"/>
- 		</exec>
+ 		</exec-->
 		<copy todir="${dist.dir}/doc">
     			<fileset dir="${doc.dir}/config/deploy">
 				<include name="manifest.yml"/>
