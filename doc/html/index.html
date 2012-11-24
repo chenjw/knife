@@ -84,174 +84,177 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">Home </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1>Summary</h1>
-<p>Knife is a command-line java runtime diagnostic tool like <a href="http://kenai.com/projects/btrace/">Btrace</a>. And provides many features btrace not support.</p>
-<h1>Features</h1>
-<p>Similarities with btrace:</p>
+<div class="textblock"><h1>简介</h1>
+<p>Knife是一个Java应用的运行时命令行诊断工具。 有点像<a href="http://kenai.com/projects/btrace/">Btrace</a>. 提供了很多Btrace没有提供的功能.</p>
+<h1>功能</h1>
+<p>与Btrace类似的功能:</p>
 <ol type="1">
-<li>Support runtime attach to the jvm.</li>
-<li>Can trace a method invocation. And print out the arguments and result.</li>
-<li>Can record the time-consuming of any invocation. And print it out.</li>
+<li>支持在运行时被加载到jvm中，不需要目前应用做任何修改.</li>
+<li>可以跟踪一个方法调用，并打印出入参、返回结果和调用时间等信息.</li>
 </ol>
-<p>Features btrace not support:</p>
+<p>Btrace所没有提供的功能:</p>
 <ol type="1">
-<li>A command line interactive form. Without having to write the scripts.</li>
-<li>Can find any object in the heap.</li>
-<li>Can view any fields in an object. And change the field values.</li>
-<li>Can invoke and trace any method of an object.</li>
-<li>Can find any reference to an object.</li>
+<li>命令行的交互方式，不需要编写脚本.</li>
+<li>可以遍历堆内存，找到目标对象.</li>
+<li>可以查看并修改某个对象的属性值.</li>
+<li>可以主动调用某个方法，并可以跟踪调用的返回结果和调用时间等信息.</li>
+<li>可以查找某个对象引用的所有对象或引用某个对象的所有对象.</li>
 </ol>
-<h1>Download</h1>
+<h1>下载</h1>
 <p><a href="https://github.com/chenjw/knife/downloads">https://github.com/chenjw/knife/downloads</a></p>
-<h1>How to start?</h1>
+<h1>如何使用Knife?</h1>
 <ol type="1">
-<li>download knife-XXX.tar.gz</li>
-<li>tar -zxvf knife-XXX.tar.gz</li>
-<li>sh knife.sh</li>
+<li>下载 knife-XXX.tar.gz</li>
+<li>解压缩“tar -zxvf knife-XXX.tar.gz”</li>
+<li>执行knife.sh</li>
 </ol>
-<h2>Attach to local jvm</h2>
+<h2>连接到本地运行中的Jvm</h2>
 <div class="image">
-<img src="http://g.p309.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_501a44121282b615.jpg"  alt="attach"/>
-</div>
-<p>Choose the jvm and attach.</p>
+<img src="attach.jpg" alt="attach.jpg"/>
+<div class="caption">
+连接到本地运行中的Jvm</div></div>
+<p> 选择本地运行中的Jvm并连接上去</p>
 <div class="image">
-<img src="http://m.p310.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_5012aff83dee0797.jpg"  alt="attach"/>
-</div>
-<h1>Commands</h1>
+<img src="connected.jpg" alt="connected.jpg"/>
+<div class="caption">
+连接成功</div></div>
+ <h1>Commands</h1>
 <h2>find</h2>
-<p>This command is used to find loaded classes in jvm.</p>
-<p>And can also find instances of a class in the heap by the class name.</p>
+<p>find命令用于寻找堆内存中的某个对象，主要思路为遍历堆内存，根据类名查找某个类的所有实例，然后再选择实际需要的某个实例。</p>
 <div class="fragment"><div class="line">find &lt;find-expretion&gt;</div>
 </div><!-- fragment --><h3>find-expretion</h3>
-<p>className or class index.</p>
+<p>完整类名或查找结果中类名的序号.</p>
 <blockquote class="doxtable">
-<p>find classes whose name like 'Service'</p>
+<p>查找名字中包含符合 'Service' 的类，如果匹配结果有多个类，会把这些类遍历出来，如果匹配结果只有一个类，会显示这个类的所有实例。</p>
 <p></p>
 </blockquote>
 <div class="image">
-<img src="http://m.p310.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_5012affac0374289.jpg"  alt="attach"/>
-</div>
-<blockquote class="doxtable">
-<p>find instances of class 'com.chenjw.knife.server.test.impl.ApplyServiceImpl' in the heap. can also short for 'find 15' , '15' means the index of the last find result.</p>
+<img src="find_service.jpg" alt="find_service.jpg"/>
+<div class="caption">
+查找名字中包含符合 'Service' 的类</div></div>
+ <blockquote class="doxtable">
+<p>在堆内存中查找类 'com.chenjw.knife.server.test.impl.ApplyServiceImpl' 的实例. 也可以直接使用 'find 15' , '15' 表示上一次查找结果中类的序号.</p>
 <p></p>
 </blockquote>
 <div class="image">
-<img src="http://m.p310.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_5012aff916943541.jpg"  alt="attach"/>
-</div>
-<h2>cd</h2>
-<p>Mark an object as the target object. Some commands like 'invoke' and 'ls' will apply to the target object.</p>
-<p>Anywhere an object appears with a mark '' (maybe the result of 'find', or the param of 'invoke'), it can be mark as the target object using the command 'cd'.</p>
+<img src="find_target_service.jpg" alt="find_target_service.jpg"/>
+<div class="caption">
+查找之前返回结果中序号为 '15' 也就是类 'com.chenjw.knife.server.test.impl.ApplyServiceImpl' 的所有实例</div></div>
+ <h2>cd</h2>
+<p>设置某个对象为“目标对象”. 类似'invoke' 和 'ls' 这些命令都是针对目标“对象操作”的.</p>
+<p>任何时候当输出中包含 '@15' 这样的标记时 (比如 'find' 命令的结果, 或 'invoke' 命令的返回值和参数), 这个对象都可以通过 'cd 15' 的方式标记为“目标对象”.</p>
 <div class="fragment"><div class="line">cd &lt;<span class="keywordtype">object</span>-<span class="keywordtype">id</span>&gt;</div>
 </div><!-- fragment --><blockquote class="doxtable">
 <p>Into the instance of class 'com.chenjw.knife.server.test.impl.ApplyServiceImpl'</p>
 <p></p>
 </blockquote>
 <div class="image">
-<img src="http://c.p312.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_5012b6854c961217.jpg"  alt="attach"/>
-</div>
-<h2>ls</h2>
-<p>This command is used to list the fields of the target object, or to list the methods of the target object.</p>
+<img src="cd.jpg" alt="cd.jpg"/>
+<div class="caption">
+cd</div></div>
+ <h2>ls</h2>
+<p>这个命令用来遍历“目标对象”的属性值或方法。</p>
 <div class="fragment"><div class="line">ls [-f] [-m] [&lt;classname&gt;]</div>
 </div><!-- fragment --><h3>classname</h3>
-<p>Set &lt;classname&gt; to find static fields or methods , if &lt;classname&gt; not set , will apply to target object.</p>
+<p>如果参数包含了 &lt;classname&gt; ，会查找该类的静态属性和静态方法 ，如果没有包含，会查找“目标对象”的实例属性和方法。</p>
 <h3>-f</h3>
-<p>List fields of target object/class, including static , instance fields, and the fields defined in superclass.</p>
-<h3>-m</h3>
-<p>List methods of target object/class, including static , instance methods, and the methods defined in superclass.</p>
-<blockquote class="doxtable">
-<p>list fields of target object. Include both static and instance fields</p>
-<p></p>
-</blockquote>
+<p>列出“目标对象”或“目标类”的所有静态或非静态属性值，包含了在父类中定义的属性。</p>
 <div class="image">
-<img src="http://i.p311.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_5012b89e5079d859.jpg"  alt="attach"/>
-</div>
-<blockquote class="doxtable">
-<p>list methods of target object. Include both static and instance methods.</p>
-<p></p>
-</blockquote>
+<img src="ls_f.jpg" alt="ls_f.jpg"/>
+<div class="caption">
+ls -f</div></div>
+ <h3>-m</h3>
+<p>列出“目标对象”或“目标类”的所有静态或非静态方法，包含了在父类中定义的方法。</p>
 <div class="image">
-<img src="http://i.p311.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_5012b89d1afdd662.jpg"  alt="attach"/>
-</div>
-<h2>set</h2>
-<p>Change field value.</p>
+<img src="ls_m.jpg" alt="ls_m.jpg"/>
+<div class="caption">
+ls -m</div></div>
+ <h2>set</h2>
+<p>修改属性值。</p>
 <div class="fragment"><div class="line"><span class="keyword">set</span> [-s] &lt;fieldname&gt; &lt;<span class="keyword">new</span>-value&gt;</div>
 </div><!-- fragment --><h3>fieldname</h3>
-<p>Input 'package.TestClass.field1' means static field or 'field1' means both static and no-static field of target object.</p>
+<p>可以输入'类名.属性名' 来表示设置静态变量值。或直接输入 '属性名' 来表示 设置“目标对象”的静态或非静态方法。</p>
 <h3>new-value</h3>
-<p>An expretion which will transfer to object by json tool, or '@1' means direct the object by id.</p>
+<p>一个表达式表示要设置的值，如果为json格式，则会根据目标属性的类型做自动转换。 如果为 '@' 加数字的类型，则表示直接设置为该对象id对应的对象.</p>
 <h3>-s</h3>
-<p>Force set to static field, to avoid misunderstanding</p>
+<p>强制表示设置静态属性，用来避免误解。</p>
 <blockquote class="doxtable">
-<p>Change the field value by json expretion.</p>
+<p>通过json表达式的方式设置属性值。</p>
 <p></p>
 </blockquote>
 <div class="image">
-<img src="http://f.p309.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_501a1d4c87e96510.jpg"  alt="attach"/>
-</div>
-<blockquote class="doxtable">
-<p>Change the field value to an exist object.</p>
+<img src="set.jpg" alt="set.jpg"/>
+<div class="caption">
+通过json表达式的方式设置属性值</div></div>
+ <blockquote class="doxtable">
+<p>使用对象id的方式设置属性值。</p>
 <p></p>
 </blockquote>
 <div class="image">
-<img src="http://f.p309.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_501a1d4d5a84e282.jpg"  alt="attach"/>
-</div>
-<h2>invoke</h2>
-<p>This command is used to invoke a method. And trace the invocation info.</p>
+<img src="set_by_object_id.jpg" alt="set_by_object_id.jpg"/>
+<div class="caption">
+使用对象id的方式设置属性值</div></div>
+ <h2>invoke</h2>
+<p>这个命令用来调用某个方法，并且跟踪这个方法调用内部的执行情况。</p>
 <div class="fragment"><div class="line">invoke [-f &lt;filter-expretion&gt;] [-t] &lt;invoke-expretion&gt;</div>
 </div><!-- fragment --><h3>invoke-expretion</h3>
-<p>Input 'package.ClassName.method(param1,param2)' to invoke static method, or 'method(param1,param2)' to invoke the method of target object. The params support json format.</p>
+<p>输入 '类名.方法名(参数1,参数2...)' 的格式可以调用一个静态方法, 也可以输入 '方法名(参数1,参数2...)' 的格式来调用目标对象的某个方法. 参数可以使用json表达式，也可以使用'@'加对象id。</p>
 <h3>-f &lt;filter-expretion&gt;</h3>
-<p>Set &lt;filter-expretion&gt; to filter the invocation output you dont care.</p>
+<p>设置 &lt;filter-expretion&gt; 可以用来过滤掉方法调用输出中不需要显示的内容。</p>
 <h3>-t</h3>
-<p>Is need output the method trace of the invocation.</p>
+<p>如果设置了 '-t' 则会跟踪所有方法内部的调用。比如方法 'a' 中如果调用了方法 'b'，则在 'invoke a' 时，也会递归输出 'b' 中的执行情况。</p>
 <blockquote class="doxtable">
-<p>just invoke, not trace</p>
+<p>不跟踪方法内部调用的情况</p>
 <p></p>
 </blockquote>
 <div class="image">
-<img src="http://m.p312.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_501a28382528f769.jpg"  alt="attach"/>
-</div>
-<blockquote class="doxtable">
-<p>invoke and trace</p>
+<img src="invoke.jpg" alt="invoke.jpg"/>
+<div class="caption">
+invoke</div></div>
+ <blockquote class="doxtable">
+<p>跟踪方法内部调用的情况</p>
 <p></p>
 </blockquote>
 <div class="image">
-<img src="http://b.p309.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_501a308d7fdb5885.jpg"  alt="attach"/>
-</div>
-<blockquote class="doxtable">
-<p>invoke and trace and filter the invocation name.</p>
+<img src="invoke_t.jpg" alt="invoke_t.jpg"/>
+<div class="caption">
+invoke -t</div></div>
+ <blockquote class="doxtable">
+<p>跟踪方法内部调用，并只显示符合过滤条件的调用</p>
 <p></p>
 </blockquote>
 <div class="image">
-<img src="http://d.p311.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_501a31b9950c5211.jpg"  alt="attach"/>
-</div>
-<h2>trace</h2>
-<p>This command is used to wait and trace an invocation in the jvm.</p>
+<img src="invoke_f_t.jpg" alt="invoke_f_t.jpg"/>
+<div class="caption">
+invole -t -f</div></div>
+ <h2>trace</h2>
+<p>这个命令用来等待某个符合条件的方法调用（如通过类名和方法名匹配），当符合条件的调用发生时会输出方法调用的过程、入参、返回值、响应时间等参数。</p>
 <div class="fragment"><div class="line">trace [-f &lt;filter-expretion&gt;] [-n &lt;trace-num&gt;] [-t] &lt;trace-expretion&gt;</div>
 </div><!-- fragment --><h3>trace-expretion</h3>
-<p>Input 'package.ClassName.method' to trace static method, or 'method' to trace the method of target object.</p>
+<p>输入 '类名.方法名' 的格式表示跟踪静态方法的调用 , 或输入 '方法名' 的格式表示跟踪 '目标对象' 的某个方法调用。</p>
 <h3>-f &lt;filter-expretion&gt;</h3>
-<p>Set &lt;filter-expretion&gt; to filter the invocation output you dont care.</p>
+<p>设置 &lt;filter-expretion&gt; 可以用来过滤掉方法调用输出中不需要显示的内容。</p>
 <h3>-t</h3>
-<p>Is need output the method trace of the invocation.</p>
+<p>如果设置了 '-t' 则会跟踪所有方法内部的调用。比如方法 'a' 中如果调用了方法 'b'，则在 'invoke a' 时，也会递归输出 'b' 中的执行情况。</p>
 <h3>-n &lt;trace-num&gt;</h3>
-<p>Trace times.</p>
+<p>跟踪方法调用的次数，如果没有指定则只会记录第一次方法调用。</p>
 <h2>ref</h2>
-<p>Find objects who hold the reference of target object in the heap.</p>
+<p>列出堆内存中所有引用到该对象的对象。</p>
 <div class="fragment"><div class="line">ref &lt;<span class="keywordtype">object</span>-<span class="keywordtype">id</span>&gt;</div>
 </div><!-- fragment --><h3>object-id</h3>
-<p>A num as the object id.</p>
+<p>目标对象的id</p>
 <blockquote class="doxtable">
-<p>find the references to an object by object id.</p>
+<p>列出引用到指定对象的所有对象.</p>
 <p></p>
 </blockquote>
 <div class="image">
-<img src="http://e.p310.56.com/photo2video/upImg/d1/43/84/orgin_xl-95903708_501a353a68ccb107.jpg"  alt="attach"/>
-</div>
- </div></div><!-- contents -->
+<img src="ref.jpg" alt="ref.jpg"/>
+<div class="caption">
+列出引用到指定对象的所有对象</div></div>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Nov 23 2012 16:40:49 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Nov 23 2012 22:07:11 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

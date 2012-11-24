@@ -8,17 +8,39 @@ public class AgentClassLoader extends URLClassLoader {
 	private static AgentClassLoader instance = null;
 	private ClassLoader parent;
 
+	public AgentClassLoader(URL[] urls, ClassLoader parent) {
+		super(urls, null);
+		this.parent = parent;
+	}
+
+	@Override
+	protected synchronized Class<?> loadClass(String s, boolean flag)
+			throws ClassNotFoundException {
+		Class<?> class1 = this.findLoadedClass(s);
+		if (class1 == null) {
+			try {
+				class1 = findClass(s);
+			} catch (ClassNotFoundException classnotfoundexception) {
+				// System.out.println("parent " + parent.getClass()
+				// + " cant find class " + s);
+			}
+		}
+		if (class1 == null) {
+			if (parent != null) {
+				class1 = parent.loadClass(s);
+			}
+		}
+		if (flag)
+			resolveClass(class1);
+		return class1;
+	}
+
 	public static AgentClassLoader getAgentClassLoader() {
 		return instance;
 	}
 
 	public static void setAgentClassLoader(AgentClassLoader agentClassLoader) {
 		instance = agentClassLoader;
-	}
-
-	public AgentClassLoader(URL[] urls, ClassLoader parent) {
-		super(urls, null);
-		this.parent = parent;
 	}
 
 	public void setParent(ClassLoader parent) {
@@ -28,27 +50,6 @@ public class AgentClassLoader extends URLClassLoader {
 			this.parent = parent;
 		}
 
-	}
-
-	@Override
-	protected synchronized Class<?> loadClass(String s, boolean flag)
-			throws ClassNotFoundException {
-		Class<?> class1 = this.findLoadedClass(s);
-		if (class1 == null)
-			try {
-				class1 = findClass(s);
-			} catch (ClassNotFoundException classnotfoundexception) {
-				// System.out.println("parent " + parent.getClass()
-				// + " cant find class " + s);
-			}
-		if (class1 == null) {
-			if (parent != null) {
-				class1 = parent.loadClass(s);
-			}
-		}
-		if (flag)
-			resolveClass(class1);
-		return class1;
 	}
 
 	@Override
