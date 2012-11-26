@@ -61,7 +61,12 @@ public class Agent {
 	}
 
 	public static boolean isDebugOn() {
-		return agentInfo.isDebugOn();
+		if (agentInfo == null) {
+			return false;
+		} else {
+			return agentInfo.isDebugOn();
+		}
+
 	}
 
 	public static void info(String msg) {

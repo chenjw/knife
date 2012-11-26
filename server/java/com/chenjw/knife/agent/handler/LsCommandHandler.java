@@ -21,6 +21,7 @@ import com.chenjw.knife.agent.formater.PreparedTableFormater;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.ReflectHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
 import com.chenjw.knife.core.Printer.Level;
 import com.chenjw.knife.utils.StringHelper;
@@ -115,9 +116,8 @@ public class LsCommandHandler implements CommandHandler {
 
 		table.setTitle("idx", "type", "method");
 		if (clazz != null) {
-			Method[] methods = clazz.getMethods();
 
-			for (Method method : methods) {
+			for (Method method : ReflectHelper.getMethods(clazz)) {
 				if (Modifier.isStatic(method.getModifiers())) {
 					table.addLine(
 							String.valueOf(i),
@@ -132,8 +132,7 @@ public class LsCommandHandler implements CommandHandler {
 			}
 		}
 		if (obj != null) {
-			Method[] methods = obj.getClass().getMethods();
-			for (Method method : methods) {
+			for (Method method : ReflectHelper.getMethods(clazz)) {
 				if (!Modifier.isStatic(method.getModifiers())) {
 					table.addLine(
 							String.valueOf(i),
@@ -325,4 +324,5 @@ public class LsCommandHandler implements CommandHandler {
 		argDef.addOptionDesc("-d", "to detail string.");
 
 	}
+
 }

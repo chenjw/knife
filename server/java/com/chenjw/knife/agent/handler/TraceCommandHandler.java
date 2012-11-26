@@ -33,6 +33,7 @@ import com.chenjw.knife.agent.filter.TraceMethodFilter;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.ReflectHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public class TraceCommandHandler implements CommandHandler {
@@ -143,7 +144,7 @@ public class TraceCommandHandler implements CommandHandler {
 					Agent.info("class " + className + " not found!");
 					return null;
 				}
-				Method[] methods = clazz.getMethods();
+				Method[] methods = ReflectHelper.getMethods(clazz);
 				for (Method tm : methods) {
 					if (StringHelper.equals(tm.getName(), m)) {
 						if (Modifier.isStatic(tm.getModifiers())) {

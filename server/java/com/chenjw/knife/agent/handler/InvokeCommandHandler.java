@@ -3,7 +3,6 @@ package com.chenjw.knife.agent.handler;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -38,6 +37,9 @@ import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ParseHelper;
+import com.chenjw.knife.agent.utils.ReflectHelper;
+import com.chenjw.knife.agent.utils.invoke.InvokeResult;
+import com.chenjw.knife.agent.utils.invoke.MethodInvokeException;
 import com.chenjw.knife.utils.StringHelper;
 
 public class InvokeCommandHandler implements CommandHandler {
@@ -62,7 +64,8 @@ public class InvokeCommandHandler implements CommandHandler {
 		}
 		Map<String, String> fOptions = args.option("-f");
 		if (fOptions != null) {
-			filters.add(new PatternMethodFilter(fOptions.get("filter-expretion")));
+			filters.add(new PatternMethodFilter(fOptions
+					.get("filter-expretion")));
 		}
 		filters.add(new DepthFilter());
 		if (tOptions == null) {
@@ -96,7 +99,7 @@ public class InvokeCommandHandler implements CommandHandler {
 					Agent.info("class " + className + " not found!");
 					return;
 				}
-				Method[] methods = clazz.getMethods();
+				Method[] methods = ReflectHelper.getMethods(clazz);
 				for (Method tm : methods) {
 					if (tm.getName().equals(m)) {
 						if (Modifier.isStatic(tm.getModifiers())) {
@@ -112,7 +115,7 @@ public class InvokeCommandHandler implements CommandHandler {
 					Agent.info("not found!");
 					return;
 				}
-				Method[] methods = obj.getClass().getMethods();
+				Method[] methods = ReflectHelper.getMethods(obj.getClass());
 				for (Method tm : methods) {
 					if (tm.getName().equals(m)) {
 						method = tm;
@@ -156,14 +159,21 @@ public class InvokeCommandHandler implements CommandHandler {
 			if (isTrace) {
 				Profiler.profile(method);
 			}
-			Object r = method.invoke(thisObject, args);
-			Profiler.returnEnd(thisObject, clazz.getName(), method.getName(),
-					args, r);
-		} catch (InvocationTargetException e) {
-			Throwable t = e.getTargetException();
-			Profiler.exceptionEnd(thisObject, clazz.getName(),
-					method.getName(), args, t);
-		} catch (Exception e) {
+			InvokeResult r = null;
+			if (isStatic) {
+				r = ReflectHelper.invokeStaticMethod(method, args);
+			} else {
+				r = ReflectHelper.invokeMethod(thisObject, method, args);
+			}
+
+			if (r.isSuccess()) {
+				Profiler.returnEnd(thisObject, clazz.getName(),
+						method.getName(), args, r.getResult());
+			} else {
+				Profiler.exceptionEnd(thisObject, clazz.getName(),
+						method.getName(), args, r.getE());
+			}
+		} catch (MethodInvokeException e) {
 			Profiler.exceptionEnd(thisObject, clazz.getName(),
 					method.getName(), args, e);
 			throw e;

@@ -13,8 +13,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javassist.CannotCompileException;
 import javassist.ClassPath;
@@ -35,6 +33,7 @@ public final class ClassGenerator {
 	private static final AtomicLong CLASS_NAME_COUNTER = new AtomicLong(0);
 
 	private final AtomicLong CLASS_VARIABLE_COUNTER = new AtomicLong(0);
+	private final String s = "abc";
 	private ClassPool classPool;
 	private CtClass ctClass;
 
@@ -329,13 +328,4 @@ public final class ClassGenerator {
 		}
 	}
 
-	public static void main(String[] args) {
-		Pattern pattern = Pattern
-				.compile("/member/midway(_)?[aA]v(_)?[aA]lert.htm");
-
-		Matcher matcher = pattern
-				.matcher("http://exodus2.china.alibaba.com:2100/member/midway_av_alert.htm");
-		System.out.println(matcher.find());
-
-	}
 }

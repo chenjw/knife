@@ -21,7 +21,6 @@ public class MethodInvokeException extends Exception {
 
 	public MethodInvokeException(Throwable cause) {
 		super(cause);
-		// TODO Auto-generated constructor stub
 	}
 
 }

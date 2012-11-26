@@ -4,6 +4,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.chenjw.knife.agent.utils.invoke.InvokeResult;
 import com.chenjw.knife.agent.utils.invoke.MethodInvokeException;
@@ -75,14 +77,25 @@ public class ReflectHelper {
 		for (int i = 0; i < parameterTypes.length; i++) {
 			types[i] = findClass(parameterTypes[i], classLoader);
 		}
+		Method method = null;
+		try {
+			method = clazz.getDeclaredMethod(methodName, types);
+		} catch (Exception e) {
+			throw new MethodInvokeException("method not found", e);
+		}
+		return invokeStaticMethod(method, parameters);
+	}
+
+	public static InvokeResult invokeStaticMethod(Method method,
+			Object[] parameters) throws MethodInvokeException {
+		if (!Modifier.isStatic(method.getModifiers())) {
+			throw new MethodInvokeException("method is not static");
+		}
+		boolean isAccessible = method.isAccessible();
 		InvokeResult result = new InvokeResult();
 		try {
-			Method method = clazz.getDeclaredMethod(methodName, types);
-			if (method == null) {
-				throw new MethodInvokeException("method not found");
-			}
-			if (!Modifier.isStatic(method.getModifiers())) {
-				throw new MethodInvokeException("method is not static");
+			if (!isAccessible) {
+				method.setAccessible(true);
 			}
 			Object r = method.invoke(null, parameters);
 			result.setResult(r);
@@ -90,6 +103,10 @@ public class ReflectHelper {
 			result.setE(e.getTargetException());
 		} catch (Exception e) {
 			throw new MethodInvokeException("invoke error", e);
+		} finally {
+			if (!isAccessible) {
+				method.setAccessible(false);
+			}
 		}
 		return result;
 	}
@@ -101,14 +118,27 @@ public class ReflectHelper {
 		for (int i = 0; i < parameterTypes.length; i++) {
 			types[i] = findClass(parameterTypes[i], classLoader);
 		}
+		Method method = null;
+		try {
+			method = obj.getClass().getMethod(methodName, types);
+		} catch (Exception e) {
+			throw new MethodInvokeException("method not found", e);
+		}
+		return invokeMethod(obj, method, parameters);
+
+	}
+
+	public static InvokeResult invokeMethod(Object obj, Method method,
+			Object[] parameters) throws MethodInvokeException {
+
+		if (Modifier.isStatic(method.getModifiers())) {
+			throw new MethodInvokeException("method is static");
+		}
+		boolean isAccessible = method.isAccessible();
 		InvokeResult result = new InvokeResult();
 		try {
-			Method method = obj.getClass().getMethod(methodName, types);
-			if (method == null) {
-				throw new MethodInvokeException("method not found");
-			}
-			if (Modifier.isStatic(method.getModifiers())) {
-				throw new MethodInvokeException("method is static");
+			if (!isAccessible) {
+				method.setAccessible(true);
 			}
 			Object r = method.invoke(obj, parameters);
 			result.setResult(r);
@@ -116,7 +146,22 @@ public class ReflectHelper {
 			result.setE(e.getTargetException());
 		} catch (Exception e) {
 			throw new MethodInvokeException("invoke error", e);
+		} finally {
+			if (!isAccessible) {
+				method.setAccessible(false);
+			}
 		}
 		return result;
+	}
+
+	public static Method[] getMethods(Class<?> clazz) {
+		Set<Method> ms = new HashSet<Method>();
+		for (Method m : clazz.getMethods()) {
+			ms.add(m);
+		}
+		for (Method m : clazz.getDeclaredMethods()) {
+			ms.add(m);
+		}
+		return ms.toArray(new Method[ms.size()]);
 	}
 }

@@ -24,6 +24,10 @@ public class ApplyServiceImpl implements ApplyService {
 
 	private String testStr = "8";
 
+	private String testPrivate(String t) {
+		return "hello " + t;
+	}
+
 	public static String hello(String[] names) {
 		String str = "";
 		for (String name : names) {
