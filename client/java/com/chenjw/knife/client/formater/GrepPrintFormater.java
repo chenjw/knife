@@ -1,20 +1,20 @@
-package com.chenjw.knife.agent.formater;
+package com.chenjw.knife.client.formater;
 
 import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.Printer.Level;
 
-public abstract class AbstractPrintFormater implements PrintFormater {
-	private Level level;
-	private Printer printer;
-	private String grep;
+public abstract class GrepPrintFormater implements PrintFormater{
 
-	public AbstractPrintFormater(Level level, Printer printer, String grep) {
-		this.level = level;
+	protected Printer printer;
+	protected String grep;
+
+	public GrepPrintFormater(Printer printer, String grep) {
+
 		this.printer = printer;
 		this.grep = grep;
 	}
 
-	protected void print(String str) {
+	protected void print(Level level, String str) {
 		if (printer == null) {
 			return;
 		}

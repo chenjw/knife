@@ -17,51 +17,87 @@ import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.formater.PreparedTableFormater;
+
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ReflectHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
 import com.chenjw.knife.core.Printer.Level;
+import com.chenjw.knife.core.model.ClassConstructorInfo;
+import com.chenjw.knife.core.model.ClassMethodInfo;
+import com.chenjw.knife.core.model.ConstructorInfo;
+import com.chenjw.knife.core.model.MethodInfo;
+import com.chenjw.knife.core.result.Result;
 import com.chenjw.knife.utils.StringHelper;
 
 public class LsCommandHandler implements CommandHandler {
 
-	private void lsField(Args args) {
-		Object obj = null;
-		Class<?> clazz = null;
-		String className = args.arg("classname");
-		if (StringHelper.isBlank(className)) {
-			obj = ContextManager.getInstance().get(Constants.THIS);
-			if (obj == null) {
-				Agent.info("not found!");
-				return;
-			}
-			clazz = obj.getClass();
-		} else if (StringHelper.isNumeric(className)) {
-			obj = ObjectRecordManager.getInstance().get(
-					Integer.parseInt(className));
-			if (obj == null) {
-				Agent.info("not found!");
-				return;
-			}
-			clazz = obj.getClass();
-		} else {
-			clazz = Helper.findClass(className);
-			if (clazz == null) {
-				Agent.info("not found!");
-				return;
+	public class ClassOrObject {
+		private Object obj = null;
+		private Class<?> clazz = null;
+
+		public boolean isObject() {
+			return obj != null;
+		}
+
+		public boolean isClazz() {
+			return obj == null && clazz != null;
+		}
+
+		public boolean isNotFound() {
+			return obj == null && clazz == null;
+		}
+
+		public Object getObj() {
+			return obj;
+		}
+
+		public void setObj(Object obj) {
+			if (obj != null) {
+				this.obj = obj;
+				this.clazz = obj.getClass();
 			}
 		}
 
-		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
-				Agent.printer, args.getGrep());
+		public Class<?> getClazz() {
+			return clazz;
+		}
 
-		table.setTitle("type", "field-name", "obj-id", "value");
-		if (clazz != null) {
+		public void setClazz(Class<?> clazz) {
+			this.clazz = clazz;
+		}
+	}
+
+	private ClassOrObject getTarget(Args args) {
+		ClassOrObject target = new ClassOrObject();
+		String className = args.arg("classname");
+		if (StringHelper.isBlank(className)) {
+			target.setObj(ContextManager.getInstance().get(Constants.THIS));
+
+		} else if (StringHelper.isNumeric(className)) {
+			target.setObj(ObjectRecordManager.getInstance().get(
+					Integer.parseInt(className)));
+
+		} else {
+			target.setClazz(Helper.findClass(className));
+		}
+		return target;
+	}
+
+	private void lsField(Args args) {
+		ClassOrObject target = getTarget(args);
+		if(target.isNotFound()){
+			Result<ClassFieldInfo> result = new Result<ClassFieldInfo>();
+			result.setErrorMessage("not found!");
+			result.setSuccess(false);
+			Agent.sendResult(result);
+			return;
+		}
+
+		if (target.getClazz() != null) {
 			Map<Field, Object> fieldMap = NativeHelper
-					.getStaticFieldValues(clazz);
+					.getStaticFieldValues(target.getClazz());
 			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
 				table.addLine("[static-field]", entry.getKey().getName(),
 						ObjectRecordManager.getInstance()
@@ -83,123 +119,137 @@ public class LsCommandHandler implements CommandHandler {
 	}
 
 	private void lsMethod(Args args) {
-
+		Result<ClassMethodInfo> result = new Result<ClassMethodInfo>();
 		Object obj = null;
 		Class<?> clazz = null;
+		boolean isNotFound = false;
 		String className = args.arg("classname");
 		if (StringHelper.isBlank(className)) {
 			obj = ContextManager.getInstance().get(Constants.THIS);
 			if (obj == null) {
-				Agent.info("not found!");
-				return;
+				isNotFound = true;
+			} else {
+				clazz = obj.getClass();
 			}
-			clazz = obj.getClass();
+
 		} else if (StringHelper.isNumeric(className)) {
 			obj = ObjectRecordManager.getInstance().get(
 					Integer.parseInt(className));
 			if (obj == null) {
-				Agent.info("not found!");
-				return;
+				isNotFound = true;
+			} else {
+				clazz = obj.getClass();
 			}
-			clazz = obj.getClass();
+
 		} else {
 			clazz = Helper.findClass(className);
 			if (clazz == null) {
-				Agent.info("not found!");
-				return;
+				isNotFound = true;
 			}
 		}
+		if (isNotFound) {
+			result.setErrorMessage("not found!");
+			result.setSuccess(false);
+			Agent.sendResult(result);
+			return;
+		}
+		List<MethodInfo> methodInfos = new ArrayList<MethodInfo>();
 		List<Method> list = new ArrayList<Method>();
-		int i = 0;
-		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
-				Agent.printer, args.getGrep());
 
-		table.setTitle("idx", "type", "method");
 		if (clazz != null) {
-
 			for (Method method : ReflectHelper.getMethods(clazz)) {
 				if (Modifier.isStatic(method.getModifiers())) {
-					table.addLine(
-							String.valueOf(i),
-							"[static-method]",
-							method.getName()
-									+ "("
-									+ getParamClassNames(method
-											.getParameterTypes()) + ")");
+					MethodInfo methodInfo = new MethodInfo();
+					methodInfo.setStatic(true);
+					methodInfo.setName(method.getName());
+					methodInfo.setParamClassNames(getParamClassNames(method
+							.getParameterTypes()));
+					methodInfos.add(methodInfo);
 					list.add(method);
-					i++;
+
 				}
 			}
 		}
 		if (obj != null) {
 			for (Method method : ReflectHelper.getMethods(clazz)) {
 				if (!Modifier.isStatic(method.getModifiers())) {
-					table.addLine(
-							String.valueOf(i),
-							"[method]",
-							method.getName()
-									+ "("
-									+ getParamClassNames(method
-											.getParameterTypes()) + ")");
+					MethodInfo methodInfo = new MethodInfo();
+					methodInfo.setStatic(false);
+					methodInfo.setName(method.getName());
+					methodInfo.setParamClassNames(getParamClassNames(method
+							.getParameterTypes()));
+					methodInfos.add(methodInfo);
 					list.add(method);
-					i++;
+
 				}
 			}
 		}
-		table.print();
 		ContextManager.getInstance().put(Constants.METHOD_LIST,
 				list.toArray(new Method[list.size()]));
-		Agent.info("finished!");
+		ClassMethodInfo classMethodInfo = new ClassMethodInfo();
+		classMethodInfo.setMethods(methodInfos
+				.toArray(new MethodInfo[methodInfos.size()]));
+		result.setSuccess(true);
+		result.setContent(classMethodInfo);
+		Agent.sendResult(result);
 	}
 
 	private void lsConstruct(Args args) {
+		Result<ClassConstructorInfo> result = new Result<ClassConstructorInfo>();
 		Object obj = null;
 		Class<?> clazz = null;
+		boolean isNotFound = false;
 		String className = args.arg("classname");
 		if (StringHelper.isBlank(className)) {
 			obj = ContextManager.getInstance().get(Constants.THIS);
 			if (obj == null) {
-				Agent.info("not found!");
-				return;
+				isNotFound = true;
+			} else {
+				clazz = obj.getClass();
 			}
-			clazz = obj.getClass();
+
 		} else if (StringHelper.isNumeric(className)) {
 			obj = ObjectRecordManager.getInstance().get(
 					Integer.parseInt(className));
 			if (obj == null) {
-				Agent.info("not found!");
-				return;
+				isNotFound = true;
+			} else {
+				clazz = obj.getClass();
 			}
-			clazz = obj.getClass();
+
 		} else {
 			clazz = Helper.findClass(className);
 			if (clazz == null) {
-				Agent.info("not found!");
-				return;
+				isNotFound = true;
 			}
 		}
+		if (isNotFound) {
+			result.setErrorMessage("not found!");
+			result.setSuccess(false);
+			Agent.sendResult(result);
+			return;
+		}
+		List<ConstructorInfo> constructorInfos = new ArrayList<ConstructorInfo>();
 		List<Constructor<?>> list = new ArrayList<Constructor<?>>();
 		int i = 0;
-		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
-				Agent.printer, args.getGrep());
 
-		table.setTitle("idx", "type", "method");
 		Constructor<?>[] constructors = clazz.getDeclaredConstructors();
 		for (Constructor<?> constructor : constructors) {
-			table.addLine(
-					String.valueOf(i),
-					"[constructor]",
-					clazz.getSimpleName()
-							+ "("
-							+ getParamClassNames(constructor
-									.getParameterTypes()) + ")");
+			ConstructorInfo constructorInfo = new ConstructorInfo();
+			constructorInfo.setParamClassNames(getParamClassNames(constructor
+					.getParameterTypes()));
+			constructorInfos.add(constructorInfo);
 			list.add(constructor);
 			i++;
 		}
-		table.print();
 		ContextManager.getInstance().put(Constants.CONSTRUCTOR_LIST,
 				list.toArray(new Constructor[list.size()]));
-		Agent.info("finished!");
+		ClassConstructorInfo classConstructorInfo = new ClassConstructorInfo();
+		classConstructorInfo.setConstructors(constructorInfos
+				.toArray(new ConstructorInfo[constructorInfos.size()]));
+		result.setSuccess(true);
+		result.setContent(classConstructorInfo);
+		Agent.sendResult(result);
 
 	}
 
@@ -300,12 +350,12 @@ public class LsCommandHandler implements CommandHandler {
 		}
 	}
 
-	public static String getParamClassNames(Class<?>[] classes) {
+	public static String[] getParamClassNames(Class<?>[] classes) {
 		String[] classNames = new String[classes.length];
 		for (int i = 0; i < classes.length; i++) {
 			classNames[i] = Helper.makeClassName(classes[i]);
 		}
-		return StringHelper.join(classNames, ",");
+		return classNames;
 	}
 
 	@Override

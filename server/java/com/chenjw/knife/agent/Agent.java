@@ -13,6 +13,7 @@ import com.chenjw.knife.core.PacketResolver;
 import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.packet.ClosePacket;
 import com.chenjw.knife.core.packet.TextPacket;
+import com.chenjw.knife.core.result.Result;
 
 public class Agent {
 	private static AgentInfo agentInfo = null;
@@ -20,12 +21,12 @@ public class Agent {
 	public static Printer printer = new Printer() {
 		@Override
 		public void info(String str) {
-			Agent.info(str);
+			//Agent.info(str);
 		}
 
 		@Override
 		public void debug(String str) {
-			Agent.debug(str);
+			//Agent.debug(str);
 		}
 	};
 
@@ -52,6 +53,10 @@ public class Agent {
 		}
 	}
 
+	public static void sendResult(Result<?> r){
+		
+	}
+	
 	public static void send(Packet command) {
 		try {
 			PacketResolver.write(command, agentInfo.getOs());
@@ -69,17 +74,17 @@ public class Agent {
 
 	}
 
-	public static void info(String msg) {
+	public static void info1(String msg) {
 		send(new TextPacket(msg));
 	}
 
-	public static void debug(String msg) {
+	public static void debug1(String msg) {
 		if (isDebugOn()) {
-			info("[DEBUG] " + msg);
+			//info("[DEBUG] " + msg);
 		}
 	}
 
-	public static void print(Throwable t) {
+	public static void print1(Throwable t) {
 		StringWriter sw = new StringWriter();
 		t.printStackTrace(new PrintWriter(sw));
 		String errorTrace = sw.toString();

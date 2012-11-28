@@ -1,4 +1,4 @@
-package com.chenjw.knife.agent.formater;
+package com.chenjw.knife.client.formater;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,22 +6,22 @@ import java.util.List;
 import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.Printer.Level;
 
-public class PreparedTableFormater extends AbstractPrintFormater {
+public  class PreparedTableFormater extends GrepPrintFormater {
 
 	private static final int BORDER = 2;
 	private int[] width;
 	private String[] title;
 	private List<String[]> lines = new ArrayList<String[]>();
 
-	public PreparedTableFormater(Level level, Printer printer, String grep) {
-		super(level, printer, grep);
+	public PreparedTableFormater(Printer printer, String grep) {
+		super( printer, grep);
 	}
 
-	public void setTitle(String... title) {
+	protected void setTitle(String... title) {
 		this.title = title;
 	}
 
-	public void addLine(String... line) {
+	protected void addLine(String... line) {
 		lines.add(line);
 	}
 
@@ -79,20 +79,23 @@ public class PreparedTableFormater extends AbstractPrintFormater {
 		}
 	}
 
-	public void print() {
+
+	
+	public final void print(Level level) {
+
 		doPrepare();
-		doPrint();
+		doPrint(level);
 	}
 
-	private void printSeparatLine() {
+	private void printSeparatLine(Level level) {
 		StringBuffer ss = new StringBuffer();
 		for (int w : width) {
 			appendBlank(ss, w + BORDER, "-");
 		}
-		print(ss.toString());
+		print(level,ss.toString());
 	}
 
-	private void doPrint() {
+	private void doPrint(Level level) {
 		if (title != null) {
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < title.length; i++) {
@@ -100,9 +103,9 @@ public class PreparedTableFormater extends AbstractPrintFormater {
 				sb.append(title[i]);
 				appendBlank(sb, d + BORDER, " ");
 			}
-			print(sb.toString());
+			print(level,sb.toString());
 		}
-		printSeparatLine();
+		printSeparatLine(level);
 		if (!lines.isEmpty()) {
 			for (String[] line : lines) {
 				StringBuffer sb = new StringBuffer();
@@ -111,13 +114,17 @@ public class PreparedTableFormater extends AbstractPrintFormater {
 					sb.append(line[i]);
 					appendBlank(sb, d + BORDER, " ");
 				}
-				print(sb.toString());
+				print(level,sb.toString());
 			}
 		} else {
 
-			print("not found!");
+			print(level,"not found!");
 		}
-		printSeparatLine();
+		printSeparatLine(level);
 	}
+
+
+
+
 
 }
