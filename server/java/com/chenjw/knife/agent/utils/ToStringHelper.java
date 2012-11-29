@@ -1,5 +1,7 @@
 package com.chenjw.knife.agent.utils;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.IdentityHashMap;
@@ -166,6 +168,16 @@ public class ToStringHelper {
 		Map<Object, String> objMap = new IdentityHashMap<Object, String>();
 		_toString(obj, sb, objMap, "$this", true);
 		return sb.toString();
+	}
+
+	public static String toExceptionTraceString(Throwable t) {
+		if (t == null) {
+			return null;
+		}
+		StringWriter sw = new StringWriter();
+		t.printStackTrace(new PrintWriter(sw));
+		String errorTrace = sw.toString();
+		return errorTrace;
 	}
 
 }

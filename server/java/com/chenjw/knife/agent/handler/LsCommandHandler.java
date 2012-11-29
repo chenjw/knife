@@ -17,17 +17,20 @@ import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ReflectHelper;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
-import com.chenjw.knife.core.Printer.Level;
+import com.chenjw.knife.core.model.ArrayElementInfo;
 import com.chenjw.knife.core.model.ClassConstructorInfo;
+import com.chenjw.knife.core.model.ClassFieldInfo;
 import com.chenjw.knife.core.model.ClassMethodInfo;
 import com.chenjw.knife.core.model.ConstructorInfo;
+import com.chenjw.knife.core.model.FieldInfo;
 import com.chenjw.knife.core.model.MethodInfo;
+import com.chenjw.knife.core.model.ObjectInfo;
 import com.chenjw.knife.core.result.Result;
 import com.chenjw.knife.utils.StringHelper;
 
@@ -87,77 +90,55 @@ public class LsCommandHandler implements CommandHandler {
 
 	private void lsField(Args args) {
 		ClassOrObject target = getTarget(args);
-		if(target.isNotFound()){
-			Result<ClassFieldInfo> result = new Result<ClassFieldInfo>();
-			result.setErrorMessage("not found!");
-			result.setSuccess(false);
-			Agent.sendResult(result);
+		if (target.isNotFound()) {
+			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
 		}
-
+		List<FieldInfo> fieldInfos = new ArrayList<FieldInfo>();
 		if (target.getClazz() != null) {
 			Map<Field, Object> fieldMap = NativeHelper
 					.getStaticFieldValues(target.getClazz());
 			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
-				table.addLine("[static-field]", entry.getKey().getName(),
-						ObjectRecordManager.getInstance()
-								.toId(entry.getValue()),
-						toString(args, entry.getValue()));
+				FieldInfo fieldInfo = new FieldInfo();
+				fieldInfo.setStatic(true);
+				fieldInfo.setName(entry.getKey().getName());
+				fieldInfo.setObjectId(ObjectRecordManager.getInstance().toId(
+						entry.getValue()));
+				fieldInfo.setValueString(toString(args, entry.getValue()));
 			}
 		}
-		if (obj != null) {
-			Map<Field, Object> fieldMap = NativeHelper.getFieldValues(obj);
+		if (target.getObj() != null) {
+			Map<Field, Object> fieldMap = NativeHelper.getFieldValues(target
+					.getObj());
 			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
-				table.addLine("[field]", entry.getKey().getName(),
-						ObjectRecordManager.getInstance()
-								.toId(entry.getValue()),
-						toString(args, entry.getValue()));
+				FieldInfo fieldInfo = new FieldInfo();
+				fieldInfo.setStatic(false);
+				fieldInfo.setName(entry.getKey().getName());
+				fieldInfo.setObjectId(ObjectRecordManager.getInstance().toId(
+						entry.getValue()));
+				fieldInfo.setValueString(toString(args, entry.getValue()));
 			}
 		}
-		table.print();
-		Agent.info("finished!");
+		Result<ClassFieldInfo> result = new Result<ClassFieldInfo>();
+		ClassFieldInfo classFieldInfo = new ClassFieldInfo();
+		classFieldInfo.setFields(fieldInfos.toArray(new FieldInfo[fieldInfos
+				.size()]));
+		result.setSuccess(true);
+		result.setContent(classFieldInfo);
+		Agent.sendResult(result);
 	}
 
 	private void lsMethod(Args args) {
-		Result<ClassMethodInfo> result = new Result<ClassMethodInfo>();
-		Object obj = null;
-		Class<?> clazz = null;
-		boolean isNotFound = false;
-		String className = args.arg("classname");
-		if (StringHelper.isBlank(className)) {
-			obj = ContextManager.getInstance().get(Constants.THIS);
-			if (obj == null) {
-				isNotFound = true;
-			} else {
-				clazz = obj.getClass();
-			}
-
-		} else if (StringHelper.isNumeric(className)) {
-			obj = ObjectRecordManager.getInstance().get(
-					Integer.parseInt(className));
-			if (obj == null) {
-				isNotFound = true;
-			} else {
-				clazz = obj.getClass();
-			}
-
-		} else {
-			clazz = Helper.findClass(className);
-			if (clazz == null) {
-				isNotFound = true;
-			}
-		}
-		if (isNotFound) {
-			result.setErrorMessage("not found!");
-			result.setSuccess(false);
-			Agent.sendResult(result);
+		ClassOrObject target = getTarget(args);
+		if (target.isNotFound()) {
+			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
 		}
 		List<MethodInfo> methodInfos = new ArrayList<MethodInfo>();
 		List<Method> list = new ArrayList<Method>();
 
-		if (clazz != null) {
-			for (Method method : ReflectHelper.getMethods(clazz)) {
+		if (target.getClazz() != null) {
+			for (Method method : ReflectHelper.getMethods(target.getClazz())) {
 				if (Modifier.isStatic(method.getModifiers())) {
 					MethodInfo methodInfo = new MethodInfo();
 					methodInfo.setStatic(true);
@@ -170,8 +151,8 @@ public class LsCommandHandler implements CommandHandler {
 				}
 			}
 		}
-		if (obj != null) {
-			for (Method method : ReflectHelper.getMethods(clazz)) {
+		if (target.getObj() != null) {
+			for (Method method : ReflectHelper.getMethods(target.getClazz())) {
 				if (!Modifier.isStatic(method.getModifiers())) {
 					MethodInfo methodInfo = new MethodInfo();
 					methodInfo.setStatic(false);
@@ -189,64 +170,38 @@ public class LsCommandHandler implements CommandHandler {
 		ClassMethodInfo classMethodInfo = new ClassMethodInfo();
 		classMethodInfo.setMethods(methodInfos
 				.toArray(new MethodInfo[methodInfos.size()]));
+		Result<ClassMethodInfo> result = new Result<ClassMethodInfo>();
 		result.setSuccess(true);
 		result.setContent(classMethodInfo);
 		Agent.sendResult(result);
 	}
 
 	private void lsConstruct(Args args) {
-		Result<ClassConstructorInfo> result = new Result<ClassConstructorInfo>();
-		Object obj = null;
-		Class<?> clazz = null;
-		boolean isNotFound = false;
-		String className = args.arg("classname");
-		if (StringHelper.isBlank(className)) {
-			obj = ContextManager.getInstance().get(Constants.THIS);
-			if (obj == null) {
-				isNotFound = true;
-			} else {
-				clazz = obj.getClass();
-			}
-
-		} else if (StringHelper.isNumeric(className)) {
-			obj = ObjectRecordManager.getInstance().get(
-					Integer.parseInt(className));
-			if (obj == null) {
-				isNotFound = true;
-			} else {
-				clazz = obj.getClass();
-			}
-
-		} else {
-			clazz = Helper.findClass(className);
-			if (clazz == null) {
-				isNotFound = true;
-			}
-		}
-		if (isNotFound) {
-			result.setErrorMessage("not found!");
-			result.setSuccess(false);
-			Agent.sendResult(result);
+		ClassOrObject target = getTarget(args);
+		if (target.isNotFound()) {
+			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
 		}
 		List<ConstructorInfo> constructorInfos = new ArrayList<ConstructorInfo>();
 		List<Constructor<?>> list = new ArrayList<Constructor<?>>();
-		int i = 0;
-
-		Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-		for (Constructor<?> constructor : constructors) {
-			ConstructorInfo constructorInfo = new ConstructorInfo();
-			constructorInfo.setParamClassNames(getParamClassNames(constructor
-					.getParameterTypes()));
-			constructorInfos.add(constructorInfo);
-			list.add(constructor);
-			i++;
+		if (target.getClass() != null) {
+			Constructor<?>[] constructors = target.getClass()
+					.getDeclaredConstructors();
+			for (Constructor<?> constructor : constructors) {
+				ConstructorInfo constructorInfo = new ConstructorInfo();
+				constructorInfo
+						.setParamClassNames(getParamClassNames(constructor
+								.getParameterTypes()));
+				constructorInfos.add(constructorInfo);
+				list.add(constructor);
+			}
 		}
 		ContextManager.getInstance().put(Constants.CONSTRUCTOR_LIST,
 				list.toArray(new Constructor[list.size()]));
 		ClassConstructorInfo classConstructorInfo = new ClassConstructorInfo();
 		classConstructorInfo.setConstructors(constructorInfos
 				.toArray(new ConstructorInfo[constructorInfos.size()]));
+		Result<ClassConstructorInfo> result = new Result<ClassConstructorInfo>();
 		result.setSuccess(true);
 		result.setContent(classConstructorInfo);
 		Agent.sendResult(result);
@@ -254,71 +209,65 @@ public class LsCommandHandler implements CommandHandler {
 	}
 
 	private void lsClass(Args args) {
-		Object obj = null;
-		String className = args.arg("classname");
-		if (StringHelper.isBlank(className)) {
-			obj = ContextManager.getInstance().get(Constants.THIS);
-		} else if (StringHelper.isNumeric(className)) {
-			obj = ObjectRecordManager.getInstance().get(
-					Integer.parseInt(className));
-		}
-		if (obj == null) {
-			Agent.info("not found!");
+		ClassOrObject target = getTarget(args);
+		if (target.isNotFound()) {
+			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
 		}
-		if ((obj instanceof Throwable) && (args.option("-d") != null)) {
-			Agent.info(" " + ObjectRecordManager.getInstance().toId(obj));
-			Agent.print((Throwable) obj);
+		Result<ObjectInfo> result = new Result<ObjectInfo>();
+		ObjectInfo objectInfo = new ObjectInfo();
+		if ((target.getObj() instanceof Throwable)) {
+			objectInfo.setThrowable(true);
+			objectInfo.setObjectId(ObjectRecordManager.getInstance().toId(
+					target.getObj()));
+			objectInfo.setValueString(ToStringHelper
+					.toExceptionTraceString((Throwable) target.getObj()));
 		} else {
-			Agent.info(" " + ObjectRecordManager.getInstance().toId(obj)
-					+ toString(args, obj));
-
+			objectInfo.setThrowable(false);
+			objectInfo.setObjectId(ObjectRecordManager.getInstance().toId(
+					target.getObj()));
+			objectInfo.setValueString(toString(args, target.getObj()));
 		}
-		Agent.info("finished!");
-
+		result.setContent(objectInfo);
+		result.setSuccess(true);
+		Agent.sendResult(result);
 	}
 
 	@SuppressWarnings("unchecked")
 	private void lsArray(Args args) {
-		Object obj = null;
-		String className = args.arg("classname");
-		if (StringHelper.isBlank(className)) {
-			obj = ContextManager.getInstance().get(Constants.THIS);
-		} else if (StringHelper.isNumeric(className)) {
-			obj = ObjectRecordManager.getInstance().get(
-					Integer.parseInt(className));
-		}
-		if (obj == null) {
-			Agent.info("not found!");
+		ClassOrObject target = getTarget(args);
+		if (target.isNotFound()) {
+			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
 		}
-		if (obj.getClass().isArray()) {
-			PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
-					Agent.printer, args.getGrep());
+		List<ArrayElementInfo> arrayElementInfos = new ArrayList<ArrayElementInfo>();
+		if (target.getClass().isArray()) {
 
-			table.setTitle("idx", "obj-id", "element");
-			for (int i = 0; i < Array.getLength(obj); i++) {
-				Object aObj = Array.get(obj, i);
-				table.addLine(String.valueOf(i), ObjectRecordManager
-						.getInstance().toId(aObj), toString(args, aObj));
-			}
-			table.print();
-			Agent.info("finished!");
-		} else if (obj instanceof List) {
-			PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
-					Agent.printer, args.getGrep());
+			for (int i = 0; i < Array.getLength(target.getObj()); i++) {
+				Object aObj = Array.get(target.getObj(), i);
+				ArrayElementInfo arrayElementInfo = new ArrayElementInfo();
+				arrayElementInfo.setObjectId(ObjectRecordManager.getInstance()
+						.toId(aObj));
+				arrayElementInfo.setValueString(toString(args, aObj));
 
-			table.setTitle("idx", "obj-id", "element");
-			int i = 0;
-			for (Object aObj : (List<Object>) obj) {
-				table.addLine(String.valueOf(i), ObjectRecordManager
-						.getInstance().toId(aObj), toString(args, aObj));
-				i++;
+				arrayElementInfos.add(arrayElementInfo);
 			}
-			table.print();
-			Agent.info("finished!");
+
+		} else if (target.getObj() instanceof List) {
+			for (Object aObj : (List<Object>) target.getObj()) {
+				ArrayElementInfo arrayElementInfo = new ArrayElementInfo();
+				arrayElementInfo.setObjectId(ObjectRecordManager.getInstance()
+						.toId(aObj));
+				arrayElementInfo.setValueString(toString(args, aObj));
+
+				arrayElementInfos.add(arrayElementInfo);
+			}
+
 		} else {
-			Agent.info("not array!");
+			Result<ClassConstructorInfo> result = new Result<ClassConstructorInfo>();
+			result.setErrorMessage("not array!");
+			result.setSuccess(false);
+			Agent.sendResult(result);
 		}
 
 	}

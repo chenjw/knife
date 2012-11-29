@@ -1,7 +1,6 @@
 package com.chenjw.knife.agent.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.utils.StringHelper;
@@ -22,7 +21,8 @@ public class ParseHelper {
 					.trim());
 			obj = ObjectRecordManager.getInstance().get(num);
 			if (obj == null) {
-				Agent.info("object " + expr + " not found!");
+				throw new java.lang.IllegalArgumentException("object " + expr
+						+ " not found!");
 			}
 		} else {
 			obj = JSON.parseObject(expr, type);

@@ -13,6 +13,7 @@ import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ParseHelper;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public class SetCommandHandler implements CommandHandler {
@@ -28,7 +29,8 @@ public class SetCommandHandler implements CommandHandler {
 			fieldName = StringHelper.substringAfterLast(fieldName, ".");
 			Class<?> clazz = Helper.findClass(className);
 			if (clazz == null) {
-				Agent.info("class not found!");
+				Agent.sendResult(ResultHelper
+						.newErrorResult("class not found!"));
 				return;
 			}
 			field = NativeHelper.findStaticField(clazz, fieldName);
@@ -36,19 +38,22 @@ public class SetCommandHandler implements CommandHandler {
 		} else if (args.arg("-s") != null) {
 			obj = ContextManager.getInstance().get(Constants.THIS);
 			if (obj == null) {
-				Agent.info("not found!");
+				Agent.sendResult(ResultHelper.newErrorResult("not found!"));
+
 				return;
 			}
 			Class<?> clazz = obj.getClass();
 			if (clazz == null) {
-				Agent.info("class not found!");
+				Agent.sendResult(ResultHelper
+						.newErrorResult("class not found!"));
+
 				return;
 			}
 			field = NativeHelper.findStaticField(clazz, fieldName);
 		} else {
 			obj = ContextManager.getInstance().get(Constants.THIS);
 			if (obj == null) {
-				Agent.info("not found!");
+				Agent.sendResult(ResultHelper.newErrorResult(" not found!"));
 				return;
 			}
 			field = NativeHelper.findField(obj, fieldName);
@@ -58,13 +63,14 @@ public class SetCommandHandler implements CommandHandler {
 			}
 		}
 		if (field == null) {
-			Agent.info("field " + fieldName + " not found!");
+			Agent.sendResult(ResultHelper.newErrorResult("field " + fieldName
+					+ " not found!"));
 			return;
 		}
 		Object newValue = ParseHelper.parseValue(value, field.getType());
 		setFieldValue(obj, field, newValue);
+		Agent.sendResult(ResultHelper.newStringResult("finished!"));
 
-		Agent.info("finished!");
 	}
 
 	public void setFieldValue(Object obj, Field field, Object newValue) {

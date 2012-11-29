@@ -1,25 +1,16 @@
 package com.chenjw.knife.core.model;
 
-public class FieldInfo {
-	private boolean isStatic;
-	private String name;
+public class ObjectInfo {
 	private String objectId;
+	private boolean isThrowable;
 	private String valueString;
 
-	public boolean isStatic() {
-		return isStatic;
+	public boolean isThrowable() {
+		return isThrowable;
 	}
 
-	public void setStatic(boolean isStatic) {
-		this.isStatic = isStatic;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setThrowable(boolean isThrowable) {
+		this.isThrowable = isThrowable;
 	}
 
 	public String getObjectId() {

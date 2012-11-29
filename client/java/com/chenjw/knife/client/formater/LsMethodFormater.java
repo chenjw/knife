@@ -1,21 +1,16 @@
 package com.chenjw.knife.client.formater;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.Printer.Level;
 import com.chenjw.knife.core.model.ClassMethodInfo;
 import com.chenjw.knife.core.model.MethodInfo;
 import com.chenjw.knife.utils.StringHelper;
 
-public class ClassMethodInfoFormater extends GrepPrintFormater {
+public class LsMethodFormater extends GrepPrintFormater {
 
 	private ClassMethodInfo classMethodInfo;
 
-	public ClassMethodInfoFormater(Printer printer, String grep) {
+	public LsMethodFormater(Printer printer, String grep) {
 		super(printer, grep);
 	}
 
