@@ -6,15 +6,17 @@ import java.util.List;
 import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.Printer.Level;
 
-public  class PreparedTableFormater extends GrepPrintFormater {
+public class PreparedTableFormater extends GrepPrintFormater {
 
 	private static final int BORDER = 2;
 	private int[] width;
 	private String[] title;
 	private List<String[]> lines = new ArrayList<String[]>();
 
-	public PreparedTableFormater(Printer printer, String grep) {
-		super( printer, grep);
+	public PreparedTableFormater(Level level, Printer printer, String grep) {
+		this.level = level;
+		this.printer = printer;
+		this.grep = grep;
 	}
 
 	protected void setTitle(String... title) {
@@ -79,12 +81,9 @@ public  class PreparedTableFormater extends GrepPrintFormater {
 		}
 	}
 
-
-	
-	public final void print(Level level) {
-
+	public final void print() {
 		doPrepare();
-		doPrint(level);
+		doPrint();
 	}
 
 	private void printSeparatLine(Level level) {
@@ -92,10 +91,10 @@ public  class PreparedTableFormater extends GrepPrintFormater {
 		for (int w : width) {
 			appendBlank(ss, w + BORDER, "-");
 		}
-		print(level,ss.toString());
+		this.printLine(ss.toString());
 	}
 
-	private void doPrint(Level level) {
+	private void doPrint() {
 		if (title != null) {
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < title.length; i++) {
@@ -103,7 +102,7 @@ public  class PreparedTableFormater extends GrepPrintFormater {
 				sb.append(title[i]);
 				appendBlank(sb, d + BORDER, " ");
 			}
-			print(level,sb.toString());
+			this.printLine(sb.toString());
 		}
 		printSeparatLine(level);
 		if (!lines.isEmpty()) {
@@ -114,17 +113,13 @@ public  class PreparedTableFormater extends GrepPrintFormater {
 					sb.append(line[i]);
 					appendBlank(sb, d + BORDER, " ");
 				}
-				print(level,sb.toString());
+				this.printLine(sb.toString());
 			}
 		} else {
 
-			print(level,"not found!");
+			this.printLine("not found!");
 		}
 		printSeparatLine(level);
 	}
-
-
-
-
 
 }

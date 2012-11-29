@@ -35,7 +35,7 @@ public class ByteCodeManager implements Lifecycle {
 			backupMap.put(clazz, bytes);
 			definedMap.put(clazz, bytes);
 			saveOrignFile(clazz, bytes);
-			Agent.debug1("[ByteCodeManager] backup " + clazz + "("
+			Agent.debug("[ByteCodeManager] backup " + clazz + "("
 					+ bytes.length + ")");
 		}
 	}
@@ -43,13 +43,13 @@ public class ByteCodeManager implements Lifecycle {
 	public byte[] getByteCode(Class<?> clazz) {
 		byte[] defineingBytes = defineingMap.get(clazz);
 		if (defineingBytes != null) {
-			Agent.debug1("[ByteCodeManager] getDefineingByteCode " + clazz
+			Agent.debug("[ByteCodeManager] getDefineingByteCode " + clazz
 					+ "(" + defineingBytes.length + ")");
 			return defineingBytes;
 		} else {
 			load(clazz);
 			byte[] defined = definedMap.get(clazz);
-			Agent.debug1("[ByteCodeManager] getNewDefineByteCode " + clazz
+			Agent.debug("[ByteCodeManager] getNewDefineByteCode " + clazz
 					+ "(" + defined.length + ")");
 			return defined;
 		}
@@ -64,7 +64,7 @@ public class ByteCodeManager implements Lifecycle {
 	public void tryRedefineClass(Class<?> clazz, byte[] bytes) {
 		load(clazz);
 		defineingMap.put(clazz, bytes);
-		Agent.debug1("[ByteCodeManager] tryRedefineClass " + clazz + "("
+		Agent.debug("[ByteCodeManager] tryRedefineClass " + clazz + "("
 				+ bytes.length + ")");
 	}
 
@@ -89,7 +89,7 @@ public class ByteCodeManager implements Lifecycle {
 			definedMap.put(clazz, defineingBytes);
 			defineingMap.remove(clazz);
 
-			Agent.debug1("[ByteCodeManager] commited " + clazz.getName() + "("
+			Agent.debug("[ByteCodeManager] commited " + clazz.getName() + "("
 					+ defineingBytes.length + ")(" + bb.length + ")");
 		}
 	}
@@ -127,7 +127,7 @@ public class ByteCodeManager implements Lifecycle {
 
 	public void rollback(Class<?> clazz) {
 		definedMap.remove(clazz);
-		Agent.debug1("[ByteCodeManager] rollback " + clazz.getName());
+		Agent.debug("[ByteCodeManager] rollback " + clazz.getName());
 	}
 
 	public void recoverAll() {

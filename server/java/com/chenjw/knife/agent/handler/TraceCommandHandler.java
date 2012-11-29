@@ -34,6 +34,7 @@ import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ReflectHelper;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public class TraceCommandHandler implements CommandHandler {
@@ -141,7 +142,8 @@ public class TraceCommandHandler implements CommandHandler {
 					clazz = Helper.findClass(className);
 				}
 				if (clazz == null) {
-					Agent.info("class " + className + " not found!");
+					
+					Agent.sendResult(ResultHelper.newErrorResult("class " + className + " not found!"));
 					return null;
 				}
 				Method[] methods = ReflectHelper.getMethods(clazz);
@@ -156,7 +158,7 @@ public class TraceCommandHandler implements CommandHandler {
 			} else {
 				Object obj = ContextManager.getInstance().get(Constants.THIS);
 				if (obj == null) {
-					Agent.info("not found!");
+					Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 					return null;
 				}
 				Method[] methods = obj.getClass().getMethods();
@@ -169,7 +171,7 @@ public class TraceCommandHandler implements CommandHandler {
 			}
 		}
 		if (method == null) {
-			Agent.info("cant find method!");
+			Agent.sendResult(ResultHelper.newErrorResult("cant find method!"));
 			return null;
 		}
 		methodInfo.setMethod(method);

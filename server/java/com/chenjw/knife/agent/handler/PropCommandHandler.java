@@ -5,6 +5,7 @@ import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
+import com.chenjw.knife.agent.utils.ResultHelper;
 
 public class PropCommandHandler implements CommandHandler {
 
@@ -16,7 +17,7 @@ public class PropCommandHandler implements CommandHandler {
 				Agent.getAgentInfo().setDebugOn(false);
 			}
 		}
-		Agent.info("finished!");
+		Agent.sendResult(ResultHelper.newStringResult("finished!"));
 	}
 
 	@Override

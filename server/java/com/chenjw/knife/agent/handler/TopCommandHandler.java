@@ -1,5 +1,7 @@
 package com.chenjw.knife.agent.handler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.chenjw.knife.agent.Agent;
@@ -7,14 +9,17 @@ import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.formater.PreparedTableFormater;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.NativeHelper.ReferenceCount;
 import com.chenjw.knife.agent.utils.OSHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
-import com.chenjw.knife.agent.utils.info.ThreadInfo;
-import com.chenjw.knife.core.Printer.Level;
+import com.chenjw.knife.core.model.ObjectInfo;
+import com.chenjw.knife.core.model.ReferenceCountInfo;
+import com.chenjw.knife.core.model.ThreadInfo;
+import com.chenjw.knife.core.model.TopReferenceCountInfo;
+import com.chenjw.knife.core.model.TopThreadInfo;
+import com.chenjw.knife.core.result.Result;
 
 public class TopCommandHandler implements CommandHandler {
 	private void handleRef(Args args, CommandDispatcher dispatcher) {
@@ -23,20 +28,22 @@ public class TopCommandHandler implements CommandHandler {
 		if (nOptions != null) {
 			num = Integer.parseInt(nOptions.get("num"));
 		}
-		int i = 0;
-
-		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
-				Agent.printer, args.getGrep());
-
-		table.setTitle("idx", "obj-id", "info", "ref-count");
+		TopReferenceCountInfo info = new TopReferenceCountInfo();
+		List<ReferenceCountInfo> referenceInfos = new ArrayList<ReferenceCountInfo>();
 		for (ReferenceCount referenceCount : NativeHelper.countReferree(num)) {
-			table.addLine(String.valueOf(i), ObjectRecordManager.getInstance()
-					.toId(referenceCount.getObj()), ToStringHelper
-					.toString(referenceCount.getObj()),
-					"[" + referenceCount.getCount() + "]");
-			i++;
+			ReferenceCountInfo referenceInfo = new ReferenceCountInfo();
+			referenceInfo.setCount(referenceCount.getCount());
+			ObjectInfo obj = new ObjectInfo();
+			obj.setObjectId(ObjectRecordManager.getInstance().toId(
+					referenceCount.getObj()));
+			obj.setValueString(ToStringHelper.toString(referenceCount.getObj()));
 		}
-		table.print();
+		info.setReferenceCounts(referenceInfos
+				.toArray(new ReferenceCountInfo[referenceInfos.size()]));
+		Result<TopReferenceCountInfo> result = new Result<TopReferenceCountInfo>();
+		result.setContent(info);
+		result.setSuccess(true);
+		Agent.sendResult(result);
 	}
 
 	private void handleThread(Args args, CommandDispatcher dispatcher) {
@@ -45,30 +52,22 @@ public class TopCommandHandler implements CommandHandler {
 		if (nOptions != null) {
 			num = Integer.parseInt(nOptions.get("num"));
 		}
-		int i = 0;
-		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
-				Agent.printer, args.getGrep());
-
-		table.setTitle("idx", "tid", "thread-name", "cpu%");
-		for (ThreadInfo threadInfo : OSHelper.findTopThread(num)) {
-			table.addLine(String.valueOf(i), threadInfo.getTid(),
-					threadInfo.getName(), "[" + threadInfo.getCpu() + "%]");
-			i++;
-		}
-		table.print();
-
+		TopThreadInfo info = new TopThreadInfo();
+		List<ThreadInfo> threadInfos = OSHelper.findTopThread(num);
+		info.setThreads(threadInfos.toArray(new ThreadInfo[threadInfos.size()]));
+		Result<TopThreadInfo> result = new Result<TopThreadInfo>();
+		result.setContent(info);
+		result.setSuccess(true);
+		Agent.sendResult(result);
 	}
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
-
 		String type = args.arg("type");
 		if ("ref".equals(type)) {
 			handleRef(args, dispatcher);
 		} else if ("thread".equals(type)) {
 			handleThread(args, dispatcher);
 		}
-		Agent.info("finished!");
-
 	}
 
 	public void declareArgs(ArgDef argDef) {

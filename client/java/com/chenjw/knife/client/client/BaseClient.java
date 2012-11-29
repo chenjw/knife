@@ -11,6 +11,8 @@ import com.chenjw.knife.core.Command;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.packet.ClosePacket;
 import com.chenjw.knife.core.packet.CommandPacket;
+import com.chenjw.knife.core.packet.ResultPacket;
+import com.chenjw.knife.core.result.Result;
 import com.chenjw.knife.utils.StringHelper;
 
 public abstract class BaseClient implements Client {
@@ -50,7 +52,7 @@ public abstract class BaseClient implements Client {
 				.createVMConnection(Constants.DEFAULT_AGENT_PORT);
 		isRunning = true;
 		startPacketReader(conn);
-		startPacketSeader(conn);
+		startPacketSender(conn);
 		while (isRunning) {
 			Thread.sleep(3000);
 		}
@@ -62,7 +64,7 @@ public abstract class BaseClient implements Client {
 		t.start();
 	}
 
-	private void startPacketSeader(VMConnection conn) {
+	private void startPacketSender(VMConnection conn) {
 		Thread t = new Thread(new PacketSender(conn), "knife-packet-sender");
 		t.setDaemon(true);
 		t.start();
@@ -115,7 +117,14 @@ public abstract class BaseClient implements Client {
 						conn.close();
 						close();
 						isRunning = false;
-					} else {
+					} 
+					else if(p instanceof ResultPacket){
+						Result<?> r=((ResultPacket)p).getObject();
+						
+					}
+					else {
+						
+						
 						writeLine(p.toString());
 					}
 

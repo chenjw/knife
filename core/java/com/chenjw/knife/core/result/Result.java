@@ -1,10 +1,16 @@
 package com.chenjw.knife.core.result;
 
-public class Result<T> {
+import java.io.Serializable;
+
+public class Result<T> implements Serializable {
+
+	private static final long serialVersionUID = -1029895615419256975L;
+
 	private boolean isSuccess;
-	
-	private String errorMessage; 
-	
+
+	private String errorMessage;
+	private String errorTrace;
+
 	private T content;
 
 	public boolean isSuccess() {
@@ -30,6 +36,13 @@ public class Result<T> {
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
-	
-	
+
+	public String getErrorTrace() {
+		return errorTrace;
+	}
+
+	public void setErrorTrace(String errorTrace) {
+		this.errorTrace = errorTrace;
+	}
+
 }

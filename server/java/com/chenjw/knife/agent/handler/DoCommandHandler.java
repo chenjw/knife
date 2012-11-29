@@ -11,6 +11,7 @@ import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.core.Command;
 
 public class DoCommandHandler implements CommandHandler {
@@ -37,7 +38,8 @@ public class DoCommandHandler implements CommandHandler {
 		ClassLoaderHelper.view();
 
 		do5(args, dispatcher);
-		Agent.info("do finished!");
+		Agent.sendResult(ResultHelper.newStringResult("do finished!"));
+
 	}
 
 	private void do1(Args args, CommandDispatcher dispatcher) {

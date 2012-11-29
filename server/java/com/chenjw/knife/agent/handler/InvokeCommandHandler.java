@@ -1,15 +1,10 @@
 package com.chenjw.knife.agent.handler;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarInputStream;
 
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.Profiler;
@@ -38,6 +33,7 @@ import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ParseHelper;
 import com.chenjw.knife.agent.utils.ReflectHelper;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.invoke.InvokeResult;
 import com.chenjw.knife.agent.utils.invoke.MethodInvokeException;
 import com.chenjw.knife.utils.StringHelper;
@@ -96,7 +92,8 @@ public class InvokeCommandHandler implements CommandHandler {
 					clazz = Helper.findClass(className);
 				}
 				if (clazz == null) {
-					Agent.info("class " + className + " not found!");
+					Agent.sendResult(ResultHelper.newErrorResult("class "
+							+ className + " not found!"));
 					return;
 				}
 				Method[] methods = ReflectHelper.getMethods(clazz);
@@ -112,7 +109,7 @@ public class InvokeCommandHandler implements CommandHandler {
 			} else {
 				Object obj = ContextManager.getInstance().get(Constants.THIS);
 				if (obj == null) {
-					Agent.info("not found!");
+					Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 					return;
 				}
 				Method[] methods = ReflectHelper.getMethods(obj.getClass());
@@ -125,7 +122,7 @@ public class InvokeCommandHandler implements CommandHandler {
 			}
 		}
 		if (method == null) {
-			Agent.info("cant find method!");
+			Agent.sendResult(ResultHelper.newErrorResult("method not found!"));
 			return;
 		}
 		Object[] mArgs = ParseHelper.parseMethodArgs(
@@ -194,17 +191,4 @@ public class InvokeCommandHandler implements CommandHandler {
 
 	}
 
-	public static void main(String args[]) throws IOException {
-		File f = new File("/home/chenjw/pivot.biz.trustpass-1.0-SNAPSHOT.jar");
-		JarInputStream jar_in = new JarInputStream(new FileInputStream(f));
-		try {
-			JarEntry entry = jar_in.getNextJarEntry();
-			while (entry != null) {
-				System.out.println(entry.getName());
-				entry = jar_in.getNextJarEntry();
-			}
-		} finally {
-			jar_in.close();
-		}
-	}
 }

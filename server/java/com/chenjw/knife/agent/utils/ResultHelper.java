@@ -9,8 +9,16 @@ public class ResultHelper {
 		r.setErrorMessage(errorMsg);
 		return r;
 	}
+	
+	public static Result<Object> newErrorResult(String errorMsg,Throwable t) {
+		Result<Object> r = new Result<Object>();
+		r.setSuccess(false);
+		r.setErrorMessage(errorMsg);
+		r.setErrorTrace(ToStringHelper.toExceptionTraceString(t));
+		return r;
+	}
 
-	public static Result<Object> newStringResult(String msg) {
+	public static Result<String> newStringResult(String msg) {
 		Result<String> r = new Result<String>();
 		r.setSuccess(true);
 		r.setContent(msg);

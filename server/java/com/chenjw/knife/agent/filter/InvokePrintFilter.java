@@ -1,5 +1,8 @@
 package com.chenjw.knife.agent.filter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.Profiler;
 import com.chenjw.knife.agent.event.Event;
@@ -10,96 +13,93 @@ import com.chenjw.knife.agent.manager.InvokeDepthManager;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.manager.TimingManager;
 import com.chenjw.knife.agent.utils.ToStringHelper;
+import com.chenjw.knife.core.model.MethodExceptionEndInfo;
+import com.chenjw.knife.core.model.MethodReturnEndInfo;
+import com.chenjw.knife.core.model.MethodStartInfo;
+import com.chenjw.knife.core.model.ObjectInfo;
+import com.chenjw.knife.core.result.Result;
 
 public class InvokePrintFilter implements Filter {
 
-	private String d(int dep) {
-		String s = "";
-		for (int i = 0; i < dep; i++) {
-			s += "--";
-		}
-		return s;
-	}
-
 	protected void onStart(MethodStartEvent event) {
-		String className = event.getClassName();
-		String methodName = event.getMethodName();
-		Object thisObject = event.getThisObject();
-		Object[] arguments = event.getArguments();
-		StringBuffer msg = new StringBuffer("[invoke] ");
-		String cn = null;
-		if (thisObject != null) {
-			cn = ObjectRecordManager.getInstance().toId(thisObject)
-					+ thisObject.getClass().getName();
-		} else {
-			cn = className;
-		}
-		msg.append(cn + "." + methodName);
-		msg.append("(");
-		boolean isFirst = true;
-		for (Object arg : arguments) {
-			if (isFirst) {
-				isFirst = false;
-			} else {
-				msg.append(",");
-			}
-			if (arg == null) {
-				msg.append("null");
-			} else {
-				msg.append(ObjectRecordManager.getInstance().toId(arg)
-						+ ToStringHelper.toString(arg));
-			}
-		}
-		msg.append(")");
-		int lineNum = event.getLineNum();
-		if (lineNum == -1) {
-			msg.append(" <unknow>");
-		} else {
-			String baseClassName = event.getFileName();
-			msg.append(" <" + baseClassName + ":");
-			msg.append(event.getLineNum());
-			msg.append(">");
-		}
+		MethodStartInfo info = new MethodStartInfo();
 
-		try {
-			int dep = InvokeDepthManager.getInstance().getDep();
-			Agent.info(d(dep) + msg);
-			// TimingManager.getInstance().start(String.valueOf(dep));
-		} catch (Exception e1) {
-			e1.printStackTrace();
+		Object thisObject = event.getThisObject();
+
+		if (thisObject != null) {
+			info.setThisObjectId(ObjectRecordManager.getInstance().toId(
+					thisObject));
+			info.setClassName(thisObject.getClass().getName());
+		} else {
+			info.setClassName(event.getClassName());
 		}
+		info.setMethodName(event.getMethodName());
+
+		List<ObjectInfo> argInfos = new ArrayList<ObjectInfo>();
+		for (Object arg : event.getArguments()) {
+			if (arg == null) {
+				argInfos.add(null);
+			} else {
+				ObjectInfo argInfo = new ObjectInfo();
+				argInfo.setObjectId(ObjectRecordManager.getInstance().toId(arg));
+				argInfo.setValueString(ToStringHelper.toString(arg));
+				argInfos.add(argInfo);
+			}
+		}
+		info.setArguments(argInfos.toArray(new ObjectInfo[argInfos.size()]));
+		info.setLineNum(event.getLineNum());
+		info.setFileName(event.getFileName());
+		info.setDepth(InvokeDepthManager.getInstance().getDep());
+		Result<MethodStartInfo> result = new Result<MethodStartInfo>();
+		result.setContent(info);
+		result.setSuccess(true);
+		Agent.sendResult(result);
+
 	}
 
 	protected void onReturnEnd(MethodReturnEndEvent event) {
-		Object result = event.getResult();
-		int dep = InvokeDepthManager.getInstance().getDep();
-		StringBuffer msg = new StringBuffer("[return] ");
-		if (result == null) {
-			msg.append("null");
-		} else if (result == Profiler.VOID) {
-			msg.append("void");
-		} else {
-			msg.append(ObjectRecordManager.getInstance().toId(result)
-					+ ToStringHelper.toString(result));
-		}
-		msg.append(" ["
-				+ TimingManager.getInstance().getMillisInterval(
-						String.valueOf(dep)) + " ms]");
+		MethodReturnEndInfo info = new MethodReturnEndInfo();
+		Object r = event.getResult();
+		if (r == Profiler.VOID) {
+			info.setVoid(true);
 
-		Agent.info(d(dep) + msg);
+		} else {
+			info.setVoid(false);
+			if (r != null) {
+				ObjectInfo rInfo = new ObjectInfo();
+				rInfo.setObjectId(ObjectRecordManager.getInstance().toId(r));
+				rInfo.setValueString(ToStringHelper.toString(r));
+				info.setResult(rInfo);
+			}
+		}
+		int dep = InvokeDepthManager.getInstance().getDep();
+		info.setDepth(dep);
+		info.setTime(TimingManager.getInstance().getMillisInterval(
+				String.valueOf(dep)));
+		Result<MethodReturnEndInfo> result = new Result<MethodReturnEndInfo>();
+		result.setContent(info);
+		result.setSuccess(true);
+		Agent.sendResult(result);
 	}
 
 	protected void onExceptionEnd(MethodExceptionEndEvent event) {
+
+		MethodExceptionEndInfo info = new MethodExceptionEndInfo();
 		Throwable e = event.getE();
+		ObjectInfo rInfo = new ObjectInfo();
+		rInfo.setObjectId(ObjectRecordManager.getInstance().toId(e));
+		rInfo.setValueString(ToStringHelper.toString(e));
+		info.setE(rInfo);
+
 		int dep = InvokeDepthManager.getInstance().getDep();
-		StringBuffer msg = new StringBuffer("[throw] ");
-		// e.printStackTrace();
-		msg.append(ObjectRecordManager.getInstance().toId(e));
-		msg.append(e);
-		msg.append(" ["
-				+ TimingManager.getInstance().getMillisInterval(
-						String.valueOf(dep)) + " ms]");
-		Agent.info(d(dep) + msg);
+		info.setDepth(dep);
+		info.setTime(TimingManager.getInstance().getMillisInterval(
+				String.valueOf(dep)));
+		Result<MethodExceptionEndInfo> result = new Result<MethodExceptionEndInfo>();
+		result.setContent(info);
+		result.setSuccess(true);
+		Agent.sendResult(result);
+
 	}
 
 	@Override

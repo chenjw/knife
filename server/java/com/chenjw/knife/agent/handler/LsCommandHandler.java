@@ -28,6 +28,7 @@ import com.chenjw.knife.core.model.ClassConstructorInfo;
 import com.chenjw.knife.core.model.ClassFieldInfo;
 import com.chenjw.knife.core.model.ClassMethodInfo;
 import com.chenjw.knife.core.model.ConstructorInfo;
+import com.chenjw.knife.core.model.ExceptionInfo;
 import com.chenjw.knife.core.model.FieldInfo;
 import com.chenjw.knife.core.model.MethodInfo;
 import com.chenjw.knife.core.model.ObjectInfo;
@@ -214,23 +215,28 @@ public class LsCommandHandler implements CommandHandler {
 			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
 		}
-		Result<ObjectInfo> result = new Result<ObjectInfo>();
-		ObjectInfo objectInfo = new ObjectInfo();
+
 		if ((target.getObj() instanceof Throwable)) {
-			objectInfo.setThrowable(true);
-			objectInfo.setObjectId(ObjectRecordManager.getInstance().toId(
+			Result<ExceptionInfo> result = new Result<ExceptionInfo>();
+			ExceptionInfo info = new ExceptionInfo();
+			info.setObjectId(ObjectRecordManager.getInstance().toId(
 					target.getObj()));
-			objectInfo.setValueString(ToStringHelper
+			info.setTraceString(ToStringHelper
 					.toExceptionTraceString((Throwable) target.getObj()));
+			result.setContent(info);
+			result.setSuccess(true);
+			Agent.sendResult(result);
 		} else {
-			objectInfo.setThrowable(false);
-			objectInfo.setObjectId(ObjectRecordManager.getInstance().toId(
+			Result<ObjectInfo> result = new Result<ObjectInfo>();
+			ObjectInfo info = new ObjectInfo();
+			info.setObjectId(ObjectRecordManager.getInstance().toId(
 					target.getObj()));
-			objectInfo.setValueString(toString(args, target.getObj()));
+			info.setValueString(toString(args, target.getObj()));
+			result.setContent(info);
+			result.setSuccess(true);
+			Agent.sendResult(result);
 		}
-		result.setContent(objectInfo);
-		result.setSuccess(true);
-		Agent.sendResult(result);
+
 	}
 
 	@SuppressWarnings("unchecked")

@@ -10,6 +10,7 @@ import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.ResultHelper;
 
 public class ViewCommandHandler implements CommandHandler {
 
@@ -18,18 +19,20 @@ public class ViewCommandHandler implements CommandHandler {
 			throws IOException {
 		Object thisObject = ContextManager.getInstance().get(Constants.THIS);
 		if (thisObject == null) {
-			Agent.info("not found");
+			Agent.sendResult(ResultHelper.newErrorResult("not found"));
 		} else {
 			if (args.option("-c") != null) {
-				Agent.info(thisObject.getClass().getClassLoader().getClass()
-						.toString());
-			} else if (args.option("-s") != null) {
-				Agent.info(NativeHelper.getClassSourceFileName(thisObject
-						.getClass()));
-			}
-			Agent.info("option not found");
-		}
+				Agent.sendResult(ResultHelper.newErrorResult(thisObject
+						.getClass().getClassLoader().getClass().toString()));
 
+			} else if (args.option("-s") != null) {
+				Agent.sendResult(ResultHelper.newErrorResult(NativeHelper
+						.getClassSourceFileName(thisObject.getClass())));
+			} else {
+				Agent.sendResult(ResultHelper
+						.newErrorResult("option not found"));
+			}
+		}
 	}
 
 	public void declareArgs(ArgDef argDef) {

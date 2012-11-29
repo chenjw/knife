@@ -1,17 +1,22 @@
 package com.chenjw.knife.agent.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.formater.PreparedTableFormater;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
-import com.chenjw.knife.core.Printer.Level;
+import com.chenjw.knife.core.model.ObjectInfo;
+import com.chenjw.knife.core.model.ReferenceListInfo;
+import com.chenjw.knife.core.result.Result;
 
 public class RefCommandHandler implements CommandHandler {
 
@@ -27,7 +32,7 @@ public class RefCommandHandler implements CommandHandler {
 		}
 
 		if (obj == null) {
-			Agent.info("id not found! ");
+			Agent.sendResult(ResultHelper.newErrorResult("id not found!"));
 			return;
 		}
 		Object[] refs = null;
@@ -38,25 +43,26 @@ public class RefCommandHandler implements CommandHandler {
 		}
 
 		if (refs == null || refs.length == 0) {
-			Agent.info("not found! ");
+			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
 		}
-		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
-				Agent.printer, args.getGrep());
 
-		table.setTitle("type", "obj-id", "obj");
-
+		ReferenceListInfo info = new ReferenceListInfo();
+		info.setReferree(args.option("-r") != null);
+		List<ObjectInfo> references = new ArrayList<ObjectInfo>();
 		for (Object ref : refs) {
-			if (args.option("-r") != null) {
-				table.addLine("[referree]", ObjectRecordManager.getInstance()
-						.toId(ref), ToStringHelper.toString(ref));
-			} else {
-				table.addLine("[referrer]", ObjectRecordManager.getInstance()
-						.toId(ref), ToStringHelper.toString(ref));
-			}
+			ObjectInfo reference = new ObjectInfo();
+			reference.setObjectId(ObjectRecordManager.getInstance().toId(ref));
+			reference.setValueString(ToStringHelper.toString(ref));
+			references.add(reference);
+
 		}
-		table.print();
-		Agent.info("finished!");
+		info.setReferences(references.toArray(new ObjectInfo[references.size()]));
+
+		Result<ReferenceListInfo> result = new Result<ReferenceListInfo>();
+		result.setContent(info);
+		result.setSuccess(true);
+		Agent.sendResult(result);
 
 	}
 

@@ -3,18 +3,13 @@ package com.chenjw.knife.client.formater;
 import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.Printer.Level;
 
-public abstract class GrepPrintFormater implements PrintFormater{
+public abstract class GrepPrintFormater {
 
-	protected Printer printer;
 	protected String grep;
+	protected Level level;
+	protected Printer printer;
 
-	public GrepPrintFormater(Printer printer, String grep) {
-
-		this.printer = printer;
-		this.grep = grep;
-	}
-
-	protected void print(Level level, String str) {
+	protected final void printLine(String str) {
 		if (printer == null) {
 			return;
 		}

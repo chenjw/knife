@@ -27,6 +27,7 @@ import com.chenjw.knife.agent.handler.SpringCommandHandler;
 import com.chenjw.knife.agent.handler.TopCommandHandler;
 import com.chenjw.knife.agent.handler.TraceCommandHandler;
 import com.chenjw.knife.agent.handler.ViewCommandHandler;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.core.Command;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
@@ -90,14 +91,16 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 				args.parse(argStr, def);
 
 			} catch (Exception e) {
-				Agent.info("args error, " + e.getClass().getName() + ":"
-						+ e.getLocalizedMessage());
+				Agent.sendResult(ResultHelper.newErrorResult("args error, "
+						+ e.getClass().getName() + ":"
+						+ e.getLocalizedMessage()));
 				return;
 			}
 			try {
 				handler.handle(args, this);
 			} catch (Exception e) {
-				Agent.print(e);
+				Agent.sendResult(ResultHelper
+						.newErrorResult("handle error!", e));
 				argHelp(def);
 			}
 

@@ -1,10 +1,6 @@
 package com.chenjw.knife.agent;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.lang.instrument.ClassDefinition;
 import java.lang.instrument.UnmodifiableClassException;
 
@@ -21,12 +17,12 @@ public class Agent {
 	public static Printer printer = new Printer() {
 		@Override
 		public void info(String str) {
-			//Agent.info(str);
+			Agent.info(str);
 		}
 
 		@Override
 		public void debug(String str) {
-			//Agent.debug(str);
+			Agent.debug(str);
 		}
 	};
 
@@ -53,10 +49,10 @@ public class Agent {
 		}
 	}
 
-	public static void sendResult(Result<?> r){
-		
+	public static void sendResult(Result<?> r) {
+
 	}
-	
+
 	public static void send(Packet command) {
 		try {
 			PacketResolver.write(command, agentInfo.getOs());
@@ -74,29 +70,14 @@ public class Agent {
 
 	}
 
-	public static void info1(String msg) {
+	public static void info(String msg) {
 		send(new TextPacket(msg));
 	}
 
-	public static void debug1(String msg) {
+	public static void debug(String msg) {
 		if (isDebugOn()) {
-			//info("[DEBUG] " + msg);
+			info("[DEBUG] " + msg);
 		}
-	}
-
-	public static void print1(Throwable t) {
-		StringWriter sw = new StringWriter();
-		t.printStackTrace(new PrintWriter(sw));
-		String errorTrace = sw.toString();
-		BufferedReader br = new BufferedReader(new StringReader(errorTrace));
-		String line = null;
-		try {
-			while ((line = br.readLine()) != null) {
-				Agent.info(line);
-			}
-		} catch (IOException e1) {
-		}
-
 	}
 
 	public static void close() {

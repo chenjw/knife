@@ -7,6 +7,7 @@ import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.ReflectHelper;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.invoke.InvokeResult;
 import com.chenjw.knife.agent.utils.invoke.MethodInvokeException;
 
@@ -20,10 +21,10 @@ public class SpringCommandHandler implements CommandHandler {
 		Object context = createApplicationContext(Integer.parseInt(parentId),
 				"file:" + filePath);
 		if (context == null) {
-			Agent.info("spring context create fail!");
+			Agent.sendResult(ResultHelper.newErrorResult("spring context create fail!"));
 		} else {
-			Agent.info("spring context created "
-					+ ObjectRecordManager.getInstance().toId(context));
+			Agent.sendResult(ResultHelper.newStringResult("spring context created "
+					+ ObjectRecordManager.getInstance().toId(context)));
 		}
 	}
 
@@ -35,7 +36,6 @@ public class SpringCommandHandler implements CommandHandler {
 		// context.refresh();
 		Object parent = ObjectRecordManager.getInstance().get(parentId);
 		if (parent == null) {
-			Agent.info("not found");
 			return null;
 		}
 		InvokeResult r = null;
@@ -76,7 +76,7 @@ public class SpringCommandHandler implements CommandHandler {
 		if (r.isSuccess()) {
 			return r.getResult();
 		} else {
-			Agent.info(r.getE().getLocalizedMessage());
+			r.getE().printStackTrace();
 			return null;
 		}
 	}

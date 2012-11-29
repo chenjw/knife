@@ -9,12 +9,16 @@ import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.formater.PreparedTableFormater;
 import com.chenjw.knife.agent.manager.ContextManager;
 import com.chenjw.knife.agent.manager.ObjectRecordManager;
 import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
-import com.chenjw.knife.core.Printer.Level;
+import com.chenjw.knife.core.model.ClassInfo;
+import com.chenjw.knife.core.model.ClassListInfo;
+import com.chenjw.knife.core.model.InstanceListInfo;
+import com.chenjw.knife.core.model.ObjectInfo;
+import com.chenjw.knife.core.result.Result;
 import com.chenjw.knife.utils.StringHelper;
 
 public class FindCommandHandler implements CommandHandler {
@@ -56,48 +60,52 @@ public class FindCommandHandler implements CommandHandler {
 					ContextManager.getInstance().put(Constants.CLASS_LIST,
 							likeClazz);
 
-					int i = 0;
-					PreparedTableFormater table = new PreparedTableFormater(
-							Level.INFO, Agent.printer, args.getGrep());
-
-					table.setTitle("idx", "type", "name", "classloader");
+			
+					ClassListInfo info=new ClassListInfo();
+					List<ClassInfo> cInfoList=new ArrayList<ClassInfo>();
 					for (Class<?> cc : likeClazz) {
-						table.addLine(String.valueOf(i),
-								cc.isInterface() ? "[interface]" : "[class]",
-								cc.getName(),
-								"[" + ToStringHelper.toClassLoaderString(cc)
-										+ "]");
-						i++;
+						ClassInfo cInfo=new ClassInfo();
+						cInfo.setInterface(cc.isInterface());
+						cInfo.setName(cc.getName());
+						cInfo.setClassLoader(ToStringHelper.toClassLoaderString(cc));
+						cInfoList.add(cInfo);
+	
 					}
-					table.print();
-					Agent.info("find " + i + " classes like '" + className
-							+ "', please choose one typing like 'find 0'!");
+					info.setClasses(cInfoList.toArray(new ClassInfo[cInfoList.size()]));
+					info.setExpretion(className);
+					Result<ClassListInfo> result=new Result<ClassListInfo>();
+					result.setContent(info);
+					result.setSuccess(true);
+					Agent.sendResult(result);
 					return;
 				} else if (likeClazz.length == 1) {
 					clazz = likeClazz[0];
 				}
 			}
 			if (clazz == null) {
-				Agent.info("not found!");
+				Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 				return;
 			}
 		}
 		// //
 		Object[] objs = NativeHelper.findInstancesByClass(clazz);
 
-		int i = 0;
-		PreparedTableFormater table = new PreparedTableFormater(Level.INFO,
-				Agent.printer, args.getGrep());
-
-		table.setTitle("type", "obj-id", "detail");
+		
+		InstanceListInfo info=new InstanceListInfo();
+		List<ObjectInfo> cInfoList=new ArrayList<ObjectInfo>();
 		for (Object obj : objs) {
-			table.addLine("[instance]",
-					ObjectRecordManager.getInstance().toId(obj),
-					ToStringHelper.toDetailString(obj));
-			i++;
+			ObjectInfo cInfo=new ObjectInfo();
+			cInfo.setObjectId(ObjectRecordManager.getInstance().toId(obj));
+			cInfo.setValueString(ToStringHelper.toDetailString(obj));
+			cInfoList.add(cInfo);
+
 		}
-		table.print();
-		Agent.info("find " + i + " instances of " + clazz.getName());
+		info.setInstances(cInfoList.toArray(new ObjectInfo[cInfoList.size()]));
+		info.setClassName(clazz.getName());
+		Result<InstanceListInfo> result=new Result<InstanceListInfo>();
+		result.setContent(info);
+		result.setSuccess(true);
+		Agent.sendResult(result);
 	}
 
 	public void declareArgs(ArgDef argDef) {

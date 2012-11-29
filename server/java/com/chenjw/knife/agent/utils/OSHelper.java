@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.chenjw.knife.agent.utils.info.ThreadInfo;
+import com.chenjw.knife.core.model.ThreadInfo;
 import com.chenjw.knife.utils.JvmHelper;
 import com.chenjw.knife.utils.StringHelper;
 
