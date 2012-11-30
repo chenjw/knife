@@ -81,7 +81,12 @@ public class RemoteVMConnector implements VMConnector {
 
 	private void connect() throws IOException {
 		if (!isConnected) {
-			socket = new Socket(ip, port);
+			try{
+				socket = new Socket(ip, port);
+			}
+			catch(IOException e){
+				throw new IOException(ip+":"+port+" 连接不上，请确保目标机器防火墙端口已打开！",e);
+			}
 			is = socket.getInputStream();
 			os = socket.getOutputStream();
 			isConnected = true;

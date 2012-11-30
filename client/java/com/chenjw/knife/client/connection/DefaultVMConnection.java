@@ -55,12 +55,17 @@ public class DefaultVMConnection implements VMConnection {
 		while (!isConnected) {
 			try {
 				socket = new Socket(ip, port);
+			} catch (Exception e) {
+				throw new IOException(ip+":"+port+" 连接不上，请确保目标机器防火墙端口已打开！",e);
+			}
+			try{
 				is = socket.getInputStream();
 				os = socket.getOutputStream();
 				addShutdownHook();
 				isConnected = true;
 				break;
 			} catch (Exception e) {
+				
 			}
 			try {
 				Thread.sleep(2000);
