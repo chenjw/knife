@@ -3,6 +3,7 @@ package com.chenjw.knife.client.connection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import com.chenjw.knife.client.core.VMConnection;
@@ -54,7 +55,8 @@ public class DefaultVMConnection implements VMConnection {
 	private void connect() throws IOException {
 		while (!isConnected) {
 			try {
-				socket = new Socket(ip, port);
+				socket = new Socket();
+				socket.connect(new InetSocketAddress(ip, port), 3000);
 			} catch (Exception e) {
 				throw new IOException(ip+":"+port+" 连接不上，请确保目标机器防火墙端口已打开！",e);
 			}

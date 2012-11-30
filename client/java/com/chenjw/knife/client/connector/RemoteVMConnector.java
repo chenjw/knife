@@ -3,6 +3,7 @@ package com.chenjw.knife.client.connector;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.List;
 
@@ -82,7 +83,8 @@ public class RemoteVMConnector implements VMConnector {
 	private void connect() throws IOException {
 		if (!isConnected) {
 			try{
-				socket = new Socket(ip, port);
+				socket = new Socket();
+				socket.connect(new InetSocketAddress(ip, port), 3000);
 			}
 			catch(IOException e){
 				throw new IOException(ip+":"+port+" 连接不上，请确保目标机器防火墙端口已打开！",e);
