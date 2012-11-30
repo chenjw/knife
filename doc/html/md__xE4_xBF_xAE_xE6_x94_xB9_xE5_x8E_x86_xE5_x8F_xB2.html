@@ -85,16 +85,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h2>0.5.0</h2>
-<p>Add 'trace' command.</p>
+<p>实现 'trace' 命令.</p>
 <h2>0.4.7</h2>
-<p>Add 'new' command.</p>
-<p>Use standalone classloader. release loaded agent classes when close.</p>
+<p>实现 'new' 命令.</p>
+<p>使用独立的classloader加载agent需要的类，这样在knife退出的时候可以释放加载的对象和类。</p>
 <h2>0.4.0</h2>
-<p>Add 'ref' command. </p>
+<p>实现 'ref' 命令.</p>
+<h2>0.7.0</h2>
+<p>数据传输从string line 转变为结构化对象</p>
+<p>invoke 和 trace 方法过滤掉了spring aop和cglib方法调用的输出 </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Nov 30 2012 14:49:30 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Nov 30 2012 15:25:00 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>
