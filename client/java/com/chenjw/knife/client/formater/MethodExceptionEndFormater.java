@@ -11,13 +11,13 @@ public class MethodExceptionEndFormater extends
 				d(methodExceptionEndInfo.getDepth()));
 		msg.append("[throw] ");
 
-		if (methodExceptionEndInfo.getE() == null) {
+		if (methodExceptionEndInfo.getE() != null) {
 
 			msg.append(methodExceptionEndInfo.getE().getObjectId());
 			msg.append(methodExceptionEndInfo.getE().getValueString());
 		}
 		msg.append(" [" + methodExceptionEndInfo.getTime() + " ms]");
-		this.printLine( msg.toString());
+		this.printLine(msg.toString());
 	}
 
 	private String d(int dep) {

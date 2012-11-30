@@ -1,6 +1,10 @@
 package com.chenjw.knife.core.model;
 
-public class ClassListInfo {
+import java.io.Serializable;
+
+public class ClassListInfo implements Serializable {
+
+	private static final long serialVersionUID = 7855978950886901067L;
 	private String expretion;
 	private ClassInfo[] classes;
 

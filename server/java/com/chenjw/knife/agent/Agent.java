@@ -8,6 +8,7 @@ import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketResolver;
 import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.packet.ClosePacket;
+import com.chenjw.knife.core.packet.ResultPacket;
 import com.chenjw.knife.core.packet.TextPacket;
 import com.chenjw.knife.core.result.Result;
 
@@ -50,14 +51,14 @@ public class Agent {
 	}
 
 	public static void sendResult(Result<?> r) {
-
+		send(new ResultPacket(r));
 	}
 
 	public static void send(Packet command) {
 		try {
 			PacketResolver.write(command, agentInfo.getOs());
 		} catch (IOException e) {
-			// e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 

@@ -23,7 +23,7 @@ import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ReflectHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
-import com.chenjw.knife.core.model.ArrayElementInfo;
+import com.chenjw.knife.core.model.ArrayInfo;
 import com.chenjw.knife.core.model.ClassConstructorInfo;
 import com.chenjw.knife.core.model.ClassFieldInfo;
 import com.chenjw.knife.core.model.ClassMethodInfo;
@@ -100,24 +100,34 @@ public class LsCommandHandler implements CommandHandler {
 			Map<Field, Object> fieldMap = NativeHelper
 					.getStaticFieldValues(target.getClazz());
 			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
-				FieldInfo fieldInfo = new FieldInfo();
-				fieldInfo.setStatic(true);
-				fieldInfo.setName(entry.getKey().getName());
-				fieldInfo.setObjectId(ObjectRecordManager.getInstance().toId(
-						entry.getValue()));
-				fieldInfo.setValueString(toString(args, entry.getValue()));
+				FieldInfo info = new FieldInfo();
+				info.setStatic(true);
+				info.setName(entry.getKey().getName());
+				if (entry.getValue() != null) {
+					ObjectInfo fValue = new ObjectInfo();
+					fValue.setObjectId(ObjectRecordManager.getInstance().toId(
+							entry.getValue()));
+					fValue.setValueString(toString(args, entry.getValue()));
+					info.setValue(fValue);
+				}
+				fieldInfos.add(info);
 			}
 		}
 		if (target.getObj() != null) {
 			Map<Field, Object> fieldMap = NativeHelper.getFieldValues(target
 					.getObj());
 			for (Entry<Field, Object> entry : fieldMap.entrySet()) {
-				FieldInfo fieldInfo = new FieldInfo();
-				fieldInfo.setStatic(false);
-				fieldInfo.setName(entry.getKey().getName());
-				fieldInfo.setObjectId(ObjectRecordManager.getInstance().toId(
-						entry.getValue()));
-				fieldInfo.setValueString(toString(args, entry.getValue()));
+				FieldInfo info = new FieldInfo();
+				info.setStatic(false);
+				info.setName(entry.getKey().getName());
+				if (entry.getValue() != null) {
+					ObjectInfo fValue = new ObjectInfo();
+					fValue.setObjectId(ObjectRecordManager.getInstance().toId(
+							entry.getValue()));
+					fValue.setValueString(toString(args, entry.getValue()));
+					info.setValue(fValue);
+				}
+				fieldInfos.add(info);
 			}
 		}
 		Result<ClassFieldInfo> result = new Result<ClassFieldInfo>();
@@ -185,8 +195,8 @@ public class LsCommandHandler implements CommandHandler {
 		}
 		List<ConstructorInfo> constructorInfos = new ArrayList<ConstructorInfo>();
 		List<Constructor<?>> list = new ArrayList<Constructor<?>>();
-		if (target.getClass() != null) {
-			Constructor<?>[] constructors = target.getClass()
+		if (target.getClazz() != null) {
+			Constructor<?>[] constructors = target.getClazz()
 					.getDeclaredConstructors();
 			for (Constructor<?> constructor : constructors) {
 				ConstructorInfo constructorInfo = new ConstructorInfo();
@@ -202,6 +212,8 @@ public class LsCommandHandler implements CommandHandler {
 		ClassConstructorInfo classConstructorInfo = new ClassConstructorInfo();
 		classConstructorInfo.setConstructors(constructorInfos
 				.toArray(new ConstructorInfo[constructorInfos.size()]));
+		classConstructorInfo.setClassSimpleName(target.getClazz()
+				.getSimpleName());
 		Result<ClassConstructorInfo> result = new Result<ClassConstructorInfo>();
 		result.setSuccess(true);
 		result.setContent(classConstructorInfo);
@@ -246,34 +258,44 @@ public class LsCommandHandler implements CommandHandler {
 			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
 		}
-		List<ArrayElementInfo> arrayElementInfos = new ArrayList<ArrayElementInfo>();
-		if (target.getClass().isArray()) {
 
+		if (target.getClazz().isArray()) {
+			List<ObjectInfo> elements = new ArrayList<ObjectInfo>();
 			for (int i = 0; i < Array.getLength(target.getObj()); i++) {
 				Object aObj = Array.get(target.getObj(), i);
-				ArrayElementInfo arrayElementInfo = new ArrayElementInfo();
-				arrayElementInfo.setObjectId(ObjectRecordManager.getInstance()
+				ObjectInfo element = new ObjectInfo();
+				element.setObjectId(ObjectRecordManager.getInstance()
 						.toId(aObj));
-				arrayElementInfo.setValueString(toString(args, aObj));
+				element.setValueString(toString(args, aObj));
+				elements.add(element);
 
-				arrayElementInfos.add(arrayElementInfo);
 			}
 
-		} else if (target.getObj() instanceof List) {
-			for (Object aObj : (List<Object>) target.getObj()) {
-				ArrayElementInfo arrayElementInfo = new ArrayElementInfo();
-				arrayElementInfo.setObjectId(ObjectRecordManager.getInstance()
-						.toId(aObj));
-				arrayElementInfo.setValueString(toString(args, aObj));
-
-				arrayElementInfos.add(arrayElementInfo);
-			}
-
-		} else {
-			Result<ClassConstructorInfo> result = new Result<ClassConstructorInfo>();
-			result.setErrorMessage("not array!");
-			result.setSuccess(false);
+			Result<ArrayInfo> result = new Result<ArrayInfo>();
+			ArrayInfo info = new ArrayInfo();
+			info.setElements(elements
+					.toArray(new ObjectInfo[elements.size()]));
+			result.setContent(info);
+			result.setSuccess(true);
 			Agent.sendResult(result);
+		} else if (target.getObj() instanceof List) {
+			List<ObjectInfo> elements = new ArrayList<ObjectInfo>();
+			for (Object aObj : (List<Object>) target.getObj()) {
+				ObjectInfo element = new ObjectInfo();
+				element.setObjectId(ObjectRecordManager.getInstance()
+						.toId(aObj));
+				element.setValueString(toString(args, aObj));
+				elements.add(element);
+			}
+			Result<ArrayInfo> result = new Result<ArrayInfo>();
+			ArrayInfo info = new ArrayInfo();
+			info.setElements(elements
+					.toArray(new ObjectInfo[elements.size()]));
+			result.setContent(info);
+			result.setSuccess(true);
+			Agent.sendResult(result);
+		} else {
+			Agent.sendResult(ResultHelper.newErrorResult("not array!"));
 		}
 
 	}

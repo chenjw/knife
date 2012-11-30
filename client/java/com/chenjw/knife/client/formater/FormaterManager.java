@@ -1,7 +1,7 @@
 package com.chenjw.knife.client.formater;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FormaterManager {
@@ -9,25 +9,31 @@ public class FormaterManager {
 	private Map<Class, TypePrintFormater> formaters = new ConcurrentHashMap<Class, TypePrintFormater>();
 
 	{
-		add(new ArrayFormater());
-		add(new ClassConstructorFormater());
-		add(new ClassFieldFormater());
-		add(new ClassListFormater());
-		add(new ClassMethodFormater());
-		add(new ExceptionFormater());
-		add(new InstanceListFormater());
-		add(new MethodExceptionEndFormater());
-		add(new MethodReturnEndFormater());
-		add(new MethodStartFormater());
-		add(new ObjectFormater());
-		add(new ReferenceListFormater());
-		add(new TopReferenceCountFormater());
-		add(new TopThreadFormater());
+
+		for (TypePrintFormater<?> service : ServiceLoader
+				.load(TypePrintFormater.class)) {
+			add(service);
+		}
+
+		// add(new ArrayFormater());
+		// add(new ClassConstructorFormater());
+		// add(new ClassFieldFormater());
+		// add(new ClassListFormater());
+		// add(new ClassMethodFormater());
+		// add(new ExceptionFormater());
+		// add(new InstanceListFormater());
+		// add(new MethodExceptionEndFormater());
+		// add(new MethodReturnEndFormater());
+		// add(new MethodStartFormater());
+		// add(new ObjectFormater());
+		// add(new ReferenceListFormater());
+		// add(new TopReferenceCountFormater());
+		// add(new TopThreadFormater());
 
 	}
-	
+
 	@SuppressWarnings("rawtypes")
-	public TypePrintFormater get(Class<?> clazz){
+	public TypePrintFormater get(Class<?> clazz) {
 		return formaters.get(clazz);
 	}
 

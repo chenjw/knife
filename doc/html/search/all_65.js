@@ -5,6 +5,8 @@ var searchData=
   ['enterleaveprintfilter',['EnterLeavePrintFilter',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1EnterLeavePrintFilter.html',1,'com::chenjw::knife::agent::filter']]],
   ['equals',['equals',['../classcom_1_1chenjw_1_1knife_1_1client_1_1attach_1_1VirtualMachineDescriptor.html#a3bafc5ae0bd225bb49c58b37e15eb92d',1,'com::chenjw::knife::client::attach::VirtualMachineDescriptor']]],
   ['exceptionfilter',['ExceptionFilter',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1ExceptionFilter.html',1,'com::chenjw::knife::agent::filter']]],
+  ['exceptionformater',['ExceptionFormater',['../classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ExceptionFormater.html',1,'com::chenjw::knife::client::formater']]],
+  ['exceptioninfo',['ExceptionInfo',['../classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ExceptionInfo.html',1,'com::chenjw::knife::core::model']]],
   ['execute',['execute',['../classcom_1_1chenjw_1_1knife_1_1client_1_1attach_1_1provider_1_1AbstractAttachProvider.html#a0964cee2c3085badd26852035c11eb01',1,'com::chenjw::knife::client::attach::provider::AbstractAttachProvider']]],
   ['expression',['Expression',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Expression.html',1,'com::chenjw::knife::agent::bytecode::javassist']]]
 ];

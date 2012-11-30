@@ -1,7 +1,10 @@
 package com.chenjw.knife.core.model;
 
-public class TopThreadInfo {
+import java.io.Serializable;
 
+public class TopThreadInfo implements Serializable {
+
+	private static final long serialVersionUID = -2538967520334519918L;
 	private ThreadInfo[] threads;
 
 	public ThreadInfo[] getThreads() {

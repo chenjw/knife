@@ -1,7 +1,10 @@
 package com.chenjw.knife.core.model;
 
-public class TopReferenceCountInfo {
+import java.io.Serializable;
 
+public class TopReferenceCountInfo implements Serializable {
+
+	private static final long serialVersionUID = 2258887004048244278L;
 	private ReferenceCountInfo[] referenceCounts;
 
 	public ReferenceCountInfo[] getReferenceCounts() {

@@ -6,11 +6,10 @@ import com.chenjw.knife.utils.StringHelper;
 
 public class ClassMethodFormater extends BasePrintFormater<ClassMethodInfo> {
 
-
-
 	@Override
 	protected void print(ClassMethodInfo classMethodInfo) {
-		PreparedTableFormater table = new PreparedTableFormater(level,printer, grep);
+		PreparedTableFormater table = new PreparedTableFormater(level, printer,
+				grep);
 		table.setTitle("idx", "type", "method");
 		MethodInfo[] methodInfos = classMethodInfo.getMethods();
 		if (methodInfos != null) {
@@ -23,11 +22,12 @@ public class ClassMethodFormater extends BasePrintFormater<ClassMethodInfo> {
 								+ "("
 								+ StringHelper.join(
 										method.getParamClassNames(), ",") + ")");
+				i++;
 			}
-			i++;
+
 		}
 		table.print();
-		this.printLine( "finished!");
+		this.printLine("finished!");
 	}
 
 }

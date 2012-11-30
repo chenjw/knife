@@ -1,7 +1,10 @@
 package com.chenjw.knife.core.model;
 
-public class ConstructorInfo {
+import java.io.Serializable;
 
+public class ConstructorInfo implements Serializable {
+
+	private static final long serialVersionUID = 1709954392317197243L;
 	private String[] paramClassNames;
 
 	public String[] getParamClassNames() {

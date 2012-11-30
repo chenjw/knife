@@ -1,6 +1,10 @@
 package com.chenjw.knife.core.model;
 
-public class ObjectInfo {
+import java.io.Serializable;
+
+public class ObjectInfo implements Serializable {
+
+	private static final long serialVersionUID = 4479892158579401619L;
 	private String objectId;
 	private String valueString;
 

@@ -47,7 +47,7 @@ public class FindCommandHandler implements CommandHandler {
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
 		Class<?> clazz = null;
-		String className = args.arg("find-expretion");
+		String className = args.arg("find-expression");
 		if (isNumeric(className)) {
 			Class<?>[] likeClazz = (Class<?>[]) ContextManager.getInstance()
 					.get(Constants.CLASS_LIST);
@@ -60,20 +60,21 @@ public class FindCommandHandler implements CommandHandler {
 					ContextManager.getInstance().put(Constants.CLASS_LIST,
 							likeClazz);
 
-			
-					ClassListInfo info=new ClassListInfo();
-					List<ClassInfo> cInfoList=new ArrayList<ClassInfo>();
+					ClassListInfo info = new ClassListInfo();
+					List<ClassInfo> cInfoList = new ArrayList<ClassInfo>();
 					for (Class<?> cc : likeClazz) {
-						ClassInfo cInfo=new ClassInfo();
+						ClassInfo cInfo = new ClassInfo();
 						cInfo.setInterface(cc.isInterface());
 						cInfo.setName(cc.getName());
-						cInfo.setClassLoader(ToStringHelper.toClassLoaderString(cc));
+						cInfo.setClassLoader(ToStringHelper
+								.toClassLoaderString(cc));
 						cInfoList.add(cInfo);
-	
+
 					}
-					info.setClasses(cInfoList.toArray(new ClassInfo[cInfoList.size()]));
+					info.setClasses(cInfoList.toArray(new ClassInfo[cInfoList
+							.size()]));
 					info.setExpretion(className);
-					Result<ClassListInfo> result=new Result<ClassListInfo>();
+					Result<ClassListInfo> result = new Result<ClassListInfo>();
 					result.setContent(info);
 					result.setSuccess(true);
 					Agent.sendResult(result);
@@ -90,11 +91,10 @@ public class FindCommandHandler implements CommandHandler {
 		// //
 		Object[] objs = NativeHelper.findInstancesByClass(clazz);
 
-		
-		InstanceListInfo info=new InstanceListInfo();
-		List<ObjectInfo> cInfoList=new ArrayList<ObjectInfo>();
+		InstanceListInfo info = new InstanceListInfo();
+		List<ObjectInfo> cInfoList = new ArrayList<ObjectInfo>();
 		for (Object obj : objs) {
-			ObjectInfo cInfo=new ObjectInfo();
+			ObjectInfo cInfo = new ObjectInfo();
 			cInfo.setObjectId(ObjectRecordManager.getInstance().toId(obj));
 			cInfo.setValueString(ToStringHelper.toDetailString(obj));
 			cInfoList.add(cInfo);
@@ -102,7 +102,7 @@ public class FindCommandHandler implements CommandHandler {
 		}
 		info.setInstances(cInfoList.toArray(new ObjectInfo[cInfoList.size()]));
 		info.setClassName(clazz.getName());
-		Result<InstanceListInfo> result=new Result<InstanceListInfo>();
+		Result<InstanceListInfo> result = new Result<InstanceListInfo>();
 		result.setContent(info);
 		result.setSuccess(true);
 		Agent.sendResult(result);
@@ -110,7 +110,7 @@ public class FindCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("find");
-		argDef.setDef("<find-expretion>");
+		argDef.setDef("<find-expression>");
 		argDef.setDesc("find classes and instances from the heap");
 		argDef.addOptionDesc("find-expretion", "className or the object id.");
 	}

@@ -133,14 +133,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">public</span> byte[] getByteCode(Class&lt;?&gt; clazz) {</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        byte[] defineingBytes = defineingMap.get(clazz);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        <span class="keywordflow">if</span> (defineingBytes != null) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.debug(<span class="stringliteral">&quot;[ByteCodeManager] getDefineingByteCode &quot;</span> + clazz + <span class="stringliteral">&quot;(&quot;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                    + defineingBytes.length + <span class="stringliteral">&quot;)&quot;</span>);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.debug(<span class="stringliteral">&quot;[ByteCodeManager] getDefineingByteCode &quot;</span> + clazz</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                    + <span class="stringliteral">&quot;(&quot;</span> + defineingBytes.length + <span class="stringliteral">&quot;)&quot;</span>);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">return</span> defineingBytes;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            load(clazz);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            byte[] defined = definedMap.get(clazz);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.debug(<span class="stringliteral">&quot;[ByteCodeManager] getNewDefineByteCode &quot;</span> + clazz + <span class="stringliteral">&quot;(&quot;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                    + defined.length + <span class="stringliteral">&quot;)&quot;</span>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.debug(<span class="stringliteral">&quot;[ByteCodeManager] getNewDefineByteCode &quot;</span> + clazz</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                    + <span class="stringliteral">&quot;(&quot;</span> + defined.length + <span class="stringliteral">&quot;)&quot;</span>);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keywordflow">return</span> defined;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        }</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
@@ -246,7 +246,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Nov 28 2012 18:04:36 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Nov 30 2012 10:04:38 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

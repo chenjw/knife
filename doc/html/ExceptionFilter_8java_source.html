@@ -97,25 +97,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.Agent;</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.event.Event;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1ExceptionFilter.html">    6</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1ExceptionFilter.html">ExceptionFilter</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1Filter.html">Filter</a> {</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    @Override</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> doFilter(Event event, <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1FilterChain.html">FilterChain</a> chain) {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;        <span class="keywordflow">try</span> {</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;            chain.doFilter(event);</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        } <span class="keywordflow">catch</span> (Throwable t) {</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.info(<span class="stringliteral">&quot;exception found, &quot;</span> + t.getClass().getName() + <span class="stringliteral">&quot;:&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;                    + t.getMessage());</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.print(t);</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ResultHelper;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1ExceptionFilter.html">    7</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1ExceptionFilter.html">ExceptionFilter</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1Filter.html">Filter</a> {</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    @Override</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> doFilter(Event event, <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1FilterChain.html">FilterChain</a> chain) {</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;            chain.doFilter(event);</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        } <span class="keywordflow">catch</span> (Throwable t) {</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newErrorResult(<span class="stringliteral">&quot;exception found, &quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;                    + t.getClass().getName() + <span class="stringliteral">&quot;:&quot;</span> + t.getMessage(), t));</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        }</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    }</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Nov 28 2012 18:04:36 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Nov 30 2012 10:04:38 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

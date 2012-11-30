@@ -24,8 +24,9 @@ public class ClassConstructorFormater extends
 								+ StringHelper.join(
 										constructor.getParamClassNames(), ",")
 								+ ")");
+				i++;
 			}
-			i++;
+
 		}
 		table.print();
 		printLine("finished!");

@@ -1,7 +1,10 @@
 package com.chenjw.knife.core.model;
 
-public class ReferenceCountInfo {
+import java.io.Serializable;
 
+public class ReferenceCountInfo implements Serializable {
+
+	private static final long serialVersionUID = -9156653940303404294L;
 	private ObjectInfo obj;
 	private long count;
 

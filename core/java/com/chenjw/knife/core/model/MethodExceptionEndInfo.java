@@ -1,6 +1,10 @@
 package com.chenjw.knife.core.model;
 
-public class MethodExceptionEndInfo {
+import java.io.Serializable;
+
+public class MethodExceptionEndInfo implements Serializable {
+
+	private static final long serialVersionUID = -4622693243764283072L;
 
 	private String methodName;
 

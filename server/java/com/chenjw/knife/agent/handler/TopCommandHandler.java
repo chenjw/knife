@@ -37,6 +37,8 @@ public class TopCommandHandler implements CommandHandler {
 			obj.setObjectId(ObjectRecordManager.getInstance().toId(
 					referenceCount.getObj()));
 			obj.setValueString(ToStringHelper.toString(referenceCount.getObj()));
+			referenceInfo.setObj(obj);
+			referenceInfos.add(referenceInfo);
 		}
 		info.setReferenceCounts(referenceInfos
 				.toArray(new ReferenceCountInfo[referenceInfos.size()]));

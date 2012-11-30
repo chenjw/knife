@@ -1,6 +1,9 @@
 package com.chenjw.knife.core.model;
 
-public class ClassFieldInfo {
+import java.io.Serializable;
+
+public class ClassFieldInfo implements Serializable {
+	private static final long serialVersionUID = 8586002246962463843L;
 	private FieldInfo[] fields;
 
 	public FieldInfo[] getFields() {

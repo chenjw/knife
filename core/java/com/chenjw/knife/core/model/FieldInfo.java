@@ -1,10 +1,13 @@
 package com.chenjw.knife.core.model;
 
-public class FieldInfo {
+import java.io.Serializable;
+
+public class FieldInfo implements Serializable {
+
+	private static final long serialVersionUID = 6957894086001604822L;
 	private boolean isStatic;
 	private String name;
-	private String objectId;
-	private String valueString;
+	private ObjectInfo value;
 
 	public boolean isStatic() {
 		return isStatic;
@@ -22,20 +25,12 @@ public class FieldInfo {
 		this.name = name;
 	}
 
-	public String getObjectId() {
-		return objectId;
+	public ObjectInfo getValue() {
+		return value;
 	}
 
-	public void setObjectId(String objectId) {
-		this.objectId = objectId;
-	}
-
-	public String getValueString() {
-		return valueString;
-	}
-
-	public void setValueString(String valueString) {
-		this.valueString = valueString;
+	public void setValue(ObjectInfo value) {
+		this.value = value;
 	}
 
 }

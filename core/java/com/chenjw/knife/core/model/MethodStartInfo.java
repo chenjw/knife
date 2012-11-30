@@ -1,6 +1,10 @@
 package com.chenjw.knife.core.model;
 
-public class MethodStartInfo {
+import java.io.Serializable;
+
+public class MethodStartInfo implements Serializable {
+
+	private static final long serialVersionUID = -8460894092900733343L;
 	private String thisObjectId;
 	private String className;
 	private String methodName;

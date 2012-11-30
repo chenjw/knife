@@ -1,27 +1,27 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.core.model.ArrayElementInfo;
 import com.chenjw.knife.core.model.ArrayInfo;
+import com.chenjw.knife.core.model.ObjectInfo;
 
 public class ArrayFormater extends BasePrintFormater<ArrayInfo> {
 
 	protected void print(ArrayInfo arrayInfo) {
-		PreparedTableFormater table = new PreparedTableFormater(level,printer, grep);
+		PreparedTableFormater table = new PreparedTableFormater(level, printer,
+				grep);
 		table.setTitle("idx", "obj-id", "element");
-		ArrayElementInfo[] arrayElementInfos = arrayInfo.getArrayElements();
+		ObjectInfo[] arrayElementInfos = arrayInfo.getElements();
 		if (arrayElementInfos != null) {
 			int i = 0;
-			for (ArrayElementInfo element : arrayElementInfos) {
-
+			for (ObjectInfo element : arrayElementInfos) {
 				table.addLine(String.valueOf(i), element.getObjectId(),
 						element.getValueString());
+				i++;
 
 			}
-			i++;
+
 		}
 		table.print();
 		printLine("finished!");
 	}
-
 
 }

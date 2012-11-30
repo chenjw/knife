@@ -1,6 +1,11 @@
 package com.chenjw.knife.core.model;
 
-public class ReferenceListInfo {
+import java.io.Serializable;
+
+public class ReferenceListInfo implements Serializable {
+
+	private static final long serialVersionUID = 8623272406173416394L;
+
 	private boolean isReferree;
 
 	private ObjectInfo[] references;

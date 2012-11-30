@@ -1,14 +1,18 @@
 package com.chenjw.knife.core.model;
 
-public class ArrayInfo {
-	private ArrayElementInfo[] arrayElements;
+import java.io.Serializable;
 
-	public ArrayElementInfo[] getArrayElements() {
-		return arrayElements;
+public class ArrayInfo implements Serializable {
+
+	private static final long serialVersionUID = -7795817441605184050L;
+	private ObjectInfo[] elements;
+
+	public ObjectInfo[] getElements() {
+		return elements;
 	}
 
-	public void setArrayElements(ArrayElementInfo[] arrayElements) {
-		this.arrayElements = arrayElements;
+	public void setElements(ObjectInfo[] elements) {
+		this.elements = elements;
 	}
 
 }

@@ -1,6 +1,10 @@
 package com.chenjw.knife.core.model;
 
-public class MethodReturnEndInfo {
+import java.io.Serializable;
+
+public class MethodReturnEndInfo implements Serializable {
+
+	private static final long serialVersionUID = -9144151585455853112L;
 
 	private boolean isVoid;
 

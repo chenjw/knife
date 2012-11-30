@@ -1,9 +1,13 @@
 package com.chenjw.knife.core.model;
 
-public class MethodInfo {
+import java.io.Serializable;
+
+public class MethodInfo implements Serializable {
+
+	private static final long serialVersionUID = 6024946875563214231L;
 	private boolean isStatic;
 	private String name;
-	
+
 	private String[] paramClassNames;
 
 	public boolean isStatic() {
@@ -29,6 +33,5 @@ public class MethodInfo {
 	public void setParamClassNames(String[] paramClassNames) {
 		this.paramClassNames = paramClassNames;
 	}
-	
-	
+
 }

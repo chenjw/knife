@@ -1,6 +1,10 @@
 package com.chenjw.knife.core.model;
 
-public class ExceptionInfo {
+import java.io.Serializable;
+
+public class ExceptionInfo implements Serializable {
+
+	private static final long serialVersionUID = 3709168353683115903L;
 	private String objectId;
 	private String traceString;
 

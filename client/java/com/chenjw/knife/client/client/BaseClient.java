@@ -6,9 +6,13 @@ import com.chenjw.knife.client.constants.Constants;
 import com.chenjw.knife.client.core.Client;
 import com.chenjw.knife.client.core.VMConnection;
 import com.chenjw.knife.client.core.VMConnector;
+import com.chenjw.knife.client.formater.FormaterManager;
+import com.chenjw.knife.client.formater.TypePrintFormater;
 import com.chenjw.knife.client.model.VMDescriptor;
 import com.chenjw.knife.core.Command;
 import com.chenjw.knife.core.Packet;
+import com.chenjw.knife.core.Printer;
+import com.chenjw.knife.core.Printer.Level;
 import com.chenjw.knife.core.packet.ClosePacket;
 import com.chenjw.knife.core.packet.CommandPacket;
 import com.chenjw.knife.core.packet.ResultPacket;
@@ -16,8 +20,30 @@ import com.chenjw.knife.core.result.Result;
 import com.chenjw.knife.utils.StringHelper;
 
 public abstract class BaseClient implements Client {
-
+	private FormaterManager formaterManager = new FormaterManager();
 	private volatile boolean isRunning = false;
+	private Level level;
+	private Printer printer = new Printer() {
+
+		@Override
+		public void info(String str) {
+			try {
+				writeLine(str);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void debug(String str) {
+			try {
+				writeLine(str);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+	};
 
 	public void start(VMConnector connector) throws Exception {
 
@@ -108,6 +134,7 @@ public abstract class BaseClient implements Client {
 			this.conn = conn;
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		public void run() {
 			try {
@@ -117,14 +144,26 @@ public abstract class BaseClient implements Client {
 						conn.close();
 						close();
 						isRunning = false;
-					} 
-					else if(p instanceof ResultPacket){
-						Result<?> r=((ResultPacket)p).getObject();
-						
-					}
-					else {
-						
-						
+					} else if (p instanceof ResultPacket) {
+						Result<?> r = ((ResultPacket) p).getObject();
+						if (r.isSuccess()) {
+							Object content = r.getContent();
+							if (content != null) {
+								TypePrintFormater formater = formaterManager
+										.get(content.getClass());
+								formater.print(level, printer, content);
+							}
+
+						} else {
+							writeLine(r.getErrorMessage());
+							if (r.getErrorTrace() != null) {
+								for (String line : StringHelper.split(
+										r.getErrorMessage(), '\n')) {
+									writeLine(line);
+								}
+							}
+						}
+					} else {
 						writeLine(p.toString());
 					}
 
