@@ -1,6 +1,8 @@
 package com.chenjw.knife.core;
 
-public interface Packet {
+import java.io.Serializable;
+
+public interface Packet extends Serializable {
 
 	public byte[] toBytes();
 

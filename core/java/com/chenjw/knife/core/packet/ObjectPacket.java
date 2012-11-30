@@ -11,6 +11,8 @@ import com.chenjw.knife.core.Packet;
 
 public abstract class ObjectPacket<T extends Serializable> implements Packet {
 
+
+	private static final long serialVersionUID = 6382032545189938912L;
 	private T object;
 
 	public ObjectPacket(T object) {

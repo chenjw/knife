@@ -6,6 +6,8 @@ import com.chenjw.knife.core.Packet;
 
 public class TextPacket implements Packet {
 
+
+	private static final long serialVersionUID = -4871773441660981811L;
 	private String message;
 
 	public TextPacket(String message) {

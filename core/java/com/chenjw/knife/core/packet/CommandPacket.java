@@ -4,6 +4,9 @@ import com.chenjw.knife.core.Command;
 
 public class CommandPacket extends ObjectPacket<Command> {
 
+
+	private static final long serialVersionUID = -2342736927367363516L;
+
 	public CommandPacket(Command command) {
 		super(command);
 	}

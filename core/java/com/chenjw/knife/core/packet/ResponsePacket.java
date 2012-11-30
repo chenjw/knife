@@ -2,6 +2,9 @@ package com.chenjw.knife.core.packet;
 
 public class ResponsePacket extends ObjectPacket<Response> {
 
+
+	private static final long serialVersionUID = 8385303687051837614L;
+
 	public ResponsePacket(long requestId, Object... context) {
 		Response r = new Response();
 		r.setRequestId(requestId);
