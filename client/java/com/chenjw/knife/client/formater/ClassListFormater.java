@@ -22,7 +22,7 @@ public class ClassListFormater extends BasePrintFormater<ClassListInfo> {
 			}
 		}
 		table.print();
-		this.printLine("find " + i + " classes like '" + classListInfo.getExpretion()
+		this.printLine("find " + i + " classes like '" + classListInfo.getExpression()
 				+ "', please choose one typing like 'find 0'!");
 	}
 

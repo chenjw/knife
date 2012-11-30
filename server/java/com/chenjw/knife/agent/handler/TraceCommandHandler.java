@@ -25,6 +25,7 @@ import com.chenjw.knife.agent.filter.InstrumentEnterLeaveFilter;
 import com.chenjw.knife.agent.filter.InstrumentFilter;
 import com.chenjw.knife.agent.filter.InvokePrintFilter;
 import com.chenjw.knife.agent.filter.PatternMethodFilter;
+import com.chenjw.knife.agent.filter.ProxyMethodFilter;
 import com.chenjw.knife.agent.filter.SystemOperationFilter;
 import com.chenjw.knife.agent.filter.TimesCountFilter;
 import com.chenjw.knife.agent.filter.TimingFilter;
@@ -77,8 +78,9 @@ public class TraceCommandHandler implements CommandHandler {
 		Map<String, String> fOptions = args.option("-f");
 		if (fOptions != null) {
 			filters.add(new PatternMethodFilter(fOptions
-					.get("filter-expretion")));
+					.get("filter-expression")));
 		}
+		filters.add(new ProxyMethodFilter());
 		filters.add(new TraceMethodFilter(methodInfo.getThisObject(),
 				methodInfo.getClazz(), methodInfo.getMethod()));
 		filters.add(new TimesCountFilter(traceNum));
@@ -126,7 +128,7 @@ public class TraceCommandHandler implements CommandHandler {
 
 	private MethodInfo findMethod(Args args) throws Exception {
 		MethodInfo methodInfo = new MethodInfo();
-		String m = args.arg("trace-expretion");
+		String m = args.arg("trace-expression");
 		m = m.trim();
 		Method method = null;
 		if (StringHelper.isNumeric(m)) {
@@ -197,14 +199,14 @@ public class TraceCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("trace");
-		argDef.setDef("[-f <filter-expretion>] [-n <trace-num>] [-t] <trace-expretion>");
+		argDef.setDef("[-f <filter-expression>] [-n <trace-num>] [-t] <trace-expression>");
 		argDef.setDesc("trace an invocation on the target object.");
 
 		argDef.addOptionDesc(
-				"trace-expretion",
+				"trace-expression",
 				"Input 'package.ClassName.method' to trace static method, or 'method' to trace the method of target object.");
 		argDef.addOptionDesc("-f",
-				"set <filter-expretion> to filter the invocation you dont care.");
+				"set <filter-expression> to filter the invocation you dont care.");
 		argDef.addOptionDesc("-t",
 				"is need output the method trace of the invocation.");
 		argDef.addOptionDesc("-n <trace-num>", "trace times");

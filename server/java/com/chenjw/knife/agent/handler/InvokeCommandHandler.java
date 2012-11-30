@@ -25,6 +25,7 @@ import com.chenjw.knife.agent.filter.InstrumentFilter;
 import com.chenjw.knife.agent.filter.InvokeFinishFilter;
 import com.chenjw.knife.agent.filter.InvokePrintFilter;
 import com.chenjw.knife.agent.filter.PatternMethodFilter;
+import com.chenjw.knife.agent.filter.ProxyMethodFilter;
 import com.chenjw.knife.agent.filter.SystemOperationFilter;
 import com.chenjw.knife.agent.filter.TimingFilter;
 import com.chenjw.knife.agent.filter.TimingStopFilter;
@@ -44,7 +45,7 @@ public class InvokeCommandHandler implements CommandHandler {
 			throws Exception {
 		boolean isTrace = args.option("-t") != null;
 		configStrategy(args);
-		invokeMethod(isTrace, args.arg("invoke-expretion"));
+		invokeMethod(isTrace, args.arg("invoke-expression"));
 	}
 
 	private void configStrategy(Args args) throws Exception {
@@ -61,8 +62,9 @@ public class InvokeCommandHandler implements CommandHandler {
 		Map<String, String> fOptions = args.option("-f");
 		if (fOptions != null) {
 			filters.add(new PatternMethodFilter(fOptions
-					.get("filter-expretion")));
+					.get("filter-expression")));
 		}
+		filters.add(new ProxyMethodFilter());
 		filters.add(new DepthFilter());
 		if (tOptions == null) {
 			filters.add(new Depth0Filter());
@@ -179,15 +181,15 @@ public class InvokeCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("invoke");
-		argDef.setDef("[-f <filter-expretion>] [-t] <invoke-expretion>");
+		argDef.setDef("[-f <filter-expression>] [-t] <invoke-expression>");
 		argDef.setDesc("invoke a method of the target object.");
 		argDef.addOptionDesc(
-				"invoke-expretion",
+				"invoke-expression",
 				"input 'package.ClassName.method(param1,param2)' to invoke static method, or 'method(param1,param2)' to invoke the method of target object. The params support json format.");
 		argDef.addOptionDesc("-t",
 				"is need output the method trace of the invocation..");
 		argDef.addOptionDesc("-f",
-				"set <filter-expretion> to filter the invocation output you dont care.");
+				"set <filter-expression> to filter the invocation output you dont care.");
 
 	}
 

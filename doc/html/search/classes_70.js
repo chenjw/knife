@@ -11,5 +11,6 @@ var searchData=
   ['printermanager',['PrinterManager',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1manager_1_1PrinterManager.html',1,'com::chenjw::knife::agent::manager']]],
   ['propcommandhandler',['PropCommandHandler',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1PropCommandHandler.html',1,'com::chenjw::knife::agent::handler']]],
   ['proxyclient',['ProxyClient',['../classcom_1_1chenjw_1_1knife_1_1client_1_1client_1_1ProxyClient.html',1,'com::chenjw::knife::client::client']]],
-  ['proxymain',['ProxyMain',['../classcom_1_1chenjw_1_1knife_1_1client_1_1ProxyMain.html',1,'com::chenjw::knife::client']]]
+  ['proxymain',['ProxyMain',['../classcom_1_1chenjw_1_1knife_1_1client_1_1ProxyMain.html',1,'com::chenjw::knife::client']]],
+  ['proxymethodfilter',['ProxyMethodFilter',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1ProxyMethodFilter.html',1,'com::chenjw::knife::agent::filter']]]
 ];

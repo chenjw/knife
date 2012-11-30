@@ -10,7 +10,7 @@
 	<property name="dist.dir" location="${base.dir}/dist"/>
 	<property name="doc.dir" location="${base.dir}/doc"/>
 	<property environment="env"/>
-	<property name="version" value="0.6.14"/>
+	<property name="version" value="0.7.1"/>
 	<property name="appName" value="knife"/>
 	<property name="date" value="2012"/>
 	

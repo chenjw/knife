@@ -33,7 +33,6 @@ public final class ClassGenerator {
 	private static final AtomicLong CLASS_NAME_COUNTER = new AtomicLong(0);
 
 	private final AtomicLong CLASS_VARIABLE_COUNTER = new AtomicLong(0);
-	private final String s = "abc";
 	private ClassPool classPool;
 	private CtClass ctClass;
 

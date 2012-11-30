@@ -14,8 +14,14 @@ public class PatternMethodFilter implements Filter {
 		this.pattern = Pattern.compile(pattern);
 	}
 
-	private boolean isMatch(String className, String methodName) {
-		String name = className + "." + methodName;
+	private boolean isMatch(Object thisObject,String className, String methodName) {
+		String cName;
+		if (thisObject != null) {
+			cName=thisObject.getClass().getName();
+		} else {
+			cName=className;
+		}
+		String name = cName + "." + methodName;
 
 		if (pattern.matcher(name).matches()) {
 			return true;
@@ -27,18 +33,18 @@ public class PatternMethodFilter implements Filter {
 	public void doFilter(Event event, FilterChain chain) throws Exception {
 		if (event instanceof MethodStartEvent) {
 			MethodStartEvent e = (MethodStartEvent) event;
-			if (!isMatch(e.getClassName(), e.getMethodName())) {
+			if (!isMatch(e.getThisObject(),e.getClassName(), e.getMethodName())) {
 				return;
 			}
 		} else if (event instanceof MethodReturnEndEvent) {
 			MethodReturnEndEvent e = (MethodReturnEndEvent) event;
-			if (!isMatch(e.getClassName(), e.getMethodName())) {
+			if (!isMatch(e.getThisObject(),e.getClassName(), e.getMethodName())) {
 				return;
 			}
 
 		} else if (event instanceof MethodExceptionEndEvent) {
 			MethodExceptionEndEvent e = (MethodExceptionEndEvent) event;
-			if (!isMatch(e.getClassName(), e.getMethodName())) {
+			if (!isMatch(e.getThisObject(),e.getClassName(), e.getMethodName())) {
 				return;
 			}
 		}

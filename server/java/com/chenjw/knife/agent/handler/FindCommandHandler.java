@@ -73,7 +73,7 @@ public class FindCommandHandler implements CommandHandler {
 					}
 					info.setClasses(cInfoList.toArray(new ClassInfo[cInfoList
 							.size()]));
-					info.setExpretion(className);
+					info.setExpression(className);
 					Result<ClassListInfo> result = new Result<ClassListInfo>();
 					result.setContent(info);
 					result.setSuccess(true);

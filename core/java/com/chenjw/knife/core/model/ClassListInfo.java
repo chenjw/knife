@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class ClassListInfo implements Serializable {
 
 	private static final long serialVersionUID = 7855978950886901067L;
-	private String expretion;
+	private String expression;
 	private ClassInfo[] classes;
 
 	public ClassInfo[] getClasses() {
@@ -16,12 +16,12 @@ public class ClassListInfo implements Serializable {
 		this.classes = classes;
 	}
 
-	public String getExpretion() {
-		return expretion;
+	public String getExpression() {
+		return expression;
 	}
 
-	public void setExpretion(String expretion) {
-		this.expretion = expretion;
+	public void setExpression(String expression) {
+		this.expression = expression;
 	}
 
 }
