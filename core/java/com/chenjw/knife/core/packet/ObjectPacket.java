@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.io.StreamCorruptedException;
 
 import com.chenjw.knife.core.Packet;
 
@@ -30,10 +31,18 @@ public abstract class ObjectPacket<T extends Serializable> implements Packet {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos;
 		try {
-			oos = new ObjectOutputStream(baos);
+			oos = new ObjectOutputStream(baos){
+
+				@Override
+				protected void writeStreamHeader() throws IOException {
+					
+				}
+				
+			};
 			oos.writeObject(object);
 			oos.flush();
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return baos.toByteArray();
 	}
@@ -48,7 +57,15 @@ public abstract class ObjectPacket<T extends Serializable> implements Packet {
 		ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
 		ObjectInputStream ois;
 		try {
-			ois = new ObjectInputStream(bais);
+			ois = new ObjectInputStream(bais){
+
+				@Override
+				protected void readStreamHeader() throws IOException,
+						StreamCorruptedException {
+					
+				}
+				
+			};
 			this.object = (T) ois.readObject();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
