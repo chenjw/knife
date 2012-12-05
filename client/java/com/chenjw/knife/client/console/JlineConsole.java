@@ -1,4 +1,4 @@
-package com.chenjw.knife.client.scanner;
+package com.chenjw.knife.client.console;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -20,12 +20,12 @@ public class JlineConsole {
 
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setCompletors(String[]... strs) {
 		// 清除旧的
 		Collection cc = reader.getCompletors();
 		if (cc != null) {
-			for (Object o : cc) {
+			for (Object o : cc.toArray(new Object[cc.size()])) {
 				Completor c = (Completor) o;
 				reader.removeCompletor(c);
 			}

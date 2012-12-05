@@ -2,7 +2,7 @@ package com.chenjw.knife.client.client;
 
 import java.io.IOException;
 
-import com.chenjw.knife.client.scanner.JlineConsole;
+import com.chenjw.knife.client.console.JlineConsole;
 
 public class ConsoleClient extends BaseClient {
 	private static final String OUT_PREFIX = "knife>";

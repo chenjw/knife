@@ -102,6 +102,7 @@ public class AgentMain {
 							Instrumentation.class });
 			Thread thread = new Thread((Runnable) constructor.newInstance(
 					Integer.parseInt(args.get("port")), inst), "agent-server");
+			thread.setContextClassLoader(AgentClassLoader.getAgentClassLoader());
 			thread.setDaemon(true);
 			thread.start();
 			System.out.println("agent installed!");
