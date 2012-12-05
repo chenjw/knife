@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.chenjw.knife.client.constants.Constants;
 import com.chenjw.knife.client.core.Client;
+import com.chenjw.knife.client.core.Completable;
 import com.chenjw.knife.client.core.VMConnection;
 import com.chenjw.knife.client.core.VMConnector;
 import com.chenjw.knife.client.formater.FormaterManager;
@@ -20,9 +21,10 @@ import com.chenjw.knife.core.result.Result;
 import com.chenjw.knife.utils.StringHelper;
 
 public abstract class BaseClient implements Client {
-	private FormaterManager formaterManager = new FormaterManager();
+	private FormaterManager formaterManager;
 	private volatile boolean isRunning = false;
 	private Level level;
+
 	private Printer printer = new Printer() {
 
 		@Override
@@ -44,6 +46,21 @@ public abstract class BaseClient implements Client {
 		}
 
 	};
+	private String[] cmdCompletors;
+	{
+		formaterManager = new FormaterManager(new Completable() {
+			@Override
+			public void setArgCompletors(String[] strs) {
+				BaseClient.this.setCompletors(cmdCompletors, strs);
+			}
+
+			@Override
+			public void setCmdCompletors(String[] strs) {
+				cmdCompletors = strs;
+			}
+
+		});
+	}
 
 	public void start(VMConnector connector) throws Exception {
 
@@ -77,6 +94,10 @@ public abstract class BaseClient implements Client {
 		VMConnection conn = connector
 				.createVMConnection(Constants.DEFAULT_AGENT_PORT);
 		isRunning = true;
+		// 获取命令列表
+		Command c = new Command();
+		c.setName("cmd");
+		conn.sendCommand(new CommandPacket(c));
 		startPacketReader(conn);
 		startPacketSender(conn);
 		while (isRunning) {
@@ -95,6 +116,8 @@ public abstract class BaseClient implements Client {
 		t.setDaemon(true);
 		t.start();
 	}
+
+	public abstract void setCompletors(String[]... strs);
 
 	public abstract String readLine() throws Exception;
 

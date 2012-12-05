@@ -28,7 +28,13 @@ public abstract class BasePrintFormater<T> extends GrepPrintFormater implements
 	public final void print(Level level, Printer printer, T obj) {
 		this.level = level;
 		this.printer = printer;
-		print(obj);
+		try{
+			print(obj);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		
 	}
 
 }

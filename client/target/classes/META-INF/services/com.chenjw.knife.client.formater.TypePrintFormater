@@ -13,3 +13,4 @@ com.chenjw.knife.client.formater.ReferenceListFormater
 com.chenjw.knife.client.formater.TopReferenceCountFormater
 com.chenjw.knife.client.formater.TopThreadFormater
 com.chenjw.knife.client.formater.StringFormater
+com.chenjw.knife.client.formater.CommandListFormater

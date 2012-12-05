@@ -4,33 +4,22 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.chenjw.knife.client.core.Completable;
+
 public class FormaterManager {
-	@SuppressWarnings("rawtypes")
-	private Map<Class, TypePrintFormater> formaters = new ConcurrentHashMap<Class, TypePrintFormater>();
-
-	{
-
+	private Completable completeHandler;
+	public FormaterManager(Completable completeHandler){
+		this.completeHandler=completeHandler;
 		for (TypePrintFormater<?> service : ServiceLoader
 				.load(TypePrintFormater.class)) {
 			add(service);
 		}
-
-		// add(new ArrayFormater());
-		// add(new ClassConstructorFormater());
-		// add(new ClassFieldFormater());
-		// add(new ClassListFormater());
-		// add(new ClassMethodFormater());
-		// add(new ExceptionFormater());
-		// add(new InstanceListFormater());
-		// add(new MethodExceptionEndFormater());
-		// add(new MethodReturnEndFormater());
-		// add(new MethodStartFormater());
-		// add(new ObjectFormater());
-		// add(new ReferenceListFormater());
-		// add(new TopReferenceCountFormater());
-		// add(new TopThreadFormater());
-
 	}
+	
+	@SuppressWarnings("rawtypes")
+	private Map<Class, TypePrintFormater> formaters = new ConcurrentHashMap<Class, TypePrintFormater>();
+
+	
 
 	@SuppressWarnings("rawtypes")
 	public TypePrintFormater get(Class<?> clazz) {
@@ -40,6 +29,7 @@ public class FormaterManager {
 	@SuppressWarnings("rawtypes")
 	private void add(TypePrintFormater formater) {
 		Class type = formater.getType();
+		formater.setCompleteHandler(completeHandler);
 		if (type != null) {
 			if (formaters.put(type, formater) != null) {
 				throw new RuntimeException(formater + " registed!");
@@ -49,10 +39,8 @@ public class FormaterManager {
 			throw new RuntimeException(formater + "'s type not found!");
 		}
 	}
+	
 
-	public static void main(String[] args) {
-		FormaterManager t = new FormaterManager();
-		t.add(new ExceptionFormater());
-	}
+
 
 }

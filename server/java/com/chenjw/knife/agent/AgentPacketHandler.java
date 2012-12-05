@@ -3,30 +3,13 @@ package com.chenjw.knife.agent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ServiceLoader;
 
 import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.args.OptionDesc;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.handler.CdCommandHandler;
-import com.chenjw.knife.agent.handler.ClearCommandHandler;
-import com.chenjw.knife.agent.handler.CloseCommandHandler;
-import com.chenjw.knife.agent.handler.DecodeCommandHandler;
-import com.chenjw.knife.agent.handler.DoCommandHandler;
-import com.chenjw.knife.agent.handler.FindCommandHandler;
-import com.chenjw.knife.agent.handler.GcCommandHandler;
-import com.chenjw.knife.agent.handler.InvokeCommandHandler;
-import com.chenjw.knife.agent.handler.LogCommandHandler;
-import com.chenjw.knife.agent.handler.LsCommandHandler;
-import com.chenjw.knife.agent.handler.NewCommandHandler;
-import com.chenjw.knife.agent.handler.PropCommandHandler;
-import com.chenjw.knife.agent.handler.RefCommandHandler;
-import com.chenjw.knife.agent.handler.SetCommandHandler;
-import com.chenjw.knife.agent.handler.SpringCommandHandler;
-import com.chenjw.knife.agent.handler.TopCommandHandler;
-import com.chenjw.knife.agent.handler.TraceCommandHandler;
-import com.chenjw.knife.agent.handler.ViewCommandHandler;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.core.Command;
 import com.chenjw.knife.core.Packet;
@@ -35,27 +18,13 @@ import com.chenjw.knife.core.packet.ObjectPacket;
 
 public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 	private Map<String, CommandHandler> handlerMap = new HashMap<String, CommandHandler>();
-	private Map<String, ArgDef> defMap = new HashMap<String, ArgDef>();
+	private Map<String, ArgDef> argDefMap = new HashMap<String, ArgDef>();
 
 	public AgentPacketHandler() {
-		addCommandHandler(new CloseCommandHandler());
-		addCommandHandler(new ClearCommandHandler());
-		addCommandHandler(new LogCommandHandler());
-		addCommandHandler(new DoCommandHandler());
-		addCommandHandler(new ViewCommandHandler());
-		addCommandHandler(new LsCommandHandler());
-		addCommandHandler(new SpringCommandHandler());
-		addCommandHandler(new FindCommandHandler());
-		addCommandHandler(new InvokeCommandHandler());
-		addCommandHandler(new GcCommandHandler());
-		addCommandHandler(new SetCommandHandler());
-		addCommandHandler(new TraceCommandHandler());
-		addCommandHandler(new DecodeCommandHandler());
-		addCommandHandler(new RefCommandHandler());
-		addCommandHandler(new NewCommandHandler());
-		addCommandHandler(new PropCommandHandler());
-		addCommandHandler(new TopCommandHandler());
-		addCommandHandler(new CdCommandHandler());
+		for (CommandHandler service : ServiceLoader.load(CommandHandler.class)) {
+			addCommandHandler(service);
+		}
+
 	}
 
 	private void addCommandHandler(CommandHandler commandHandler) {
@@ -63,7 +32,7 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 		ArgDef def = new ArgDef();
 		try {
 			commandHandler.declareArgs(def);
-			defMap.put(def.getCommandName(), def);
+			argDefMap.put(def.getCommandName(), def);
 			Object pre = handlerMap.put(def.getCommandName(), commandHandler);
 
 			if (pre != null) {
@@ -81,7 +50,7 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 
 		if (handler != null) {
 			String argStr = command.getArgs();
-			ArgDef def = defMap.get(command.getName());
+			ArgDef def = argDefMap.get(command.getName());
 			if ("-h".equals(argStr)) {
 				argHelp(def);
 				return;
@@ -127,7 +96,7 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 		Agent.info("  The most commonly used commands are:");
 		Agent.info("");
 		int maxN = 30;
-		for (Entry<String, ArgDef> entry : defMap.entrySet()) {
+		for (Entry<String, ArgDef> entry : argDefMap.entrySet()) {
 			Agent.info("   " + entry.getKey()
 					+ d(maxN - entry.getKey().length())
 					+ entry.getValue().getDesc());
@@ -165,4 +134,9 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 		Agent.info("-------------------------------------------------------");
 		Agent.info("");
 	}
+
+	public Map<String, ArgDef> getArgDefMap() {
+		return argDefMap;
+	}
+
 }
