@@ -14,10 +14,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.chenjw.knife.agent.Agent;
-
+import com.chenjw.knife.agent.utils.jvmti.Capabilitie;
 import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.model.ThreadInfo;
 import com.chenjw.knife.utils.IOHelper;
@@ -26,8 +27,8 @@ import com.chenjw.knife.utils.StringHelper;
 public class NativeHelper {
 	static {
 
-		// System.load("/home/chenjw/my_workspace/knife/native/Default/libnativehelper.so");
-		NativeHelper.loadNativeLibrary("libnativehelper");
+		System.load("/home/chenjw/my_workspace/knife/native/Default/libnativehelper.so");
+		// NativeHelper.loadNativeLibrary("libnativehelper");
 	}
 	private static Object[] retransformLock = new Object[0];
 	private static String jvmClassName = null;
@@ -503,6 +504,16 @@ public class NativeHelper {
 
 	private native static void stopMethodTrace0();
 
+	private native static boolean checkCapabilities0(int idx);
+
+	public static Map<Capabilitie, Boolean> checkCapabilities() {
+		Map<Capabilitie, Boolean> result = new HashMap<Capabilitie, Boolean>();
+		for (Capabilitie v : Capabilitie.values()) {
+			result.put(v, checkCapabilities0(v.getIndex()));
+		}
+		return result;
+	}
+
 	/**
 	 * invoke by native code
 	 * 
@@ -577,6 +588,14 @@ public class NativeHelper {
 		System.out.println(t.getCpu());
 	}
 
+	private static void do4() {
+		Map<Capabilitie, Boolean> map = NativeHelper.checkCapabilities();
+		for (Entry<Capabilitie, Boolean> entry : map.entrySet()) {
+			System.out.println(entry.getKey() + " = " + entry.getValue());
+		}
+
+	}
+
 	private static void do1() throws ClassNotFoundException {
 		int num = 10;
 		Object[] objs = new Object[num];
@@ -596,12 +615,6 @@ public class NativeHelper {
 
 		System.out.println(objs[5] == objs[6]);
 
-	}
-
-	public static void main(String[] args) throws ClassNotFoundException,
-			SecurityException, NoSuchFieldException {
-		do3();
-		System.out.println("finished!");
 	}
 
 	public static class ReferenceCount {
@@ -624,5 +637,11 @@ public class NativeHelper {
 			this.obj = obj;
 		}
 
+	}
+
+	public static void main(String[] args) throws ClassNotFoundException,
+			SecurityException, NoSuchFieldException {
+		do4();
+		System.out.println("finished!");
 	}
 }
