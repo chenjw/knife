@@ -59,7 +59,6 @@ void initJvmti(JNIEnv * env){
 		capabilities.can_redefine_classes = 1;
 		capabilities.can_redefine_any_class = 1;
 		capabilities.can_get_source_file_name = 1;
-		//capabilities.can_generate_method_entry_events = 1;
 		/////////////////////
 	  	//capabilities.can_tag_objects = 1;
 	  	//capabilities.can_generate_field_modification_events = 1;
