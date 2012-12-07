@@ -13,8 +13,8 @@ import com.chenjw.knife.core.result.Result;
 public class CmdCommandHandler implements CommandHandler {
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
-		Set<String> cmdNames=dispatcher.getArgDefMap().keySet();
-		CommandListInfo info=new CommandListInfo();
+		Set<String> cmdNames = dispatcher.getArgDefMap().keySet();
+		CommandListInfo info = new CommandListInfo();
 		info.setCommandNames(cmdNames.toArray(new String[cmdNames.size()]));
 		Result<CommandListInfo> result = new Result<CommandListInfo>();
 		result.setContent(info);
@@ -24,6 +24,6 @@ public class CmdCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("cmd");
-		argDef.setDesc("更新客户端暂存的服务端命令列表.");
+		argDef.setDesc("更新客户端暂存的服务端命令列表。");
 	}
 }

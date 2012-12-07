@@ -185,23 +185,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> declareArgs(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">ArgDef</a> argDef) {</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        argDef.setCommandName(<span class="stringliteral">&quot;set&quot;</span>);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        argDef.setDef(<span class="stringliteral">&quot;[-s] &lt;fieldname&gt; &lt;new-value&gt;&quot;</span>);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        argDef.setDesc(<span class="stringliteral">&quot;set field value to target object.&quot;</span>);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        argDef.addOptionDesc(</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                <span class="stringliteral">&quot;fieldname&quot;</span>,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                <span class="stringliteral">&quot;input &#39;package.TestClass.field1&#39; means static field or &#39;field1&#39; means both static and no-static field of target object.&quot;</span>);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        argDef.addOptionDesc(</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;                <span class="stringliteral">&quot;new-value&quot;</span>,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                <span class="stringliteral">&quot;an expretion which will transfer to object by json tool, or &#39;@1&#39; means direct the object by id.&quot;</span>);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        argDef.addOptionDesc(<span class="stringliteral">&quot;-s&quot;</span>,</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;                <span class="stringliteral">&quot;force set to static field, to avoid misunderstanding&quot;</span>);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        argDef.setDesc(<span class="stringliteral">&quot;更改目标对象的某个属性值。&quot;</span>);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        argDef.addOptionDesc(<span class="stringliteral">&quot;fieldname&quot;</span>,</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                <span class="stringliteral">&quot;输入 &#39;package.TestClass.field1&#39; 来设置某个类的静态变量。或者输入 &#39;field1&#39; 表示目标对象的某个静态或非静态方法。&quot;</span>);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        argDef.addOptionDesc(<span class="stringliteral">&quot;new-value&quot;</span>,</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                <span class="stringliteral">&quot;用来表示新设置的值，可以使用json格式，或者直接输入 &#39;@1&#39; 格式的对象id来指定要设置的对象。&quot;</span>);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        argDef.addOptionDesc(<span class="stringliteral">&quot;-s&quot;</span>, <span class="stringliteral">&quot;强制设置静态属性， 避免误解。&quot;</span>);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 6 2012 21:29:14 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 7 2012 10:11:58 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['test1',['Test1',['../interfacecom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Test1.html',1,'com::chenjw::knife::agent::bytecode::javassist']]],
-  ['test2',['Test2',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Test2.html',1,'com::chenjw::knife::agent::bytecode::javassist']]],
-  ['test3',['Test3',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Test3.html',1,'com::chenjw::knife::agent::bytecode::javassist']]],
   ['textpacket',['TextPacket',['../classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1TextPacket.html',1,'com::chenjw::knife::core::packet']]],
   ['threadinfo',['ThreadInfo',['../classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ThreadInfo.html',1,'com::chenjw::knife::core::model']]],
   ['timescountfilter',['TimesCountFilter',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1TimesCountFilter.html',1,'com::chenjw::knife::agent::filter']]],

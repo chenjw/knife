@@ -108,8 +108,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00013"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1CmdCommandHandler.html">   13</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1CmdCommandHandler.html">CmdCommandHandler</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandHandler.html">CommandHandler</a> {</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> handle(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1Args.html">Args</a> args, <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandDispatcher.html">CommandDispatcher</a> dispatcher) {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        Set&lt;String&gt; cmdNames=dispatcher.getArgDefMap().keySet();</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1CommandListInfo.html">CommandListInfo</a> info=<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1CommandListInfo.html">CommandListInfo</a>();</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        Set&lt;String&gt; cmdNames = dispatcher.getArgDefMap().keySet();</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1CommandListInfo.html">CommandListInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1CommandListInfo.html">CommandListInfo</a>();</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        info.setCommandNames(cmdNames.toArray(<span class="keyword">new</span> String[cmdNames.size()]));</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        Result&lt;CommandListInfo&gt; result = <span class="keyword">new</span> Result&lt;CommandListInfo&gt;();</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        result.setContent(info);</div>
@@ -119,13 +119,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> declareArgs(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">ArgDef</a> argDef) {</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        argDef.setCommandName(<span class="stringliteral">&quot;cmd&quot;</span>);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        argDef.setDesc(<span class="stringliteral">&quot;更新客户端暂存的服务端命令列表.&quot;</span>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        argDef.setDesc(<span class="stringliteral">&quot;更新客户端暂存的服务端命令列表。&quot;</span>);</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    }</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 6 2012 21:29:14 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 7 2012 10:11:58 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

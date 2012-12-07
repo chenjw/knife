@@ -18,7 +18,7 @@ public class NewCommandHandler implements CommandHandler {
 
 	public void handle(Args args, CommandDispatcher dispatcher)
 			throws Exception {
-		newInstance(args.arg("expretion"));
+		newInstance(args.arg("expression"));
 	}
 
 	private void newInstance(String constructorSig) throws Exception {
@@ -57,8 +57,9 @@ public class NewCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("new");
-		argDef.setDef("<expretion>");
-		argDef.setDesc("invoke a method of the target object.");
-		argDef.addOptionDesc("expretion", "package.ClassName(param1,param2).");
+		argDef.setDef("<expression>");
+		argDef.setDesc("调用构造函数创建一个对象。");
+		argDef.addOptionDesc("expression",
+				"格式为： ConstructIndex(param1,param2)。");
 	}
 }

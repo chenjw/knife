@@ -18,7 +18,7 @@ public class ClearCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("clear");
-		argDef.setDesc("clear all the bytecode enhances and object holders. recover the agent to the time it just attached to the jvm.");
+		argDef.setDesc("清除所有字节码增强和agent保存的对象引用，把agent回复到刚连接上时的状态。");
 	}
 
 }

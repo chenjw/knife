@@ -113,7 +113,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> handle(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1Args.html">Args</a> args, <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandDispatcher.html">CommandDispatcher</a> dispatcher)</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;            <span class="keywordflow">throws</span> Exception {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        newInstance(args.arg(<span class="stringliteral">&quot;expretion&quot;</span>));</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        newInstance(args.arg(<span class="stringliteral">&quot;expression&quot;</span>));</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> newInstance(String constructorSig) <span class="keywordflow">throws</span> Exception {</div>
@@ -152,15 +152,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> declareArgs(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">ArgDef</a> argDef) {</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        argDef.setCommandName(<span class="stringliteral">&quot;new&quot;</span>);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        argDef.setDef(<span class="stringliteral">&quot;&lt;expretion&gt;&quot;</span>);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        argDef.setDesc(<span class="stringliteral">&quot;invoke a method of the target object.&quot;</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        argDef.addOptionDesc(<span class="stringliteral">&quot;expretion&quot;</span>, <span class="stringliteral">&quot;package.ClassName(param1,param2).&quot;</span>);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        argDef.setDef(<span class="stringliteral">&quot;&lt;expression&gt;&quot;</span>);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        argDef.setDesc(<span class="stringliteral">&quot;调用构造函数创建一个对象。&quot;</span>);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        argDef.addOptionDesc(<span class="stringliteral">&quot;expression&quot;</span>,</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <span class="stringliteral">&quot;格式为： ConstructIndex(param1,param2)。&quot;</span>);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 6 2012 21:29:14 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 7 2012 10:11:58 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

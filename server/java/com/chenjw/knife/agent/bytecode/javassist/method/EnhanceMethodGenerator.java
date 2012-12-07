@@ -27,7 +27,6 @@ import com.chenjw.knife.agent.bytecode.javassist.MethodGenerator;
  */
 public final class EnhanceMethodGenerator implements MethodGenerator {
 
-	private final AtomicLong METHOD_COUNTER = new AtomicLong(0);
 	private final AtomicLong METHOD_VARIABLE_COUNTER = new AtomicLong(0);
 	private ClassGenerator classGenerator;
 	private CtMethod oldCtMethod;

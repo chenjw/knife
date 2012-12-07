@@ -32,7 +32,7 @@ https://github.com/chenjw/knife/downloads
 
 ## Attach to local jvm
 
-![Attach](attach.jpg)
+![Attach](attach.png)
 
 Choose the jvm and attach.
 

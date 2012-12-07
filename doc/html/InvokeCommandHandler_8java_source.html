@@ -277,22 +277,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> declareArgs(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">ArgDef</a> argDef) {</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        argDef.setCommandName(<span class="stringliteral">&quot;invoke&quot;</span>);</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        argDef.setDef(<span class="stringliteral">&quot;[-f &lt;filter-expression&gt;] [-t] &lt;invoke-expression&gt;&quot;</span>);</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        argDef.setDesc(<span class="stringliteral">&quot;invoke a method of the target object.&quot;</span>);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        argDef.setDesc(<span class="stringliteral">&quot;调用某个类的静态方法，或者目标对象的某个实例方法&quot;</span>);</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;        argDef.addOptionDesc(</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;                <span class="stringliteral">&quot;invoke-expression&quot;</span>,</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                <span class="stringliteral">&quot;input &#39;package.ClassName.method(param1,param2)&#39; to invoke static method, or &#39;method(param1,param2)&#39; to invoke the method of target object. The params support json format.&quot;</span>);</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        argDef.addOptionDesc(<span class="stringliteral">&quot;-t&quot;</span>,</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                <span class="stringliteral">&quot;is need output the method trace of the invocation..&quot;</span>);</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        argDef.addOptionDesc(<span class="stringliteral">&quot;-f&quot;</span>,</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;                <span class="stringliteral">&quot;set &lt;filter-expression&gt; to filter the invocation output you dont care.&quot;</span>);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    }</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;}</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;                <span class="stringliteral">&quot;调用静态方法可以输入 &#39;package.ClassName.methodName(param1,param2)&#39; , 调用实例方法可以输入 &#39;methodName(param1,param2)&#39; . 参数可以使用json格式.&quot;</span>);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        argDef.addOptionDesc(<span class="stringliteral">&quot;-f&quot;</span>,</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;                <span class="stringliteral">&quot;设置 &lt;filter-expression&gt; 表达式，可以过滤掉不需要输出的调用细节。&quot;</span>);</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        argDef.addOptionDesc(<span class="stringliteral">&quot;-t&quot;</span>, <span class="stringliteral">&quot;是否需要跟踪调用的内部细节。&quot;</span>);</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    }</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 6 2012 21:29:14 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 7 2012 10:11:58 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

@@ -108,17 +108,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>解压缩“tar -zxvf knife-XXX.tar.gz”</li>
 <li>执行knife.sh</li>
 </ol>
-<h2>连接到本地运行中的Jvm</h2>
+<h2>本地attach和远程attach</h2>
 <div class="image">
-<img src="attach.jpg" alt="attach.jpg"/>
+<img src="attach.png" alt="attach.png"/>
 <div class="caption">
-连接到本地运行中的Jvm</div></div>
-<p> 选择本地运行中的Jvm并连接上去</p>
+连接到本地运行的Jvm或远程的Jvm</div></div>
+<p> 连接到本地运行的Jvm或远程的Jvm</p>
 <div class="image">
 <img src="connected.jpg" alt="connected.jpg"/>
 <div class="caption">
 连接成功</div></div>
- <h1>Commands</h1>
+ <h1>已实现的命令</h1>
 <h2>find</h2>
 <p>find命令用于寻找堆内存中的某个对象，主要思路为遍历堆内存，根据类名查找某个类的所有实例，然后再选择实际需要的某个实例。</p>
 <div class="fragment"><div class="line">find &lt;find-expretion&gt;</div>
@@ -169,7 +169,9 @@ ls -f</div></div>
 <img src="ls_m.jpg" alt="ls_m.jpg"/>
 <div class="caption">
 ls -m</div></div>
- <h2>set</h2>
+ <h3>-c</h3>
+<p>列出“目标对象”或“目标类”的所有构造方法。</p>
+<h2>set</h2>
 <p>修改属性值。</p>
 <div class="fragment"><div class="line"><span class="keyword">set</span> [-s] &lt;fieldname&gt; &lt;<span class="keyword">new</span>-value&gt;</div>
 </div><!-- fragment --><h3>fieldname</h3>
@@ -240,9 +242,9 @@ invole -t -f</div></div>
 <p>跟踪方法调用的次数，如果没有指定则只会记录第一次方法调用。</p>
 <h2>ref</h2>
 <p>列出堆内存中所有引用到该对象的对象。</p>
-<div class="fragment"><div class="line">ref &lt;<span class="keywordtype">object</span>-<span class="keywordtype">id</span>&gt;</div>
+<div class="fragment"><div class="line">ref [-r] &lt;<span class="keywordtype">object</span>-<span class="keywordtype">id</span>&gt;</div>
 </div><!-- fragment --><h3>object-id</h3>
-<p>目标对象的id</p>
+<p>目标对象的id，如果没有设置，就会默认使用当前对象。</p>
 <blockquote class="doxtable">
 <p>列出引用到指定对象的所有对象.</p>
 <p></p>
@@ -251,10 +253,29 @@ invole -t -f</div></div>
 <img src="ref.jpg" alt="ref.jpg"/>
 <div class="caption">
 列出引用到指定对象的所有对象</div></div>
+ <h3>-r</h3>
+<p>查找该对象引用到的对象，而不是引用到该对象的对象。</p>
+<h2>top</h2>
+<p>查找最占cpu的线程。或者查找存在引用数最多的对象。按从多到少排序。</p>
+<div class="fragment"><div class="line">top [-n &lt;num&gt;] [&lt;type&gt;]</div>
+</div><!-- fragment --><h3>type</h3>
+<p>"ref":查找存在引用数最多的对象。</p>
+<p>"thread":查找最占cpu的线程。</p>
+<h3>-n</h3>
+<p>需要列出对象的数量，默认为10个。</p>
+<h1>安全性</h1>
+<h2>native代码bug（如内存越界）问题引起crash。</h2>
+<p>native代码单元测试保证，覆盖大多数分支。</p>
+<h2>native代码泄漏，如申请的内存没有释放。</h2>
+<p>？？</p>
+<h2>agent加载的class或引用的对象没有释放。</h2>
+<p>最小agent，classloader隔离，自检测。</p>
+<h2>端口号释放</h2>
+<p>心跳，自动终止socket连接。 </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Dec 6 2012 21:29:16 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Dec 7 2012 10:11:59 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

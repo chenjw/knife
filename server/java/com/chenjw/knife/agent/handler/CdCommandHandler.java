@@ -30,7 +30,7 @@ public class CdCommandHandler implements CommandHandler {
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("cd");
 		argDef.setDef("<object-id>");
-		argDef.setDesc("enter object by id.");
-		argDef.addOptionDesc("object-id", "a num as the object id.");
+		argDef.setDesc("把指定id的对象当作当前对象。");
+		argDef.addOptionDesc("object-id", "目标对象的id。");
 	}
 }

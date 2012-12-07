@@ -90,15 +90,12 @@ public class SetCommandHandler implements CommandHandler {
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("set");
 		argDef.setDef("[-s] <fieldname> <new-value>");
-		argDef.setDesc("set field value to target object.");
-		argDef.addOptionDesc(
-				"fieldname",
-				"input 'package.TestClass.field1' means static field or 'field1' means both static and no-static field of target object.");
-		argDef.addOptionDesc(
-				"new-value",
-				"an expretion which will transfer to object by json tool, or '@1' means direct the object by id.");
-		argDef.addOptionDesc("-s",
-				"force set to static field, to avoid misunderstanding");
+		argDef.setDesc("更改目标对象的某个属性值。");
+		argDef.addOptionDesc("fieldname",
+				"输入 'package.TestClass.field1' 来设置某个类的静态变量。或者输入 'field1' 表示目标对象的某个静态或非静态方法。");
+		argDef.addOptionDesc("new-value",
+				"用来表示新设置的值，可以使用json格式，或者直接输入 '@1' 格式的对象id来指定要设置的对象。");
+		argDef.addOptionDesc("-s", "强制设置静态属性， 避免误解。");
 
 	}
 

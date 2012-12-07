@@ -21,10 +21,12 @@ public class SpringCommandHandler implements CommandHandler {
 		Object context = createApplicationContext(Integer.parseInt(parentId),
 				"file:" + filePath);
 		if (context == null) {
-			Agent.sendResult(ResultHelper.newErrorResult("spring context create fail!"));
+			Agent.sendResult(ResultHelper
+					.newErrorResult("spring context create fail!"));
 		} else {
-			Agent.sendResult(ResultHelper.newStringResult("spring context created "
-					+ ObjectRecordManager.getInstance().toId(context)));
+			Agent.sendResult(ResultHelper
+					.newStringResult("spring context created "
+							+ ObjectRecordManager.getInstance().toId(context)));
 		}
 	}
 
@@ -84,8 +86,9 @@ public class SpringCommandHandler implements CommandHandler {
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("spring");
 		argDef.setDef("<parent-id> <file-path>");
-		argDef.setDesc("create spring context");
-		argDef.addOptionDesc("parent-id", "parent spring context obj-id");
-		argDef.addOptionDesc("file-path", "spring xml file path");
+		argDef.setDesc("使用指定的spring配置文件创建一个application-context，并加载到容器中。");
+		argDef.addOptionDesc("parent-id",
+				"用于作为新application-context的parent-application-context对象的对象id。");
+		argDef.addOptionDesc("file-path", "spring配置文件的文件路径。");
 	}
 }

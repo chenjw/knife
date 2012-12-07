@@ -21,7 +21,8 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 	private Map<String, ArgDef> argDefMap = new HashMap<String, ArgDef>();
 
 	public AgentPacketHandler() {
-		for (CommandHandler service : ServiceLoader.load(CommandHandler.class,AgentPacketHandler.class.getClassLoader())) {
+		for (CommandHandler service : ServiceLoader.load(CommandHandler.class,
+				AgentPacketHandler.class.getClassLoader())) {
 			addCommandHandler(service);
 		}
 
@@ -63,6 +64,7 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 				Agent.sendResult(ResultHelper.newErrorResult("args error, "
 						+ e.getClass().getName() + ":"
 						+ e.getLocalizedMessage()));
+				argHelp(def);
 				return;
 			}
 			try {

@@ -17,7 +17,7 @@ public class GcCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("gc");
-		argDef.setDesc("force jvm gc.");
+		argDef.setDesc("强制jvm进行fullgc。");
 	}
 
 }

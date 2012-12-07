@@ -13,6 +13,6 @@ public class LogCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("log");
-		argDef.setDesc("not support yet.");
+		argDef.setDesc("not support yet。");
 	}
 }

@@ -273,8 +273,7 @@ public class LsCommandHandler implements CommandHandler {
 
 			Result<ArrayInfo> result = new Result<ArrayInfo>();
 			ArrayInfo info = new ArrayInfo();
-			info.setElements(elements
-					.toArray(new ObjectInfo[elements.size()]));
+			info.setElements(elements.toArray(new ObjectInfo[elements.size()]));
 			result.setContent(info);
 			result.setSuccess(true);
 			Agent.sendResult(result);
@@ -289,8 +288,7 @@ public class LsCommandHandler implements CommandHandler {
 			}
 			Result<ArrayInfo> result = new Result<ArrayInfo>();
 			ArrayInfo info = new ArrayInfo();
-			info.setElements(elements
-					.toArray(new ObjectInfo[elements.size()]));
+			info.setElements(elements.toArray(new ObjectInfo[elements.size()]));
 			result.setContent(info);
 			result.setSuccess(true);
 			Agent.sendResult(result);
@@ -339,16 +337,15 @@ public class LsCommandHandler implements CommandHandler {
 	public void declareArgs(ArgDef argDef) {
 		argDef.setCommandName("ls");
 		argDef.setDef("[-f] [-m] [-c] [-a] [-d] [<classname>]");
-		argDef.setDesc("list fields and methods of the target object.");
-		argDef.addOptionDesc(
-				"classname",
-				"set <classname> to find static fields or methods , if <classname> not set , will apply to target object.");
+		argDef.setDesc("列出目标类或目标对象的属性、方法、构造函数等信息。");
+		argDef.addOptionDesc("classname",
+				"如果设置了 <classname> 就会列出该类的信息，如果 <classname> 没有设置 ， 就会列出目标对象的信息。");
 
-		argDef.addOptionDesc("-f", "list fields.");
-		argDef.addOptionDesc("-m", "list methods.");
-		argDef.addOptionDesc("-c", "list constructs.");
-		argDef.addOptionDesc("-a", "list array component.");
-		argDef.addOptionDesc("-d", "to detail string.");
+		argDef.addOptionDesc("-f", "列出所有属性。");
+		argDef.addOptionDesc("-m", "列出所有方法。");
+		argDef.addOptionDesc("-c", "列出所有构造函数。");
+		argDef.addOptionDesc("-a", "如果目标是数组或列表，列出所有元素。");
+		argDef.addOptionDesc("-d", "显示目标的详细信息。");
 
 	}
 
