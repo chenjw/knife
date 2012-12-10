@@ -11,7 +11,7 @@ import com.chenjw.knife.agent.event.MethodLeaveEvent;
 import com.chenjw.knife.agent.event.MethodProfileEvent;
 import com.chenjw.knife.agent.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.event.MethodStartEvent;
-import com.chenjw.knife.agent.manager.InvokeDepthManager;
+import com.chenjw.knife.agent.service.InvokeDepthService;
 
 public class TimesCountFilter implements Filter {
 	private Set<Thread> threadSet = new HashSet<Thread>();
@@ -38,7 +38,7 @@ public class TimesCountFilter implements Filter {
 	@Override
 	public void doFilter(Event event, FilterChain chain) throws Exception {
 		if (event instanceof MethodEnterEvent) {
-			if (InvokeDepthManager.getInstance().getDep() == -1) {
+			if (InvokeDepthService.getInstance().getDep() == -1) {
 				if (decrementAndGet()) {
 					chain.doFilter(event);
 					Thread thread = Thread.currentThread();
@@ -46,7 +46,7 @@ public class TimesCountFilter implements Filter {
 				}
 			}
 		} else if (event instanceof MethodLeaveEvent) {
-			if (InvokeDepthManager.getInstance().getDep() == 0) {
+			if (InvokeDepthService.getInstance().getDep() == 0) {
 				chain.doFilter(event);
 				Thread thread = Thread.currentThread();
 				threadSet.remove(thread);

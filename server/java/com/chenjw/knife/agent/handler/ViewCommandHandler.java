@@ -8,7 +8,7 @@ import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.manager.ContextManager;
+import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
 
@@ -17,7 +17,7 @@ public class ViewCommandHandler implements CommandHandler {
 	@Override
 	public void handle(Args args, CommandDispatcher dispatcher)
 			throws IOException {
-		Object thisObject = ContextManager.getInstance().get(Constants.THIS);
+		Object thisObject = ContextService.getInstance().get(Constants.THIS);
 		if (thisObject == null) {
 			Agent.sendResult(ResultHelper.newErrorResult("not found"));
 		} else {

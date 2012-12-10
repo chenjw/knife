@@ -9,9 +9,9 @@ import com.chenjw.knife.agent.event.Event;
 import com.chenjw.knife.agent.event.MethodExceptionEndEvent;
 import com.chenjw.knife.agent.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.event.MethodStartEvent;
-import com.chenjw.knife.agent.manager.InvokeDepthManager;
-import com.chenjw.knife.agent.manager.ObjectRecordManager;
-import com.chenjw.knife.agent.manager.TimingManager;
+import com.chenjw.knife.agent.service.InvokeDepthService;
+import com.chenjw.knife.agent.service.ObjectRecordService;
+import com.chenjw.knife.agent.service.TimingService;
 import com.chenjw.knife.agent.utils.ToStringHelper;
 import com.chenjw.knife.core.model.MethodExceptionEndInfo;
 import com.chenjw.knife.core.model.MethodReturnEndInfo;
@@ -27,7 +27,7 @@ public class InvokePrintFilter implements Filter {
 		Object thisObject = event.getThisObject();
 
 		if (thisObject != null) {
-			info.setThisObjectId(ObjectRecordManager.getInstance().toId(
+			info.setThisObjectId(ObjectRecordService.getInstance().toId(
 					thisObject));
 			info.setClassName(thisObject.getClass().getName());
 		} else {
@@ -41,7 +41,7 @@ public class InvokePrintFilter implements Filter {
 				argInfos.add(null);
 			} else {
 				ObjectInfo argInfo = new ObjectInfo();
-				argInfo.setObjectId(ObjectRecordManager.getInstance().toId(arg));
+				argInfo.setObjectId(ObjectRecordService.getInstance().toId(arg));
 				argInfo.setValueString(ToStringHelper.toString(arg));
 				argInfos.add(argInfo);
 			}
@@ -49,7 +49,7 @@ public class InvokePrintFilter implements Filter {
 		info.setArguments(argInfos.toArray(new ObjectInfo[argInfos.size()]));
 		info.setLineNum(event.getLineNum());
 		info.setFileName(event.getFileName());
-		info.setDepth(InvokeDepthManager.getInstance().getDep());
+		info.setDepth(InvokeDepthService.getInstance().getDep());
 		Result<MethodStartInfo> result = new Result<MethodStartInfo>();
 		result.setContent(info);
 		result.setSuccess(true);
@@ -67,14 +67,14 @@ public class InvokePrintFilter implements Filter {
 			info.setVoid(false);
 			if (r != null) {
 				ObjectInfo rInfo = new ObjectInfo();
-				rInfo.setObjectId(ObjectRecordManager.getInstance().toId(r));
+				rInfo.setObjectId(ObjectRecordService.getInstance().toId(r));
 				rInfo.setValueString(ToStringHelper.toString(r));
 				info.setResult(rInfo);
 			}
 		}
-		int dep = InvokeDepthManager.getInstance().getDep();
+		int dep = InvokeDepthService.getInstance().getDep();
 		info.setDepth(dep);
-		info.setTime(TimingManager.getInstance().getMillisInterval(
+		info.setTime(TimingService.getInstance().getMillisInterval(
 				String.valueOf(dep)));
 		Result<MethodReturnEndInfo> result = new Result<MethodReturnEndInfo>();
 		result.setContent(info);
@@ -87,13 +87,13 @@ public class InvokePrintFilter implements Filter {
 		MethodExceptionEndInfo info = new MethodExceptionEndInfo();
 		Throwable e = event.getE();
 		ObjectInfo rInfo = new ObjectInfo();
-		rInfo.setObjectId(ObjectRecordManager.getInstance().toId(e));
+		rInfo.setObjectId(ObjectRecordService.getInstance().toId(e));
 		rInfo.setValueString(ToStringHelper.toString(e));
 		info.setE(rInfo);
 
-		int dep = InvokeDepthManager.getInstance().getDep();
+		int dep = InvokeDepthService.getInstance().getDep();
 		info.setDepth(dep);
-		info.setTime(TimingManager.getInstance().getMillisInterval(
+		info.setTime(TimingService.getInstance().getMillisInterval(
 				String.valueOf(dep)));
 		Result<MethodExceptionEndInfo> result = new Result<MethodExceptionEndInfo>();
 		result.setContent(info);

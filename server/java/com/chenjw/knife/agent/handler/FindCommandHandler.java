@@ -9,8 +9,8 @@ import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.manager.ContextManager;
-import com.chenjw.knife.agent.manager.ObjectRecordManager;
+import com.chenjw.knife.agent.service.ContextService;
+import com.chenjw.knife.agent.service.ObjectRecordService;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
@@ -49,7 +49,7 @@ public class FindCommandHandler implements CommandHandler {
 		Class<?> clazz = null;
 		String className = args.arg("find-expression");
 		if (isNumeric(className)) {
-			Class<?>[] likeClazz = (Class<?>[]) ContextManager.getInstance()
+			Class<?>[] likeClazz = (Class<?>[]) ContextService.getInstance()
 					.get(Constants.CLASS_LIST);
 			clazz = likeClazz[Integer.parseInt(className)];
 		} else {
@@ -57,7 +57,7 @@ public class FindCommandHandler implements CommandHandler {
 			if (clazz == null) {
 				Class<?>[] likeClazz = findLikeClass(className);
 				if (likeClazz.length > 1) {
-					ContextManager.getInstance().put(Constants.CLASS_LIST,
+					ContextService.getInstance().put(Constants.CLASS_LIST,
 							likeClazz);
 
 					ClassListInfo info = new ClassListInfo();
@@ -95,7 +95,7 @@ public class FindCommandHandler implements CommandHandler {
 		List<ObjectInfo> cInfoList = new ArrayList<ObjectInfo>();
 		for (Object obj : objs) {
 			ObjectInfo cInfo = new ObjectInfo();
-			cInfo.setObjectId(ObjectRecordManager.getInstance().toId(obj));
+			cInfo.setObjectId(ObjectRecordService.getInstance().toId(obj));
 			cInfo.setValueString(ToStringHelper.toDetailString(obj));
 			cInfoList.add(cInfo);
 

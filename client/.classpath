@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="/knife.lib/lib/tools.jar"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/jline-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/jmxtools.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/hessian-4.0.7.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

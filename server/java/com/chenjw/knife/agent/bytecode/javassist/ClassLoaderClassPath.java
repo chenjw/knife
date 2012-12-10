@@ -7,7 +7,7 @@ import java.net.URL;
 
 import javassist.ClassPath;
 
-import com.chenjw.knife.agent.manager.ByteCodeManager;
+import com.chenjw.knife.agent.service.ByteCodeService;
 
 public class ClassLoaderClassPath implements ClassPath {
 	private ClassLoader classLoader;
@@ -36,7 +36,7 @@ public class ClassLoaderClassPath implements ClassPath {
 		if (clazz == null) {
 			return null;
 		}
-		return new ByteArrayInputStream(ByteCodeManager.getInstance()
+		return new ByteArrayInputStream(ByteCodeService.getInstance()
 				.getByteCode(clazz));
 
 	}

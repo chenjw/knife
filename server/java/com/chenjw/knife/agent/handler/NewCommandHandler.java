@@ -8,8 +8,8 @@ import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.manager.ContextManager;
-import com.chenjw.knife.agent.manager.ObjectRecordManager;
+import com.chenjw.knife.agent.service.ContextService;
+import com.chenjw.knife.agent.service.ObjectRecordService;
 import com.chenjw.knife.agent.utils.ParseHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.utils.StringHelper;
@@ -27,7 +27,7 @@ public class NewCommandHandler implements CommandHandler {
 		m = m.trim();
 		Constructor<?> constructor = null;
 		if (StringHelper.isNumeric(m)) {
-			constructor = ((Constructor<?>[]) ContextManager.getInstance().get(
+			constructor = ((Constructor<?>[]) ContextService.getInstance().get(
 					Constants.CONSTRUCTOR_LIST))[Integer.parseInt(m)];
 		}
 		if (constructor == null) {
@@ -40,7 +40,7 @@ public class NewCommandHandler implements CommandHandler {
 						StringHelper.substringAfter(argStr, "("), ")"),
 				constructor.getParameterTypes());
 		Object obj = newInstance(constructor, mArgs);
-		Agent.sendResult(ResultHelper.newStringResult(ObjectRecordManager
+		Agent.sendResult(ResultHelper.newStringResult(ObjectRecordService
 				.getInstance().toId(obj) + "created!"));
 	}
 

@@ -31,7 +31,7 @@ import com.chenjw.knife.agent.filter.TimesCountFilter;
 import com.chenjw.knife.agent.filter.TimingFilter;
 import com.chenjw.knife.agent.filter.TimingStopFilter;
 import com.chenjw.knife.agent.filter.TraceMethodFilter;
-import com.chenjw.knife.agent.manager.ContextManager;
+import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ReflectHelper;
@@ -132,7 +132,7 @@ public class TraceCommandHandler implements CommandHandler {
 		m = m.trim();
 		Method method = null;
 		if (StringHelper.isNumeric(m)) {
-			method = ((Method[]) ContextManager.getInstance().get(
+			method = ((Method[]) ContextService.getInstance().get(
 					Constants.METHOD_LIST))[Integer.parseInt(m)];
 
 		} else {
@@ -159,7 +159,7 @@ public class TraceCommandHandler implements CommandHandler {
 					}
 				}
 			} else {
-				Object obj = ContextManager.getInstance().get(Constants.THIS);
+				Object obj = ContextService.getInstance().get(Constants.THIS);
 				if (obj == null) {
 					Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 					return null;
@@ -182,7 +182,7 @@ public class TraceCommandHandler implements CommandHandler {
 			methodInfo.setClazz(method.getDeclaringClass());
 			methodInfo.setThisObject(null);
 		} else {
-			Object thisObject = ContextManager.getInstance()
+			Object thisObject = ContextService.getInstance()
 					.get(Constants.THIS);
 			methodInfo.setThisObject(thisObject);
 			methodInfo.setClazz(thisObject.getClass());

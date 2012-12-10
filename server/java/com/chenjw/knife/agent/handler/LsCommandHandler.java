@@ -17,8 +17,8 @@ import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.manager.ContextManager;
-import com.chenjw.knife.agent.manager.ObjectRecordManager;
+import com.chenjw.knife.agent.service.ContextService;
+import com.chenjw.knife.agent.service.ObjectRecordService;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ReflectHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
@@ -77,10 +77,10 @@ public class LsCommandHandler implements CommandHandler {
 		ClassOrObject target = new ClassOrObject();
 		String className = args.arg("classname");
 		if (StringHelper.isBlank(className)) {
-			target.setObj(ContextManager.getInstance().get(Constants.THIS));
+			target.setObj(ContextService.getInstance().get(Constants.THIS));
 
 		} else if (StringHelper.isNumeric(className)) {
-			target.setObj(ObjectRecordManager.getInstance().get(
+			target.setObj(ObjectRecordService.getInstance().get(
 					Integer.parseInt(className)));
 
 		} else {
@@ -105,7 +105,7 @@ public class LsCommandHandler implements CommandHandler {
 				info.setName(entry.getKey().getName());
 				if (entry.getValue() != null) {
 					ObjectInfo fValue = new ObjectInfo();
-					fValue.setObjectId(ObjectRecordManager.getInstance().toId(
+					fValue.setObjectId(ObjectRecordService.getInstance().toId(
 							entry.getValue()));
 					fValue.setValueString(toString(args, entry.getValue()));
 					info.setValue(fValue);
@@ -122,7 +122,7 @@ public class LsCommandHandler implements CommandHandler {
 				info.setName(entry.getKey().getName());
 				if (entry.getValue() != null) {
 					ObjectInfo fValue = new ObjectInfo();
-					fValue.setObjectId(ObjectRecordManager.getInstance().toId(
+					fValue.setObjectId(ObjectRecordService.getInstance().toId(
 							entry.getValue()));
 					fValue.setValueString(toString(args, entry.getValue()));
 					info.setValue(fValue);
@@ -176,7 +176,7 @@ public class LsCommandHandler implements CommandHandler {
 				}
 			}
 		}
-		ContextManager.getInstance().put(Constants.METHOD_LIST,
+		ContextService.getInstance().put(Constants.METHOD_LIST,
 				list.toArray(new Method[list.size()]));
 		ClassMethodInfo classMethodInfo = new ClassMethodInfo();
 		classMethodInfo.setMethods(methodInfos
@@ -207,7 +207,7 @@ public class LsCommandHandler implements CommandHandler {
 				list.add(constructor);
 			}
 		}
-		ContextManager.getInstance().put(Constants.CONSTRUCTOR_LIST,
+		ContextService.getInstance().put(Constants.CONSTRUCTOR_LIST,
 				list.toArray(new Constructor[list.size()]));
 		ClassConstructorInfo classConstructorInfo = new ClassConstructorInfo();
 		classConstructorInfo.setConstructors(constructorInfos
@@ -231,7 +231,7 @@ public class LsCommandHandler implements CommandHandler {
 		if ((target.getObj() instanceof Throwable)) {
 			Result<ExceptionInfo> result = new Result<ExceptionInfo>();
 			ExceptionInfo info = new ExceptionInfo();
-			info.setObjectId(ObjectRecordManager.getInstance().toId(
+			info.setObjectId(ObjectRecordService.getInstance().toId(
 					target.getObj()));
 			info.setTraceString(ToStringHelper
 					.toExceptionTraceString((Throwable) target.getObj()));
@@ -241,7 +241,7 @@ public class LsCommandHandler implements CommandHandler {
 		} else {
 			Result<ObjectInfo> result = new Result<ObjectInfo>();
 			ObjectInfo info = new ObjectInfo();
-			info.setObjectId(ObjectRecordManager.getInstance().toId(
+			info.setObjectId(ObjectRecordService.getInstance().toId(
 					target.getObj()));
 			info.setValueString(toString(args, target.getObj()));
 			result.setContent(info);
@@ -264,7 +264,7 @@ public class LsCommandHandler implements CommandHandler {
 			for (int i = 0; i < Array.getLength(target.getObj()); i++) {
 				Object aObj = Array.get(target.getObj(), i);
 				ObjectInfo element = new ObjectInfo();
-				element.setObjectId(ObjectRecordManager.getInstance()
+				element.setObjectId(ObjectRecordService.getInstance()
 						.toId(aObj));
 				element.setValueString(toString(args, aObj));
 				elements.add(element);
@@ -281,7 +281,7 @@ public class LsCommandHandler implements CommandHandler {
 			List<ObjectInfo> elements = new ArrayList<ObjectInfo>();
 			for (Object aObj : (List<Object>) target.getObj()) {
 				ObjectInfo element = new ObjectInfo();
-				element.setObjectId(ObjectRecordManager.getInstance()
+				element.setObjectId(ObjectRecordService.getInstance()
 						.toId(aObj));
 				element.setValueString(toString(args, aObj));
 				elements.add(element);

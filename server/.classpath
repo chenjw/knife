@@ -12,5 +12,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/sourceforge.spring-2.5.6-sources.zip"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/sourceforge.spring-2.5.6.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/hessian-4.0.7.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -8,7 +8,7 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.chenjw.knife.agent.manager.SystemTagManager;
+import com.chenjw.knife.agent.service.SystemTagService;
 
 public class ToStringHelper {
 
@@ -43,7 +43,7 @@ public class ToStringHelper {
 		if (obj == null) {
 			return null;
 		}
-		String name = SystemTagManager.getInstance().findSystemName(obj);
+		String name = SystemTagService.getInstance().findSystemName(obj);
 		if (name != null) {
 			return name;
 		}
@@ -160,7 +160,7 @@ public class ToStringHelper {
 		if (obj == null) {
 			return null;
 		}
-		String name = SystemTagManager.getInstance().findSystemName(obj);
+		String name = SystemTagService.getInstance().findSystemName(obj);
 		if (name != null) {
 			return name;
 		}

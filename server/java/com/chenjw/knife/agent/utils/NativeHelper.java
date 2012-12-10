@@ -27,8 +27,8 @@ import com.chenjw.knife.utils.StringHelper;
 public class NativeHelper {
 	static {
 
-		// System.load("/home/chenjw/my_workspace/knife/native/Default/libnativehelper.so");
-		NativeHelper.loadNativeLibrary("libnativehelper");
+		System.load("/home/chenjw/my_workspace/knife/native/Default/libnativehelper.so");
+		// NativeHelper.loadNativeLibrary("libnativehelper");
 	}
 	private static Object[] retransformLock = new Object[0];
 	private static String jvmClassName = null;
@@ -504,12 +504,21 @@ public class NativeHelper {
 
 	private native static void stopMethodTrace0();
 
-	private native static boolean checkCapabilities0(int idx);
+	private native static void checkCapabilities0(boolean[] result);
 
 	public static Map<Capabilitie, Boolean> checkCapabilities() {
+		boolean[] r = new boolean[41];
+		checkCapabilities0(r);
+		for (boolean b : r) {
+			if (b) {
+				throw new RuntimeException();
+			}
+
+		}
 		Map<Capabilitie, Boolean> result = new HashMap<Capabilitie, Boolean>();
 		for (Capabilitie v : Capabilitie.values()) {
-			result.put(v, checkCapabilities0(v.getIndex()));
+
+			result.put(v, r[v.getIndex()]);
 		}
 		return result;
 	}

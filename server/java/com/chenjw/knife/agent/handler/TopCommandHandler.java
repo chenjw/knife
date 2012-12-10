@@ -9,7 +9,7 @@ import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.manager.ObjectRecordManager;
+import com.chenjw.knife.agent.service.ObjectRecordService;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.NativeHelper.ReferenceCount;
 import com.chenjw.knife.agent.utils.OSHelper;
@@ -34,7 +34,7 @@ public class TopCommandHandler implements CommandHandler {
 			ReferenceCountInfo referenceInfo = new ReferenceCountInfo();
 			referenceInfo.setCount(referenceCount.getCount());
 			ObjectInfo obj = new ObjectInfo();
-			obj.setObjectId(ObjectRecordManager.getInstance().toId(
+			obj.setObjectId(ObjectRecordService.getInstance().toId(
 					referenceCount.getObj()));
 			obj.setValueString(ToStringHelper.toString(referenceCount.getObj()));
 			referenceInfo.setObj(obj);

@@ -13,6 +13,8 @@ void throwException(JNIEnv * env,char * clazz, char * message);
 
 void initJvmti(JNIEnv * env);
 
+void initJvmtiWithoutCapabilities(JNIEnv * env);
+
 void releaseTags();
 
 #endif

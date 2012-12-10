@@ -106,14 +106,22 @@ public class PacketResolver {
 			temp = b[i] & mask;
 			res |= temp;
 		}
+		// System.out.println("bytes2long " + res);
 		return res;
 	}
 
 	public static byte[] long2bytes(long num) {
+		// System.out.println("long2bytes " + num);
 		byte[] b = new byte[8];
 		for (int i = 0; i < 8; i++) {
 			b[i] = (byte) (num >>> (56 - i * 8));
 		}
 		return b;
+	}
+
+	public static void main(String[] args) {
+		byte[] b = long2bytes(101);
+		long l = bytes2long(b);
+		System.out.println(l);
 	}
 }

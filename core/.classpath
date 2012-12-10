@@ -3,5 +3,8 @@
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="src" path="java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/hessian-4.0.7.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17-sources.zip"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

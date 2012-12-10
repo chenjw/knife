@@ -9,8 +9,8 @@ import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.manager.ContextManager;
-import com.chenjw.knife.agent.manager.ObjectRecordManager;
+import com.chenjw.knife.agent.service.ContextService;
+import com.chenjw.knife.agent.service.ObjectRecordService;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
@@ -25,10 +25,10 @@ public class RefCommandHandler implements CommandHandler {
 		String param = args.arg("object-id");
 		Object obj = null;
 		if (param == null) {
-			obj = ContextManager.getInstance().get(Constants.THIS);
+			obj = ContextService.getInstance().get(Constants.THIS);
 		} else {
 			int id = Integer.parseInt(param);
-			obj = ObjectRecordManager.getInstance().get(id);
+			obj = ObjectRecordService.getInstance().get(id);
 		}
 
 		if (obj == null) {
@@ -52,7 +52,7 @@ public class RefCommandHandler implements CommandHandler {
 		List<ObjectInfo> references = new ArrayList<ObjectInfo>();
 		for (Object ref : refs) {
 			ObjectInfo reference = new ObjectInfo();
-			reference.setObjectId(ObjectRecordManager.getInstance().toId(ref));
+			reference.setObjectId(ObjectRecordService.getInstance().toId(ref));
 			reference.setValueString(ToStringHelper.toString(ref));
 			references.add(reference);
 
