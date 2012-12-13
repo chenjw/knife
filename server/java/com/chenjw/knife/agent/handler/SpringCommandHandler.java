@@ -6,10 +6,10 @@ import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.service.ObjectRecordService;
-import com.chenjw.knife.agent.utils.ReflectHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
-import com.chenjw.knife.agent.utils.invoke.InvokeResult;
-import com.chenjw.knife.agent.utils.invoke.MethodInvokeException;
+import com.chenjw.knife.utils.ReflectHelper;
+import com.chenjw.knife.utils.invoke.InvokeResult;
+import com.chenjw.knife.utils.invoke.MethodInvokeException;
 
 public class SpringCommandHandler implements CommandHandler {
 	private static final String CLASS_FILE_SYSTEM_XML_APPLICATION_CONTEXT = "org.springframework.web.context.support.XmlWebApplicationContext";

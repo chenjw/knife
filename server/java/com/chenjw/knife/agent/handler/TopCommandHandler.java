@@ -13,13 +13,13 @@ import com.chenjw.knife.agent.service.ObjectRecordService;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.NativeHelper.ReferenceCount;
 import com.chenjw.knife.agent.utils.OSHelper;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
 import com.chenjw.knife.core.model.ObjectInfo;
 import com.chenjw.knife.core.model.ReferenceCountInfo;
 import com.chenjw.knife.core.model.ThreadInfo;
 import com.chenjw.knife.core.model.TopReferenceCountInfo;
 import com.chenjw.knife.core.model.TopThreadInfo;
-import com.chenjw.knife.core.result.Result;
 
 public class TopCommandHandler implements CommandHandler {
 	private void handleRef(Args args, CommandDispatcher dispatcher) {
@@ -42,10 +42,7 @@ public class TopCommandHandler implements CommandHandler {
 		}
 		info.setReferenceCounts(referenceInfos
 				.toArray(new ReferenceCountInfo[referenceInfos.size()]));
-		Result<TopReferenceCountInfo> result = new Result<TopReferenceCountInfo>();
-		result.setContent(info);
-		result.setSuccess(true);
-		Agent.sendResult(result);
+		Agent.sendResult(ResultHelper.newResult(info));
 	}
 
 	private void handleThread(Args args, CommandDispatcher dispatcher) {
@@ -57,10 +54,7 @@ public class TopCommandHandler implements CommandHandler {
 		TopThreadInfo info = new TopThreadInfo();
 		List<ThreadInfo> threadInfos = OSHelper.findTopThread(num);
 		info.setThreads(threadInfos.toArray(new ThreadInfo[threadInfos.size()]));
-		Result<TopThreadInfo> result = new Result<TopThreadInfo>();
-		result.setContent(info);
-		result.setSuccess(true);
-		Agent.sendResult(result);
+		Agent.sendResult(ResultHelper.newResult(info));
 	}
 
 	public void handle(Args args, CommandDispatcher dispatcher) {

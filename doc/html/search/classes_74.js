@@ -4,7 +4,7 @@ var searchData=
   ['threadinfo',['ThreadInfo',['../classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ThreadInfo.html',1,'com::chenjw::knife::core::model']]],
   ['timescountfilter',['TimesCountFilter',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1TimesCountFilter.html',1,'com::chenjw::knife::agent::filter']]],
   ['timingfilter',['TimingFilter',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1TimingFilter.html',1,'com::chenjw::knife::agent::filter']]],
-  ['timingmanager',['TimingManager',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1manager_1_1TimingManager.html',1,'com::chenjw::knife::agent::manager']]],
+  ['timingservice',['TimingService',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html',1,'com::chenjw::knife::agent::service']]],
   ['timingstopfilter',['TimingStopFilter',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1TimingStopFilter.html',1,'com::chenjw::knife::agent::filter']]],
   ['topcommandhandler',['TopCommandHandler',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1TopCommandHandler.html',1,'com::chenjw::knife::agent::handler']]],
   ['topreferencecountformater',['TopReferenceCountFormater',['../classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1TopReferenceCountFormater.html',1,'com::chenjw::knife::client::formater']]],

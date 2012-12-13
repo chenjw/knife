@@ -7,8 +7,8 @@ import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.core.model.CommandListInfo;
-import com.chenjw.knife.core.result.Result;
 
 public class CmdCommandHandler implements CommandHandler {
 
@@ -16,10 +16,7 @@ public class CmdCommandHandler implements CommandHandler {
 		Set<String> cmdNames = dispatcher.getArgDefMap().keySet();
 		CommandListInfo info = new CommandListInfo();
 		info.setCommandNames(cmdNames.toArray(new String[cmdNames.size()]));
-		Result<CommandListInfo> result = new Result<CommandListInfo>();
-		result.setContent(info);
-		result.setSuccess(true);
-		Agent.sendResult(result);
+		Agent.sendResult(ResultHelper.newResult(info));
 	}
 
 	public void declareArgs(ArgDef argDef) {

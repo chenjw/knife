@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import com.chenjw.knife.core.ObjectSerializer;
 
 public class JavaObjectSerializer implements ObjectSerializer {
 

@@ -7,13 +7,6 @@ import com.chenjw.knife.utils.StringHelper;
 
 public class ParseHelper {
 
-	public static void main(String[] args) {
-		Object o = JSON.parseObject("[]", String[].class);
-
-		System.out.println(o);
-
-	}
-
 	public static Object parseValue(String expr, Class<?> type) {
 		Object obj = null;
 		if (expr.startsWith("@")) {

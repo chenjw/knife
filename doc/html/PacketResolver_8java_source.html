@@ -85,7 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="dir_daa6e865c37e9fae9a2af0f4987207e0.html">java</a></li><li class="navelem"><a class="el" href="dir_1eed3ba8d73fc16e63606d6a656bf531.html">com</a></li><li class="navelem"><a class="el" href="dir_40dffaa3eaf3a1a80fe864bcaa9cda1c.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_94aca49a3c0d718c97fe79448ec1f876.html">knife</a></li><li class="navelem"><a class="el" href="dir_9ce66ddd004714c488649f46edb9c4e6.html">core</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_60b7f28fd5625c8743ce2c5e13f20c7e.html">core</a></li><li class="navelem"><a class="el" href="dir_e37f08b0b583db18cf8dbaa441dd1d5d.html">java</a></li><li class="navelem"><a class="el" href="dir_85e12fe5de5f7bfbaac61e8c0864dfcb.html">com</a></li><li class="navelem"><a class="el" href="dir_cd1932d509bc85001a7e63bb6610796e.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_0150f2f4fad0720567edec73854a7f24.html">knife</a></li><li class="navelem"><a class="el" href="dir_4ed03c0697e0b30de9b7d6ebe382f548.html">core</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -192,21 +192,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;            temp = b[i] &amp; mask;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;            res |= temp;</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        }</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">return</span> res;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> byte[] long2bytes(<span class="keywordtype">long</span> num) {</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        byte[] b = <span class="keyword">new</span> byte[8];</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 8; i++) {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            b[i] = (byte) (num &gt;&gt;&gt; (56 - i * 8));</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        }</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <span class="keywordflow">return</span> b;</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    }</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="comment">// System.out.println(&quot;bytes2long &quot; + res);</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">return</span> res;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> byte[] long2bytes(<span class="keywordtype">long</span> num) {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        <span class="comment">// System.out.println(&quot;long2bytes &quot; + num);</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        byte[] b = <span class="keyword">new</span> byte[8];</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 8; i++) {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            b[i] = (byte) (num &gt;&gt;&gt; (56 - i * 8));</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        }</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        <span class="keywordflow">return</span> b;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> main(String[] args) {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        byte[] b = long2bytes(101);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordtype">long</span> l = bytes2long(b);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        System.out.println(l);</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    }</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 7 2012 10:17:20 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 13 2012 15:45:00 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

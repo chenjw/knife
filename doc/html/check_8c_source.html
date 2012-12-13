@@ -85,7 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_3dbb10954ed03e2c7eb007b10aa2d80b.html">native</a></li><li class="navelem"><a class="el" href="dir_f16365bb7e289cec0411dcf808705715.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_575c8afab72896372eeb33f41f73019e.html">native</a></li><li class="navelem"><a class="el" href="dir_da9f702c11d3966b021939a67ee77967.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -99,124 +99,69 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;jvmti.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;util.h&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;jboolean  Java_com_chenjw_knife_agent_utils_NativeHelper_checkCapabilities0(</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;        JNIEnv * env, jint idx) {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keywordflow">if</span> (jvmti == NULL ) {</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        JavaVM *jvm = 0;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <span class="keywordtype">int</span> res;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        res = (*env)-&gt;GetJavaVM(env, &amp;jvm);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        <span class="keywordflow">if</span> (res &lt; 0 || jvm == 0) {</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;            throwException(env, NULL, <span class="stringliteral">&quot;GetJavaVM fail&quot;</span>);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        }</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        res = (*jvm)-&gt;GetEnv(jvm, (<span class="keywordtype">void</span> **) &amp;jvmti, JVMTI_VERSION_1_1);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        <span class="keywordflow">if</span> (res != 0 || jvmti == 0) {</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            throwException(env, NULL, <span class="stringliteral">&quot;GetEnv fail&quot;</span>);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    }</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    jvmtiError error;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    jvmtiCapabilities capabilities;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    error = (*jvmti)-&gt;GetCapabilities(jvmti, &amp;capabilities);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordflow">if</span> (idx == 0) {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        capabilities.can_tag_objects = 1;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        capabilities.can_generate_field_modification_events = 1;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 2) {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        capabilities.can_generate_field_access_events = 1;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 3) {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        capabilities.can_generate_field_modification_events = 1;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 4) {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        capabilities.can_get_bytecodes = 1;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 5) {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        capabilities.can_get_synthetic_attribute = 1;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 6) {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        capabilities.can_get_owned_monitor_info = 1;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 7) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        capabilities.can_get_current_contended_monitor = 1;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 8) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        capabilities.can_get_monitor_info = 1;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 9) {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        capabilities.can_pop_frame = 1;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 10) {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        capabilities.can_redefine_classes = 1;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        capabilities.can_signal_thread = 1;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        capabilities.can_get_source_file_name = 1;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        capabilities.can_get_line_numbers = 1;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        capabilities.can_get_source_debug_extension = 1;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        capabilities.can_access_local_variables = 1;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        capabilities.can_maintain_original_method_order = 1;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        capabilities.can_generate_single_step_events = 1;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        capabilities.can_generate_exception_events = 1;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        capabilities.can_generate_frame_pop_events = 1;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        capabilities.can_generate_breakpoint_events = 1;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        capabilities.can_suspend = 1;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        capabilities.can_redefine_any_class = 1;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        capabilities.can_get_current_thread_cpu_time = 1;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        capabilities.can_get_thread_cpu_time = 1;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        capabilities.can_generate_method_entry_events = 1;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        capabilities.can_generate_method_exit_events = 1;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        capabilities.can_generate_all_class_hook_events = 1;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        capabilities.can_generate_compiled_method_load_events = 1;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        capabilities.can_generate_monitor_events = 1;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        capabilities.can_generate_vm_object_alloc_events = 1;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        capabilities.can_generate_native_method_bind_events = 1;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        capabilities.can_generate_garbage_collection_events = 1;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        capabilities.can_generate_object_free_events = 1;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        capabilities.can_force_early_return = 1;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        capabilities.can_get_owned_monitor_stack_depth_info = 1;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        capabilities.can_get_constant_pool = 1;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        capabilities.can_set_native_method_prefix = 1;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        capabilities.can_retransform_classes = 1;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        capabilities.can_retransform_any_class = 1;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        capabilities.can_generate_resource_exhaustion_heap_events = 1;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (idx == 1) {</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        capabilities.can_generate_resource_exhaustion_threads_events = 1;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    }</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    error = (*jvmti)-&gt;AddCapabilities(jvmti, &amp;capabilities);</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordflow">if</span> (error != 0) {</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    }</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordflow">else</span>{</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    }</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;}</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keywordtype">void</span> Java_com_chenjw_knife_agent_utils_NativeHelper_checkCapabilities0(</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;        JNIEnv * env, jbooleanArray result) {</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    initJvmtiWithoutCapabilities(env);</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    jvmtiCapabilities capabilities;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    (*jvmti)-&gt;GetPotentialCapabilities(jvmti, &amp;capabilities);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keywordtype">int</span> size=41;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    jboolean* r;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    r = (jboolean*) allocate(size * <span class="keyword">sizeof</span>(jboolean));</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    r[0]=capabilities.can_tag_objects;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    r[1]=capabilities.can_generate_field_modification_events;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    r[2]=capabilities.can_generate_field_access_events;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    r[3]=capabilities.can_get_bytecodes;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    r[4]=capabilities.can_get_synthetic_attribute;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    r[5]=capabilities.can_get_owned_monitor_info;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    r[6]=capabilities.can_get_current_contended_monitor;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    r[7]=capabilities.can_get_monitor_info;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    r[8]=capabilities.can_pop_frame;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    r[9]=capabilities.can_redefine_classes;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    r[10]=capabilities.can_signal_thread;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    r[11]=capabilities.can_get_source_file_name;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    r[12]=capabilities.can_get_line_numbers;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    r[13]=capabilities.can_get_source_debug_extension;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    r[14]=capabilities.can_access_local_variables;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    r[15]=capabilities.can_maintain_original_method_order;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    r[16]=capabilities.can_generate_single_step_events;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    r[17]=capabilities.can_generate_exception_events;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    r[18]=capabilities.can_generate_frame_pop_events;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    r[19]=capabilities.can_generate_breakpoint_events;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    r[20]=capabilities.can_suspend;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    r[21]=capabilities.can_redefine_any_class;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    r[22]=capabilities.can_get_current_thread_cpu_time;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    r[23]=capabilities.can_get_thread_cpu_time;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    r[24]=capabilities.can_generate_method_entry_events;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    r[25]=capabilities.can_generate_method_exit_events;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    r[26]=capabilities.can_generate_all_class_hook_events;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    r[27]=capabilities.can_generate_compiled_method_load_events;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    r[28]=capabilities.can_generate_monitor_events;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    r[29]=capabilities.can_generate_vm_object_alloc_events;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    r[30]=capabilities.can_generate_native_method_bind_events;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    r[31]=capabilities.can_generate_garbage_collection_events;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    r[32]=capabilities.can_generate_object_free_events;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    r[33]=capabilities.can_force_early_return;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    r[34]=capabilities.can_get_owned_monitor_stack_depth_info;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    r[35]=capabilities.can_get_constant_pool;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    r[36]=capabilities.can_set_native_method_prefix;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    r[37]=capabilities.can_retransform_classes;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    r[38]=capabilities.can_retransform_any_class;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    r[39]=capabilities.can_generate_resource_exhaustion_heap_events;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    r[40]=capabilities.can_generate_resource_exhaustion_threads_events;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    printf(<span class="stringliteral">&quot;%d&quot;</span>,r[40]);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    (*env)-&gt;SetBooleanArrayRegion(env, result, 0,1,r);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    printf(<span class="stringliteral">&quot;%d&quot;</span>,r[40]);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    deallocate(r);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 7 2012 10:17:19 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 13 2012 15:45:00 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

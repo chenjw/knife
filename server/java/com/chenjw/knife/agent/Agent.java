@@ -3,7 +3,10 @@ package com.chenjw.knife.agent;
 import java.io.IOException;
 import java.lang.instrument.ClassDefinition;
 import java.lang.instrument.UnmodifiableClassException;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketResolver;
 import com.chenjw.knife.core.Printer;
@@ -11,6 +14,11 @@ import com.chenjw.knife.core.packet.ClosePacket;
 import com.chenjw.knife.core.packet.ResultPacket;
 import com.chenjw.knife.core.packet.TextPacket;
 import com.chenjw.knife.core.result.Result;
+import com.chenjw.knife.core.result.divide.BodyElement;
+import com.chenjw.knife.core.result.divide.Dividable;
+import com.chenjw.knife.core.result.divide.FooterFragment;
+import com.chenjw.knife.core.result.divide.HeaderFragment;
+import com.chenjw.knife.utils.GlobalIdHelper;
 
 public class Agent {
 	private static AgentInfo agentInfo = null;
@@ -50,8 +58,36 @@ public class Agent {
 		}
 	}
 
-	public static void sendResult(Result<?> r) {
-		send(new ResultPacket(r));
+	public static void sendResult(Result r) {
+		if (r != null && r.isSuccess() && r.getContent() != null
+				&& (r.getContent() instanceof Dividable)) {
+			sendDividableResult((Dividable) r.getContent());
+		} else {
+			directSendResult(r);
+		}
+	}
+
+	private static void sendDividableResult(Dividable dObj) {
+		String id = GlobalIdHelper.getGlobalId();
+		List<Object> objs = new ArrayList<Object>();
+		dObj.divide(objs);
+		HeaderFragment header = new HeaderFragment();
+		header.setId(id);
+		header.setCount(objs.size());
+		header.setType(dObj.getClass().getName());
+		directSendResult(ResultHelper.newResult(header));
+		int i = 0;
+		for (Object obj : objs) {
+			BodyElement fragment = new BodyElement();
+			fragment.setId(id);
+			fragment.setContent(obj);
+			fragment.setIndex(i);
+			directSendResult(ResultHelper.newResult(fragment));
+			i++;
+		}
+		FooterFragment footer = new FooterFragment();
+		footer.setId(id);
+		directSendResult(ResultHelper.newResult(footer));
 	}
 
 	public static void send(Packet command) {
@@ -60,6 +96,10 @@ public class Agent {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void directSendResult(Result result) {
+		send(new ResultPacket(result));
 	}
 
 	public static boolean isDebugOn() {

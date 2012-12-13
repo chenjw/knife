@@ -85,7 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="dir_f7474e4c48fc4e9821194d5a90653f49.html">java</a></li><li class="navelem"><a class="el" href="dir_5ca8fb9f6ca06b822204a1d190f20110.html">com</a></li><li class="navelem"><a class="el" href="dir_c72cee276ec01819a356f15b5a562f9a.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_82a3dbbfc66fbeedeb54968e60a75b82.html">knife</a></li><li class="navelem"><a class="el" href="dir_ef06a12e4e1799194d557302235cf0f7.html">agent</a></li><li class="navelem"><a class="el" href="dir_b88ce5d570e2817bd3243aae43d8b3f5.html">handler</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_d2cb48a05ceaa5ebcfe25be84c2916e6.html">server</a></li><li class="navelem"><a class="el" href="dir_db60037098d8b47100735153655396f8.html">java</a></li><li class="navelem"><a class="el" href="dir_3b925310fada0a2c5fa4aee29acc23fc.html">com</a></li><li class="navelem"><a class="el" href="dir_7252fe0bda32ecbaddf0ce0a10b4b18c.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_b5fca9b5538ff3d5be2b48a6d908a6e6.html">knife</a></li><li class="navelem"><a class="el" href="dir_5008b264276ab8b7de0403f0bddaa424.html">agent</a></li><li class="navelem"><a class="el" href="dir_a2996f569b437c3cdb06a55a45094fee.html">handler</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -126,11 +126,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.filter.TimingFilter;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.filter.TimingStopFilter;</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.filter.TraceMethodFilter;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.manager.ContextManager;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.service.ContextService;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ClassLoaderHelper;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.NativeHelper;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ReflectHelper;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ResultHelper;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ResultHelper;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.ReflectHelper;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.StringHelper;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1TraceCommandHandler.html">   41</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1TraceCommandHandler.html">TraceCommandHandler</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandHandler.html">CommandHandler</a> {</div>
@@ -227,7 +227,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        m = m.trim();</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        Method method = null;</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <span class="keywordflow">if</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper.html">StringHelper</a>.isNumeric(m)) {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            method = ((Method[]) <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1manager_1_1ContextManager.html">ContextManager</a>.getInstance().get(</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            method = ((Method[]) <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService.html">ContextService</a>.getInstance().get(</div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html">Constants</a>.METHOD_LIST))[Integer.parseInt(m)];</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        } <span class="keywordflow">else</span> {</div>
@@ -244,7 +244,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;                            + className + <span class="stringliteral">&quot; not found!&quot;</span>));</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;                    <span class="keywordflow">return</span> null;</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                }</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                Method[] methods = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ReflectHelper.html">ReflectHelper</a>.getMethods(clazz);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                Method[] methods = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1ReflectHelper.html">ReflectHelper</a>.getMethods(clazz);</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                <span class="keywordflow">for</span> (Method tm : methods) {</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                    <span class="keywordflow">if</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper.html">StringHelper</a>.equals(tm.getName(), m)) {</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                        <span class="keywordflow">if</span> (Modifier.isStatic(tm.getModifiers())) {</div>
@@ -254,7 +254,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;                    }</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                }</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                Object obj = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1manager_1_1ContextManager.html">ContextManager</a>.getInstance().get(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html">Constants</a>.THIS);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                Object obj = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService.html">ContextService</a>.getInstance().get(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html">Constants</a>.THIS);</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;                <span class="keywordflow">if</span> (obj == null) {</div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newErrorResult(<span class="stringliteral">&quot;not found!&quot;</span>));</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;                    <span class="keywordflow">return</span> null;</div>
@@ -277,7 +277,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;            methodInfo.setClazz(method.getDeclaringClass());</div>
 <div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;            methodInfo.setThisObject(null);</div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            Object thisObject = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1manager_1_1ContextManager.html">ContextManager</a>.getInstance()</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;            Object thisObject = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService.html">ContextService</a>.getInstance()</div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;                    .get(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html">Constants</a>.THIS);</div>
 <div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            methodInfo.setThisObject(thisObject);</div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            methodInfo.setClazz(thisObject.getClass());</div>
@@ -310,7 +310,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Dec 7 2012 10:17:20 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Dec 13 2012 15:45:00 for knife doc by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

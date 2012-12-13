@@ -2,7 +2,7 @@ package com.chenjw.knife.core.result;
 
 import java.io.Serializable;
 
-public class Result<T> implements Serializable {
+public class Result implements Serializable {
 
 	private static final long serialVersionUID = -1029895615419256975L;
 
@@ -11,7 +11,7 @@ public class Result<T> implements Serializable {
 	private String errorMessage;
 	private String errorTrace;
 
-	private T content;
+	private Object content;
 
 	public boolean isSuccess() {
 		return isSuccess;
@@ -21,11 +21,11 @@ public class Result<T> implements Serializable {
 		this.isSuccess = isSuccess;
 	}
 
-	public T getContent() {
+	public Object getContent() {
 		return content;
 	}
 
-	public void setContent(T content) {
+	public void setContent(Object content) {
 		this.content = content;
 	}
 

@@ -12,12 +12,12 @@ import com.chenjw.knife.agent.event.MethodStartEvent;
 import com.chenjw.knife.agent.service.InvokeDepthService;
 import com.chenjw.knife.agent.service.ObjectRecordService;
 import com.chenjw.knife.agent.service.TimingService;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
 import com.chenjw.knife.core.model.MethodExceptionEndInfo;
 import com.chenjw.knife.core.model.MethodReturnEndInfo;
 import com.chenjw.knife.core.model.MethodStartInfo;
 import com.chenjw.knife.core.model.ObjectInfo;
-import com.chenjw.knife.core.result.Result;
 
 public class InvokePrintFilter implements Filter {
 
@@ -50,10 +50,7 @@ public class InvokePrintFilter implements Filter {
 		info.setLineNum(event.getLineNum());
 		info.setFileName(event.getFileName());
 		info.setDepth(InvokeDepthService.getInstance().getDep());
-		Result<MethodStartInfo> result = new Result<MethodStartInfo>();
-		result.setContent(info);
-		result.setSuccess(true);
-		Agent.sendResult(result);
+		Agent.sendResult(ResultHelper.newResult(info));
 
 	}
 
@@ -76,10 +73,7 @@ public class InvokePrintFilter implements Filter {
 		info.setDepth(dep);
 		info.setTime(TimingService.getInstance().getMillisInterval(
 				String.valueOf(dep)));
-		Result<MethodReturnEndInfo> result = new Result<MethodReturnEndInfo>();
-		result.setContent(info);
-		result.setSuccess(true);
-		Agent.sendResult(result);
+		Agent.sendResult(ResultHelper.newResult(info));
 	}
 
 	protected void onExceptionEnd(MethodExceptionEndEvent event) {
@@ -95,10 +89,7 @@ public class InvokePrintFilter implements Filter {
 		info.setDepth(dep);
 		info.setTime(TimingService.getInstance().getMillisInterval(
 				String.valueOf(dep)));
-		Result<MethodExceptionEndInfo> result = new Result<MethodExceptionEndInfo>();
-		result.setContent(info);
-		result.setSuccess(true);
-		Agent.sendResult(result);
+		Agent.sendResult(ResultHelper.newResult(info));
 
 	}
 

@@ -3,8 +3,8 @@ package com.chenjw.knife.core.packet;
 import java.io.Serializable;
 import java.util.ServiceLoader;
 
-import com.chenjw.knife.core.ObjectSerializer;
 import com.chenjw.knife.core.Packet;
+import com.chenjw.knife.core.serializer.ObjectSerializer;
 
 public abstract class ObjectPacket<T extends Serializable> implements Packet {
 

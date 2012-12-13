@@ -34,8 +34,8 @@ import com.chenjw.knife.agent.filter.TraceMethodFilter;
 import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.NativeHelper;
-import com.chenjw.knife.agent.utils.ReflectHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
+import com.chenjw.knife.utils.ReflectHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public class TraceCommandHandler implements CommandHandler {

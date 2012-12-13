@@ -43,7 +43,7 @@ public class DefaultVMConnection implements VMConnection {
 				msg.setName("close");
 				try {
 					if (isConnected) {
-						sendCommand(new CommandPacket(msg));
+						sendPacket(new CommandPacket(msg));
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,16 +58,17 @@ public class DefaultVMConnection implements VMConnection {
 				socket = new Socket();
 				socket.connect(new InetSocketAddress(ip, port), 3000);
 			} catch (Exception e) {
-				throw new IOException(ip+":"+port+" 连接不上，请确保目标机器防火墙端口已打开！",e);
+				throw new IOException(ip + ":" + port
+						+ " 连接不上，请确保目标机器防火墙端口已打开！", e);
 			}
-			try{
+			try {
 				is = socket.getInputStream();
 				os = socket.getOutputStream();
 				addShutdownHook();
 				isConnected = true;
 				break;
 			} catch (Exception e) {
-				
+
 			}
 			try {
 				Thread.sleep(2000);
@@ -84,11 +85,11 @@ public class DefaultVMConnection implements VMConnection {
 	}
 
 	@Override
-	public void sendCommand(CommandPacket command) throws Exception {
+	public void sendPacket(Packet packet) throws Exception {
 		if (!isConnected) {
 			throw new Exception("not ready!");
 		}
-		PacketResolver.write(command, os);
+		PacketResolver.write(packet, os);
 	}
 
 	@Override

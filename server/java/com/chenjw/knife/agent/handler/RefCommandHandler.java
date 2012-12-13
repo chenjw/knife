@@ -16,7 +16,6 @@ import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
 import com.chenjw.knife.core.model.ObjectInfo;
 import com.chenjw.knife.core.model.ReferenceListInfo;
-import com.chenjw.knife.core.result.Result;
 
 public class RefCommandHandler implements CommandHandler {
 
@@ -59,10 +58,7 @@ public class RefCommandHandler implements CommandHandler {
 		}
 		info.setReferences(references.toArray(new ObjectInfo[references.size()]));
 
-		Result<ReferenceListInfo> result = new Result<ReferenceListInfo>();
-		result.setContent(info);
-		result.setSuccess(true);
-		Agent.sendResult(result);
+		Agent.sendResult(ResultHelper.newResult(info));
 
 	}
 

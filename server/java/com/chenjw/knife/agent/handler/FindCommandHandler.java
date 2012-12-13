@@ -18,7 +18,6 @@ import com.chenjw.knife.core.model.ClassInfo;
 import com.chenjw.knife.core.model.ClassListInfo;
 import com.chenjw.knife.core.model.InstanceListInfo;
 import com.chenjw.knife.core.model.ObjectInfo;
-import com.chenjw.knife.core.result.Result;
 import com.chenjw.knife.utils.StringHelper;
 
 public class FindCommandHandler implements CommandHandler {
@@ -74,10 +73,7 @@ public class FindCommandHandler implements CommandHandler {
 					info.setClasses(cInfoList.toArray(new ClassInfo[cInfoList
 							.size()]));
 					info.setExpression(className);
-					Result<ClassListInfo> result = new Result<ClassListInfo>();
-					result.setContent(info);
-					result.setSuccess(true);
-					Agent.sendResult(result);
+					Agent.sendResult(ResultHelper.newResult(info));
 					return;
 				} else if (likeClazz.length == 1) {
 					clazz = likeClazz[0];
@@ -102,10 +98,7 @@ public class FindCommandHandler implements CommandHandler {
 		}
 		info.setInstances(cInfoList.toArray(new ObjectInfo[cInfoList.size()]));
 		info.setClassName(clazz.getName());
-		Result<InstanceListInfo> result = new Result<InstanceListInfo>();
-		result.setContent(info);
-		result.setSuccess(true);
-		Agent.sendResult(result);
+		Agent.sendResult(ResultHelper.newResult(info));
 	}
 
 	public void declareArgs(ArgDef argDef) {
