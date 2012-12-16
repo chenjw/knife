@@ -1,33 +1,43 @@
 package com.chenjw.knife.agent.core;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.ServiceLoader;
 
-
 public class ServiceRegistry {
-	private static List<Lifecycle> services = new ArrayList<Lifecycle>();
+
+	private static Map<Class<?>, Lifecycle> services = new LinkedHashMap<Class<?>, Lifecycle>();
 	static {
-		for (Lifecycle service : ServiceLoader.load(Lifecycle.class,
-				ServiceRegistry.class.getClassLoader())) {
-			services.add(service);
+		try {
+			for (Lifecycle service : ServiceLoader.load(Lifecycle.class,
+					ServiceRegistry.class.getClassLoader())) {
+				services.put(service.getClass(), service);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends Lifecycle> T getService(Class<T> clazz) {
+		return (T) services.get(clazz);
 	}
 
 	public static void init() {
-		for (Lifecycle service : services) {
+		for (Lifecycle service : services.values()) {
 			service.init();
 		}
 	}
 
 	public static void clear() {
-		for (Lifecycle service : services) {
+		for (Lifecycle service : services.values()) {
 			service.clear();
 		}
 	}
 
 	public static void close() {
-		for (Lifecycle service : services) {
+		for (Lifecycle service : services.values()) {
 			service.close();
 		}
 	}

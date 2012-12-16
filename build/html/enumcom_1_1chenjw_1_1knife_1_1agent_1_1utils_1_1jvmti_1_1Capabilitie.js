@@ -1,6 +1,7 @@
 var enumcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1jvmti_1_1Capabilitie =
 [
     [ "getIndex", "enumcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1jvmti_1_1Capabilitie.html#a8b3dfa6112645b5f0a882a01d5d4a142", null ],
+    [ "isNeed", "enumcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1jvmti_1_1Capabilitie.html#ad2d08dced3e85fa2575c99462437775b", null ],
     [ "can_access_local_variables", "enumcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1jvmti_1_1Capabilitie.html#aefaffd01f63d05d7f2b1c2973745cb16", null ],
     [ "can_force_early_return", "enumcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1jvmti_1_1Capabilitie.html#aa58f32073a38c6801e1f57b021d77323", null ],
     [ "can_generate_all_class_hook_events", "enumcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1jvmti_1_1Capabilitie.html#adb76f16ad5ad0ce92e3bd51510edbf8e", null ],

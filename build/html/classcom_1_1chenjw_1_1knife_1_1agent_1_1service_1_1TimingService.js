@@ -6,7 +6,6 @@ var classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService =
     [ "close", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html#a16862240a82fb84d5ecc1e54e39ca80e", null ],
     [ "end", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html#a072899ecff9508c6cc4e466364ec05f0", null ],
     [ "end", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html#af03e4f6371a759f82e2b771b8e3fc265", null ],
-    [ "getInstance", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html#ae0bcc9a09bbc16a440626c766634ff18", null ],
     [ "getMillisInterval", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html#a31e072c2f0d8042cef67235a90ae5dd8", null ],
     [ "getMillisInterval", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html#a289295c066f66e7a0059d1182a70264e", null ],
     [ "getNanosInterval", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html#af0403713398a30e63be079338da54858", null ],

@@ -112,11 +112,12 @@ var hierarchy =
     [ "com.chenjw.knife.core.Printer.Level", "enumcom_1_1chenjw_1_1knife_1_1core_1_1Printer_1_1Level.html", null ],
     [ "com.chenjw.knife.agent.core.Lifecycle", "interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1Lifecycle.html", [
       [ "com.chenjw.knife.agent.service.ByteCodeService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ByteCodeService.html", null ],
+      [ "com.chenjw.knife.agent.service.CheckService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1CheckService.html", null ],
       [ "com.chenjw.knife.agent.service.ContextService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService.html", null ],
       [ "com.chenjw.knife.agent.service.HistoryService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1HistoryService.html", null ],
       [ "com.chenjw.knife.agent.service.InstrumentService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InstrumentService.html", null ],
       [ "com.chenjw.knife.agent.service.InvokeDepthService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InvokeDepthService.html", null ],
-      [ "com.chenjw.knife.agent.service.ObjectRecordService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ObjectRecordService.html", null ],
+      [ "com.chenjw.knife.agent.service.ObjectHolderService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ObjectHolderService.html", null ],
       [ "com.chenjw.knife.agent.service.PrinterService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1PrinterService.html", null ],
       [ "com.chenjw.knife.agent.service.SystemTagService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1SystemTagService.html", null ],
       [ "com.chenjw.knife.agent.service.TimingService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html", null ]

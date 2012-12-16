@@ -1,6 +1,8 @@
 package com.chenjw.knife.utils;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 public class StringHelper {
@@ -104,6 +106,73 @@ public class StringHelper {
 		}
 
 		return buf.toString();
+	}
+
+	public static String join(Iterator<?> iterator, char separator) {
+		if (iterator == null)
+			return null;
+		if (!iterator.hasNext())
+			return "";
+		Object first = iterator.next();
+		if (!iterator.hasNext())
+			if (first == null) {
+				return null;
+			} else {
+				return first.toString();
+			}
+		StringBuffer buf = new StringBuffer(256);
+		if (first != null)
+			buf.append(first);
+		do {
+			if (!iterator.hasNext())
+				break;
+			buf.append(separator);
+			Object obj = iterator.next();
+			if (obj != null)
+				buf.append(obj);
+		} while (true);
+		return buf.toString();
+	}
+
+	public static String join(Iterator<?> iterator, String separator) {
+		if (iterator == null)
+			return null;
+		if (!iterator.hasNext())
+			return "";
+		Object first = iterator.next();
+		if (!iterator.hasNext())
+			if (first == null) {
+				return null;
+			} else {
+				return first.toString();
+			}
+		StringBuffer buf = new StringBuffer(256);
+		if (first != null)
+			buf.append(first);
+		do {
+			if (!iterator.hasNext())
+				break;
+			if (separator != null)
+				buf.append(separator);
+			Object obj = iterator.next();
+			if (obj != null)
+				buf.append(obj);
+		} while (true);
+		return buf.toString();
+	}
+
+	public static String join(Collection<?> collection, char separator) {
+		if (collection == null)
+			return null;
+		else
+			return join(collection.iterator(), separator);
+	}
+
+	public static String join(Collection<?> collection, String separator) {
+		if (collection == null)
+			return null;
+		else
+			return join(collection.iterator(), separator);
 	}
 
 	public static int indexOf(String str, char searchChar, int startPos) {

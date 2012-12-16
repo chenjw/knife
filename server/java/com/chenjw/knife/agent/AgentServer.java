@@ -39,7 +39,7 @@ public class AgentServer implements Runnable {
 
 	@Override
 	public void run() {
-		// NativeHelper.startClassLoadHook();
+
 		Socket socket = null;
 		try {
 			socket = serverSocket.accept();
@@ -59,7 +59,7 @@ public class AgentServer implements Runnable {
 				}
 			}
 		} catch (Exception e) {
-			// e.printStackTrace();
+			e.printStackTrace();
 		} finally {
 			if (socket != null) {
 				try {

@@ -4,13 +4,7 @@ import com.chenjw.knife.agent.core.Lifecycle;
 
 public class InvokeDepthService implements Lifecycle {
 
-	private static final InvokeDepthService INSTANCE = new InvokeDepthService();
-
 	private ThreadLocal<Integer> dep = new ThreadLocal<Integer>();
-
-	public static InvokeDepthService getInstance() {
-		return INSTANCE;
-	}
 
 	private Integer getStack() {
 		Integer stack = dep.get();

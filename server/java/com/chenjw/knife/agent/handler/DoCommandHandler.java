@@ -8,6 +8,7 @@ import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
+import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.NativeHelper;
@@ -44,7 +45,7 @@ public class DoCommandHandler implements CommandHandler {
 
 	private void do1(Args args, CommandDispatcher dispatcher) {
 		init();
-		ContextService.getInstance().put(Constants.THIS,
+		ServiceRegistry.getService(ContextService.class).put(Constants.THIS,
 				getBean("applyService"));
 		// dispatcher.dispatch(new Command("invoke",
 		// "-f com.chenjw.* apply({\"id\":1})"));
@@ -64,7 +65,7 @@ public class DoCommandHandler implements CommandHandler {
 
 	private void do4(Args args, CommandDispatcher dispatcher) {
 		init();
-		ContextService.getInstance().put(Constants.THIS,
+		ServiceRegistry.getService(ContextService.class).put(Constants.THIS,
 				getBean("applyService"));
 		// dispatcher.dispatch(new Command("invoke",
 		// "-f com.chenjw.* apply({\"id\":1})"));
@@ -74,7 +75,7 @@ public class DoCommandHandler implements CommandHandler {
 
 	private void do2(Args args, CommandDispatcher dispatcher) {
 		init();
-		ContextService.getInstance().put(Constants.THIS,
+		ServiceRegistry.getService(ContextService.class).put(Constants.THIS,
 				getBean("pageCommonDataFeeder"));
 		dispatcher.dispatch(new Command("trace", "getData"));
 	}

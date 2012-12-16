@@ -1,6 +1,7 @@
 package com.chenjw.knife.agent.filter;
 
 import com.chenjw.knife.agent.Profiler;
+import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.event.Event;
 import com.chenjw.knife.agent.event.MethodExceptionEndEvent;
 import com.chenjw.knife.agent.event.MethodReturnEndEvent;
@@ -16,7 +17,8 @@ public class InvokeFinishFilter implements Filter {
 				chain.doFilter(event);
 			} finally {
 				// Agent.println(InvokeDepth.getDep() + "");
-				if (InvokeDepthService.getInstance().getDep() == 0) {
+				if (ServiceRegistry.getService(InvokeDepthService.class)
+						.getDep() == 0) {
 					Profiler.listener = null;
 				}
 			}

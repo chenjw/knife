@@ -14,6 +14,7 @@ import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
+import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.filter.Depth0Filter;
 import com.chenjw.knife.agent.filter.DepthFilter;
 import com.chenjw.knife.agent.filter.EnterLeavePrintFilter;
@@ -132,8 +133,9 @@ public class TraceCommandHandler implements CommandHandler {
 		m = m.trim();
 		Method method = null;
 		if (StringHelper.isNumeric(m)) {
-			method = ((Method[]) ContextService.getInstance().get(
-					Constants.METHOD_LIST))[Integer.parseInt(m)];
+			method = ((Method[]) ServiceRegistry.getService(
+					ContextService.class).get(Constants.METHOD_LIST))[Integer
+					.parseInt(m)];
 
 		} else {
 			if (m.indexOf(".") != -1) {
@@ -159,7 +161,8 @@ public class TraceCommandHandler implements CommandHandler {
 					}
 				}
 			} else {
-				Object obj = ContextService.getInstance().get(Constants.THIS);
+				Object obj = ServiceRegistry.getService(ContextService.class)
+						.get(Constants.THIS);
 				if (obj == null) {
 					Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 					return null;
@@ -182,8 +185,8 @@ public class TraceCommandHandler implements CommandHandler {
 			methodInfo.setClazz(method.getDeclaringClass());
 			methodInfo.setThisObject(null);
 		} else {
-			Object thisObject = ContextService.getInstance()
-					.get(Constants.THIS);
+			Object thisObject = ServiceRegistry
+					.getService(ContextService.class).get(Constants.THIS);
 			methodInfo.setThisObject(thisObject);
 			methodInfo.setClazz(thisObject.getClass());
 		}

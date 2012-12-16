@@ -504,20 +504,12 @@ public class NativeHelper {
 
 	private native static void stopMethodTrace0();
 
-	private native static void checkCapabilities0(boolean[] result);
+	private native static boolean[] checkCapabilities0();
 
 	public static Map<Capabilitie, Boolean> checkCapabilities() {
-		boolean[] r = new boolean[41];
-		checkCapabilities0(r);
-		for (boolean b : r) {
-			if (b) {
-				throw new RuntimeException();
-			}
-
-		}
+		boolean[] r = checkCapabilities0();
 		Map<Capabilitie, Boolean> result = new HashMap<Capabilitie, Boolean>();
 		for (Capabilitie v : Capabilitie.values()) {
-
 			result.put(v, r[v.getIndex()]);
 		}
 		return result;

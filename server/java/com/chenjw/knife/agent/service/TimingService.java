@@ -11,8 +11,6 @@ import com.chenjw.knife.core.Printer;
 
 public class TimingService implements Lifecycle {
 
-	private static final TimingService INSTANCE = new TimingService();
-
 	private static final String DEFAULT_NAME = "DEFAULT";
 	private static final Printer DEFAULT_PRINTER = new Printer() {
 		@Override
@@ -28,10 +26,6 @@ public class TimingService implements Lifecycle {
 	private final Map<String, Long> RECORDS = new HashMap<String, Long>();
 	private final List<TimeSegment> PAUSE_SEGMENT_RECORDS = new ArrayList<TimeSegment>();
 	private volatile TimeSegment currentPauseSegment = null;
-
-	public static TimingService getInstance() {
-		return INSTANCE;
-	}
 
 	public boolean isPauseing() {
 		return currentPauseSegment == null;

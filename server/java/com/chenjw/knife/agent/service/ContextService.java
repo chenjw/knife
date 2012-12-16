@@ -4,19 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.chenjw.knife.agent.core.Lifecycle;
+import com.chenjw.knife.agent.core.ServiceRegistry;
 
 public class ContextService implements Lifecycle {
-	private static final ContextService INSTANCE = new ContextService();
 
 	private Map<String, Object> map = new HashMap<String, Object>();
-	{
-		SystemTagService.getInstance().registerSystemTag("SYSTEM_CONTEXT_MAP",
-				map);
-	}
-
-	public static ContextService getInstance() {
-		return INSTANCE;
-	}
 
 	public void put(String key, Object value) {
 		map.put(key, value);
@@ -31,6 +23,8 @@ public class ContextService implements Lifecycle {
 	}
 
 	public void init() {
+		ServiceRegistry.getService(SystemTagService.class).registerSystemTag(
+				"SYSTEM_CONTEXT_MAP", map);
 	}
 
 	@Override

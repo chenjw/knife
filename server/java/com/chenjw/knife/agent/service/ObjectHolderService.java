@@ -6,22 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 import com.chenjw.knife.agent.core.Lifecycle;
+import com.chenjw.knife.agent.core.ServiceRegistry;
 
-public class ObjectRecordService implements Lifecycle {
-	private static final ObjectRecordService INSTANCE = new ObjectRecordService();
+public class ObjectHolderService implements Lifecycle {
 
-	private Record record = new Record();
+	private ObjectHolder holder;
 
-	public static ObjectRecordService getInstance() {
-		return INSTANCE;
-	}
-
-	private Record getRecord() {
-		return record;
+	private ObjectHolder getObjectHolder() {
+		return holder;
 	}
 
 	public int record(Object obj) {
-		Record r = getRecord();
+		ObjectHolder r = getObjectHolder();
 		return r.add(obj);
 	}
 
@@ -35,19 +31,20 @@ public class ObjectRecordService implements Lifecycle {
 
 	public Object get(int num) {
 
-		Record r = getRecord();
+		ObjectHolder r = getObjectHolder();
 		return r.get(num);
 	}
 
-	private static class Record {
+	private static class ObjectHolder {
 		private List<Object> list = new ArrayList<Object>();
 
 		private Map<Object, Integer> map = new IdentityHashMap<Object, Integer>();
-		{
-			SystemTagService.getInstance().registerSystemTag(
-					"SYSTEM_RECORD_LIST", list);
-			SystemTagService.getInstance().registerSystemTag(
-					"SYSTEM_RECORD_MAP", map);
+
+		public ObjectHolder() {
+			ServiceRegistry.getService(SystemTagService.class)
+					.registerSystemTag("SYSTEM_RECORD_LIST", list);
+			ServiceRegistry.getService(SystemTagService.class)
+					.registerSystemTag("SYSTEM_RECORD_MAP", map);
 		}
 
 		public void clear() {
@@ -79,12 +76,12 @@ public class ObjectRecordService implements Lifecycle {
 
 	@Override
 	public void init() {
-
+		this.holder = new ObjectHolder();
 	}
 
 	@Override
 	public void clear() {
-		record.clear();
+		holder.clear();
 
 	}
 

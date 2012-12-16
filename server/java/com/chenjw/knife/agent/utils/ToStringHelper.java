@@ -8,6 +8,7 @@ import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.service.SystemTagService;
 
 public class ToStringHelper {
@@ -43,7 +44,8 @@ public class ToStringHelper {
 		if (obj == null) {
 			return null;
 		}
-		String name = SystemTagService.getInstance().findSystemName(obj);
+		String name = ServiceRegistry.getService(SystemTagService.class)
+				.findSystemName(obj);
 		if (name != null) {
 			return "KNIFE_OBJECT_HOLDER";
 		}
@@ -160,7 +162,8 @@ public class ToStringHelper {
 		if (obj == null) {
 			return null;
 		}
-		String name = SystemTagService.getInstance().findSystemName(obj);
+		String name = ServiceRegistry.getService(SystemTagService.class)
+				.findSystemName(obj);
 		if (name != null) {
 			return name;
 		}

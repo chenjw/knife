@@ -5,7 +5,8 @@ import com.chenjw.knife.agent.args.ArgDef;
 import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
-import com.chenjw.knife.agent.service.ObjectRecordService;
+import com.chenjw.knife.agent.core.ServiceRegistry;
+import com.chenjw.knife.agent.service.ObjectHolderService;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.utils.ReflectHelper;
 import com.chenjw.knife.utils.invoke.InvokeResult;
@@ -26,7 +27,8 @@ public class SpringCommandHandler implements CommandHandler {
 		} else {
 			Agent.sendResult(ResultHelper
 					.newStringResult("spring context created "
-							+ ObjectRecordService.getInstance().toId(context)));
+							+ ServiceRegistry.getService(
+									ObjectHolderService.class).toId(context)));
 		}
 	}
 
@@ -36,7 +38,8 @@ public class SpringCommandHandler implements CommandHandler {
 		// context.setConfigLocation("classpath:com/chenjw/knife/server/context.xml");
 		// // context.setParent(parent)
 		// context.refresh();
-		Object parent = ObjectRecordService.getInstance().get(parentId);
+		Object parent = ServiceRegistry.getService(ObjectHolderService.class)
+				.get(parentId);
 		if (parent == null) {
 			return null;
 		}

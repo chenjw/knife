@@ -107,97 +107,100 @@ $(document).ready(function(){initNavTree('SetCommandHandler_8java_source.html','
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.constants.Constants;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.CommandDispatcher;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.CommandHandler;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.service.ContextService;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.NativeHelper;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ParseHelper;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ResultHelper;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.StringHelper;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1SetCommandHandler.html">   19</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1SetCommandHandler.html">SetCommandHandler</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandHandler.html">CommandHandler</a> {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> setField(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1Args.html">Args</a> args) {</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        String fieldName = args.arg(<span class="stringliteral">&quot;fieldname&quot;</span>);</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        String value = args.arg(<span class="stringliteral">&quot;new-value&quot;</span>);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        Object obj = null;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        Field field = null;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordflow">if</span> (fieldName.indexOf(<span class="stringliteral">&quot;.&quot;</span>) != -1) {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            String className = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper.html">StringHelper</a>.substringBeforeLast(fieldName, <span class="stringliteral">&quot;.&quot;</span>);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            fieldName = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper.html">StringHelper</a>.substringAfterLast(fieldName, <span class="stringliteral">&quot;.&quot;</span>);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            Class&lt;?&gt; clazz = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Helper.html">Helper</a>.findClass(className);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            <span class="keywordflow">if</span> (clazz == null) {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                        .newErrorResult(<span class="stringliteral">&quot;class not found!&quot;</span>));</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            field = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.findStaticField(clazz, fieldName);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (args.arg(<span class="stringliteral">&quot;-s&quot;</span>) != null) {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            obj = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService.html">ContextService</a>.getInstance().get(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html">Constants</a>.THIS);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">if</span> (obj == null) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newErrorResult(<span class="stringliteral">&quot;not found!&quot;</span>));</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            Class&lt;?&gt; clazz = obj.getClass();</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">if</span> (clazz == null) {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                        .newErrorResult(<span class="stringliteral">&quot;class not found!&quot;</span>));</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            }</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            field = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.findStaticField(clazz, fieldName);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            obj = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService.html">ContextService</a>.getInstance().get(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html">Constants</a>.THIS);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">if</span> (obj == null) {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newErrorResult(<span class="stringliteral">&quot; not found!&quot;</span>));</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            field = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.findField(obj, fieldName);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;            <span class="keywordflow">if</span> (field == null) {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                Class&lt;?&gt; clazz = obj.getClass();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                field = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.findStaticField(clazz, fieldName);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        }</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="keywordflow">if</span> (field == null) {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newErrorResult(<span class="stringliteral">&quot;field &quot;</span> + fieldName</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    + <span class="stringliteral">&quot; not found!&quot;</span>));</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">return</span>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        Object newValue = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ParseHelper.html">ParseHelper</a>.parseValue(value, field.getType());</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        setFieldValue(obj, field, newValue);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newStringResult(<span class="stringliteral">&quot;finished!&quot;</span>));</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> setFieldValue(Object obj, Field field, Object newValue) {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">if</span> (Modifier.isStatic(field.getModifiers())) {</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.setStaticFieldValue(field.getDeclaringClass(), field,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                    newValue);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.setFieldValue(obj, field, newValue);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        }</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> handle(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1Args.html">Args</a> args, <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandDispatcher.html">CommandDispatcher</a> dispatcher) {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        setField(args);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    @Override</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> declareArgs(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">ArgDef</a> argDef) {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.ServiceRegistry;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.service.ContextService;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.NativeHelper;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ParseHelper;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ResultHelper;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.StringHelper;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1SetCommandHandler.html">   20</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1SetCommandHandler.html">SetCommandHandler</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandHandler.html">CommandHandler</a> {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> setField(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1Args.html">Args</a> args) {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        String fieldName = args.arg(<span class="stringliteral">&quot;fieldname&quot;</span>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        String value = args.arg(<span class="stringliteral">&quot;new-value&quot;</span>);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        Object obj = null;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        Field field = null;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="keywordflow">if</span> (fieldName.indexOf(<span class="stringliteral">&quot;.&quot;</span>) != -1) {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            String className = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper.html">StringHelper</a>.substringBeforeLast(fieldName, <span class="stringliteral">&quot;.&quot;</span>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            fieldName = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper.html">StringHelper</a>.substringAfterLast(fieldName, <span class="stringliteral">&quot;.&quot;</span>);</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;            Class&lt;?&gt; clazz = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Helper.html">Helper</a>.findClass(className);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            <span class="keywordflow">if</span> (clazz == null) {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                        .newErrorResult(<span class="stringliteral">&quot;class not found!&quot;</span>));</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            field = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.findStaticField(clazz, fieldName);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (args.arg(<span class="stringliteral">&quot;-s&quot;</span>) != null) {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            obj = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html">ServiceRegistry</a>.getService(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService.html">ContextService</a>.class).get(</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html">Constants</a>.THIS);</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <span class="keywordflow">if</span> (obj == null) {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newErrorResult(<span class="stringliteral">&quot;not found!&quot;</span>));</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            Class&lt;?&gt; clazz = obj.getClass();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">if</span> (clazz == null) {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                        .newErrorResult(<span class="stringliteral">&quot;class not found!&quot;</span>));</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            field = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.findStaticField(clazz, fieldName);</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            obj = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html">ServiceRegistry</a>.getService(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService.html">ContextService</a>.class).get(</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html">Constants</a>.THIS);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            <span class="keywordflow">if</span> (obj == null) {</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newErrorResult(<span class="stringliteral">&quot; not found!&quot;</span>));</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            }</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            field = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.findField(obj, fieldName);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            <span class="keywordflow">if</span> (field == null) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                Class&lt;?&gt; clazz = obj.getClass();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                field = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.findStaticField(clazz, fieldName);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">if</span> (field == null) {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newErrorResult(<span class="stringliteral">&quot;field &quot;</span> + fieldName</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                    + <span class="stringliteral">&quot; not found!&quot;</span>));</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        Object newValue = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ParseHelper.html">ParseHelper</a>.parseValue(value, field.getType());</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        setFieldValue(obj, field, newValue);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newStringResult(<span class="stringliteral">&quot;finished!&quot;</span>));</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> setFieldValue(Object obj, Field field, Object newValue) {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">if</span> (Modifier.isStatic(field.getModifiers())) {</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.setStaticFieldValue(field.getDeclaringClass(), field,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                    newValue);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.setFieldValue(obj, field, newValue);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> handle(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1Args.html">Args</a> args, <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandDispatcher.html">CommandDispatcher</a> dispatcher) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        setField(args);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        argDef.setDefinition(<span class="stringliteral">&quot;set [-s] &lt;fieldname&gt; &lt;new-value&gt;&quot;</span>);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    }</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    @Override</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> declareArgs(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">ArgDef</a> argDef) {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        argDef.setDefinition(<span class="stringliteral">&quot;set [-s] &lt;fieldname&gt; &lt;new-value&gt;&quot;</span>);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d2cb48a05ceaa5ebcfe25be84c2916e6.html">server</a></li><li class="navelem"><a class="el" href="dir_db60037098d8b47100735153655396f8.html">java</a></li><li class="navelem"><a class="el" href="dir_3b925310fada0a2c5fa4aee29acc23fc.html">com</a></li><li class="navelem"><a class="el" href="dir_7252fe0bda32ecbaddf0ce0a10b4b18c.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_b5fca9b5538ff3d5be2b48a6d908a6e6.html">knife</a></li><li class="navelem"><a class="el" href="dir_5008b264276ab8b7de0403f0bddaa424.html">agent</a></li><li class="navelem"><a class="el" href="dir_a2996f569b437c3cdb06a55a45094fee.html">handler</a></li><li class="navelem"><b>SetCommandHandler.java</b></li>
-    <li class="footer">Generated on Sun Dec 16 2012 16:22:59 for knife doc by
+    <li class="footer">Generated on Sun Dec 16 2012 22:17:03 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

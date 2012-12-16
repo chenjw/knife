@@ -12,17 +12,12 @@ import com.chenjw.knife.utils.FileHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public class ByteCodeService implements Lifecycle {
-	private static final ByteCodeService INSTANCE = new ByteCodeService();
 
 	private Map<Class<?>, byte[]> backupMap = new ConcurrentHashMap<Class<?>, byte[]>();
 
 	private Map<Class<?>, byte[]> defineingMap = new ConcurrentHashMap<Class<?>, byte[]>();
 
 	private Map<Class<?>, byte[]> definedMap = new ConcurrentHashMap<Class<?>, byte[]>();
-
-	public static ByteCodeService getInstance() {
-		return INSTANCE;
-	}
 
 	/**
 	 * 保存原始类
@@ -44,14 +39,14 @@ public class ByteCodeService implements Lifecycle {
 	public byte[] getByteCode(Class<?> clazz) {
 		byte[] defineingBytes = defineingMap.get(clazz);
 		if (defineingBytes != null) {
-			Agent.debug("[ByteCodeManager] getDefineingByteCode " + clazz
-					+ "(" + defineingBytes.length + ")");
+			Agent.debug("[ByteCodeManager] getDefineingByteCode " + clazz + "("
+					+ defineingBytes.length + ")");
 			return defineingBytes;
 		} else {
 			load(clazz);
 			byte[] defined = definedMap.get(clazz);
-			Agent.debug("[ByteCodeManager] getNewDefineByteCode " + clazz
-					+ "(" + defined.length + ")");
+			Agent.debug("[ByteCodeManager] getNewDefineByteCode " + clazz + "("
+					+ defined.length + ")");
 			return defined;
 		}
 	}

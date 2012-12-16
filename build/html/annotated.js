@@ -81,11 +81,12 @@ var annotated =
             ] ],
             [ "service", null, [
               [ "ByteCodeService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ByteCodeService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ByteCodeService" ],
+              [ "CheckService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1CheckService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1CheckService" ],
               [ "ContextService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService" ],
               [ "HistoryService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1HistoryService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1HistoryService" ],
               [ "InstrumentService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InstrumentService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InstrumentService" ],
               [ "InvokeDepthService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InvokeDepthService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InvokeDepthService" ],
-              [ "ObjectRecordService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ObjectRecordService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ObjectRecordService" ],
+              [ "ObjectHolderService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ObjectHolderService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ObjectHolderService" ],
               [ "PrinterService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1PrinterService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1PrinterService" ],
               [ "SystemTagService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1SystemTagService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1SystemTagService" ],
               [ "TimingService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService" ]

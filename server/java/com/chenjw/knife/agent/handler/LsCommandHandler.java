@@ -17,8 +17,9 @@ import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
+import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.service.ContextService;
-import com.chenjw.knife.agent.service.ObjectRecordService;
+import com.chenjw.knife.agent.service.ObjectHolderService;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
@@ -76,11 +77,12 @@ public class LsCommandHandler implements CommandHandler {
 		ClassOrObject target = new ClassOrObject();
 		String className = args.arg("classname");
 		if (StringHelper.isBlank(className)) {
-			target.setObj(ContextService.getInstance().get(Constants.THIS));
+			target.setObj(ServiceRegistry.getService(ContextService.class).get(
+					Constants.THIS));
 
 		} else if (StringHelper.isNumeric(className)) {
-			target.setObj(ObjectRecordService.getInstance().get(
-					Integer.parseInt(className)));
+			target.setObj(ServiceRegistry.getService(ObjectHolderService.class)
+					.get(Integer.parseInt(className)));
 
 		} else {
 			target.setClazz(Helper.findClass(className));
@@ -104,8 +106,8 @@ public class LsCommandHandler implements CommandHandler {
 				info.setName(entry.getKey().getName());
 				if (entry.getValue() != null) {
 					ObjectInfo fValue = new ObjectInfo();
-					fValue.setObjectId(ObjectRecordService.getInstance().toId(
-							entry.getValue()));
+					fValue.setObjectId(ServiceRegistry.getService(
+							ObjectHolderService.class).toId(entry.getValue()));
 					fValue.setValueString(toString(args, entry.getValue()));
 					info.setValue(fValue);
 				}
@@ -121,8 +123,8 @@ public class LsCommandHandler implements CommandHandler {
 				info.setName(entry.getKey().getName());
 				if (entry.getValue() != null) {
 					ObjectInfo fValue = new ObjectInfo();
-					fValue.setObjectId(ObjectRecordService.getInstance().toId(
-							entry.getValue()));
+					fValue.setObjectId(ServiceRegistry.getService(
+							ObjectHolderService.class).toId(entry.getValue()));
 					fValue.setValueString(toString(args, entry.getValue()));
 					info.setValue(fValue);
 				}
@@ -171,8 +173,8 @@ public class LsCommandHandler implements CommandHandler {
 				}
 			}
 		}
-		ContextService.getInstance().put(Constants.METHOD_LIST,
-				list.toArray(new Method[list.size()]));
+		ServiceRegistry.getService(ContextService.class).put(
+				Constants.METHOD_LIST, list.toArray(new Method[list.size()]));
 		ClassMethodInfo info = new ClassMethodInfo();
 		info.setMethods(methodInfos.toArray(new MethodInfo[methodInfos.size()]));
 		Agent.sendResult(ResultHelper.newResult(info));
@@ -198,7 +200,8 @@ public class LsCommandHandler implements CommandHandler {
 				list.add(constructor);
 			}
 		}
-		ContextService.getInstance().put(Constants.CONSTRUCTOR_LIST,
+		ServiceRegistry.getService(ContextService.class).put(
+				Constants.CONSTRUCTOR_LIST,
 				list.toArray(new Constructor[list.size()]));
 		ClassConstructorInfo info = new ClassConstructorInfo();
 		info.setConstructors(constructorInfos
@@ -217,15 +220,15 @@ public class LsCommandHandler implements CommandHandler {
 
 		if ((target.getObj() instanceof Throwable)) {
 			ExceptionInfo info = new ExceptionInfo();
-			info.setObjectId(ObjectRecordService.getInstance().toId(
-					target.getObj()));
+			info.setObjectId(ServiceRegistry.getService(
+					ObjectHolderService.class).toId(target.getObj()));
 			info.setTraceString(ToStringHelper
 					.toExceptionTraceString((Throwable) target.getObj()));
 			Agent.sendResult(ResultHelper.newResult(info));
 		} else {
 			ObjectInfo info = new ObjectInfo();
-			info.setObjectId(ObjectRecordService.getInstance().toId(
-					target.getObj()));
+			info.setObjectId(ServiceRegistry.getService(
+					ObjectHolderService.class).toId(target.getObj()));
 			info.setValueString(toString(args, target.getObj()));
 			Agent.sendResult(ResultHelper.newResult(info));
 		}
@@ -245,8 +248,8 @@ public class LsCommandHandler implements CommandHandler {
 			for (int i = 0; i < Array.getLength(target.getObj()); i++) {
 				Object aObj = Array.get(target.getObj(), i);
 				ObjectInfo element = new ObjectInfo();
-				element.setObjectId(ObjectRecordService.getInstance()
-						.toId(aObj));
+				element.setObjectId(ServiceRegistry.getService(
+						ObjectHolderService.class).toId(aObj));
 				element.setValueString(toString(args, aObj));
 				elements.add(element);
 
@@ -258,8 +261,8 @@ public class LsCommandHandler implements CommandHandler {
 			List<ObjectInfo> elements = new ArrayList<ObjectInfo>();
 			for (Object aObj : (List<Object>) target.getObj()) {
 				ObjectInfo element = new ObjectInfo();
-				element.setObjectId(ObjectRecordService.getInstance()
-						.toId(aObj));
+				element.setObjectId(ServiceRegistry.getService(
+						ObjectHolderService.class).toId(aObj));
 				element.setValueString(toString(args, aObj));
 				elements.add(element);
 			}

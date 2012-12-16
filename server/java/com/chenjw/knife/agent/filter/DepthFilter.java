@@ -1,5 +1,6 @@
 package com.chenjw.knife.agent.filter;
 
+import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.event.Event;
 import com.chenjw.knife.agent.event.MethodExceptionEndEvent;
 import com.chenjw.knife.agent.event.MethodReturnEndEvent;
@@ -11,14 +12,14 @@ public class DepthFilter implements Filter {
 	@Override
 	public void doFilter(Event event, FilterChain chain) throws Exception {
 		if (event instanceof MethodStartEvent) {
-			InvokeDepthService.getInstance().enter();
+			ServiceRegistry.getService(InvokeDepthService.class).enter();
 			chain.doFilter(event);
 		} else if ((event instanceof MethodReturnEndEvent)
 				|| (event instanceof MethodExceptionEndEvent)) {
 			try {
 				chain.doFilter(event);
 			} finally {
-				InvokeDepthService.getInstance().leave();
+				ServiceRegistry.getService(InvokeDepthService.class).leave();
 			}
 
 		} else {

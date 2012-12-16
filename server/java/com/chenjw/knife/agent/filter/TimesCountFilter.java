@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.chenjw.knife.agent.Profiler;
+import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.event.Event;
 import com.chenjw.knife.agent.event.MethodEnterEvent;
 import com.chenjw.knife.agent.event.MethodExceptionEndEvent;
@@ -38,7 +39,7 @@ public class TimesCountFilter implements Filter {
 	@Override
 	public void doFilter(Event event, FilterChain chain) throws Exception {
 		if (event instanceof MethodEnterEvent) {
-			if (InvokeDepthService.getInstance().getDep() == -1) {
+			if (ServiceRegistry.getService(InvokeDepthService.class).getDep() == -1) {
 				if (decrementAndGet()) {
 					chain.doFilter(event);
 					Thread thread = Thread.currentThread();
@@ -46,7 +47,7 @@ public class TimesCountFilter implements Filter {
 				}
 			}
 		} else if (event instanceof MethodLeaveEvent) {
-			if (InvokeDepthService.getInstance().getDep() == 0) {
+			if (ServiceRegistry.getService(InvokeDepthService.class).getDep() == 0) {
 				chain.doFilter(event);
 				Thread thread = Thread.currentThread();
 				threadSet.remove(thread);

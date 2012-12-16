@@ -4,6 +4,5 @@ var classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InstrumentService =
     [ "buildTraceMethod", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InstrumentService.html#aba544a8479e14bb788e14c55efd102b9", null ],
     [ "clear", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InstrumentService.html#acbe24e12fbd8180ba02ebbbb4ce90e66", null ],
     [ "close", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InstrumentService.html#a37c7cd8923271116d762395e544a5df1", null ],
-    [ "getInstance", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InstrumentService.html#aabbead0d2045ffbe53435aa4dfda4e32", null ],
     [ "init", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InstrumentService.html#a16434ca02828e5f0fcf0227d7185f595", null ]
 ];

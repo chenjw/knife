@@ -11,16 +11,7 @@ import com.chenjw.knife.agent.utils.NativeHelper;
 
 public class SystemTagService implements Lifecycle {
 
-	private static final SystemTagService INSTANCE = new SystemTagService();
-
 	private Map<String, Object> systemTags = new HashMap<String, Object>();
-	{
-		registerSystemTag("SYSTEM_TAGS", systemTags);
-	}
-
-	public static SystemTagService getInstance() {
-		return INSTANCE;
-	}
 
 	public String findSystemName(Object obj) {
 		for (Entry<String, Object> entry : systemTags.entrySet()) {
@@ -53,7 +44,7 @@ public class SystemTagService implements Lifecycle {
 
 	@Override
 	public void init() {
-
+		registerSystemTag("SYSTEM_TAGS", systemTags);
 	}
 
 	@Override

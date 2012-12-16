@@ -15,6 +15,8 @@ void initJvmti(JNIEnv * env);
 
 void initJvmtiWithoutCapabilities(JNIEnv * env);
 
+void clearJvmti(JNIEnv * env);
+
 void releaseTags();
 
 #endif

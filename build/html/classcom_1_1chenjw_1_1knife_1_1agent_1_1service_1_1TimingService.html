@@ -94,7 +94,6 @@ $(document).ready(function(){initNavTree('classcom_1_1chenjw_1_1knife_1_1agent_1
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">com.chenjw.knife.agent.service.TimingService Class Reference</div>  </div>
@@ -169,12 +168,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b> ()</td></tr
 <tr class="memitem:a16862240a82fb84d5ecc1e54e39ca80e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a16862240a82fb84d5ecc1e54e39ca80e"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>close</b> ()</td></tr>
 <tr class="separator:a16862240a82fb84d5ecc1e54e39ca80e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ae0bcc9a09bbc16a440626c766634ff18"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0bcc9a09bbc16a440626c766634ff18"></a>
-static <a class="el" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html">TimingService</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getInstance</b> ()</td></tr>
-<tr class="separator:ae0bcc9a09bbc16a440626c766634ff18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -202,7 +195,7 @@ static <a class="el" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1Ti
 </div><div class="memdoc">
 <p>begin timing </p>
 
-<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00064">64</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
+<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00058">58</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
 <div class="fragment"><div class="line">                        {</div>
 <div class="line">        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html#a49296f425495b2f7680a916df3fbf040">begin</a>(DEFAULT_NAME);</div>
 <div class="line">    }</div>
@@ -238,7 +231,7 @@ static <a class="el" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1Ti
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00074">74</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
+<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00068">68</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
 <div class="fragment"><div class="line">                                   {</div>
 <div class="line">        RECORDS.put(name, System.nanoTime());</div>
 <div class="line">    }</div>
@@ -267,7 +260,7 @@ static <a class="el" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1Ti
 </div><div class="memdoc">
 <p>end timing </p>
 
-<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00081">81</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
+<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00075">75</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
 <div class="fragment"><div class="line">                      {</div>
 <div class="line">        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html#a072899ecff9508c6cc4e466364ec05f0">end</a>(DEFAULT_NAME);</div>
 <div class="line">        releasePauseSegmentRecords();</div>
@@ -304,7 +297,7 @@ static <a class="el" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1Ti
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00108">108</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
+<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00102">102</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
 <div class="fragment"><div class="line">                                 {</div>
 <div class="line">        RECORDS.remove(name);</div>
 <div class="line">    }</div>
@@ -333,7 +326,7 @@ static <a class="el" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1Ti
 </div><div class="memdoc">
 <p>pause timing </p>
 
-<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00043">43</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
+<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00037">37</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
 <div class="fragment"><div class="line">                        {</div>
 <div class="line">        <span class="keywordflow">if</span> (currentPauseSegment == null) {</div>
 <div class="line">            currentPauseSegment = <span class="keyword">new</span> TimeSegment();</div>
@@ -365,7 +358,7 @@ static <a class="el" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1Ti
 </div><div class="memdoc">
 <p>resume timing </p>
 
-<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00053">53</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
+<p>Definition at line <a class="el" href="TimingService_8java_source.html#l00047">47</a> of file <a class="el" href="TimingService_8java_source.html">TimingService.java</a>.</p>
 <div class="fragment"><div class="line">                         {</div>
 <div class="line">        <span class="keywordflow">if</span> (currentPauseSegment != null) {</div>
 <div class="line">            currentPauseSegment.setEnd(System.nanoTime());</div>
@@ -385,7 +378,7 @@ static <a class="el" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1Ti
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>com</b></li><li class="navelem"><b>chenjw</b></li><li class="navelem"><b>knife</b></li><li class="navelem"><b>agent</b></li><li class="navelem"><b>service</b></li><li class="navelem"><a class="el" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html">TimingService</a></li>
-    <li class="footer">Generated on Sun Dec 16 2012 16:23:00 for knife doc by
+    <li class="footer">Generated on Sun Dec 16 2012 22:17:03 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

@@ -126,6 +126,10 @@ void initJvmtiWithoutCapabilities(JNIEnv * env) {
 	}
 }
 
+void clearJvmti(JNIEnv * env){
+	jvmti = NULL;
+}
+
 jvmtiIterationControl iterate_cleanTag(jlong class_tag, jlong size,
 		jlong* tag_ptr, void* user_data) {
 	*tag_ptr = 0;

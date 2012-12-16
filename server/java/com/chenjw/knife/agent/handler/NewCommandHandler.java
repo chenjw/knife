@@ -8,8 +8,9 @@ import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
+import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.service.ContextService;
-import com.chenjw.knife.agent.service.ObjectRecordService;
+import com.chenjw.knife.agent.service.ObjectHolderService;
 import com.chenjw.knife.agent.utils.ParseHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.utils.StringHelper;
@@ -27,8 +28,9 @@ public class NewCommandHandler implements CommandHandler {
 		m = m.trim();
 		Constructor<?> constructor = null;
 		if (StringHelper.isNumeric(m)) {
-			constructor = ((Constructor<?>[]) ContextService.getInstance().get(
-					Constants.CONSTRUCTOR_LIST))[Integer.parseInt(m)];
+			constructor = ((Constructor<?>[]) ServiceRegistry.getService(
+					ContextService.class).get(Constants.CONSTRUCTOR_LIST))[Integer
+					.parseInt(m)];
 		}
 		if (constructor == null) {
 			Agent.sendResult(ResultHelper
@@ -40,8 +42,8 @@ public class NewCommandHandler implements CommandHandler {
 						StringHelper.substringAfter(argStr, "("), ")"),
 				constructor.getParameterTypes());
 		Object obj = newInstance(constructor, mArgs);
-		Agent.sendResult(ResultHelper.newStringResult(ObjectRecordService
-				.getInstance().toId(obj) + "created!"));
+		Agent.sendResult(ResultHelper.newStringResult(ServiceRegistry
+				.getService(ObjectHolderService.class).toId(obj) + "created!"));
 	}
 
 	private Object newInstance(Constructor<?> constructor, Object[] args)

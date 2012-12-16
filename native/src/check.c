@@ -4,17 +4,15 @@
 #include "jvmti.h"
 #include "util.h"
 
-void Java_com_chenjw_knife_agent_utils_NativeHelper_checkCapabilities0(
-		JNIEnv * env, jbooleanArray result) {
+jbooleanArray Java_com_chenjw_knife_agent_utils_NativeHelper_checkCapabilities0(
+		JNIEnv * env) {
 	initJvmtiWithoutCapabilities(env);
+	int size=41;
+	jbooleanArray result = (*env)->NewBooleanArray(env,size);
 	jvmtiCapabilities capabilities;
 	(*jvmti)->GetPotentialCapabilities(jvmti, &capabilities);
-	int size=41;
 	jboolean* r;
 	r = (jboolean*) allocate(size * sizeof(jboolean));
-
-
-
 	r[0]=capabilities.can_tag_objects;
 	r[1]=capabilities.can_generate_field_modification_events;
 	r[2]=capabilities.can_generate_field_access_events;
@@ -56,10 +54,9 @@ void Java_com_chenjw_knife_agent_utils_NativeHelper_checkCapabilities0(
 	r[38]=capabilities.can_retransform_any_class;
 	r[39]=capabilities.can_generate_resource_exhaustion_heap_events;
 	r[40]=capabilities.can_generate_resource_exhaustion_threads_events;
-
-	printf("%d",r[40]);
-	(*env)->SetBooleanArrayRegion(env, result, 0,1,r);
-	printf("%d",r[40]);
+	(*env)->SetBooleanArrayRegion(env, result, 0,size-1,r);
 	deallocate(r);
+	clearJvmti(env);
+	return result;
 }
 

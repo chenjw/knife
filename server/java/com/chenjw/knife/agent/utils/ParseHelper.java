@@ -2,7 +2,8 @@ package com.chenjw.knife.agent.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.chenjw.knife.agent.bytecode.javassist.Helper;
-import com.chenjw.knife.agent.service.ObjectRecordService;
+import com.chenjw.knife.agent.core.ServiceRegistry;
+import com.chenjw.knife.agent.service.ObjectHolderService;
 import com.chenjw.knife.utils.StringHelper;
 
 public class ParseHelper {
@@ -12,7 +13,8 @@ public class ParseHelper {
 		if (expr.startsWith("@")) {
 			int num = Integer.parseInt(StringHelper.substringAfter(expr, "@")
 					.trim());
-			obj = ObjectRecordService.getInstance().get(num);
+			obj = ServiceRegistry.getService(ObjectHolderService.class)
+					.get(num);
 			if (obj == null) {
 				throw new java.lang.IllegalArgumentException("object " + expr
 						+ " not found!");

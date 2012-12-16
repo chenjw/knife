@@ -7,12 +7,6 @@ import com.chenjw.knife.agent.utils.NativeHelper;
 
 public class PrinterService implements Lifecycle {
 
-	private static final PrinterService INSTANCE = new PrinterService();
-
-	public static PrinterService getInstance() {
-		return INSTANCE;
-	}
-
 	public void clear() {
 
 	}

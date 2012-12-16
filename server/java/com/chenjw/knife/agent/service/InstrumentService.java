@@ -19,9 +19,9 @@ import com.chenjw.knife.agent.bytecode.javassist.ClassGenerator;
 import com.chenjw.knife.agent.bytecode.javassist.ClassLoaderClassPath;
 import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.core.Lifecycle;
+import com.chenjw.knife.agent.core.ServiceRegistry;
 
 public class InstrumentService implements Lifecycle {
-	private static final InstrumentService INSTANCE = new InstrumentService();
 
 	private static final String[] CLASS_WHITE_LIST = new String[] {
 			"java.lang.reflect.InvocationHandler.invoke",
@@ -32,10 +32,6 @@ public class InstrumentService implements Lifecycle {
 	private final Set<String> TRACED_METHOD = new HashSet<String>();
 
 	private final Set<String> ENTER_TRACED_METHOD = new HashSet<String>();
-
-	public static InstrumentService getInstance() {
-		return INSTANCE;
-	}
 
 	private void buildMethodAccess(Method method) throws Exception {
 		// System.out.println(InstrumentManager.class.getClassLoader());
@@ -63,9 +59,10 @@ public class InstrumentService implements Lifecycle {
 			// add enter leave code
 			// addEnterLeaveCode(ctClass, newMethod);
 			byte[] classBytes = newClassGenerator.toBytecode();
-			ByteCodeService.getInstance().tryRedefineClass(
+
+			ServiceRegistry.getService(ByteCodeService.class).tryRedefineClass(
 					method.getDeclaringClass(), classBytes);
-			ByteCodeService.getInstance().commitAll();
+			ServiceRegistry.getService(ByteCodeService.class).commitAll();
 
 		}
 
@@ -93,10 +90,10 @@ public class InstrumentService implements Lifecycle {
 			// add enter leave code
 			addEnterLeaveCode(ctClass, newMethod);
 			byte[] classBytes = newClassGenerator.toBytecode();
-			ByteCodeService.getInstance().tryRedefineClass(
+			ServiceRegistry.getService(ByteCodeService.class).tryRedefineClass(
 					Helper.findClass(newClassGenerator.getCtClass()),
 					classBytes);
-			ByteCodeService.getInstance().commitAll();
+			ServiceRegistry.getService(ByteCodeService.class).commitAll();
 		}
 
 	}
