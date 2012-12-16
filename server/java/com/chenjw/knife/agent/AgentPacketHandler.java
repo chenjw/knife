@@ -1,8 +1,10 @@
 package com.chenjw.knife.agent;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.ServiceLoader;
 
 import com.chenjw.knife.agent.args.ArgDef;
@@ -15,17 +17,48 @@ import com.chenjw.knife.core.Command;
 import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketHandler;
 import com.chenjw.knife.core.packet.ObjectPacket;
+import com.chenjw.knife.utils.StringHelper;
 
 public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 	private Map<String, CommandHandler> handlerMap = new HashMap<String, CommandHandler>();
 	private Map<String, ArgDef> argDefMap = new HashMap<String, ArgDef>();
+	private static String descCnFile = "/command_cn.properties";
+	private static String descEnFile = "/command_en.properties";
 
 	public AgentPacketHandler() {
 		for (CommandHandler service : ServiceLoader.load(CommandHandler.class,
 				AgentPacketHandler.class.getClassLoader())) {
 			addCommandHandler(service);
 		}
+		setDescLanguage("cn");
+	}
 
+	public void setDescLanguage(String language) {
+		if ("cn".equals(language)) {
+			initDescs(descCnFile);
+		} else if ("en".equals(language)) {
+			initDescs(descEnFile);
+		}
+	}
+
+	private void initDescs(String file) {
+		Properties argDescs = new Properties();
+		try {
+			argDescs.load(AgentPacketHandler.class.getResourceAsStream(file));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (Entry<Object, Object> entry : argDescs.entrySet()) {
+			String key = entry.getKey().toString();
+			String value = entry.getValue().toString();
+			String cName = StringHelper.substringBefore(key, ".");
+			String oName = StringHelper.substringAfter(key, ".");
+			if (StringHelper.isEmpty(oName)) {
+				argDefMap.get(cName).setDesc(value);
+			} else {
+				argDefMap.get(cName).addOptionDesc(oName, value);
+			}
+		}
 	}
 
 	private void addCommandHandler(CommandHandler commandHandler) {

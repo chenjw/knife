@@ -7,6 +7,8 @@ import com.chenjw.knife.core.Command;
 
 public interface CommandDispatcher {
 	public void dispatch(Command command);
-	
+
 	public Map<String, ArgDef> getArgDefMap();
+
+	public void setDescLanguage(String language);
 }

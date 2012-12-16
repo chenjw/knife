@@ -180,15 +180,8 @@ public class InvokeCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("invoke");
-		argDef.setDef("[-f <filter-expression>] [-t] <invoke-expression>");
-		argDef.setDesc("调用某个类的静态方法，或者目标对象的某个实例方法");
-		argDef.addOptionDesc(
-				"invoke-expression",
-				"调用静态方法可以输入 'package.ClassName.methodName(param1,param2)' , 调用实例方法可以输入 'methodName(param1,param2)' . 参数可以使用json格式.");
-		argDef.addOptionDesc("-f",
-				"设置 <filter-expression> 表达式，可以过滤掉不需要输出的调用细节。");
-		argDef.addOptionDesc("-t", "是否需要跟踪调用的内部细节。");
+
+		argDef.setDefinition("invoke [-f <filter-expression>] [-t] <invoke-expression>");
 
 	}
 

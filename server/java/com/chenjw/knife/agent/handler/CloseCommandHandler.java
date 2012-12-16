@@ -16,8 +16,8 @@ public class CloseCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("close");
-		argDef.setDesc("关闭agent并断开连接。");
+
+		argDef.setDefinition("close");
 	}
 
 }

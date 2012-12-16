@@ -199,16 +199,8 @@ public class TraceCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("trace");
-		argDef.setDef("[-f <filter-expression>] [-n <trace-num>] [-t] <trace-expression>");
-		argDef.setDesc("等待某个目标类或对象上的外部方法调用，并打印出调用信息。");
 
-		argDef.addOptionDesc("trace-expression",
-				"输入 'package.ClassName.method' 表示静态方法, 输入 'method' 表示目标对象的实例方法。");
-		argDef.addOptionDesc("-f",
-				"设置 <filter-expression> 表达式，可以过滤掉不需要输出的调用细节。");
-		argDef.addOptionDesc("-t", "是否需要跟踪调用的内部细节。");
-		argDef.addOptionDesc("-n <trace-num>", "等待调用的次数。");
+		argDef.setDefinition("trace [-f <filter-expression>] [-n <trace-num>] [-t] <trace-expression>");
 
 	}
 }

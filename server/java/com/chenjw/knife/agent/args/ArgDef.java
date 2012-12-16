@@ -30,10 +30,6 @@ public class ArgDef {
 		return commandName;
 	}
 
-	public void setCommandName(String commandName) {
-		this.commandName = commandName;
-	}
-
 	private int findEndOfEncloseStr(String def, int start) {
 		int d = 0;
 		char c = def.charAt(start);
@@ -54,8 +50,9 @@ public class ArgDef {
 		return i;
 	}
 
-	public void setDef(String def) {
-		this.def = def;
+	public void setDefinition(String definition) {
+		this.commandName = StringHelper.substringBefore(definition, " ");
+		this.def = StringHelper.substringAfter(definition, " ");
 
 		int start = 0;
 		int end = 0;

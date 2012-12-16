@@ -17,8 +17,10 @@ public class JlineCommandConsole extends CommandConsole {
 
 	public JlineCommandConsole() {
 		try {
+
 			reader = new ConsoleReader(System.in, new OutputStreamWriter(
 					System.out));
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

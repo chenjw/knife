@@ -102,7 +102,7 @@ public class DoCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("do");
-		argDef.setDesc("do some test。");
+		argDef.setDefinition("do");
+
 	}
 }

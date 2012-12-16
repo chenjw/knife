@@ -22,10 +22,8 @@ public class DecodeCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("decode");
-		argDef.setDef("<string-to-decode>");
-		argDef.setDesc("根据输入字符串解码成一个新的字符串，用于输入系统不支持的编码，如中文等。");
-		argDef.addOptionDesc("string-to-decode", "待解码的字符串。");
+
+		argDef.setDefinition("decode <string-to-decode>");
 
 	}
 }

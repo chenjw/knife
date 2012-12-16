@@ -22,7 +22,7 @@ Btrace所没有提供的功能:
 
 # 下载
 
-https://github.com/chenjw/knife/downloads
+http://code.google.com/p/knife/downloads/list
 
 # 如何使用Knife?
 1. 下载 knife-XXX.tar.gz

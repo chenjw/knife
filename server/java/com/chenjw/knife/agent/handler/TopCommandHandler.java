@@ -67,11 +67,9 @@ public class TopCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("top");
-		argDef.setDef("[-n <num>] [<type>]");
-		argDef.setDesc("查找最占cpu的线程。或者查找存在引用数最多的对象。按从多到少排序。");
-		argDef.addOptionDesc("type", "ref,thread");
-		argDef.addOptionDesc("-n", "需要列出对象的数量，默认为10个");
+
+		argDef.setDefinition("top [-n <num>] [<type>]");
+
 	}
 
 }

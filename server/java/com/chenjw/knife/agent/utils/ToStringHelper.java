@@ -45,7 +45,7 @@ public class ToStringHelper {
 		}
 		String name = SystemTagService.getInstance().findSystemName(obj);
 		if (name != null) {
-			return name;
+			return "KNIFE_OBJECT_HOLDER";
 		}
 		StringBuilder sb = new StringBuilder();
 		Map<Object, String> objMap = new IdentityHashMap<Object, String>();

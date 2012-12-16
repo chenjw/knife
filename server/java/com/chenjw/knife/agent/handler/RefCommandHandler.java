@@ -63,10 +63,8 @@ public class RefCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("ref");
-		argDef.setDef("[-r] <object-id>");
-		argDef.setDesc("查找所有目标对象引用到的对象，或者引用到目标对象的对象。");
-		argDef.addOptionDesc("object-id", "目标对象的id，如果没有设置，就会默认使用当前对象。");
-		argDef.addOptionDesc("-r", "查找该对象引用到的对象，而不是引用到该对象的对象。");
+
+		argDef.setDefinition("ref [-r] <object-id>");
+
 	}
 }

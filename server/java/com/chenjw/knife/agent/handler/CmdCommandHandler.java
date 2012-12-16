@@ -20,7 +20,7 @@ public class CmdCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("cmd");
-		argDef.setDesc("更新客户端暂存的服务端命令列表。");
+		argDef.setDefinition("cmd");
+
 	}
 }

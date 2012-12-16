@@ -102,9 +102,8 @@ public class FindCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("find");
-		argDef.setDef("<find-expression>");
-		argDef.setDesc("从堆内存中查找某个类的实例。");
-		argDef.addOptionDesc("find-expretion", "用于搜索的类名或者搜索结果的序号。");
+
+		argDef.setDefinition("find <find-expression>");
+
 	}
 }

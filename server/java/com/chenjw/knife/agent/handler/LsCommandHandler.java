@@ -309,17 +309,8 @@ public class LsCommandHandler implements CommandHandler {
 
 	@Override
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("ls");
-		argDef.setDef("[-f] [-m] [-c] [-a] [-d] [<classname>]");
-		argDef.setDesc("列出目标类或目标对象的属性、方法、构造函数等信息。");
-		argDef.addOptionDesc("classname",
-				"如果设置了 <classname> 就会列出该类的信息，如果 <classname> 没有设置 ， 就会列出目标对象的信息。");
 
-		argDef.addOptionDesc("-f", "列出所有属性。");
-		argDef.addOptionDesc("-m", "列出所有方法。");
-		argDef.addOptionDesc("-c", "列出所有构造函数。");
-		argDef.addOptionDesc("-a", "如果目标是数组或列表，列出所有元素。");
-		argDef.addOptionDesc("-d", "显示目标的详细信息。");
+		argDef.setDefinition("ls [-f] [-m] [-c] [-a] [-d] [<classname>]");
 
 	}
 

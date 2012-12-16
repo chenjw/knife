@@ -16,18 +16,15 @@ public class PropCommandHandler implements CommandHandler {
 			} else {
 				Agent.getAgentInfo().setDebugOn(false);
 			}
+		} else if ("language".equals(args.arg("type"))) {
+			dispatcher.setDescLanguage(args.arg("status"));
 		}
 		Agent.sendResult(ResultHelper.newStringResult("finished!"));
 	}
 
 	@Override
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("prop");
-		argDef.setDef("<type> <status>");
-		argDef.setDesc("一些全局设置信息。");
-		argDef.addOptionDesc("type", "debug");
-		argDef.addOptionDesc("status", "on/off");
-
+		argDef.setDefinition("prop <type> <status>");
 	}
 
 }

@@ -27,6 +27,7 @@ public class JarHelper {
 				.getResource("com/chenjw/knife").toString();
 		String folder;
 		if (tmp.indexOf("!") == -1) {
+			// 针对开发环境非jar包启动的情况
 			folder = LIB_FOLDER;
 		} else {
 			tmp = tmp.substring(0, tmp.indexOf("!"));

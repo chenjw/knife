@@ -36,11 +36,8 @@ public class ViewCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("view");
-		argDef.setDesc("查看类加载器和类文件名。");
-		argDef.setDef("[-c] [-s]");
-		argDef.addOptionDesc("-c", "查看类加载器。");
-		argDef.addOptionDesc("-s", "查看类文件名。");
+
+		argDef.setDefinition("view [-c] [-s]");
 	}
 
 }

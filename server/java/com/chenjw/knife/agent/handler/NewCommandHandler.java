@@ -56,10 +56,8 @@ public class NewCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setCommandName("new");
-		argDef.setDef("<expression>");
-		argDef.setDesc("调用构造函数创建一个对象。");
-		argDef.addOptionDesc("expression",
-				"格式为： ConstructIndex(param1,param2)。");
+
+		argDef.setDefinition("new <expression>");
+
 	}
 }
