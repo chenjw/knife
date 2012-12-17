@@ -1,7 +1,0 @@
-autoscan: warning: missing AC_CHECK_FUNCS([memset]) wanted by: 
-	src/nativehelper.c:236
-	src/nativehelper.c:285
-autoscan: warning: missing AC_PROG_RANLIB wanted by: 
-	ltmain.sh:1601
-autoscan: warning: missing AC_TYPE_SIZE_T wanted by: 
-	src/nativehelper.c:60

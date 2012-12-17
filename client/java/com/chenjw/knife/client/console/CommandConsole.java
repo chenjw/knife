@@ -66,8 +66,7 @@ public abstract class CommandConsole implements CommandService {
 		} else {
 			writeConsoleLine(r.getErrorMessage());
 			if (r.getErrorTrace() != null) {
-				for (String line : StringHelper
-						.split(r.getErrorMessage(), '\n')) {
+				for (String line : StringHelper.split(r.getErrorTrace(), '\n')) {
 					writeConsoleLine(line);
 				}
 			}

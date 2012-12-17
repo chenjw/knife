@@ -1,0 +1,22 @@
+Q&A
+========
+
+### 如何找到被吃掉的异常？
+
+
+
+### 如何诊断内存泄漏
+
+http://docs.oracle.com/javase/6/docs/technotes/guides/jni/spec/jniTOC.html
+
+### jvmti
+
+http://docs.oracle.com/javase/6/docs/platform/jvmti/jvmti.html
+
+### javassist
+
+http://www.jboss.org/javassist/
+
+### jline
+
+http://jline.sourceforge.net/

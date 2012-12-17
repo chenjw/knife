@@ -24,7 +24,7 @@ import com.sun.tools.attach.VirtualMachineDescriptor;
 public class LocalVMConnector implements VMConnector {
 
 	private static final String[] exceptJars = new String[] { "jline-1.0.jar",
-			"knife-client.jar" };
+			"knife-client.jar", "knife-agent.jar" };
 
 	public List<VMDescriptor> listVM() throws Exception {
 		List<VirtualMachineDescriptor> list = VirtualMachine.list();
