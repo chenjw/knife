@@ -19,26 +19,15 @@ public class AgentMain {
 	private static URL[] initJarPath(Map<String, String> args) {
 		List<URL> result = new ArrayList<URL>();
 		try {
-			// String bjs = args.get("bootstrapJars");
-			// if (bjs != null) {
-			// String[] bjss = bjs.split(";");
-			// for (String s : bjss) {
-			// if (!JarHelper.isLoaded(s)) {
-			// result.add(new URL("file", "", s));
-			// // inst.appendToBootstrapClassLoaderSearch(jar);
-			// System.out.println(s + " loaded");
-			// }
-			// }
-			// }
 			String sjs = args.get("systemJars");
 			if (sjs != null) {
 				String[] sjss = sjs.split(";");
 				for (String s : sjss) {
-					if (!JarHelper.isLoaded(s)) {
+					// 为确保没有版本冲突，修改为全量加载
+					//if (!JarHelper.isLoaded(s)) {
 						result.add(new URL("file", "", s));
-						// inst.appendToSystemClassLoaderSearch(jar);
 						System.out.println(s + " loaded");
-					}
+					//}
 				}
 			}
 			return result.toArray(new URL[result.size()]);
