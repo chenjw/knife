@@ -7,11 +7,11 @@
 #include "util.h"
 
 
-jclass nativeHelperClass = NULL;
+jclass nativeHelperClass = 0;
 
-jmethodID transformMethodId = NULL;
+jmethodID transformMethodId = 0;
 
-jmethodID classLoadedMethodId = NULL;
+jmethodID classLoadedMethodId = 0;
 
 
 
@@ -40,7 +40,7 @@ void initClassLoadedInfo(JNIEnv * env) {
 
 jvmtiIterationControl iterate_markTag(jlong class_tag, jlong size,
 		jlong* tag_ptr, void* user_data) {
-	if (tag_ptr != NULL ) {
+	if (tag_ptr != 0 ) {
 		*tag_ptr = 1;
 	}
 
@@ -54,7 +54,7 @@ eventHandlerClassFileLoadHook(jvmtiEnv * jvmti, JNIEnv * env,
 		jobject protectionDomain, jint classDataLen,
 		const unsigned char* classData, jint* newClassDataLen,
 		unsigned char** newClassData) {
-	unsigned char * resultBuffer = NULL;
+	unsigned char * resultBuffer = 0;
 	jstring classNameStringObject = (*env)->NewStringUTF(env, name);
 	jbyteArray classFileBufferObject = (*env)->NewByteArray(env, classDataLen);
 	jbyte * typedBuffer = (jbyte *) classData;
@@ -65,7 +65,7 @@ eventHandlerClassFileLoadHook(jvmtiEnv * jvmti, JNIEnv * env,
 					transformMethodId, loader, classNameStringObject,
 					classBeingRedefined, protectionDomain,
 					classFileBufferObject);
-	if (transformedBufferObject != NULL ) {
+	if (transformedBufferObject != 0 ) {
 		jsize transformedBufferSize = (*env)->GetArrayLength(env,
 				transformedBufferObject);
 		(*env)->GetByteArrayRegion(env, transformedBufferObject, 0,
@@ -98,7 +98,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_startClass
 	callbacks.ClassFileLoadHook = &eventHandlerClassFileLoadHook;
 	(*jvmti)->SetEventCallbacks(jvmti, &callbacks, sizeof(callbacks));
 	(*jvmti)->SetEventNotificationMode(jvmti, JVMTI_ENABLE,
-			JVMTI_EVENT_CLASS_FILE_LOAD_HOOK, NULL );
+			JVMTI_EVENT_CLASS_FILE_LOAD_HOOK, 0 );
 
 }
 
@@ -111,7 +111,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_stopClassF
 		JNIEnv * env, jclass thisClass) {
 	initJvmti(env);
 	(*jvmti)->SetEventNotificationMode(jvmti, JVMTI_DISABLE,
-			JVMTI_EVENT_CLASS_FILE_LOAD_HOOK, NULL );
+			JVMTI_EVENT_CLASS_FILE_LOAD_HOOK, 0 );
 }
 
 /*
@@ -128,7 +128,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_startClass
 	callbacks.ClassLoad = &eventHandlerClassLoadedHook;
 	(*jvmti)->SetEventCallbacks(jvmti, &callbacks, sizeof(callbacks));
 	(*jvmti)->SetEventNotificationMode(jvmti, JVMTI_ENABLE,
-			JVMTI_EVENT_CLASS_LOAD, NULL );
+			JVMTI_EVENT_CLASS_LOAD, 0 );
 
 }
 
@@ -141,7 +141,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_stopClassL
 		JNIEnv * env, jclass thisClass) {
 	initJvmti(env);
 	(*jvmti)->SetEventNotificationMode(jvmti, JVMTI_DISABLE,
-			JVMTI_EVENT_CLASS_LOAD, NULL );
+			JVMTI_EVENT_CLASS_LOAD, 0 );
 }
 
 /*
@@ -153,7 +153,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_retransfor
 		JNIEnv * env, jclass thisClass, jobjectArray classes) {
 	initJvmti(env);
 	jsize numClasses = 0;
-	jclass * classArray = NULL;
+	jclass * classArray = 0;
 	numClasses = (*env)->GetArrayLength(env, classes);
 	classArray = (jclass *) allocate(numClasses * sizeof(jclass));
 	jint index;
@@ -162,7 +162,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_retransfor
 				index);
 	}
 	(*jvmti)->RetransformClasses(jvmti, numClasses, classArray);
-	if (classArray != NULL ) {
+	if (classArray != 0 ) {
 		deallocate((void*) classArray);
 	}
 }
@@ -176,7 +176,7 @@ JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_fi
 	initJvmti(env);
 	jclass loadedObject = (*env)->FindClass(env, "java/lang/Object");
 	(*jvmti)->IterateOverInstancesOfClass(jvmti, klass,
-			JVMTI_HEAP_OBJECT_EITHER, iterate_markTag, NULL );
+			JVMTI_HEAP_OBJECT_EITHER, iterate_markTag, 0 );
 
 	jint countObjts = 0;
 	jobject * objs;
@@ -208,7 +208,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_redefineCl
 	jvmtiClassDefinition * classDef = allocate(sizeof(jvmtiClassDefinition));
 	classDef->klass = klass;
 	classDef->class_bytes = (unsigned char*) (*env)->GetByteArrayElements(env,
-			byteArray, NULL );
+			byteArray, 0 );
 	classDef->class_byte_count = (*env)->GetArrayLength(env, byteArray);
 	(*jvmti)->RedefineClasses(jvmti, 1, classDef);
 	deallocate(classDef);
@@ -232,5 +232,5 @@ JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getCall
 	//return caller != 0 ? JVM_GetClassLoader(env,caller) : 0;
 
 	// not implemented
-	return NULL ;
+	return 0 ;
 }

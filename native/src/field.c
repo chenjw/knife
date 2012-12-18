@@ -78,7 +78,7 @@ jobject getObjectField(JNIEnv * env, jobject obj, jfieldID fieldId) {
 jobject getFieldValue(JNIEnv * env, jobject obj, jclass fieldClass,
 		jfieldID fieldId) {
 	char* signature;
-	(*jvmti)->GetClassSignature(jvmti, fieldClass, &signature, NULL );
+	(*jvmti)->GetClassSignature(jvmti, fieldClass, &signature, 0 );
 	if (strcmp(signature, "Z") == 0) {
 		return getBooleanField(env, obj, fieldId);
 	} else if (strcmp(signature, "B") == 0) {
@@ -126,10 +126,10 @@ jobject getFieldValue(JNIEnv * env, jobject obj, jclass fieldClass,
 			return result;
 		}
 	}
-	throwException(env, NULL, "field not found");
+	throwException(env, 0, "field not found");
 	deallocate(fieldIds);
 	(*env)->ReleaseStringUTFChars(env, fieldName, fieldNameChars);
-	return NULL ;
+	return 0 ;
 }
 
 
