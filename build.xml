@@ -18,6 +18,8 @@
 		<fileset dir="${base.dir}/lib/lib">
    			<include name="**/*.jar"/>
 		</fileset>
+	 	<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
+
   	</path>
     	<target name="init">
   		<delete dir="${build.dir}" quiet="true"/>

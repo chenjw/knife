@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JarHelper {
-	private static final String LIB_FOLDER = "/home/chenjw/my_workspace/knife/dist/knife/lib/";
+	private static final String LIB_FOLDER = "../dist/knife/lib/";
 
 	public static String[] findJars() {
 		File folder = findJarFolder();

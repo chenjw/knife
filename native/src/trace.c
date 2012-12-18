@@ -6,7 +6,7 @@
 #include "jvmti.h"
 #include "util.h"
 
-jmethodID methodEnterMethodId = NULL;
+jmethodID methodEnterMethodId = 0;
 
 void initMethodEnterInfo(JNIEnv * env) {
 	nativeHelperClass = (*env)->FindClass(env,
@@ -28,7 +28,7 @@ void eventHandlerMethodEnter(jvmtiEnv * jvmti, JNIEnv* env, jthread thread,
 			obj);
 }
 
- void  Java_com_chenjw_knife_agent_utils_NativeHelper_startMethodTrace0(
+JNIEXPORT void  Java_com_chenjw_knife_agent_utils_NativeHelper_startMethodTrace0(
 		JNIEnv * env, jclass thisClass) {
 	initJvmti(env);
 	initMethodEnterInfo(env);
@@ -37,16 +37,15 @@ void eventHandlerMethodEnter(jvmtiEnv * jvmti, JNIEnv* env, jthread thread,
 	callbacks.MethodEntry = &eventHandlerMethodEnter;
 	(*jvmti)->SetEventCallbacks(jvmti, &callbacks, sizeof(callbacks));
 	(*jvmti)->SetEventNotificationMode(jvmti, JVMTI_ENABLE,
-			JVMTI_EVENT_METHOD_ENTRY, NULL );
-	printf("aaa\n");
+			JVMTI_EVENT_METHOD_ENTRY, 0 );
 
 }
 
- void  Java_com_chenjw_knife_agent_utils_NativeHelper_stopMethodTrace0(
+JNIEXPORT void  Java_com_chenjw_knife_agent_utils_NativeHelper_stopMethodTrace0(
 		JNIEnv * env, jclass thisClass) {
 	initJvmti(env);
 	(*jvmti)->SetEventNotificationMode(jvmti, JVMTI_DISABLE,
-			JVMTI_EVENT_METHOD_ENTRY, NULL );
+			JVMTI_EVENT_METHOD_ENTRY, 0 );
 	printf("ddd\n");
 }
 

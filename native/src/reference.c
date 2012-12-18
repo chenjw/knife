@@ -26,10 +26,10 @@ struct objectReferrerList {
 void addObjectReferrer(ObjectReferrerList * list, jlong count) {
 	// 从根元素开始依次遍历，从小到大排，找到合适的位置
 	ObjectReferrer ** pBefore = &list->root;
-	ObjectReferrer * after = NULL;
+	ObjectReferrer * after = 0;
 	while (1) {
 		ObjectReferrer * current = *pBefore;
-		if (current == NULL ) {
+		if (current == 0 ) {
 			break;
 		}
 		if (count < current->count) {
@@ -45,7 +45,7 @@ void addObjectReferrer(ObjectReferrerList * list, jlong count) {
 		if (pBefore == &list->root) {
 			return;
 		} else {
-			ObjectReferrer * referrer = NULL;
+			ObjectReferrer * referrer = 0;
 			referrer = (ObjectReferrer *) allocate(sizeof(ObjectReferrer));
 			referrer->count = count;
 			referrer->next = after;
@@ -57,7 +57,7 @@ void addObjectReferrer(ObjectReferrerList * list, jlong count) {
 	// 如果没有超过最大长度就接到根节点的位置
 	else {
 		list->num++;
-		ObjectReferrer * referrer = NULL;
+		ObjectReferrer * referrer = 0;
 		referrer = (ObjectReferrer *) allocate(sizeof(ObjectReferrer));
 		referrer->count = count;
 		referrer->next = after;
@@ -73,7 +73,7 @@ jint iterate_ref_markReferrer(jvmtiHeapReferenceKind reference_kind,
 			&& reference_kind != JVMTI_HEAP_REFERENCE_ARRAY_ELEMENT) {
 		return JVMTI_VISIT_OBJECTS;
 	}
-	if (referrer_tag_ptr != NULL && tag_ptr != NULL && *tag_ptr == 2
+	if (referrer_tag_ptr != 0 && tag_ptr != 0 && *tag_ptr == 2
 			&& referrer_tag_ptr != tag_ptr) {
 		*referrer_tag_ptr = 1;
 	}
@@ -88,7 +88,7 @@ jint  iterate_ref_markReferree(jvmtiHeapReferenceKind reference_kind,
 			&& reference_kind != JVMTI_HEAP_REFERENCE_ARRAY_ELEMENT) {
 		return JVMTI_VISIT_OBJECTS;
 	}
-	if (referrer_tag_ptr != NULL && tag_ptr != NULL && *referrer_tag_ptr == 2
+	if (referrer_tag_ptr != 0 && tag_ptr != 0 && *referrer_tag_ptr == 2
 			&& referrer_tag_ptr != tag_ptr) {
 		*tag_ptr = 1;
 	}
@@ -106,7 +106,7 @@ jint iterate_ref_markCountReference(
 		return JVMTI_VISIT_OBJECTS;
 	}
 	// 引用者的tag值-1
-	if (referrer_tag_ptr != NULL && tag_ptr != NULL ) {
+	if (referrer_tag_ptr != 0 && tag_ptr != 0 ) {
 		(*referrer_tag_ptr)--;
 	}
 	return JVMTI_VISIT_OBJECTS;
@@ -115,7 +115,7 @@ jint iterate_ref_markCountReference(
 jvmtiIterationControl iterate_countReference(jlong class_tag,
 		jlong size, jlong* tag_ptr, void* user_data) {
 	// 如果该对象的引用数为负数，则把该引用数加入统计，并把该tag转为正数
-	if (tag_ptr != NULL && *tag_ptr < 0) {
+	if (tag_ptr != 0 && *tag_ptr < 0) {
 		ObjectReferrerList * list = (ObjectReferrerList *) user_data;
 		addObjectReferrer(list, *tag_ptr);
 		*tag_ptr = -(*tag_ptr);
@@ -126,7 +126,7 @@ jvmtiIterationControl iterate_countReference(jlong class_tag,
 
 
 
- void Java_com_chenjw_knife_agent_utils_NativeHelper_countReferree0(
+JNIEXPORT void Java_com_chenjw_knife_agent_utils_NativeHelper_countReferree0(
 		JNIEnv * env, jclass thisClass, jint maxNum, jlongArray countArray,
 		jobjectArray objArray) {
 	// 初始化jvmti
@@ -135,19 +135,19 @@ jvmtiIterationControl iterate_countReference(jlong class_tag,
 	jvmtiHeapCallbacks * callbacks;
 	callbacks = (jvmtiHeapCallbacks *) allocate(sizeof(jvmtiHeapCallbacks));
 	callbacks->heap_reference_callback = &iterate_ref_markCountReference;
-	callbacks->primitive_field_callback = NULL;
-	callbacks->array_primitive_value_callback = NULL;
-	callbacks->string_primitive_value_callback = NULL;
-	(*jvmti)->FollowReferences(jvmti, 0, NULL, NULL, callbacks, NULL );
+	callbacks->primitive_field_callback = 0;
+	callbacks->array_primitive_value_callback = 0;
+	callbacks->string_primitive_value_callback = 0;
+	(*jvmti)->FollowReferences(jvmti, 0, 0, 0, callbacks, 0 );
 	// 遍历所有对象，把所有对象的引用数加入统计结果链表
 	jint countObjts = 0;
 	jobject * objs;
 	jlong * tagResults;
-	ObjectReferrerList * list = NULL;
+	ObjectReferrerList * list = 0;
 	list = (ObjectReferrerList *) allocate(sizeof(ObjectReferrerList));
 	list->maxNum = maxNum;
 	list->num = 0;
-	list->root = NULL;
+	list->root = 0;
 	(*jvmti)->IterateOverHeap(jvmti, JVMTI_HEAP_OBJECT_TAGGED,
 			iterate_countReference, list);
 	// 遍历统计链表中引用数量最大的若干对象
@@ -155,7 +155,7 @@ jvmtiIterationControl iterate_countReference(jlong class_tag,
 	idToQuery = (jlong*) allocate(list->num * sizeof(jlong));
 	ObjectReferrer* referrer = list->root;
 	jint i = 0;
-	while (referrer != NULL ) {
+	while (referrer != 0 ) {
 		jlong count = -(referrer->count);
 		jint exist = 0;
 		jint j;
@@ -200,7 +200,7 @@ jvmtiIterationControl iterate_countReference(jlong class_tag,
 	releaseTags();
 }
 
- jobjectArray  Java_com_chenjw_knife_agent_utils_NativeHelper_findReferrerByObject0(
+JNIEXPORT jobjectArray  Java_com_chenjw_knife_agent_utils_NativeHelper_findReferrerByObject0(
 		JNIEnv * env, jclass thisClass, jobject obj) {
 	initJvmti(env);
 	jclass loadedObject = (*env)->FindClass(env, "java/lang/Object");
@@ -209,7 +209,7 @@ jvmtiIterationControl iterate_countReference(jlong class_tag,
 	jvmtiHeapCallbacks callbacks;
 	memset(&callbacks, 0, sizeof(callbacks));
 	callbacks.heap_reference_callback = &iterate_ref_markReferrer;
-	(*jvmti)->FollowReferences(jvmti, 0, NULL, NULL, &callbacks, NULL );
+	(*jvmti)->FollowReferences(jvmti, 0, 0, 0, &callbacks, 0 );
 	jint countObjts = 0;
 	jobject * objs;
 	jlong * tagResults;
@@ -230,7 +230,7 @@ jvmtiIterationControl iterate_countReference(jlong class_tag,
 	return arrayReturn;
 }
 
- jobjectArray  Java_com_chenjw_knife_agent_utils_NativeHelper_findReferreeByObject0(
+JNIEXPORT jobjectArray  Java_com_chenjw_knife_agent_utils_NativeHelper_findReferreeByObject0(
 		JNIEnv * env, jclass thisClass, jobject obj) {
 
 	initJvmti(env);
@@ -244,7 +244,7 @@ jvmtiIterationControl iterate_countReference(jlong class_tag,
 
 	callbacks.heap_reference_callback = &iterate_ref_markReferree;
 
-	(*jvmti)->FollowReferences(jvmti, 0, NULL, NULL, &callbacks, NULL );
+	(*jvmti)->FollowReferences(jvmti, 0, 0, 0, &callbacks, 0 );
 	jint countObjts = 0;
 	jobject * objs;
 	jlong * tagResults;

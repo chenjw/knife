@@ -4,14 +4,14 @@
 #include "jvmti.h"
 #include "util.h"
 
-jvmtiEnv *jvmti = NULL;
+jvmtiEnv *jvmti = 0;
 
 void * allocate(jlong bytecount) {
-	void * resultBuffer = NULL;
+	void * resultBuffer = 0;
 	jvmtiError error = (*jvmti)->Allocate(jvmti, bytecount,
 			(unsigned char**) &resultBuffer);
 	if (error != JVMTI_ERROR_NONE) {
-		resultBuffer = NULL;
+		resultBuffer = 0;
 	}
 	return resultBuffer;
 }
@@ -22,13 +22,13 @@ void deallocate(void * buffer) {
 
 void throwException(JNIEnv * env, char * clazz, char * message) {
 	jclass exceptionClass;
-	if (clazz != NULL ) {
+	if (clazz != 0 ) {
 		exceptionClass = (*env)->FindClass(env, clazz);
 	} else {
 		exceptionClass = (*env)->FindClass(env, "java/lang/RuntimeException");
 	}
 
-	if (exceptionClass == NULL ) {
+	if (exceptionClass == 0 ) {
 		fprintf(stderr, "Couldn't throw exception %s - %s\n", clazz, message);
 	}
 	(*env)->ThrowNew(env, exceptionClass, message);
@@ -91,43 +91,43 @@ void enableCapabilities(JNIEnv * env) {
 
 	error = (*jvmti)->AddCapabilities(jvmti, &capabilities);
 	if (error != 0) {
-		throwException(env, NULL, "AddCapabilities fail");
+		throwException(env, 0, "AddCapabilities fail");
 	}
 }
 
 void initJvmti(JNIEnv * env) {
-	if (jvmti == NULL ) {
+	if (jvmti == 0 ) {
 		JavaVM *jvm = 0;
 		int res;
 		res = (*env)->GetJavaVM(env, &jvm);
 		if (res < 0 || jvm == 0) {
-			throwException(env, NULL, "GetJavaVM fail");
+			throwException(env, 0, "GetJavaVM fail");
 		}
 		res = (*jvm)->GetEnv(jvm, (void **) &jvmti, JVMTI_VERSION_1_1);
 		if (res != 0 || jvmti == 0) {
-			throwException(env, NULL, "GetEnv fail");
+			throwException(env, 0, "GetEnv fail");
 		}
 		enableCapabilities(env);
 	}
 }
 
 void initJvmtiWithoutCapabilities(JNIEnv * env) {
-	if (jvmti == NULL ) {
+	if (jvmti == 0 ) {
 		JavaVM *jvm = 0;
 		int res;
 		res = (*env)->GetJavaVM(env, &jvm);
 		if (res < 0 || jvm == 0) {
-			throwException(env, NULL, "GetJavaVM fail");
+			throwException(env, 0, "GetJavaVM fail");
 		}
 		res = (*jvm)->GetEnv(jvm, (void **) &jvmti, JVMTI_VERSION_1_1);
 		if (res != 0 || jvmti == 0) {
-			throwException(env, NULL, "GetEnv fail");
+			throwException(env, 0, "GetEnv fail");
 		}
 	}
 }
 
 void clearJvmti(JNIEnv * env){
-	jvmti = NULL;
+	jvmti = 0;
 }
 
 jvmtiIterationControl iterate_cleanTag(jlong class_tag, jlong size,
@@ -138,6 +138,6 @@ jvmtiIterationControl iterate_cleanTag(jlong class_tag, jlong size,
 
 void releaseTags() {
 	(*jvmti)->IterateOverHeap(jvmti, JVMTI_HEAP_OBJECT_TAGGED,
-			&iterate_cleanTag, NULL );
+			&iterate_cleanTag, 0 );
 }
 

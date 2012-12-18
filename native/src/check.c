@@ -1,10 +1,9 @@
-#include <string.h>
 #include "jni.h"
 #include "jvmti.h"
 
 #include "util.h"
 
-jbooleanArray Java_com_chenjw_knife_agent_utils_NativeHelper_checkCapabilities0(
+JNIEXPORT jbooleanArray Java_com_chenjw_knife_agent_utils_NativeHelper_checkCapabilities0(
 		JNIEnv * env) {
 	initJvmtiWithoutCapabilities(env);
 	int size=41;

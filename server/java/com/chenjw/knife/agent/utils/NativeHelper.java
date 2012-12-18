@@ -52,21 +52,22 @@ public class NativeHelper {
 		}
 		InputStream is = null;
 		OutputStream os = null;
+		File tmpFile=null;
 		try {
 			is = NativeHelper.class.getResource("/" + libName + suffix)
 					.openStream();
-			File tmpFile = File.createTempFile(libName, suffix);
+			tmpFile = File.createTempFile(libName, suffix);
 			tmpFile.deleteOnExit();
 			os = new FileOutputStream(tmpFile);
 			IOHelper.copy(is, os);
-			System.load(tmpFile.getAbsolutePath());
+			
 		} catch (Exception e) {
 			throw new RuntimeException("load " + libName + " error!", e);
 		} finally {
 			IOHelper.closeQuietly(is);
 			IOHelper.closeQuietly(os);
 		}
-
+		System.load(tmpFile.getAbsolutePath());
 	}
 
 	public static Class<?> findLoadedClass(String className) {
