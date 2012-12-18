@@ -1,8 +1,10 @@
 package com.chenjw.knife.core;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 /**
  * 格式
@@ -16,7 +18,13 @@ import java.io.OutputStream;
 public class PacketResolver {
 
 	private static final String MAGIC = "KNIFE";
-	private static final int MAGIC_LENGTH = MAGIC.getBytes().length;
+	private static int MAGIC_LENGTH;
+	static {
+		try {
+			MAGIC_LENGTH = MAGIC.getBytes("UTF-8").length;
+		} catch (UnsupportedEncodingException e) {
+		}
+	}
 
 	private static Object netInstance(Class<?> clazz) {
 		try {
@@ -27,53 +35,63 @@ public class PacketResolver {
 	}
 
 	public static Packet read(InputStream is) throws IOException {
-		Packet packet = null;
-		checkMagic(is);
-		int typeLength = (int) readLong(is);
-		String type = readType(is, typeLength);
-		packet = initPacket(type);
-		int contentLength = (int) readLong(is);
-		byte[] bytes = null;
-		if (contentLength == 0) {
-			bytes = new byte[0];
-		} else {
-			bytes = new byte[contentLength];
-			is.read(bytes, 0, contentLength);
+		synchronized (is) {
+			Packet packet = null;
+			checkMagic(is);
+			int typeLength = readInt(is);
+			String type = readType(is, typeLength);
+			packet = initPacket(type);
+			int contentLength = readInt(is);
+			byte[] bytes = null;
+			if (contentLength == 0) {
+				bytes = new byte[0];
+			} else {
+
+				bytes = new byte[contentLength];
+				is.read(bytes, 0, contentLength);
+			}
+			packet.fromBytes(bytes);
+			return packet;
 		}
-		packet.fromBytes(bytes);
-		return packet;
+
 	}
 
 	public static void write(Packet packet, OutputStream os) throws IOException {
-		os.write(MAGIC.getBytes());
-		byte[] type = packet.getClass().getName().getBytes();
-		os.write(long2bytes(type.length));
-		os.write(type);
+		// 构建完再统一写，防止写一半再序列化出错的情况下，读数据异常
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		bos.write(MAGIC.getBytes("UTF-8"));
+		byte[] type = packet.getClass().getName().getBytes("UTF-8");
+
+		bos.write(int2bytes(type.length));
+		bos.write(type);
 		byte[] content = packet.toBytes();
-		os.write(long2bytes(content.length));
+		bos.write(int2bytes(content.length));
 		if (content.length > 0) {
-			os.write(content);
+			bos.write(content);
+		}
+		synchronized (os) {
+			os.write(bos.toByteArray());
 		}
 	}
 
-	private static long readLong(InputStream is) throws IOException {
-		byte[] bytes = new byte[8];
+	private static int readInt(InputStream is) throws IOException {
+		byte[] bytes = new byte[4];
 		int size = is.read(bytes);
-		if (size == -1) {
-			throw new IOException("read -1");
+		if (size != 4) {
+			throw new IOException("read " + size + " expect 4");
 		}
-		return bytes2long(bytes);
+		return bytes2int(bytes);
 	}
 
 	private static void checkMagic(InputStream is) throws IOException {
 		byte[] bytes = new byte[MAGIC_LENGTH];
 		int size = is.read(bytes);
-		if (size == -1) {
-			throw new IOException("read -1");
+		if (size != MAGIC_LENGTH) {
+			throw new IOException("read size expect " + MAGIC_LENGTH);
 		}
-		if (!MAGIC.equals(new String(bytes))) {
-			throw new IOException("MAGIC check fail (" + new String(bytes)
-					+ ")");
+		if (!MAGIC.equals(new String(bytes, "UTF-8"))) {
+			throw new IOException("MAGIC check fail ("
+					+ new String(bytes, "UTF-8") + ")");
 		}
 	}
 
@@ -90,38 +108,39 @@ public class PacketResolver {
 			throws IOException {
 		byte[] bytes = new byte[length];
 		int size = is.read(bytes);
-		if (size == -1) {
-			throw new IOException("read -1");
+		if (size != length) {
+			throw new IOException("read " + size + " expect " + length);
 		}
-		return new String(bytes);
+		return new String(bytes, "UTF-8");
 	}
 
-	public static long bytes2long(byte[] b) {
+	public static int bytes2int(byte[] b) {
 
-		int mask = 0xff;
-		int temp = 0;
-		int res = 0;
-		for (int i = 0; i < 8; i++) {
-			res <<= 8;
-			temp = b[i] & mask;
-			res |= temp;
-		}
-		// System.out.println("bytes2long " + res);
-		return res;
+		int l = 0;
+		l = b[0];
+		l &= 0xff;
+		l |= ((int) b[1] << 8);
+		l &= 0xffff;
+		l |= ((int) b[2] << 16);
+		l &= 0xffffff;
+		l |= ((int) b[3] << 24);
+		l &= 0xffffffff;
+		return l;
 	}
 
-	public static byte[] long2bytes(long num) {
-		// System.out.println("long2bytes " + num);
-		byte[] b = new byte[8];
-		for (int i = 0; i < 8; i++) {
-			b[i] = (byte) (num >>> (56 - i * 8));
+	public static byte[] int2bytes(int l) {
+		byte[] b = new byte[4];
+		for (int i = 0; i < b.length; i++) {
+			b[i] = new Integer(l).byteValue();
+			l = l >> 8;
 		}
 		return b;
 	}
 
 	public static void main(String[] args) {
-		byte[] b = long2bytes(101);
-		long l = bytes2long(b);
+		byte[] b = int2bytes(7641);
+		System.out.println(b.length);
+		long l = bytes2int(b);
 		System.out.println(l);
 	}
 }

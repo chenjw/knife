@@ -15,6 +15,7 @@ import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.core.ServiceRegistry;
+import com.chenjw.knife.agent.filter.CurrentContextClassLoaderFilter;
 import com.chenjw.knife.agent.filter.Depth0Filter;
 import com.chenjw.knife.agent.filter.DepthFilter;
 import com.chenjw.knife.agent.filter.EnterLeavePrintFilter;
@@ -68,10 +69,10 @@ public class TraceCommandHandler implements CommandHandler {
 		List<Filter> filters = new ArrayList<Filter>();
 		filters.add(new SystemOperationFilter());
 		filters.add(new ExceptionFilter());
-
 		filters.add(new TimingStopFilter());
-		Map<String, String> tOptions = args.option("-t");
+		filters.add(new CurrentContextClassLoaderFilter());
 		filters.add(new InstrumentClassLoaderFilter());
+		Map<String, String> tOptions = args.option("-t");
 		if (tOptions != null) {
 			filters.add(new InstrumentFilter());
 		}

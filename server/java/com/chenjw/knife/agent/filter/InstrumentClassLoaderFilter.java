@@ -10,15 +10,27 @@ public class InstrumentClassLoaderFilter implements Filter {
 	@Override
 	public void doFilter(Event event, FilterChain chain) throws Exception {
 		if (event instanceof MethodProfileEvent) {
+			ClassLoader backup = AgentClassLoader.getAgentClassLoader()
+					.getParent();
 			MethodProfileEvent e = (MethodProfileEvent) event;
 			AgentClassLoader.getAgentClassLoader().setParent(
 					e.getMethod().getDeclaringClass().getClassLoader());
-			chain.doFilter(event);
+			try {
+				chain.doFilter(event);
+			} finally {
+				AgentClassLoader.getAgentClassLoader().setParent(backup);
+			}
 		} else if (event instanceof MethodProfileEnterLeaveEvent) {
+			ClassLoader backup = AgentClassLoader.getAgentClassLoader()
+					.getParent();
 			MethodProfileEnterLeaveEvent e = (MethodProfileEnterLeaveEvent) event;
 			AgentClassLoader.getAgentClassLoader().setParent(
 					e.getMethod().getDeclaringClass().getClassLoader());
-			chain.doFilter(event);
+			try {
+				chain.doFilter(event);
+			} finally {
+				AgentClassLoader.getAgentClassLoader().setParent(backup);
+			}
 		} else {
 			chain.doFilter(event);
 		}

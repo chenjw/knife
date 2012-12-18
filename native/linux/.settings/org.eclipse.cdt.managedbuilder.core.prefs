@@ -1,0 +1,12 @@
+eclipse.preferences.version=1
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.base.1446159961/CPATH/delimiter=\:
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.base.1446159961/CPATH/operation=remove
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.base.1446159961/C_INCLUDE_PATH/delimiter=\:
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.base.1446159961/C_INCLUDE_PATH/operation=append
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.base.1446159961/C_INCLUDE_PATH/value=/usr/include
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.base.1446159961/append=true
+environment/buildEnvironmentInclude/cdt.managedbuild.toolchain.gnu.base.1446159961/appendContributed=true
+environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.base.1446159961/LIBRARY_PATH/delimiter=\:
+environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.base.1446159961/LIBRARY_PATH/operation=remove
+environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.base.1446159961/append=true
+environment/buildEnvironmentLibrary/cdt.managedbuild.toolchain.gnu.base.1446159961/appendContributed=true

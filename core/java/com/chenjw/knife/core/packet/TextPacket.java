@@ -32,7 +32,11 @@ public class TextPacket implements Packet {
 	@Override
 	public void fromBytes(byte[] bytes) {
 		try {
-			this.message = new String(bytes, "UTF-8");
+			if (bytes.length == 0) {
+				this.message = null;
+			} else {
+				this.message = new String(bytes, "UTF-8");
+			}
 		} catch (UnsupportedEncodingException e) {
 		}
 	}
