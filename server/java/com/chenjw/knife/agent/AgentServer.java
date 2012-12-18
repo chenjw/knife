@@ -74,8 +74,8 @@ public class AgentServer implements Runnable {
 				}
 			}
 			socket = null;
-			ServiceRegistry.clear();
-			ServiceRegistry.close();
+			//ServiceRegistry.clear();
+			//ServiceRegistry.close();
 			Agent.close();
 			System.out.println("agent uninstalled!");
 		}

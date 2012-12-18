@@ -34,8 +34,15 @@ public class JlineCommandConsole extends CommandConsole {
 
 	@Override
 	public String readConsoleLine() throws Exception {
-		String line = reader.readLine();
-		return line;
+		String line;
+		while(true){
+			if(( line = reader.readLine())!=null){
+				return line;
+			}
+			else{
+				Thread.sleep(1000);
+			}
+		}
 	}
 
 	@Override
