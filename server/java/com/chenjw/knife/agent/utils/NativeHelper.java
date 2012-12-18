@@ -27,8 +27,10 @@ import com.chenjw.knife.utils.StringHelper;
 public class NativeHelper {
 	static {
 
-		// System.load("/home/chenjw/my_workspace/knife/native/Default/libnativehelper.so");
-		NativeHelper.loadNativeLibrary("libnativehelper");
+		//System.load("/home/chenjw/my_workspace/knife/native/linux/Default/libnativehelper.so");
+		
+		System.load("C:\\workspace\\knife\\native\\windows\\Default\\libnativehelper.dll");
+		// NativeHelper.loadNativeLibrary("libnativehelper");
 	}
 	private static Object[] retransformLock = new Object[0];
 	private static String jvmClassName = null;
@@ -52,7 +54,7 @@ public class NativeHelper {
 		}
 		InputStream is = null;
 		OutputStream os = null;
-		File tmpFile=null;
+		File tmpFile = null;
 		try {
 			is = NativeHelper.class.getResource("/" + libName + suffix)
 					.openStream();
@@ -60,7 +62,7 @@ public class NativeHelper {
 			tmpFile.deleteOnExit();
 			os = new FileOutputStream(tmpFile);
 			IOHelper.copy(is, os);
-			
+
 		} catch (Exception e) {
 			throw new RuntimeException("load " + libName + " error!", e);
 		} finally {
@@ -597,6 +599,11 @@ public class NativeHelper {
 		}
 
 	}
+	
+	private static void do5() {
+		NativeHelper.countReferree(10);
+
+	}
 
 	private static void do1() throws ClassNotFoundException {
 		int num = 10;
@@ -643,7 +650,7 @@ public class NativeHelper {
 
 	public static void main(String[] args) throws ClassNotFoundException,
 			SecurityException, NoSuchFieldException {
-		do4();
+		do5();
 		System.out.println("finished!");
 	}
 }

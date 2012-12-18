@@ -100,15 +100,20 @@ jint iterate_ref_markCountReference(
 		const jvmtiHeapReferenceInfo* reference_info, jlong class_tag,
 		jlong referrer_class_tag, jlong size, jlong* tag_ptr,
 		jlong* referrer_tag_ptr, jint length, void* user_data) {
+	printf("ccccccc");
 	// 只统计属性关系和数组元素关系，两类引用，其他类型忽略
+
 	if (reference_kind != JVMTI_HEAP_REFERENCE_FIELD
 			&& reference_kind != JVMTI_HEAP_REFERENCE_ARRAY_ELEMENT) {
+		printf("cdd");
 		return JVMTI_VISIT_OBJECTS;
 	}
+	printf("d");
 	// 引用者的tag值-1
 	if (referrer_tag_ptr != 0 && tag_ptr != 0 ) {
 		(*referrer_tag_ptr)--;
 	}
+	printf("e");
 	return JVMTI_VISIT_OBJECTS;
 }
 
@@ -134,7 +139,7 @@ JNIEXPORT void Java_com_chenjw_knife_agent_utils_NativeHelper_countReferree0(
 	// 遍历所有的引用，统计每个引用者的引用次数，引用次数存在该对象的tag中，为负数
 	jvmtiHeapCallbacks * callbacks;
 	callbacks = (jvmtiHeapCallbacks *) allocate(sizeof(jvmtiHeapCallbacks));
-	callbacks->heap_reference_callback = &iterate_ref_markCountReference;
+	callbacks->heap_reference_callback = (jvmtiHeapReferenceCallback)&iterate_ref_markCountReference;
 	callbacks->primitive_field_callback = 0;
 	callbacks->array_primitive_value_callback = 0;
 	callbacks->string_primitive_value_callback = 0;

@@ -1,8 +1,4 @@
-
-#include <string.h>
-
 #include "jni.h"
-
 #include "jvmti.h"
 #include "util.h"
 
@@ -43,13 +39,12 @@ jvmtiIterationControl iterate_markTag(jlong class_tag, jlong size,
 	if (tag_ptr != 0 ) {
 		*tag_ptr = 1;
 	}
-
+	printf("cccc\n");
 	return JVMTI_ITERATION_IGNORE;
 }
 
 
-void JNICALL
-eventHandlerClassFileLoadHook(jvmtiEnv * jvmti, JNIEnv * env,
+void eventHandlerClassFileLoadHook(jvmtiEnv * jvmti, JNIEnv * env,
 		jclass classBeingRedefined, jobject loader, const char* name,
 		jobject protectionDomain, jint classDataLen,
 		const unsigned char* classData, jint* newClassDataLen,
@@ -76,8 +71,7 @@ eventHandlerClassFileLoadHook(jvmtiEnv * jvmti, JNIEnv * env,
 	return;
 }
 
-void JNICALL
-eventHandlerClassLoadedHook(jvmtiEnv * jvmti, JNIEnv* env, jthread thread,
+void eventHandlerClassLoadedHook(jvmtiEnv * jvmti, JNIEnv* env, jthread thread,
 		jclass klass) {
 	(*env)->CallStaticObjectMethod(env, nativeHelperClass, classLoadedMethodId,
 			klass);
@@ -89,14 +83,14 @@ eventHandlerClassLoadedHook(jvmtiEnv * jvmti, JNIEnv* env, jthread thread,
  * Method:    startClassFileLoadHook0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_startClassFileLoadHook0(
+JNIEXPORT void  Java_com_chenjw_knife_agent_utils_NativeHelper_startClassFileLoadHook0(
 		JNIEnv * env, jclass thisClass) {
 	initJvmti(env);
 	initClassInfo(env);
-	jvmtiEventCallbacks callbacks;
-	memset(&callbacks, 0, sizeof(callbacks));
-	callbacks.ClassFileLoadHook = &eventHandlerClassFileLoadHook;
-	(*jvmti)->SetEventCallbacks(jvmti, &callbacks, sizeof(callbacks));
+	jvmtiEventCallbacks * callbacks;
+	callbacks = (jvmtiEventCallbacks *) allocate(sizeof(jvmtiEventCallbacks));
+	callbacks->ClassFileLoadHook = (jvmtiEventClassFileLoadHook)&eventHandlerClassFileLoadHook;
+	(*jvmti)->SetEventCallbacks(jvmti, callbacks, sizeof(callbacks));
 	(*jvmti)->SetEventNotificationMode(jvmti, JVMTI_ENABLE,
 			JVMTI_EVENT_CLASS_FILE_LOAD_HOOK, 0 );
 
@@ -107,7 +101,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_startClass
  * Method:    stopClassFileLoadHook0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_stopClassFileLoadHook0(
+JNIEXPORT void  Java_com_chenjw_knife_agent_utils_NativeHelper_stopClassFileLoadHook0(
 		JNIEnv * env, jclass thisClass) {
 	initJvmti(env);
 	(*jvmti)->SetEventNotificationMode(jvmti, JVMTI_DISABLE,
@@ -119,13 +113,13 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_stopClassF
  * Method:    startClassFileLoadHook0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_startClassLoadHook0(
+JNIEXPORT void  Java_com_chenjw_knife_agent_utils_NativeHelper_startClassLoadHook0(
 		JNIEnv * env, jclass thisClass) {
 	initJvmti(env);
 	initClassLoadedInfo(env);
 	jvmtiEventCallbacks callbacks;
-	memset(&callbacks, 0, sizeof(callbacks));
-	callbacks.ClassLoad = &eventHandlerClassLoadedHook;
+	//memset(&callbacks, 0, sizeof(callbacks));
+	callbacks.ClassLoad = (jvmtiEventClassLoad)&eventHandlerClassLoadedHook;
 	(*jvmti)->SetEventCallbacks(jvmti, &callbacks, sizeof(callbacks));
 	(*jvmti)->SetEventNotificationMode(jvmti, JVMTI_ENABLE,
 			JVMTI_EVENT_CLASS_LOAD, 0 );
@@ -137,7 +131,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_startClass
  * Method:    stopClassFileLoadHook0
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_stopClassLoadHook0(
+JNIEXPORT void  Java_com_chenjw_knife_agent_utils_NativeHelper_stopClassLoadHook0(
 		JNIEnv * env, jclass thisClass) {
 	initJvmti(env);
 	(*jvmti)->SetEventNotificationMode(jvmti, JVMTI_DISABLE,
@@ -149,7 +143,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_stopClassL
  * Method:    retransformClasses
  * Signature: ([Ljava/lang/Class;)V
  */
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_retransformClasses0(
+JNIEXPORT void  Java_com_chenjw_knife_agent_utils_NativeHelper_retransformClasses0(
 		JNIEnv * env, jclass thisClass, jobjectArray classes) {
 	initJvmti(env);
 	jsize numClasses = 0;
@@ -171,30 +165,39 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_retransfor
 
 
 
-JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_findInstancesByClass0(
+JNIEXPORT jobjectArray  Java_com_chenjw_knife_agent_utils_NativeHelper_findInstancesByClass0(
 		JNIEnv * env, jclass thisClass, jclass klass) {
+	printf("%d\n",jvmti);
 	initJvmti(env);
+	printf("1111\n");
 	jclass loadedObject = (*env)->FindClass(env, "java/lang/Object");
-	(*jvmti)->IterateOverInstancesOfClass(jvmti, klass,
-			JVMTI_HEAP_OBJECT_EITHER, iterate_markTag, 0 );
-
-	jint countObjts = 0;
+	printf("%d\n",klass);
+	printf("%d\n",JVMTI_HEAP_OBJECT_EITHER);
+	printf("%d\n",iterate_markTag);
+	jvmtiError error=(*jvmti)->IterateOverInstancesOfClass(jvmti, klass,
+			JVMTI_HEAP_OBJECT_EITHER, (jvmtiHeapObjectCallback)iterate_markTag,0 );
+	printf("%daaa\n",error);
+	printf("2222\n");
+	jint countObjs = 0;
 	jobject * objs;
 	jlong * tagResults;
 	jlong idToQuery = 1;
 
-	(*jvmti)->GetObjectsWithTags(jvmti, 1, &idToQuery, &countObjts, &objs,
+	(*jvmti)->GetObjectsWithTags(jvmti, 1, &idToQuery, &countObjs, &objs,
 			&tagResults);
+	printf("3\n");
 	// Set the object array
-	jobjectArray arrayReturn = (*env)->NewObjectArray(env, countObjts,
+	jobjectArray arrayReturn = (*env)->NewObjectArray(env, countObjs,
 			loadedObject, 0);
 	jint i;
-	for (i = 0; i < countObjts; i++) {
+	for (i = 0; i < countObjs; i++) {
 		(*env)->SetObjectArrayElement(env, arrayReturn, i, objs[i]);
 	}
+	printf("4\n");
 	deallocate(tagResults);
-
+	printf("5\n");
 	deallocate(objs);
+	printf("6\n");
 	releaseTags();
 
 	return arrayReturn;
@@ -202,7 +205,7 @@ JNIEXPORT jobjectArray JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_fi
 
 
 
-JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_redefineClass0(
+JNIEXPORT void  Java_com_chenjw_knife_agent_utils_NativeHelper_redefineClass0(
 		JNIEnv * env, jclass thisClass, jclass klass, jbyteArray byteArray) {
 	initJvmti(env);
 	jvmtiClassDefinition * classDef = allocate(sizeof(jvmtiClassDefinition));
@@ -217,7 +220,7 @@ JNIEXPORT void JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_redefineCl
 
 
 
-JNIEXPORT jstring JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getClassSourceFileName0(
+JNIEXPORT jstring  Java_com_chenjw_knife_agent_utils_NativeHelper_getClassSourceFileName0(
 		JNIEnv *env, jclass thisClass, jclass clazz) {
 	initJvmti(env);
 	char* source_name_ptr;
@@ -226,7 +229,7 @@ JNIEXPORT jstring JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getClas
 	return result;
 }
 
-JNIEXPORT jobject JNICALL Java_com_chenjw_knife_agent_utils_NativeHelper_getCallerClassLoader0(
+JNIEXPORT jobject  Java_com_chenjw_knife_agent_utils_NativeHelper_getCallerClassLoader0(
 		JNIEnv *env, jclass thisClass) {
 	//jclass caller = JVM_GetCallerClass(env,2);
 	//return caller != 0 ? JVM_GetClassLoader(env,caller) : 0;
