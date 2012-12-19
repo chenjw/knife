@@ -29,8 +29,8 @@ public class NativeHelper {
 
 		//System.load("/home/chenjw/my_workspace/knife/native/linux/Default/libnativehelper.so");
 		
-		System.load("C:\\workspace\\knife\\native\\windows\\Default\\libnativehelper.dll");
-		// NativeHelper.loadNativeLibrary("libnativehelper");
+		//System.load("C:\\workspace\\knife\\native\\windows\\Default\\libnativehelper.dll");
+		NativeHelper.loadNativeLibrary("libnativehelper");
 	}
 	private static Object[] retransformLock = new Object[0];
 	private static String jvmClassName = null;
@@ -568,28 +568,18 @@ public class NativeHelper {
 	}
 
 	private static void do2() {
-		NativeHelper.startMethodTrace0();
-		// NativeHelper.stopMethodTrace0();
-		// while (true) {
-		ThreadInfo t = new ThreadInfo();
-		t.setCpu("cpu");
-		// }
-
-		System.out.println(t.getCpu());
+		System.out.println(NativeHelper.getClassBytes(ParseHelper.class));
+		
 	}
 
 	private static void do3() {
+
 		ThreadInfo t = new ThreadInfo();
 		t.setCpu("cpu");
 		System.out
-				.println(NativeHelper.findInstancesByClass0(ThreadInfo.class).length);
+				.println(NativeHelper.findInstancesByClass(ThreadInfo.class)[0].getCpu());
 
-		// NativeHelper.stopMethodTrace0();
-		// while (true) {
 
-		// }
-
-		System.out.println(t.getCpu());
 	}
 
 	private static void do4() {
@@ -601,7 +591,8 @@ public class NativeHelper {
 	}
 	
 	private static void do5() {
-		NativeHelper.countReferree(10);
+		System.out.println("do5 "+NativeHelper.countReferree(10).size());
+		
 
 	}
 
@@ -650,7 +641,7 @@ public class NativeHelper {
 
 	public static void main(String[] args) throws ClassNotFoundException,
 			SecurityException, NoSuchFieldException {
-		do5();
+		do2();
 		System.out.println("finished!");
 	}
 }

@@ -18,7 +18,7 @@ void initMethodEnterInfo(JNIEnv * env) {
 			"methodEnter", "(Ljava/lang/reflect/Method;)V");
 }
 
-void eventHandlerMethodEnter(jvmtiEnv * jvmti, JNIEnv* env, jthread thread,
+void JNICALL eventHandlerMethodEnter(jvmtiEnv * jvmti, JNIEnv* env, jthread thread,
 		jmethodID method) {
 	jclass* clazz = 0;
 	(*jvmti)->GetMethodDeclaringClass(jvmti, method, clazz);
@@ -46,6 +46,5 @@ JNIEXPORT void  Java_com_chenjw_knife_agent_utils_NativeHelper_stopMethodTrace0(
 	initJvmti(env);
 	(*jvmti)->SetEventNotificationMode(jvmti, JVMTI_DISABLE,
 			JVMTI_EVENT_METHOD_ENTRY, 0 );
-	printf("ddd\n");
 }
 

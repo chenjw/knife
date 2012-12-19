@@ -65,7 +65,7 @@ void addObjectReferrer(ObjectReferrerList * list, jlong count) {
 	}
 }
 
-jint iterate_ref_markReferrer(jvmtiHeapReferenceKind reference_kind,
+jint JNICALL iterate_ref_markReferrer(jvmtiHeapReferenceKind reference_kind,
 		const jvmtiHeapReferenceInfo* reference_info, jlong class_tag,
 		jlong referrer_class_tag, jlong size, jlong* tag_ptr,
 		jlong* referrer_tag_ptr, jint length, void* user_data) {
@@ -80,7 +80,7 @@ jint iterate_ref_markReferrer(jvmtiHeapReferenceKind reference_kind,
 	return JVMTI_VISIT_OBJECTS;
 }
 
-jint  iterate_ref_markReferree(jvmtiHeapReferenceKind reference_kind,
+jint JNICALL  iterate_ref_markReferree(jvmtiHeapReferenceKind reference_kind,
 		const jvmtiHeapReferenceInfo* reference_info, jlong class_tag,
 		jlong referrer_class_tag, jlong size, jlong* tag_ptr,
 		jlong* referrer_tag_ptr, jint length, void* user_data) {
@@ -95,29 +95,25 @@ jint  iterate_ref_markReferree(jvmtiHeapReferenceKind reference_kind,
 	return JVMTI_VISIT_OBJECTS;
 }
 
-jint iterate_ref_markCountReference(
+jint JNICALL  iterate_ref_markCountReference(
 		jvmtiHeapReferenceKind reference_kind,
 		const jvmtiHeapReferenceInfo* reference_info, jlong class_tag,
 		jlong referrer_class_tag, jlong size, jlong* tag_ptr,
 		jlong* referrer_tag_ptr, jint length, void* user_data) {
-	printf("ccccccc");
 	// 只统计属性关系和数组元素关系，两类引用，其他类型忽略
 
 	if (reference_kind != JVMTI_HEAP_REFERENCE_FIELD
 			&& reference_kind != JVMTI_HEAP_REFERENCE_ARRAY_ELEMENT) {
-		printf("cdd");
 		return JVMTI_VISIT_OBJECTS;
 	}
-	printf("d");
 	// 引用者的tag值-1
 	if (referrer_tag_ptr != 0 && tag_ptr != 0 ) {
 		(*referrer_tag_ptr)--;
 	}
-	printf("e");
 	return JVMTI_VISIT_OBJECTS;
 }
 
-jvmtiIterationControl iterate_countReference(jlong class_tag,
+jvmtiIterationControl JNICALL iterate_countReference(jlong class_tag,
 		jlong size, jlong* tag_ptr, void* user_data) {
 	// 如果该对象的引用数为负数，则把该引用数加入统计，并把该tag转为正数
 	if (tag_ptr != 0 && *tag_ptr < 0) {
