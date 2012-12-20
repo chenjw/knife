@@ -3,12 +3,12 @@ package com.chenjw.knife.client.console.divide;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.chenjw.knife.core.result.divide.BodyElement;
-import com.chenjw.knife.core.result.divide.CompositedModel;
-import com.chenjw.knife.core.result.divide.Dividable;
-import com.chenjw.knife.core.result.divide.FooterFragment;
-import com.chenjw.knife.core.result.divide.Fragment;
-import com.chenjw.knife.core.result.divide.HeaderFragment;
+import com.chenjw.knife.core.model.divide.BodyElement;
+import com.chenjw.knife.core.model.divide.CompositedModel;
+import com.chenjw.knife.core.model.divide.Dividable;
+import com.chenjw.knife.core.model.divide.FooterFragment;
+import com.chenjw.knife.core.model.divide.Fragment;
+import com.chenjw.knife.core.model.divide.HeaderFragment;
 import com.chenjw.knife.utils.ReflectHelper;
 import com.chenjw.knife.utils.invoke.InvokeResult;
 import com.chenjw.knife.utils.invoke.MethodInvokeException;

@@ -1,6 +1,6 @@
 package com.chenjw.knife.agent.utils;
 
-import com.chenjw.knife.core.result.Result;
+import com.chenjw.knife.core.model.Result;
 
 public class ResultHelper {
 	public static Result newErrorResult(String errorMsg) {

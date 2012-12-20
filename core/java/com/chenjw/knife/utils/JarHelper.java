@@ -6,6 +6,12 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * jar包相关的工具类
+ * 
+ * @author chenjw
+ * 
+ */
 public class JarHelper {
 	private static final String LIB_FOLDER = "../dist/knife/lib/";
 

@@ -6,7 +6,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-
+/**
+ * java原生实现的序列化，如果系列化机和反序列化机的jdk版本不一致，有可能会解析失败,所以建议使用json方式更好.
+ * 
+ * @author chenjw
+ * 
+ */
 public class JavaObjectSerializer implements ObjectSerializer {
 
 	@Override

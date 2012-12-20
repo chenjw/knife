@@ -1,5 +1,7 @@
 package com.chenjw.knife.core.packet;
 
+import com.chenjw.knife.core.model.Response;
+
 public class ResponsePacket extends ObjectPacket<Response> {
 
 

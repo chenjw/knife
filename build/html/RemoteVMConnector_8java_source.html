@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('RemoteVMConnector_8java_source.html','
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.model.AttachRequest;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.model.AttachResult;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.model.VMDescriptor;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.Packet;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.PacketResolver;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.PacketResolver;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.Packet;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.RequestPacket;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ResponsePacket;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('RemoteVMConnector_8java_source.html','
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    @Override</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">public</span> List&lt;VMDescriptor&gt; listVM() <span class="keywordflow">throws</span> Exception {</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        sendPacket(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1RequestPacket.html">RequestPacket</a>(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1constants_1_1Constants.html">Constants</a>.REQUEST_LIST_VM));</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1Packet.html">Packet</a> p = readPacket();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> p = readPacket();</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResponsePacket.html">ResponsePacket</a> rp = (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResponsePacket.html">ResponsePacket</a>) p;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">return</span> (List&lt;VMDescriptor&gt;) rp.getObject().getContext()[0];</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
@@ -149,7 +149,7 @@ $(document).ready(function(){initNavTree('RemoteVMConnector_8java_source.html','
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        r.setPid(pid);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        r.setPort(port);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        sendPacket(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1RequestPacket.html">RequestPacket</a>(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1constants_1_1Constants.html">Constants</a>.REQUEST_ATTACH_VM, r));</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1Packet.html">Packet</a> p = readPacket();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> p = readPacket();</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResponsePacket.html">ResponsePacket</a> rp = (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResponsePacket.html">ResponsePacket</a>) p;</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachResult.html">AttachResult</a> result = (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachResult.html">AttachResult</a>) rp.getObject().getContext()[0];</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">if</span> (!result.isSuccess()) {</div>
@@ -161,12 +161,12 @@ $(document).ready(function(){initNavTree('RemoteVMConnector_8java_source.html','
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1connection_1_1DefaultVMConnection.html">DefaultVMConnection</a>(ip, port);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> sendPacket(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1Packet.html">Packet</a> p) <span class="keywordflow">throws</span> Exception {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> sendPacket(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> p) <span class="keywordflow">throws</span> Exception {</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        connect();</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">PacketResolver</a>.write(p, os);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">private</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1Packet.html">Packet</a> readPacket() <span class="keywordflow">throws</span> Exception {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">private</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> readPacket() <span class="keywordflow">throws</span> Exception {</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        connect();</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">PacketResolver</a>.read(is);</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
@@ -192,7 +192,7 @@ $(document).ready(function(){initNavTree('RemoteVMConnector_8java_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_ca80a2867a910d1703151176a5f3b001.html">client</a></li><li class="navelem"><a class="el" href="dir_c09a52d4cd725c818cfe3e8b832b5d0f.html">java</a></li><li class="navelem"><a class="el" href="dir_6a33a3cf18427bd1519c249c808da47b.html">com</a></li><li class="navelem"><a class="el" href="dir_b164abf5644c5608202b672c196ceb37.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_89de4244fc8d7268dd63d026cdd73983.html">knife</a></li><li class="navelem"><a class="el" href="dir_58f2c9660f47c6b30632deaf69c1fb9c.html">client</a></li><li class="navelem"><a class="el" href="dir_b5355b34a17c7b85462dad0a3ce0aaf5.html">connector</a></li><li class="navelem"><b>RemoteVMConnector.java</b></li>
-    <li class="footer">Generated on Fri Dec 21 2012 00:29:28 for knife doc by
+    <li class="footer">Generated on Fri Dec 21 2012 00:45:54 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

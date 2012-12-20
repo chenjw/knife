@@ -8,12 +8,12 @@ import com.chenjw.knife.client.core.CommandService;
 import com.chenjw.knife.client.core.VMConnection;
 import com.chenjw.knife.client.core.VMConnector;
 import com.chenjw.knife.client.model.VMDescriptor;
-import com.chenjw.knife.core.Command;
-import com.chenjw.knife.core.Packet;
+import com.chenjw.knife.core.model.Command;
+import com.chenjw.knife.core.model.Result;
 import com.chenjw.knife.core.packet.ClosePacket;
 import com.chenjw.knife.core.packet.CommandPacket;
+import com.chenjw.knife.core.packet.Packet;
 import com.chenjw.knife.core.packet.ResultPacket;
-import com.chenjw.knife.core.result.Result;
 
 public class CommandClient implements Client {
 

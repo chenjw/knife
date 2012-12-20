@@ -104,17 +104,17 @@ $(document).ready(function(){initNavTree('Agent_8java_source.html','');});
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span> java.util.List;</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ResultHelper;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.Packet;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.PacketResolver;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.Printer;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ClosePacket;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ResultPacket;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.TextPacket;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.Result;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.divide.BodyElement;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.divide.Dividable;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.divide.FooterFragment;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.divide.HeaderFragment;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.PacketResolver;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.Printer;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.Result;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.divide.BodyElement;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.divide.Dividable;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.divide.FooterFragment;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.divide.HeaderFragment;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ClosePacket;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.Packet;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ResultPacket;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.TextPacket;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.GlobalIdHelper;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
 <div class="line"><a name="l00023"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">   23</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a> {</div>
@@ -155,39 +155,39 @@ $(document).ready(function(){initNavTree('Agent_8java_source.html','');});
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1Result.html">Result</a> r) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Result.html">Result</a> r) {</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">if</span> (r != null &amp;&amp; r.isSuccess() &amp;&amp; r.getContent() != null</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                &amp;&amp; (r.getContent() instanceof <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1Dividable.html">Dividable</a>)) {</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            sendDividableResult((<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1Dividable.html">Dividable</a>) r.getContent());</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                &amp;&amp; (r.getContent() instanceof <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Dividable.html">Dividable</a>)) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            sendDividableResult((<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Dividable.html">Dividable</a>) r.getContent());</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            directSendResult(r);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> sendDividableResult(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1Dividable.html">Dividable</a> dObj) {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> sendDividableResult(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Dividable.html">Dividable</a> dObj) {</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        String <span class="keywordtype">id</span> = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1GlobalIdHelper.html">GlobalIdHelper</a>.getGlobalId();</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        List&lt;Object&gt; objs = <span class="keyword">new</span> ArrayList&lt;Object&gt;();</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        dObj.divide(objs);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1HeaderFragment.html">HeaderFragment</a> header = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1HeaderFragment.html">HeaderFragment</a>();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1HeaderFragment.html">HeaderFragment</a> header = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1HeaderFragment.html">HeaderFragment</a>();</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        header.setId(<span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        header.setCount(objs.size());</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        header.setType(dObj.getClass().getName());</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        directSendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newResult(header));</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordtype">int</span> i = 0;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">for</span> (Object obj : objs) {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1BodyElement.html">BodyElement</a> fragment = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1BodyElement.html">BodyElement</a>();</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1BodyElement.html">BodyElement</a> fragment = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1BodyElement.html">BodyElement</a>();</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            fragment.setId(<span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            fragment.setContent(obj);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            fragment.setIndex(i);</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            directSendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newResult(fragment));</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            i++;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1FooterFragment.html">FooterFragment</a> footer = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1FooterFragment.html">FooterFragment</a>();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1FooterFragment.html">FooterFragment</a> footer = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1FooterFragment.html">FooterFragment</a>();</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        footer.setId(<span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        directSendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newResult(footer));</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> send(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1Packet.html">Packet</a> command) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> send(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> command) {</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">try</span> {</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">PacketResolver</a>.write(command, agentInfo.getOs());</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        } <span class="keywordflow">catch</span> (IOException e) {</div>
@@ -195,7 +195,7 @@ $(document).ready(function(){initNavTree('Agent_8java_source.html','');});
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        }</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> directSendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1Result.html">Result</a> result) {</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> directSendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Result.html">Result</a> result) {</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        send(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResultPacket.html">ResultPacket</a>(result));</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    }</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
@@ -246,7 +246,7 @@ $(document).ready(function(){initNavTree('Agent_8java_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d2cb48a05ceaa5ebcfe25be84c2916e6.html">server</a></li><li class="navelem"><a class="el" href="dir_db60037098d8b47100735153655396f8.html">java</a></li><li class="navelem"><a class="el" href="dir_3b925310fada0a2c5fa4aee29acc23fc.html">com</a></li><li class="navelem"><a class="el" href="dir_7252fe0bda32ecbaddf0ce0a10b4b18c.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_b5fca9b5538ff3d5be2b48a6d908a6e6.html">knife</a></li><li class="navelem"><a class="el" href="dir_5008b264276ab8b7de0403f0bddaa424.html">agent</a></li><li class="navelem"><b>Agent.java</b></li>
-    <li class="footer">Generated on Fri Dec 21 2012 00:29:28 for knife doc by
+    <li class="footer">Generated on Fri Dec 21 2012 00:45:54 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chenjw.knife.agent.utils.ResultHelper;
-import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketResolver;
 import com.chenjw.knife.core.Printer;
+import com.chenjw.knife.core.model.Result;
+import com.chenjw.knife.core.model.divide.BodyElement;
+import com.chenjw.knife.core.model.divide.Dividable;
+import com.chenjw.knife.core.model.divide.FooterFragment;
+import com.chenjw.knife.core.model.divide.HeaderFragment;
 import com.chenjw.knife.core.packet.ClosePacket;
+import com.chenjw.knife.core.packet.Packet;
 import com.chenjw.knife.core.packet.ResultPacket;
 import com.chenjw.knife.core.packet.TextPacket;
-import com.chenjw.knife.core.result.Result;
-import com.chenjw.knife.core.result.divide.BodyElement;
-import com.chenjw.knife.core.result.divide.Dividable;
-import com.chenjw.knife.core.result.divide.FooterFragment;
-import com.chenjw.knife.core.result.divide.HeaderFragment;
 import com.chenjw.knife.utils.GlobalIdHelper;
 
 public class Agent {

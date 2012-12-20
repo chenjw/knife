@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-import com.chenjw.knife.core.result.divide.Dividable;
+import com.chenjw.knife.core.model.divide.Dividable;
 
 public class ClassListInfo implements Dividable, Serializable {
 

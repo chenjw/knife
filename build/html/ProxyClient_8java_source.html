@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('ProxyClient_8java_source.html','');});
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.model.AttachRequest;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.model.AttachResult;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.model.VMDescriptor;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.Packet;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.PacketResolver;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.PacketResolver;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.Packet;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.RequestPacket;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ResponsePacket;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('ProxyClient_8java_source.html','');});
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            System.out.println(remoteIp + <span class="stringliteral">&quot; connected!&quot;</span>);</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            InputStream is = socket.getInputStream();</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;            OutputStream os = socket.getOutputStream();</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1Packet.html">Packet</a> packet = null;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> packet = null;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                packet = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">PacketResolver</a>.read(is);</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                <span class="keywordflow">if</span> (packet instanceof <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1RequestPacket.html">RequestPacket</a>) {</div>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('ProxyClient_8java_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_ca80a2867a910d1703151176a5f3b001.html">client</a></li><li class="navelem"><a class="el" href="dir_c09a52d4cd725c818cfe3e8b832b5d0f.html">java</a></li><li class="navelem"><a class="el" href="dir_6a33a3cf18427bd1519c249c808da47b.html">com</a></li><li class="navelem"><a class="el" href="dir_b164abf5644c5608202b672c196ceb37.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_89de4244fc8d7268dd63d026cdd73983.html">knife</a></li><li class="navelem"><a class="el" href="dir_58f2c9660f47c6b30632deaf69c1fb9c.html">client</a></li><li class="navelem"><a class="el" href="dir_4d7f68c5648f0690b6ec4593004f8d35.html">client</a></li><li class="navelem"><b>ProxyClient.java</b></li>
-    <li class="footer">Generated on Fri Dec 21 2012 00:29:28 for knife doc by
+    <li class="footer">Generated on Fri Dec 21 2012 00:45:54 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

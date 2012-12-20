@@ -13,7 +13,7 @@ import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
-import com.chenjw.knife.core.Command;
+import com.chenjw.knife.core.model.Command;
 
 public class DoCommandHandler implements CommandHandler {
 	private ApplicationContext[] contexts = null;

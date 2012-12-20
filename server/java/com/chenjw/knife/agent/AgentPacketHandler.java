@@ -13,10 +13,10 @@ import com.chenjw.knife.agent.args.OptionDesc;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.utils.ResultHelper;
-import com.chenjw.knife.core.Command;
-import com.chenjw.knife.core.Packet;
-import com.chenjw.knife.core.PacketHandler;
+import com.chenjw.knife.core.model.Command;
 import com.chenjw.knife.core.packet.ObjectPacket;
+import com.chenjw.knife.core.packet.Packet;
+import com.chenjw.knife.core.packet.PacketHandler;
 import com.chenjw.knife.utils.StringHelper;
 
 public class AgentPacketHandler implements PacketHandler, CommandDispatcher {

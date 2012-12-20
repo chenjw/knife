@@ -9,7 +9,7 @@
 
 3. 可以直接从下载目录中把java工程和c工程导入到eclipse中。为了兼容linux和windows两套开发环境，需要在eclipse中设置环境变量"JAVA_HOME"到jdk安装目录。
 
-4. 项目使用ant构建，可以在项目根目录使用"ant"，来编译整个开发环境，并生成下载包到"knife/dist"目录中。 需要安装ant。
+4. 项目使用ant构建，可以在项目根目录使用"ant"，来编译整个开发环境，并生成可执行包到"knife/dist"目录中。 需要安装ant。
 
 5. 也可以使用"ant all"在编译的同时自动生成项目文档并自动更新到"http://knife-doc.cloudfoundry.com/"。 前提是需要安装了文档构建工具doxygen，和cloudfoundry操作工具vmc以及它依赖的ruby。
 
@@ -41,9 +41,9 @@ server端依赖的第三方包(会使用独立的classloader加载到目标jvm�
 
 fastjson-1.1.17.jar
 
-misc.javassist-3.9.0.GA
+misc.javassist-3.9.0.GA.jar
 
 tools.jar
 
-其中tools.jar都会从当前机器的jdk安装目录中加载。运行时需要设置当前机器的环境变量"JAVA_HOME"到jdk个目录。
+其中tools.jar都会从当前机器的jdk安装目录中加载。运行时需要设置当前机器的环境变量"JAVA_HOME"到jdk根目录。
 

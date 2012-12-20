@@ -100,12 +100,12 @@ $(document).ready(function(){initNavTree('FragmentManager_8java_source.html','')
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> java.util.Map;</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> java.util.concurrent.ConcurrentHashMap;</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.divide.BodyElement;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.divide.CompositedModel;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.divide.Dividable;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.divide.FooterFragment;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.divide.Fragment;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.divide.HeaderFragment;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.divide.BodyElement;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.divide.CompositedModel;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.divide.Dividable;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.divide.FooterFragment;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.divide.Fragment;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.divide.HeaderFragment;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.ReflectHelper;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.invoke.InvokeResult;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.invoke.MethodInvokeException;</div>
@@ -113,22 +113,22 @@ $(document).ready(function(){initNavTree('FragmentManager_8java_source.html','')
 <div class="line"><a name="l00016"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1divide_1_1FragmentManager.html">   16</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1divide_1_1FragmentManager.html">FragmentManager</a> {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">private</span> Map&lt;String, CompositedModel&gt; fragmentMap = <span class="keyword">new</span> ConcurrentHashMap&lt;String, CompositedModel&gt;();</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">public</span> Object processFragment(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1Fragment.html">Fragment</a> fragment) {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">public</span> Object processFragment(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Fragment.html">Fragment</a> fragment) {</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        Object result = null;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordflow">if</span> (fragment instanceof <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1HeaderFragment.html">HeaderFragment</a>) {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordflow">if</span> (fragment instanceof <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1HeaderFragment.html">HeaderFragment</a>) {</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            HeaderFragment header = (HeaderFragment) fragment;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1CompositedModel.html">CompositedModel</a> model = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1CompositedModel.html">CompositedModel</a>();</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1CompositedModel.html">CompositedModel</a> model = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1CompositedModel.html">CompositedModel</a>();</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            model.setHeader(header);</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            model.setBodyElements(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1BodyElement.html">BodyElement</a>[header.getCount()]);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            model.setBodyElements(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1BodyElement.html">BodyElement</a>[header.getCount()]);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            fragmentMap.put(header.getId(), model);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (fragment instanceof <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1BodyElement.html">BodyElement</a>) {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (fragment instanceof <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1BodyElement.html">BodyElement</a>) {</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            BodyElement element = (BodyElement) fragment;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1CompositedModel.html">CompositedModel</a> model = fragmentMap.get(element.getId());</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1CompositedModel.html">CompositedModel</a> model = fragmentMap.get(element.getId());</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordflow">if</span> (model != null) {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                model.getBodyElements()[element.getIndex()] = element;</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (fragment instanceof <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1FooterFragment.html">FooterFragment</a>) {</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1CompositedModel.html">CompositedModel</a> model = fragmentMap.get(fragment.getId());</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (fragment instanceof <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1FooterFragment.html">FooterFragment</a>) {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1CompositedModel.html">CompositedModel</a> model = fragmentMap.get(fragment.getId());</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">if</span> (model != null) {</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;                String type = model.getHeader().getType();</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1invoke_1_1InvokeResult.html">InvokeResult</a> r = null;</div>
@@ -139,8 +139,8 @@ $(document).ready(function(){initNavTree('FragmentManager_8java_source.html','')
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                    e.printStackTrace();</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                }</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="keywordflow">if</span> (r.isSuccess() &amp;&amp; r.getResult() != null) {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    <span class="keywordflow">if</span> (r.getResult() instanceof <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1Dividable.html">Dividable</a>) {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                        <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1Dividable.html">Dividable</a> d = (<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1Dividable.html">Dividable</a>) r.getResult();</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    <span class="keywordflow">if</span> (r.getResult() instanceof <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Dividable.html">Dividable</a>) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                        <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Dividable.html">Dividable</a> d = (<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Dividable.html">Dividable</a>) r.getResult();</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                        Object[] objs = <span class="keyword">new</span> Object[model.getHeader().getCount()];</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                        <span class="keywordflow">for</span> (BodyElement be : model.getBodyElements()) {</div>
@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('FragmentManager_8java_source.html','')
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_ca80a2867a910d1703151176a5f3b001.html">client</a></li><li class="navelem"><a class="el" href="dir_c09a52d4cd725c818cfe3e8b832b5d0f.html">java</a></li><li class="navelem"><a class="el" href="dir_6a33a3cf18427bd1519c249c808da47b.html">com</a></li><li class="navelem"><a class="el" href="dir_b164abf5644c5608202b672c196ceb37.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_89de4244fc8d7268dd63d026cdd73983.html">knife</a></li><li class="navelem"><a class="el" href="dir_58f2c9660f47c6b30632deaf69c1fb9c.html">client</a></li><li class="navelem"><a class="el" href="dir_1832d069bf9e631d246db1086a83f0d3.html">console</a></li><li class="navelem"><a class="el" href="dir_1e7d24b39fd3009ebdd431304750e509.html">divide</a></li><li class="navelem"><b>FragmentManager.java</b></li>
-    <li class="footer">Generated on Fri Dec 21 2012 00:29:28 for knife doc by
+    <li class="footer">Generated on Fri Dec 21 2012 00:45:54 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

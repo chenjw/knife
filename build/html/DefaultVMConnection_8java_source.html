@@ -104,10 +104,10 @@ $(document).ready(function(){initNavTree('DefaultVMConnection_8java_source.html'
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span> java.net.Socket;</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.core.VMConnection;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.Command;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.Packet;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.PacketResolver;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.CommandPacket;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.PacketResolver;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.Command;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.CommandPacket;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.Packet;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00021"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1connection_1_1DefaultVMConnection.html">   21</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1connection_1_1DefaultVMConnection.html">DefaultVMConnection</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnection.html">VMConnection</a> {</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('DefaultVMConnection_8java_source.html'
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        Runtime.getRuntime().addShutdownHook(<span class="keyword">new</span> Thread() {</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            @Override</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keyword">public</span> <span class="keywordtype">void</span> run() {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1Command.html">Command</a> msg = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1Command.html">Command</a>();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html">Command</a> msg = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html">Command</a>();</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;                msg.setName(<span class="stringliteral">&quot;close&quot;</span>);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <span class="keywordflow">try</span> {</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                    <span class="keywordflow">if</span> (isConnected) {</div>
@@ -176,7 +176,7 @@ $(document).ready(function(){initNavTree('DefaultVMConnection_8java_source.html'
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    @Override</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> sendPacket(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1Packet.html">Packet</a> packet) <span class="keywordflow">throws</span> Exception {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> sendPacket(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> packet) <span class="keywordflow">throws</span> Exception {</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">if</span> (!isConnected) {</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(<span class="stringliteral">&quot;not ready!&quot;</span>);</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        }</div>
@@ -184,7 +184,7 @@ $(document).ready(function(){initNavTree('DefaultVMConnection_8java_source.html'
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    @Override</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">public</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1Packet.html">Packet</a> readPacket() <span class="keywordflow">throws</span> Exception {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">public</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> readPacket() <span class="keywordflow">throws</span> Exception {</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <span class="keywordflow">if</span> (!isConnected) {</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(<span class="stringliteral">&quot;not ready!&quot;</span>);</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
@@ -198,7 +198,7 @@ $(document).ready(function(){initNavTree('DefaultVMConnection_8java_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_ca80a2867a910d1703151176a5f3b001.html">client</a></li><li class="navelem"><a class="el" href="dir_c09a52d4cd725c818cfe3e8b832b5d0f.html">java</a></li><li class="navelem"><a class="el" href="dir_6a33a3cf18427bd1519c249c808da47b.html">com</a></li><li class="navelem"><a class="el" href="dir_b164abf5644c5608202b672c196ceb37.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_89de4244fc8d7268dd63d026cdd73983.html">knife</a></li><li class="navelem"><a class="el" href="dir_58f2c9660f47c6b30632deaf69c1fb9c.html">client</a></li><li class="navelem"><a class="el" href="dir_f896af8d448bf4d1f63ef4c936dce353.html">connection</a></li><li class="navelem"><b>DefaultVMConnection.java</b></li>
-    <li class="footer">Generated on Fri Dec 21 2012 00:29:28 for knife doc by
+    <li class="footer">Generated on Fri Dec 21 2012 00:45:54 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

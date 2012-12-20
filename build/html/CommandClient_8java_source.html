@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('CommandClient_8java_source.html','');}
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.core.VMConnection;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.core.VMConnector;</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.model.VMDescriptor;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.Command;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.Packet;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.Command;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.Result;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ClosePacket;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.CommandPacket;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ResultPacket;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.result.Result;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.Packet;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ResultPacket;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
 <div class="line"><a name="l00018"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1client_1_1CommandClient.html">   18</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1client_1_1CommandClient.html">CommandClient</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Client.html">Client</a> {</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
@@ -149,7 +149,7 @@ $(document).ready(function(){initNavTree('CommandClient_8java_source.html','');}
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                .createVMConnection(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1constants_1_1Constants.html">Constants</a>.DEFAULT_AGENT_PORT);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        isRunning = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="comment">// 获取命令列表</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1Command.html">Command</a> c = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1Command.html">Command</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html">Command</a> c = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html">Command</a>();</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        c.setName(<span class="stringliteral">&quot;cmd&quot;</span>);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        conn.sendPacket(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1CommandPacket.html">CommandPacket</a>(c));</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        startPacketReader(conn);</div>
@@ -182,7 +182,7 @@ $(document).ready(function(){initNavTree('CommandClient_8java_source.html','');}
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> run() {</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="keywordflow">try</span> {</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                <span class="keywordflow">while</span> (isRunning) {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1Command.html">Command</a> c = commandService.waitCommand();</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html">Command</a> c = commandService.waitCommand();</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                    conn.sendPacket(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1CommandPacket.html">CommandPacket</a>(c));</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                }</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            } <span class="keywordflow">catch</span> (Exception e) {</div>
@@ -201,13 +201,13 @@ $(document).ready(function(){initNavTree('CommandClient_8java_source.html','');}
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keyword">public</span> <span class="keywordtype">void</span> run() {</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;            <span class="keywordflow">try</span> {</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                <span class="keywordflow">while</span> (isRunning) {</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1Packet.html">Packet</a> p = conn.readPacket();</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                    <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> p = conn.readPacket();</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;                    <span class="keywordflow">if</span> (p instanceof <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ClosePacket.html">ClosePacket</a>) {</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;                        conn.close();</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;                        commandService.close();</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                        isRunning = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (p instanceof <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResultPacket.html">ResultPacket</a>) {</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1Result.html">Result</a> r = ((ResultPacket) p).getObject();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Result.html">Result</a> r = ((ResultPacket) p).getObject();</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                        commandService.handleResult(r);</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                    } <span class="keywordflow">else</span> {</div>
@@ -227,7 +227,7 @@ $(document).ready(function(){initNavTree('CommandClient_8java_source.html','');}
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_ca80a2867a910d1703151176a5f3b001.html">client</a></li><li class="navelem"><a class="el" href="dir_c09a52d4cd725c818cfe3e8b832b5d0f.html">java</a></li><li class="navelem"><a class="el" href="dir_6a33a3cf18427bd1519c249c808da47b.html">com</a></li><li class="navelem"><a class="el" href="dir_b164abf5644c5608202b672c196ceb37.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_89de4244fc8d7268dd63d026cdd73983.html">knife</a></li><li class="navelem"><a class="el" href="dir_58f2c9660f47c6b30632deaf69c1fb9c.html">client</a></li><li class="navelem"><a class="el" href="dir_4d7f68c5648f0690b6ec4593004f8d35.html">client</a></li><li class="navelem"><b>CommandClient.java</b></li>
-    <li class="footer">Generated on Fri Dec 21 2012 00:29:28 for knife doc by
+    <li class="footer">Generated on Fri Dec 21 2012 00:45:54 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

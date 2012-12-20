@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
+import com.chenjw.knife.core.packet.Packet;
+
 /**
  * 格式
  * 

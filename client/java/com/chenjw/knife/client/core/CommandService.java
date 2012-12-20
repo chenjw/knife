@@ -1,7 +1,7 @@
 package com.chenjw.knife.client.core;
 
-import com.chenjw.knife.core.Command;
-import com.chenjw.knife.core.result.Result;
+import com.chenjw.knife.core.model.Command;
+import com.chenjw.knife.core.model.Result;
 
 public interface CommandService {
 

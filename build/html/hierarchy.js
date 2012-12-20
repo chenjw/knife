@@ -64,7 +64,7 @@ var hierarchy =
     [ "com.chenjw.knife.client.core.Completable", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Completable.html", null ],
     [ "com.chenjw.knife.client.constants.Constants", "classcom_1_1chenjw_1_1knife_1_1client_1_1constants_1_1Constants.html", null ],
     [ "com.chenjw.knife.agent.constants.Constants", "classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html", null ],
-    [ "com.chenjw.knife.core.result.divide.Dividable", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1Dividable.html", [
+    [ "com.chenjw.knife.core.model.divide.Dividable", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Dividable.html", [
       [ "com.chenjw.knife.core.model.ArrayInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ArrayInfo.html", null ],
       [ "com.chenjw.knife.core.model.ClassListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassListInfo.html", null ]
     ] ],
@@ -139,7 +139,7 @@ var hierarchy =
     ] ],
     [ "com.chenjw.knife.agent.args.OptionDesc", "classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html", null ],
     [ "com.chenjw.knife.agent.utils.OSHelper", "classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1OSHelper.html", null ],
-    [ "com.chenjw.knife.core.PacketHandler", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1PacketHandler.html", [
+    [ "com.chenjw.knife.core.packet.PacketHandler", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1PacketHandler.html", [
       [ "com.chenjw.knife.agent.AgentPacketHandler", "classcom_1_1chenjw_1_1knife_1_1agent_1_1AgentPacketHandler.html", null ]
     ] ],
     [ "com.chenjw.knife.core.PacketResolver", "classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html", null ],
@@ -183,15 +183,21 @@ var hierarchy =
       [ "com.chenjw.knife.client.model.AttachRequest", "classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachRequest.html", null ],
       [ "com.chenjw.knife.client.model.AttachResult", "classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachResult.html", null ],
       [ "com.chenjw.knife.client.model.VMDescriptor", "classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1VMDescriptor.html", null ],
-      [ "com.chenjw.knife.core.Command", "classcom_1_1chenjw_1_1knife_1_1core_1_1Command.html", null ],
       [ "com.chenjw.knife.core.model.ArrayInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ArrayInfo.html", null ],
       [ "com.chenjw.knife.core.model.ClassConstructorInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassConstructorInfo.html", null ],
       [ "com.chenjw.knife.core.model.ClassFieldInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassFieldInfo.html", null ],
       [ "com.chenjw.knife.core.model.ClassInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassInfo.html", null ],
       [ "com.chenjw.knife.core.model.ClassListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassListInfo.html", null ],
       [ "com.chenjw.knife.core.model.ClassMethodInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassMethodInfo.html", null ],
+      [ "com.chenjw.knife.core.model.Command", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html", null ],
       [ "com.chenjw.knife.core.model.CommandListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1CommandListInfo.html", null ],
       [ "com.chenjw.knife.core.model.ConstructorInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ConstructorInfo.html", null ],
+      [ "com.chenjw.knife.core.model.divide.CompositedModel", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1CompositedModel.html", null ],
+      [ "com.chenjw.knife.core.model.divide.Fragment", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Fragment.html", [
+        [ "com.chenjw.knife.core.model.divide.BodyElement", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1BodyElement.html", null ],
+        [ "com.chenjw.knife.core.model.divide.FooterFragment", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1FooterFragment.html", null ],
+        [ "com.chenjw.knife.core.model.divide.HeaderFragment", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1HeaderFragment.html", null ]
+      ] ],
       [ "com.chenjw.knife.core.model.ExceptionInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ExceptionInfo.html", null ],
       [ "com.chenjw.knife.core.model.FieldInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1FieldInfo.html", null ],
       [ "com.chenjw.knife.core.model.InstanceListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1InstanceListInfo.html", null ],
@@ -202,21 +208,15 @@ var hierarchy =
       [ "com.chenjw.knife.core.model.ObjectInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html", null ],
       [ "com.chenjw.knife.core.model.ReferenceCountInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ReferenceCountInfo.html", null ],
       [ "com.chenjw.knife.core.model.ReferenceListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ReferenceListInfo.html", null ],
+      [ "com.chenjw.knife.core.model.Request", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Request.html", null ],
+      [ "com.chenjw.knife.core.model.Response", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Response.html", null ],
+      [ "com.chenjw.knife.core.model.Result", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Result.html", null ],
       [ "com.chenjw.knife.core.model.ThreadInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ThreadInfo.html", null ],
       [ "com.chenjw.knife.core.model.TopReferenceCountInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1TopReferenceCountInfo.html", null ],
       [ "com.chenjw.knife.core.model.TopThreadInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1TopThreadInfo.html", null ],
-      [ "com.chenjw.knife.core.Packet", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1Packet.html", [
+      [ "com.chenjw.knife.core.packet.Packet", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html", [
         [ "com.chenjw.knife.core.packet.ObjectPacket< T extends Serializable >", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ObjectPacket_3_01T_01extends_01Serializable_01_4.html", null ],
         [ "com.chenjw.knife.core.packet.TextPacket", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1TextPacket.html", null ]
-      ] ],
-      [ "com.chenjw.knife.core.packet.Request", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Request.html", null ],
-      [ "com.chenjw.knife.core.packet.Response", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Response.html", null ],
-      [ "com.chenjw.knife.core.result.divide.CompositedModel", "classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1CompositedModel.html", null ],
-      [ "com.chenjw.knife.core.result.divide.Fragment", "classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1Fragment.html", [
-        [ "com.chenjw.knife.core.result.divide.BodyElement", "classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1BodyElement.html", null ],
-        [ "com.chenjw.knife.core.result.divide.FooterFragment", "classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1FooterFragment.html", null ],
-        [ "com.chenjw.knife.core.result.divide.HeaderFragment", "classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1HeaderFragment.html", null ]
-      ] ],
-      [ "com.chenjw.knife.core.result.Result", "classcom_1_1chenjw_1_1knife_1_1core_1_1result_1_1Result.html", null ]
+      ] ]
     ] ]
 ];

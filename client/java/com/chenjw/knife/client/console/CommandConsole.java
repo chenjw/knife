@@ -5,11 +5,11 @@ import com.chenjw.knife.client.core.CommandService;
 import com.chenjw.knife.client.core.Completable;
 import com.chenjw.knife.client.formater.FormaterManager;
 import com.chenjw.knife.client.formater.TypePrintFormater;
-import com.chenjw.knife.core.Command;
 import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.Printer.Level;
-import com.chenjw.knife.core.result.Result;
-import com.chenjw.knife.core.result.divide.Fragment;
+import com.chenjw.knife.core.model.Command;
+import com.chenjw.knife.core.model.Result;
+import com.chenjw.knife.core.model.divide.Fragment;
 import com.chenjw.knife.utils.StringHelper;
 
 public abstract class CommandConsole implements CommandService {

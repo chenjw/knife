@@ -2,7 +2,6 @@ package com.chenjw.knife.core.packet;
 
 import java.io.UnsupportedEncodingException;
 
-import com.chenjw.knife.core.Packet;
 
 public class TextPacket implements Packet {
 

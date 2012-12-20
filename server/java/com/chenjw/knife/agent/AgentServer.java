@@ -9,9 +9,9 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import com.chenjw.knife.agent.core.ServiceRegistry;
-import com.chenjw.knife.core.Packet;
-import com.chenjw.knife.core.PacketHandler;
 import com.chenjw.knife.core.PacketResolver;
+import com.chenjw.knife.core.packet.Packet;
+import com.chenjw.knife.core.packet.PacketHandler;
 
 public class AgentServer implements Runnable {
 	// 服务器channel对象，负责接受用户的连接
@@ -81,5 +81,5 @@ public class AgentServer implements Runnable {
 		}
 
 	}
-	
+
 }

@@ -10,6 +10,12 @@ import java.util.Set;
 import com.chenjw.knife.utils.invoke.InvokeResult;
 import com.chenjw.knife.utils.invoke.MethodInvokeException;
 
+/**
+ * 反射相关的工具类
+ * 
+ * @author chenjw
+ * 
+ */
 public class ReflectHelper {
 	private static ClassLoader getClassLoader(ClassLoader classLoader) {
 		if (classLoader != null) {

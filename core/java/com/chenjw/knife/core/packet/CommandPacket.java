@@ -1,6 +1,6 @@
 package com.chenjw.knife.core.packet;
 
-import com.chenjw.knife.core.Command;
+import com.chenjw.knife.core.model.Command;
 
 public class CommandPacket extends ObjectPacket<Command> {
 

@@ -14,8 +14,8 @@ import com.chenjw.knife.client.core.VMConnector;
 import com.chenjw.knife.client.model.AttachRequest;
 import com.chenjw.knife.client.model.AttachResult;
 import com.chenjw.knife.client.model.VMDescriptor;
-import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketResolver;
+import com.chenjw.knife.core.packet.Packet;
 import com.chenjw.knife.core.packet.RequestPacket;
 import com.chenjw.knife.core.packet.ResponsePacket;
 

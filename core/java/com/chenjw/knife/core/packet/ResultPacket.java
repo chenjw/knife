@@ -1,6 +1,6 @@
 package com.chenjw.knife.core.packet;
 
-import com.chenjw.knife.core.result.Result;
+import com.chenjw.knife.core.model.Result;
 
 public class ResultPacket extends ObjectPacket<Result> {
 

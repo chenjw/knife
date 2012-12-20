@@ -1,6 +1,6 @@
 package com.chenjw.knife.client.core;
 
-import com.chenjw.knife.core.Packet;
+import com.chenjw.knife.core.packet.Packet;
 
 public interface VMConnection {
 

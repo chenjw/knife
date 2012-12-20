@@ -4,6 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
+/**
+ * jvm相关的工具类
+ * 
+ * @author chenjw
+ * 
+ */
 public class JvmHelper {
 
 	private static File PID_PATH = null;

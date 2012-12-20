@@ -7,10 +7,10 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import com.chenjw.knife.client.core.VMConnection;
-import com.chenjw.knife.core.Command;
-import com.chenjw.knife.core.Packet;
 import com.chenjw.knife.core.PacketResolver;
+import com.chenjw.knife.core.model.Command;
 import com.chenjw.knife.core.packet.CommandPacket;
+import com.chenjw.knife.core.packet.Packet;
 
 /**
  * 远程链接
