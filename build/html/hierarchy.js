@@ -65,6 +65,7 @@ var hierarchy =
     [ "com.chenjw.knife.client.constants.Constants", "classcom_1_1chenjw_1_1knife_1_1client_1_1constants_1_1Constants.html", null ],
     [ "com.chenjw.knife.agent.constants.Constants", "classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html", null ],
     [ "com.chenjw.knife.core.result.divide.Dividable", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1result_1_1divide_1_1Dividable.html", [
+      [ "com.chenjw.knife.core.model.ArrayInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ArrayInfo.html", null ],
       [ "com.chenjw.knife.core.model.ClassListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassListInfo.html", null ]
     ] ],
     [ "Exception", null, [

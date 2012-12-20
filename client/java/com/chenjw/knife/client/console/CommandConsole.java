@@ -102,6 +102,9 @@ public abstract class CommandConsole implements CommandService {
 
 		@Override
 		public void info(String str) {
+			if (str == null) {
+				return;
+			}
 			try {
 				writeConsoleLine(str);
 			} catch (Exception e) {
@@ -111,6 +114,9 @@ public abstract class CommandConsole implements CommandService {
 
 		@Override
 		public void debug(String str) {
+			if (str == null) {
+				return;
+			}
 			try {
 				writeConsoleLine(str);
 			} catch (Exception e) {

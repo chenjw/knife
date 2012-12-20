@@ -245,7 +245,18 @@ public class LsCommandHandler implements CommandHandler {
 
 		if (target.getClazz().isArray()) {
 			List<ObjectInfo> elements = new ArrayList<ObjectInfo>();
-			for (int i = 0; i < Array.getLength(target.getObj()); i++) {
+			int maxNum = 0;
+			int length = Array.getLength(target.getObj());
+			Map<String, String> nOptions = args.option("-n");
+			if (nOptions != null) {
+				maxNum = Integer.parseInt(nOptions.get("num"));
+				if (maxNum > length) {
+					maxNum = length;
+				}
+			} else {
+				maxNum = length;
+			}
+			for (int i = 0; i < maxNum; i++) {
 				Object aObj = Array.get(target.getObj(), i);
 				ObjectInfo element = new ObjectInfo();
 				element.setObjectId(ServiceRegistry.getService(
@@ -258,8 +269,23 @@ public class LsCommandHandler implements CommandHandler {
 			info.setElements(elements.toArray(new ObjectInfo[elements.size()]));
 			Agent.sendResult(ResultHelper.newResult(info));
 		} else if (target.getObj() instanceof List) {
+
+			List<Object> list = (List<Object>) target.getObj();
 			List<ObjectInfo> elements = new ArrayList<ObjectInfo>();
-			for (Object aObj : (List<Object>) target.getObj()) {
+			int maxNum = 0;
+			int length = list.size();
+			Map<String, String> nOptions = args.option("-n");
+			if (nOptions != null) {
+				maxNum = Integer.parseInt(nOptions.get("num"));
+				if (maxNum > length) {
+					maxNum = length;
+				}
+			} else {
+				maxNum = length;
+			}
+
+			for (int i = 0; i < maxNum; i++) {
+				Object aObj = list.get(i);
 				ObjectInfo element = new ObjectInfo();
 				element.setObjectId(ServiceRegistry.getService(
 						ObjectHolderService.class).toId(aObj));
@@ -313,7 +339,7 @@ public class LsCommandHandler implements CommandHandler {
 	@Override
 	public void declareArgs(ArgDef argDef) {
 
-		argDef.setDefinition("ls [-f] [-m] [-c] [-a] [-d] [<classname>]");
+		argDef.setDefinition("ls [-f] [-m] [-c] [-a] [-d] [-n <num>] [<classname>]");
 
 	}
 

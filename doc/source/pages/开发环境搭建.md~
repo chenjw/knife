@@ -1,0 +1,49 @@
+开发环境搭建
+========
+
+### 下载并构建开发环境
+
+1. 支持linux和windows任一环境下进行开发，两套环境共用同一份源代码。
+
+2. 在你的workspace目录中执行，"git clone https://github.com/chenjw/knife.git knife"，下载源代码。如果没有安装git需要先安装相关工具。
+
+3. 可以直接从下载目录中把java工程和c工程导入到eclipse中。为了兼容linux和windows两套开发环境，需要在eclipse中设置环境变量"JAVA_HOME"到jdk安装目录。
+
+4. 项目使用ant构建，可以在项目根目录使用"ant"，来编译整个开发环境，并生成下载包到"knife/dist"目录中。 需要安装ant。
+
+5. 也可以使用"ant all"在编译的同时自动生成项目文档并自动更新到"http://knife-doc.cloudfoundry.com/"。 前提是需要安装了文档构建工具doxygen，和cloudfoundry操作工具vmc以及它依赖的ruby。
+
+### 目录结构
+
+agent : agent包的源码工程。
+build : ant构建时使用的临时目录。
+client : client包的源码工程。
+core : client和server包共用的部分代码，编译时会分别打包到client和server包中。
+dist : ant构建时输出可执行包的目录。
+doc : 项目文档和相关配置目录，ant构建时会用于生成项目文档。
+lib : 项目依赖的第三方包目录(有些只是测试代码依赖)。
+native : 项目依赖的c源码工程，linux版本和windows版本分为两个工程，但共用同一份源码。
+server : server包的源码工程。
+shell : 构建时用于生成可执行脚本的原始文件。
+test : test包的源码工程，用于存放单元测试。
+
+### 依赖的第三方包
+
+client端依赖的第三方包有：
+
+jline-1.0.jar
+
+fastjson-1.1.17.jar
+
+tools.jar
+
+server端依赖的第三方包(会使用独立的classloader加载到目标jvm中)有：
+
+fastjson-1.1.17.jar
+
+misc.javassist-3.9.0.GA
+
+tools.jar
+
+其中tools.jar都会从当前机器的jdk安装目录中加载。运行时需要设置当前机器的环境变量"JAVA_HOME"到jdk个目录。
+

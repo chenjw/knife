@@ -4,9 +4,10 @@ var NAVTREE =
     [ "Home", "index.html", null ],
     [ "Home (en)", "mainpage-en.html", null ],
     [ "JVMTI介绍", "jvmti.html", null ],
-    [ "&A Q&A", "md_Q.html", null ],
     [ "下载", "md__xE4_xB8_x8B_xE8_xBD_xBD.html", null ],
+    [ "使用场景", "md__xE4_xBD_xBF_xE7_x94_xA8_xE5_x9C_xBA_xE6_x99_xAF.html", null ],
     [ "修改历史", "md__xE4_xBF_xAE_xE6_x94_xB9_xE5_x8E_x86_xE5_x8F_xB2.html", null ],
+    [ "开发环境搭建", "md__xE5_xBC_x80_xE5_x8F_x91_xE7_x8E_xAF_xE5_xA2_x83_xE6_x90_xAD_xE5_xBB_xBA.html", null ],
     [ "相关技术", "md__xE7_x9B_xB8_xE5_x85_xB3_xE6_x8A_x80_xE6_x9C_xAF.html", null ],
     [ "路线图", "md__xE8_xB7_xAF_xE7_xBA_xBF_xE5_x9B_xBE.html", null ],
     [ "远程attach", "md__xE8_xBF_x9C_xE7_xA8_x8Battach.html", null ],
@@ -30,8 +31,8 @@ var NAVTREEINDEX =
 ".html",
 "classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html#a3a993c6fe4a479cfcc370f64e7432894",
 "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1HistoryService.html#a67a312288d539767fd2df66ab2c7c5aa",
-"classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassInfo.html#ade47cbd5f9467a33ff0735cabc9bff39",
-"classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper.html#a740fa71fe03cd851e8aeaebb52c4391d"
+"classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassInfo.html",
+"classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper.html#a634b32e1923baa8f4a301cdf6ba2974f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
