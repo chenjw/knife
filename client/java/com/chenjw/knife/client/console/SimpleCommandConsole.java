@@ -1,19 +1,7 @@
 package com.chenjw.knife.client.console;
 
 import java.io.BufferedReader;
-import java.io.Console;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import jline.ArgumentCompletor;
-import jline.Completor;
-import jline.ConsoleReader;
-import jline.SimpleCompletor;
 
 public class SimpleCommandConsole extends CommandConsole {
 	private static final String OUT_PREFIX = "knife>";
@@ -45,7 +33,6 @@ public class SimpleCommandConsole extends CommandConsole {
 		System.out.println(OUT_PREFIX + line);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setCompletors(String[]... strs) {
 
 	}

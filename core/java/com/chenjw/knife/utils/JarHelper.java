@@ -21,6 +21,18 @@ public class JarHelper {
 		return fns.toArray(new String[fns.size()]);
 	}
 
+	/**
+	 * 
+	 * 判断当前环境是否是开发环境
+	 * 
+	 * @return
+	 */
+	public static boolean isDevMode() {
+		String tmp = JvmHelper.class.getClassLoader()
+				.getResource("com/chenjw/knife").toString();
+		return tmp.indexOf("!") == -1;
+	}
+
 	private static File findJarFolder() {
 		String agentPath = null;
 		String tmp = JvmHelper.class.getClassLoader()
