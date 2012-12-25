@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import com.chenjw.knife.core.packet.Packet;
+import com.chenjw.knife.utils.IOHelper;
 
 /**
  * 格式
@@ -48,9 +49,8 @@ public class PacketResolver {
 			if (contentLength == 0) {
 				bytes = new byte[0];
 			} else {
-
 				bytes = new byte[contentLength];
-				is.read(bytes, 0, contentLength);
+				IOHelper.readBytes(is, bytes);
 			}
 			packet.fromBytes(bytes);
 			return packet;
@@ -78,7 +78,7 @@ public class PacketResolver {
 
 	private static int readInt(InputStream is) throws IOException {
 		byte[] bytes = new byte[4];
-		int size = is.read(bytes);
+		int size = IOHelper.readBytes(is, bytes);
 		if (size != 4) {
 			throw new IOException("read " + size + " expect 4");
 		}
@@ -87,9 +87,9 @@ public class PacketResolver {
 
 	private static void checkMagic(InputStream is) throws IOException {
 		byte[] bytes = new byte[MAGIC_LENGTH];
-		int size = is.read(bytes);
+		int size = IOHelper.readBytes(is, bytes);
 		if (size != MAGIC_LENGTH) {
-			throw new IOException("read size expect " + MAGIC_LENGTH);
+			throw new IOException("read " + size + " expect " + MAGIC_LENGTH);
 		}
 		if (!MAGIC.equals(new String(bytes, "UTF-8"))) {
 			throw new IOException("MAGIC check fail ("
@@ -109,7 +109,7 @@ public class PacketResolver {
 	private static String readType(InputStream is, int length)
 			throws IOException {
 		byte[] bytes = new byte[length];
-		int size = is.read(bytes);
+		int size = IOHelper.readBytes(is, bytes);
 		if (size != length) {
 			throw new IOException("read " + size + " expect " + length);
 		}

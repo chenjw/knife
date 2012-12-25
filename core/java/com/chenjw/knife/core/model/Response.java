@@ -5,23 +5,23 @@ import java.io.Serializable;
 public class Response implements Serializable {
 
 	private static final long serialVersionUID = 2382539244621556936L;
-	private long requestId;
-	private Object[] context;
+	private String id;
+	private String requestId;
 
-	public long getRequestId() {
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getRequestId() {
 		return requestId;
 	}
 
-	public void setRequestId(long requestId) {
+	public void setRequestId(String requestId) {
 		this.requestId = requestId;
-	}
-
-	public Object[] getContext() {
-		return context;
-	}
-
-	public void setContext(Object[] context) {
-		this.context = context;
 	}
 
 }

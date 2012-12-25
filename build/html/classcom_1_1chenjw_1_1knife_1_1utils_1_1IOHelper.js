@@ -8,6 +8,7 @@ var classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper =
     [ "copy", "classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html#a7bd007202a7bfc25e56490c6bfbba080", null ],
     [ "copyLarge", "classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html#ab1272a5bbeea6651cf828614f824bfa7", null ],
     [ "copyLarge", "classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html#ac0416568006c02d2e46cd38284b01fd5", null ],
+    [ "readBytes", "classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html#a84f7861e17a6d312c0658f30c33aae58", null ],
     [ "toString", "classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html#a4ad0ece2b70f98527ef42eec6f5cea4f", null ],
     [ "write", "classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html#a617cb9584d4569aa9b52db885ae45ec0", null ],
     [ "write", "classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html#a25d6c735bbd92843318b4bafbdf36d3d", null ]

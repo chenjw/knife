@@ -1,20 +1,19 @@
 package com.chenjw.knife.agent.handler;
 
 import com.chenjw.knife.agent.Agent;
-import com.chenjw.knife.agent.args.ArgDef;
-import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.service.ObjectHolderService;
 import com.chenjw.knife.agent.utils.ResultHelper;
+import com.chenjw.knife.agent.utils.SpringHelper;
+import com.chenjw.knife.core.args.ArgDef;
+import com.chenjw.knife.core.args.Args;
 import com.chenjw.knife.utils.ReflectHelper;
 import com.chenjw.knife.utils.invoke.InvokeResult;
 import com.chenjw.knife.utils.invoke.MethodInvokeException;
 
 public class SpringCommandHandler implements CommandHandler {
-	private static final String CLASS_FILE_SYSTEM_XML_APPLICATION_CONTEXT = "org.springframework.web.context.support.XmlWebApplicationContext";
-	private static final String CLASS_APPLICATION_CONTEXT = "org.springframework.context.ApplicationContext";
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
 		String parentId = args.arg("parent-id");
@@ -46,8 +45,9 @@ public class SpringCommandHandler implements CommandHandler {
 		InvokeResult r = null;
 		try {
 			r = ReflectHelper.invokeConstructor(
-					CLASS_FILE_SYSTEM_XML_APPLICATION_CONTEXT, new Object[0],
-					new Object[0], parent.getClass().getClassLoader());
+					SpringHelper.CLASS_FILE_SYSTEM_XML_APPLICATION_CONTEXT,
+					new Object[0], new Object[0], parent.getClass()
+							.getClassLoader());
 			if (!r.isSuccess()) {
 				return null;
 			}
@@ -60,8 +60,10 @@ public class SpringCommandHandler implements CommandHandler {
 				r.setE(t.getE());
 			}
 			t = ReflectHelper
-					.invokeMethod(newContext, "setParent",
-							new Object[] { CLASS_APPLICATION_CONTEXT },
+					.invokeMethod(
+							newContext,
+							"setParent",
+							new Object[] { SpringHelper.CLASS_APPLICATION_CONTEXT },
 							new Object[] { parent }, parent.getClass()
 									.getClassLoader());
 			if (!t.isSuccess()) {

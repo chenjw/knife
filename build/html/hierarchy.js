@@ -2,8 +2,8 @@ var hierarchy =
 [
     [ "com.chenjw.knife.agent.Agent", "classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html", null ],
     [ "com.chenjw.knife.agent.AgentInfo", "classcom_1_1chenjw_1_1knife_1_1agent_1_1AgentInfo.html", null ],
-    [ "com.chenjw.knife.agent.args.ArgDef", "classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html", null ],
-    [ "com.chenjw.knife.agent.args.Args", "classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1Args.html", null ],
+    [ "com.chenjw.knife.core.args.ArgDef", "classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1ArgDef.html", null ],
+    [ "com.chenjw.knife.core.args.Args", "classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1Args.html", null ],
     [ "BasePrintFormater", null, [
       [ "com.chenjw.knife.client.formater.ArrayFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ArrayFormater.html", null ],
       [ "com.chenjw.knife.client.formater.ClassConstructorFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassConstructorFormater.html", null ],
@@ -59,11 +59,13 @@ var hierarchy =
       [ "com.chenjw.knife.client.console.CommandConsole", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1CommandConsole.html", [
         [ "com.chenjw.knife.client.console.JlineCommandConsole", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1JlineCommandConsole.html", null ],
         [ "com.chenjw.knife.client.console.SimpleCommandConsole", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1SimpleCommandConsole.html", null ]
-      ] ]
+      ] ],
+      [ "com.chenjw.knife.testgt.TestgtHandler", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1TestgtHandler.html", null ]
     ] ],
     [ "com.chenjw.knife.client.core.Completable", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Completable.html", null ],
-    [ "com.chenjw.knife.client.constants.Constants", "classcom_1_1chenjw_1_1knife_1_1client_1_1constants_1_1Constants.html", null ],
     [ "com.chenjw.knife.agent.constants.Constants", "classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html", null ],
+    [ "com.chenjw.knife.client.constants.Constants", "classcom_1_1chenjw_1_1knife_1_1client_1_1constants_1_1Constants.html", null ],
+    [ "com.chenjw.knife.testgt.DefaultFuture", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1DefaultFuture.html", null ],
     [ "com.chenjw.knife.core.model.divide.Dividable", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Dividable.html", [
       [ "com.chenjw.knife.core.model.ArrayInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ArrayInfo.html", null ],
       [ "com.chenjw.knife.core.model.ClassListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassListInfo.html", null ]
@@ -91,6 +93,7 @@ var hierarchy =
       [ "com.chenjw.knife.agent.filter.InvokePrintFilter", "classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1InvokePrintFilter.html", null ],
       [ "com.chenjw.knife.agent.filter.PatternMethodFilter", "classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1PatternMethodFilter.html", null ],
       [ "com.chenjw.knife.agent.filter.ProxyMethodFilter", "classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1ProxyMethodFilter.html", null ],
+      [ "com.chenjw.knife.agent.filter.StopObjectsFilter", "classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1StopObjectsFilter.html", null ],
       [ "com.chenjw.knife.agent.filter.SystemOperationFilter", "classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1SystemOperationFilter.html", null ],
       [ "com.chenjw.knife.agent.filter.TimesCountFilter", "classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1TimesCountFilter.html", null ],
       [ "com.chenjw.knife.agent.filter.TimingFilter", "classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1TimingFilter.html", null ],
@@ -108,6 +111,7 @@ var hierarchy =
       [ "com.chenjw.knife.client.formater.PreparedTableFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1PreparedTableFormater.html", null ]
     ] ],
     [ "com.chenjw.knife.agent.bytecode.javassist.Helper", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Helper.html", null ],
+    [ "com.chenjw.knife.client.utils.InetHelper", "classcom_1_1chenjw_1_1knife_1_1client_1_1utils_1_1InetHelper.html", null ],
     [ "com.chenjw.knife.utils.invoke.InvokeResult", "classcom_1_1chenjw_1_1knife_1_1utils_1_1invoke_1_1InvokeResult.html", null ],
     [ "com.chenjw.knife.utils.IOHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html", null ],
     [ "com.chenjw.knife.utils.JarHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1JarHelper.html", null ],
@@ -137,8 +141,8 @@ var hierarchy =
       [ "com.chenjw.knife.core.serializer.JavaObjectSerializer", "classcom_1_1chenjw_1_1knife_1_1core_1_1serializer_1_1JavaObjectSerializer.html", null ],
       [ "com.chenjw.knife.core.serializer.JsonObjectSerializer", "classcom_1_1chenjw_1_1knife_1_1core_1_1serializer_1_1JsonObjectSerializer.html", null ]
     ] ],
-    [ "com.chenjw.knife.agent.args.OptionDesc", "classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html", null ],
-    [ "com.chenjw.knife.agent.utils.OSHelper", "classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1OSHelper.html", null ],
+    [ "com.chenjw.knife.core.args.OptionDesc", "classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html", null ],
+    [ "com.chenjw.knife.utils.OSHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1OSHelper.html", null ],
     [ "com.chenjw.knife.core.packet.PacketHandler", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1PacketHandler.html", [
       [ "com.chenjw.knife.agent.AgentPacketHandler", "classcom_1_1chenjw_1_1knife_1_1agent_1_1AgentPacketHandler.html", null ]
     ] ],
@@ -148,12 +152,19 @@ var hierarchy =
     [ "com.chenjw.knife.core.Printer", "classcom_1_1chenjw_1_1knife_1_1core_1_1Printer.html", null ],
     [ "com.chenjw.knife.client.ProxyMain", "classcom_1_1chenjw_1_1knife_1_1client_1_1ProxyMain.html", null ],
     [ "com.chenjw.knife.utils.ReflectHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1ReflectHelper.html", null ],
+    [ "com.chenjw.knife.testgt.ResponseCallback", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1ResponseCallback.html", null ],
+    [ "com.chenjw.knife.testgt.ResultHandler", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1ResultHandler.html", null ],
     [ "com.chenjw.knife.agent.utils.ResultHelper", "classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html", null ],
     [ "Runnable", null, [
       [ "com.chenjw.knife.agent.AgentServer", "classcom_1_1chenjw_1_1knife_1_1agent_1_1AgentServer.html", null ]
     ] ],
     [ "com.chenjw.knife.agent.core.ServiceRegistry", "classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html", null ],
+    [ "com.chenjw.knife.agent.utils.SpringHelper", "classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1SpringHelper.html", null ],
+    [ "com.chenjw.knife.client.utils.ssh.SshClient", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1utils_1_1ssh_1_1SshClient.html", null ],
     [ "com.chenjw.knife.utils.StringHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper.html", null ],
+    [ "com.chenjw.knife.testgt.TestgtService", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1TestgtService.html", [
+      [ "com.chenjw.knife.testgt.TestgtHandler", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1TestgtHandler.html", null ]
+    ] ],
     [ "com.chenjw.knife.agent.utils.ToStringHelper", "classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ToStringHelper.html", null ],
     [ "com.chenjw.knife.agent.bytecode.javassist.method.EnhanceMethodGenerator.TypeEnum", "enumcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1method_1_1EnhanceMethodGenerator_1_1TypeEnum.html", null ],
     [ "com.chenjw.knife.client.formater.TypePrintFormater< T >", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1TypePrintFormater_3_01T_01_4.html", [
@@ -172,8 +183,6 @@ var hierarchy =
     [ "ObjectPacket", null, [
       [ "com.chenjw.knife.core.packet.ClosePacket", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ClosePacket.html", null ],
       [ "com.chenjw.knife.core.packet.CommandPacket", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1CommandPacket.html", null ],
-      [ "com.chenjw.knife.core.packet.RequestPacket", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1RequestPacket.html", null ],
-      [ "com.chenjw.knife.core.packet.ResponsePacket", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResponsePacket.html", null ],
       [ "com.chenjw.knife.core.packet.ResultPacket", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResultPacket.html", null ]
     ] ],
     [ "ProfilerListener", null, [
@@ -181,7 +190,6 @@ var hierarchy =
     ] ],
     [ "Serializable", null, [
       [ "com.chenjw.knife.client.model.AttachRequest", "classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachRequest.html", null ],
-      [ "com.chenjw.knife.client.model.AttachResult", "classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachResult.html", null ],
       [ "com.chenjw.knife.client.model.VMDescriptor", "classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1VMDescriptor.html", null ],
       [ "com.chenjw.knife.core.model.ArrayInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ArrayInfo.html", null ],
       [ "com.chenjw.knife.core.model.ClassConstructorInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassConstructorInfo.html", null ],
@@ -189,7 +197,6 @@ var hierarchy =
       [ "com.chenjw.knife.core.model.ClassInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassInfo.html", null ],
       [ "com.chenjw.knife.core.model.ClassListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassListInfo.html", null ],
       [ "com.chenjw.knife.core.model.ClassMethodInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassMethodInfo.html", null ],
-      [ "com.chenjw.knife.core.model.Command", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html", null ],
       [ "com.chenjw.knife.core.model.CommandListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1CommandListInfo.html", null ],
       [ "com.chenjw.knife.core.model.ConstructorInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ConstructorInfo.html", null ],
       [ "com.chenjw.knife.core.model.divide.CompositedModel", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1CompositedModel.html", null ],
@@ -208,9 +215,12 @@ var hierarchy =
       [ "com.chenjw.knife.core.model.ObjectInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html", null ],
       [ "com.chenjw.knife.core.model.ReferenceCountInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ReferenceCountInfo.html", null ],
       [ "com.chenjw.knife.core.model.ReferenceListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ReferenceListInfo.html", null ],
-      [ "com.chenjw.knife.core.model.Request", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Request.html", null ],
-      [ "com.chenjw.knife.core.model.Response", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Response.html", null ],
-      [ "com.chenjw.knife.core.model.Result", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Result.html", null ],
+      [ "com.chenjw.knife.core.model.Request", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Request.html", [
+        [ "com.chenjw.knife.core.model.Command", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html", null ]
+      ] ],
+      [ "com.chenjw.knife.core.model.Response", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Response.html", [
+        [ "com.chenjw.knife.core.model.Result", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Result.html", null ]
+      ] ],
       [ "com.chenjw.knife.core.model.ThreadInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ThreadInfo.html", null ],
       [ "com.chenjw.knife.core.model.TopReferenceCountInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1TopReferenceCountInfo.html", null ],
       [ "com.chenjw.knife.core.model.TopThreadInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1TopThreadInfo.html", null ],
@@ -218,5 +228,11 @@ var hierarchy =
         [ "com.chenjw.knife.core.packet.ObjectPacket< T extends Serializable >", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ObjectPacket_3_01T_01extends_01Serializable_01_4.html", null ],
         [ "com.chenjw.knife.core.packet.TextPacket", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1TextPacket.html", null ]
       ] ]
+    ] ],
+    [ "SshListener", null, [
+      [ "com.chenjw.knife.utils.SshExample", "classcom_1_1chenjw_1_1knife_1_1utils_1_1SshExample.html", null ]
+    ] ],
+    [ "TelnetAdapter", null, [
+      [ "com.chenjw.knife.utils.TelnetScriptExample", "classcom_1_1chenjw_1_1knife_1_1utils_1_1TelnetScriptExample.html", null ]
     ] ]
 ];

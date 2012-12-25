@@ -7,6 +7,6 @@ var searchData=
   ['objectreferrer',['objectReferrer',['../structobjectReferrer.html',1,'']]],
   ['objectreferrerlist',['objectReferrerList',['../structobjectReferrerList.html',1,'']]],
   ['objectserializer',['ObjectSerializer',['../interfacecom_1_1chenjw_1_1knife_1_1core_1_1serializer_1_1ObjectSerializer.html',1,'com::chenjw::knife::core::serializer']]],
-  ['optiondesc',['OptionDesc',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html',1,'com::chenjw::knife::agent::args']]],
-  ['oshelper',['OSHelper',['../classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1OSHelper.html',1,'com::chenjw::knife::agent::utils']]]
+  ['optiondesc',['OptionDesc',['../classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html',1,'com::chenjw::knife::core::args']]],
+  ['oshelper',['OSHelper',['../classcom_1_1chenjw_1_1knife_1_1utils_1_1OSHelper.html',1,'com::chenjw::knife::utils']]]
 ];

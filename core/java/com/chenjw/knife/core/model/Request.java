@@ -5,23 +5,14 @@ import java.io.Serializable;
 public class Request implements Serializable {
 
 	private static final long serialVersionUID = -2149723010201821906L;
-	private long id;
-	private Object[] context;
+	private String id;
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
-	}
-
-	public Object[] getContext() {
-		return context;
-	}
-
-	public void setContext(Object[] context) {
-		this.context = context;
 	}
 
 }

@@ -7,12 +7,12 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ServiceLoader;
 
-import com.chenjw.knife.agent.args.ArgDef;
-import com.chenjw.knife.agent.args.Args;
-import com.chenjw.knife.agent.args.OptionDesc;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.utils.ResultHelper;
+import com.chenjw.knife.core.args.ArgDef;
+import com.chenjw.knife.core.args.Args;
+import com.chenjw.knife.core.args.OptionDesc;
 import com.chenjw.knife.core.model.Command;
 import com.chenjw.knife.core.packet.ObjectPacket;
 import com.chenjw.knife.core.packet.Packet;
@@ -83,7 +83,7 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 		CommandHandler handler = handlerMap.get(command.getName());
 
 		if (handler != null) {
-			String argStr = command.getArgs();
+			String argStr = (String) command.getArgs();
 			ArgDef def = argDefMap.get(command.getName());
 			if ("-h".equals(argStr)) {
 				argHelp(def);

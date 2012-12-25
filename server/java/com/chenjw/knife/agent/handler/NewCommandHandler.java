@@ -3,8 +3,6 @@ package com.chenjw.knife.agent.handler;
 import java.lang.reflect.Constructor;
 
 import com.chenjw.knife.agent.Agent;
-import com.chenjw.knife.agent.args.ArgDef;
-import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
@@ -13,6 +11,8 @@ import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.service.ObjectHolderService;
 import com.chenjw.knife.agent.utils.ParseHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
+import com.chenjw.knife.core.args.ArgDef;
+import com.chenjw.knife.core.args.Args;
 import com.chenjw.knife.utils.StringHelper;
 
 public class NewCommandHandler implements CommandHandler {

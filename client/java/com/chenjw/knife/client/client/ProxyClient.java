@@ -12,12 +12,12 @@ import com.chenjw.knife.client.constants.Constants;
 import com.chenjw.knife.client.core.Client;
 import com.chenjw.knife.client.core.VMConnector;
 import com.chenjw.knife.client.model.AttachRequest;
-import com.chenjw.knife.client.model.AttachResult;
 import com.chenjw.knife.client.model.VMDescriptor;
 import com.chenjw.knife.core.PacketResolver;
+import com.chenjw.knife.core.model.Result;
+import com.chenjw.knife.core.packet.CommandPacket;
 import com.chenjw.knife.core.packet.Packet;
-import com.chenjw.knife.core.packet.RequestPacket;
-import com.chenjw.knife.core.packet.ResponsePacket;
+import com.chenjw.knife.core.packet.ResultPacket;
 
 public class ProxyClient implements Client {
 
@@ -40,29 +40,33 @@ public class ProxyClient implements Client {
 			Packet packet = null;
 			while (true) {
 				packet = PacketResolver.read(is);
-				if (packet instanceof RequestPacket) {
-					RequestPacket rp = (RequestPacket) packet;
+				if (packet instanceof CommandPacket) {
+					CommandPacket rp = (CommandPacket) packet;
 					if (Constants.REQUEST_LIST_VM.equals(rp.getObject()
-							.getContext()[0])) {
+							.getName())) {
 						List<VMDescriptor> r = connector.listVM();
-						PacketResolver.write(new ResponsePacket(rp.getObject()
-								.getId(), r), os);
+						Result result = new Result();
+						result.setSuccess(true);
+						result.setContent(r);
+						result.setRequestId(rp.getObject().getId());
+						PacketResolver.write(new ResultPacket(result), os);
 					} else if (Constants.REQUEST_ATTACH_VM.equals(rp
-							.getObject().getContext()[0])) {
+							.getObject().getName())) {
 						AttachRequest req = (AttachRequest) rp.getObject()
-								.getContext()[1];
-						AttachResult res = new AttachResult();
+								.getArgs();
+
+						Result result = new Result();
+						result.setRequestId(rp.getObject().getId());
 						try {
 							connector.attachVM(req.getPid(), req.getPort());
-							res.setSuccess(true);
+							result.setSuccess(true);
 							System.out.println(remoteIp + " attached ("
 									+ req.getPid() + ")");
 						} catch (Exception e) {
-							res.setSuccess(false);
-							res.setErrorInfo(e.getLocalizedMessage());
+							result.setSuccess(false);
+							result.setErrorMessage(e.getLocalizedMessage());
 						}
-						PacketResolver.write(new ResponsePacket(rp.getObject()
-								.getId(), res), os);
+						PacketResolver.write(new ResultPacket(result), os);
 					}
 				}
 			}
@@ -83,7 +87,7 @@ public class ProxyClient implements Client {
 	public void start(VMConnector connector) throws Exception {
 		serverSocket = new ServerSocket();
 		serverSocket.bind(new InetSocketAddress(proxyPort));
-		System.out.println("proxy started!");
+		System.out.println(Constants.PROXY_STARTED_MESSAGE);
 		try {
 			while (true) {
 				accecpt(connector);

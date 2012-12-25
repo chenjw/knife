@@ -4,8 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import com.chenjw.knife.agent.Agent;
-import com.chenjw.knife.agent.args.ArgDef;
-import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
@@ -15,6 +13,8 @@ import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ParseHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
+import com.chenjw.knife.core.args.ArgDef;
+import com.chenjw.knife.core.args.Args;
 import com.chenjw.knife.utils.StringHelper;
 
 public class SetCommandHandler implements CommandHandler {

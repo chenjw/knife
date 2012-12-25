@@ -39,7 +39,7 @@ public class JarHelper {
 		return tmp.indexOf("!") == -1;
 	}
 
-	private static File findJarFolder() {
+	public static File findJarFolder() {
 		String agentPath = null;
 		String tmp = JvmHelper.class.getClassLoader()
 				.getResource("com/chenjw/knife").toString();

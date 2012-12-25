@@ -6,8 +6,8 @@ public class CommandPacket extends ObjectPacket<Command> {
 
 	private static final long serialVersionUID = -2342736927367363516L;
 
-	public CommandPacket(Command command) {
-		super(command);
+	public CommandPacket(Command request) {
+		super(request);
 	}
 
 	public CommandPacket() {

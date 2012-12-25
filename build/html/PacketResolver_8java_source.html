@@ -104,41 +104,41 @@ $(document).ready(function(){initNavTree('PacketResolver_8java_source.html','');
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span> java.io.UnsupportedEncodingException;</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.Packet;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">   20</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">PacketResolver</a> {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String MAGIC = <span class="stringliteral">&quot;KNIFE&quot;</span>;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">int</span> MAGIC_LENGTH;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">static</span> {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        <span class="keywordflow">try</span> {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;            MAGIC_LENGTH = MAGIC.getBytes(<span class="stringliteral">&quot;UTF-8&quot;</span>).length;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        } <span class="keywordflow">catch</span> (UnsupportedEncodingException e) {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    }</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> Object netInstance(Class&lt;?&gt; clazz) {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keywordflow">try</span> {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            <span class="keywordflow">return</span> clazz.newInstance();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        } <span class="keywordflow">catch</span> (Exception e) {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordflow">return</span> null;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        }</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    }</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> read(InputStream is) <span class="keywordflow">throws</span> IOException {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keyword">synchronized</span> (is) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> packet = null;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            checkMagic(is);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keywordtype">int</span> typeLength = readInt(is);</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            String type = readType(is, typeLength);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            packet = initPacket(type);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordtype">int</span> contentLength = readInt(is);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            byte[] bytes = null;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">if</span> (contentLength == 0) {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                bytes = <span class="keyword">new</span> byte[0];</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.IOHelper;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">   21</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">PacketResolver</a> {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String MAGIC = <span class="stringliteral">&quot;KNIFE&quot;</span>;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">int</span> MAGIC_LENGTH;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">static</span> {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            MAGIC_LENGTH = MAGIC.getBytes(<span class="stringliteral">&quot;UTF-8&quot;</span>).length;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        } <span class="keywordflow">catch</span> (UnsupportedEncodingException e) {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        }</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> Object netInstance(Class&lt;?&gt; clazz) {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            <span class="keywordflow">return</span> clazz.newInstance();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        } <span class="keywordflow">catch</span> (Exception e) {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordflow">return</span> null;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    }</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> read(InputStream is) <span class="keywordflow">throws</span> IOException {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        <span class="keyword">synchronized</span> (is) {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;            <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> packet = null;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            checkMagic(is);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            <span class="keywordtype">int</span> typeLength = readInt(is);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            String type = readType(is, typeLength);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            packet = initPacket(type);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            <span class="keywordtype">int</span> contentLength = readInt(is);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            byte[] bytes = null;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">if</span> (contentLength == 0) {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                bytes = <span class="keyword">new</span> byte[0];</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                bytes = <span class="keyword">new</span> byte[contentLength];</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                is.read(bytes, 0, contentLength);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html">IOHelper</a>.readBytes(is, bytes);</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            }</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            packet.fromBytes(bytes);</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            <span class="keywordflow">return</span> packet;</div>
@@ -166,7 +166,7 @@ $(document).ready(function(){initNavTree('PacketResolver_8java_source.html','');
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">int</span> readInt(InputStream is) <span class="keywordflow">throws</span> IOException {</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        byte[] bytes = <span class="keyword">new</span> byte[4];</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">int</span> size = is.read(bytes);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordtype">int</span> size = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html">IOHelper</a>.readBytes(is, bytes);</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="keywordflow">if</span> (size != 4) {</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> IOException(<span class="stringliteral">&quot;read &quot;</span> + size + <span class="stringliteral">&quot; expect 4&quot;</span>);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
@@ -175,9 +175,9 @@ $(document).ready(function(){initNavTree('PacketResolver_8java_source.html','');
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> checkMagic(InputStream is) <span class="keywordflow">throws</span> IOException {</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        byte[] bytes = <span class="keyword">new</span> byte[MAGIC_LENGTH];</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordtype">int</span> size = is.read(bytes);</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordtype">int</span> size = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html">IOHelper</a>.readBytes(is, bytes);</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        <span class="keywordflow">if</span> (size != MAGIC_LENGTH) {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> IOException(<span class="stringliteral">&quot;read size expect &quot;</span> + MAGIC_LENGTH);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> IOException(<span class="stringliteral">&quot;read &quot;</span> + size + <span class="stringliteral">&quot; expect &quot;</span> + MAGIC_LENGTH);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        }</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">if</span> (!MAGIC.equals(<span class="keyword">new</span> String(bytes, <span class="stringliteral">&quot;UTF-8&quot;</span>))) {</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> IOException(<span class="stringliteral">&quot;MAGIC check fail (&quot;</span></div>
@@ -197,7 +197,7 @@ $(document).ready(function(){initNavTree('PacketResolver_8java_source.html','');
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> String readType(InputStream is, <span class="keywordtype">int</span> length)</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            <span class="keywordflow">throws</span> IOException {</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        byte[] bytes = <span class="keyword">new</span> byte[length];</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordtype">int</span> size = is.read(bytes);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordtype">int</span> size = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html">IOHelper</a>.readBytes(is, bytes);</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <span class="keywordflow">if</span> (size != length) {</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> IOException(<span class="stringliteral">&quot;read &quot;</span> + size + <span class="stringliteral">&quot; expect &quot;</span> + length);</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div>
@@ -239,8 +239,8 @@ $(document).ready(function(){initNavTree('PacketResolver_8java_source.html','');
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_60b7f28fd5625c8743ce2c5e13f20c7e.html">core</a></li><li class="navelem"><a class="el" href="dir_e37f08b0b583db18cf8dbaa441dd1d5d.html">java</a></li><li class="navelem"><a class="el" href="dir_85e12fe5de5f7bfbaac61e8c0864dfcb.html">com</a></li><li class="navelem"><a class="el" href="dir_cd1932d509bc85001a7e63bb6610796e.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_0150f2f4fad0720567edec73854a7f24.html">knife</a></li><li class="navelem"><a class="el" href="dir_4ed03c0697e0b30de9b7d6ebe382f548.html">core</a></li><li class="navelem"><b>PacketResolver.java</b></li>
-    <li class="footer">Generated on Fri Dec 21 2012 00:45:54 for knife doc by
+    <li class="navelem"><a class="el" href="dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="dir_daa6e865c37e9fae9a2af0f4987207e0.html">java</a></li><li class="navelem"><a class="el" href="dir_1eed3ba8d73fc16e63606d6a656bf531.html">com</a></li><li class="navelem"><a class="el" href="dir_40dffaa3eaf3a1a80fe864bcaa9cda1c.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_94aca49a3c0d718c97fe79448ec1f876.html">knife</a></li><li class="navelem"><a class="el" href="dir_9ce66ddd004714c488649f46edb9c4e6.html">core</a></li><li class="navelem"><b>PacketResolver.java</b></li>
+    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

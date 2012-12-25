@@ -9,6 +9,7 @@ import com.chenjw.knife.client.core.VMConnection;
 import com.chenjw.knife.client.core.VMConnector;
 import com.chenjw.knife.client.model.VMDescriptor;
 import com.chenjw.knife.core.model.Command;
+import com.chenjw.knife.core.model.Response;
 import com.chenjw.knife.core.model.Result;
 import com.chenjw.knife.core.packet.ClosePacket;
 import com.chenjw.knife.core.packet.CommandPacket;
@@ -83,13 +84,16 @@ public class CommandClient implements Client {
 
 		@Override
 		public void run() {
-			try {
-				while (isRunning) {
+
+			while (isRunning) {
+				try {
 					Command c = commandService.waitCommand();
 					conn.sendPacket(new CommandPacket(c));
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
 			}
+
 		}
 	}
 
@@ -102,24 +106,28 @@ public class CommandClient implements Client {
 
 		@Override
 		public void run() {
-			try {
-				while (isRunning) {
+
+			while (isRunning) {
+				try {
 					Packet p = conn.readPacket();
 					if (p instanceof ClosePacket) {
 						conn.close();
 						commandService.close();
 						isRunning = false;
 					} else if (p instanceof ResultPacket) {
-						Result r = ((ResultPacket) p).getObject();
-						commandService.handleResult(r);
+						Response r = ((ResultPacket) p).getObject();
+						if (r != null && (r instanceof Result)) {
+							commandService.handleResult((Result) r);
+						}
 
 					} else {
 						commandService.handleText(p.toString());
 					}
-
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
 			}
+
 		}
 	}
 

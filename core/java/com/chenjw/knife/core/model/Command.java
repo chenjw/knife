@@ -1,16 +1,14 @@
 package com.chenjw.knife.core.model;
 
-import java.io.Serializable;
-
-public class Command implements Serializable {
+public class Command extends Request {
 	private static final long serialVersionUID = -5652970762701374531L;
 	private String name;
-	private String args;
+	private Object args;
 
 	public Command() {
 	}
 
-	public Command(String name, String args) {
+	public Command(String name, Object args) {
 		this.name = name;
 		this.args = args;
 	}
@@ -23,11 +21,11 @@ public class Command implements Serializable {
 		this.name = name;
 	}
 
-	public String getArgs() {
+	public Object getArgs() {
 		return args;
 	}
 
-	public void setArgs(String args) {
+	public void setArgs(Object args) {
 		this.args = args;
 	}
 

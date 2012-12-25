@@ -1,11 +1,11 @@
 package com.chenjw.knife.agent.handler;
 
 import com.chenjw.knife.agent.Agent;
-import com.chenjw.knife.agent.args.ArgDef;
-import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.core.ServiceRegistry;
+import com.chenjw.knife.core.args.ArgDef;
+import com.chenjw.knife.core.args.Args;
 
 public class CloseCommandHandler implements CommandHandler {
 

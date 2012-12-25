@@ -8,8 +8,6 @@ import java.util.Map;
 
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.Profiler;
-import com.chenjw.knife.agent.args.ArgDef;
-import com.chenjw.knife.agent.args.Args;
 import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
@@ -27,14 +25,19 @@ import com.chenjw.knife.agent.filter.InvokeFinishFilter;
 import com.chenjw.knife.agent.filter.InvokePrintFilter;
 import com.chenjw.knife.agent.filter.PatternMethodFilter;
 import com.chenjw.knife.agent.filter.ProxyMethodFilter;
+import com.chenjw.knife.agent.filter.StopObjectsFilter;
 import com.chenjw.knife.agent.filter.SystemOperationFilter;
 import com.chenjw.knife.agent.filter.TimingFilter;
 import com.chenjw.knife.agent.filter.TimingStopFilter;
+import com.chenjw.knife.agent.service.ByteCodeService;
 import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ParseHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
+import com.chenjw.knife.agent.utils.SpringHelper;
+import com.chenjw.knife.core.args.ArgDef;
+import com.chenjw.knife.core.args.Args;
 import com.chenjw.knife.utils.ReflectHelper;
 import com.chenjw.knife.utils.StringHelper;
 import com.chenjw.knife.utils.invoke.InvokeResult;
@@ -55,6 +58,14 @@ public class InvokeCommandHandler implements CommandHandler {
 		filters.add(new FixThreadFilter(Thread.currentThread()));
 		filters.add(new ExceptionFilter());
 		filters.add(new TimingStopFilter());
+
+		Map<String, String> sbOptions = args.option("-sb");
+		if (sbOptions != null) {
+			// clear instrument
+			ServiceRegistry.getService(ByteCodeService.class).clear();
+			filters.add(new StopObjectsFilter(getSpringBeansByIds(sbOptions
+					.get("stop-bean-ids"))));
+		}
 		Map<String, String> tOptions = args.option("-t");
 		if (tOptions != null) {
 			filters.add(new InstrumentClassLoaderFilter());
@@ -74,6 +85,17 @@ public class InvokeCommandHandler implements CommandHandler {
 		filters.add(new InvokeFinishFilter());
 		filters.add(new InvokePrintFilter());
 		Profiler.listener = new FilterInvocationListener(filters);
+	}
+
+	private Object[] getSpringBeansByIds(String ids) {
+		List<Object> objs = new ArrayList<Object>();
+		for (String id : ids.split(",")) {
+			Object obj = SpringHelper.getBeanById(id);
+			if (obj != null) {
+				objs.add(obj);
+			}
+		}
+		return objs.toArray(new Object[objs.size()]);
 	}
 
 	private void invokeMethod(boolean isTrace, String methodSig)
@@ -161,7 +183,7 @@ public class InvokeCommandHandler implements CommandHandler {
 			Profiler.start(thisObject, clazz.getName(), method.getName(), args,
 					null, -1);
 			if (isTrace) {
-				Profiler.profile(method);
+				Profiler.profile(thisObject, method);
 			}
 			InvokeResult r = null;
 			if (isStatic) {
@@ -186,7 +208,7 @@ public class InvokeCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 
-		argDef.setDefinition("invoke [-f <filter-expression>] [-t] <invoke-expression>");
+		argDef.setDefinition("invoke [-f <filter-expression>] [-t] [-sb <stop-bean-ids>] <invoke-expression>");
 
 	}
 

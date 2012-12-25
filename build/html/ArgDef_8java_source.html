@@ -95,27 +95,27 @@ $(document).ready(function(){initNavTree('ArgDef_8java_source.html','');});
 <div class="title">ArgDef.java</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>com.chenjw.knife.agent.args;</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>com.chenjw.knife.core.args;</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> java.util.ArrayList;</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> java.util.List;</div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.StringHelper;</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">    8</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">ArgDef</a> {</div>
+<div class="line"><a name="l00008"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1ArgDef.html">    8</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1ArgDef.html">ArgDef</a> {</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">private</span> List&lt;OptionDesc&gt; optionDescs = <span class="keyword">new</span> ArrayList&lt;OptionDesc&gt;();</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">private</span> List&lt;OptionDesc&gt; argDescs = <span class="keyword">new</span> ArrayList&lt;OptionDesc&gt;();</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">private</span> String commandName;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">private</span> String def = <span class="stringliteral">&quot;&quot;</span>;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">private</span> String desc = <span class="stringliteral">&quot;&quot;</span>;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">public</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a> getByKey(String name) {</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a> o : optionDescs) {</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">public</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a> getByKey(String name) {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a> o : optionDescs) {</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;            <span class="keywordflow">if</span> (o.getName().equals(name)) {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;                <span class="keywordflow">return</span> o;</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;            }</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        }</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a> o : argDescs) {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a> o : argDescs) {</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;            <span class="keywordflow">if</span> (o.getName().equals(name)) {</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                <span class="keywordflow">return</span> o;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;            }</div>
@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('ArgDef_8java_source.html','');});
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            end = findEndOfEncloseStr(def, start);</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            String str = def.substring(start, end);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a> o = parse(str);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a> o = parse(str);</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;            parseOption(o);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;            <span class="keywordflow">if</span> (o.getFullName().startsWith(<span class="stringliteral">&quot;-&quot;</span>)) {</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                optionDescs.add(o);</div>
@@ -176,7 +176,7 @@ $(document).ready(function(){initNavTree('ArgDef_8java_source.html','');});
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> parseOption(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a> o) {</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> parseOption(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a> o) {</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        String[] strs = o.getFullName().split(<span class="stringliteral">&quot; &quot;</span>);</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        String name = strs[0];</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        o.setName(name);</div>
@@ -201,13 +201,13 @@ $(document).ready(function(){initNavTree('ArgDef_8java_source.html','');});
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <span class="keywordflow">return</span> str;</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    }</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">private</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a> parse(String str) {</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">private</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a> parse(String str) {</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="keywordtype">boolean</span> isOptional = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        <span class="keywordflow">if</span> (str.startsWith(<span class="stringliteral">&quot;[&quot;</span>)) {</div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            isOptional = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;        }</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        str = getUncloseStr(str);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a> option = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a>();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a> option = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a>();</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;        option.setFullName(str);</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        option.setOptional(isOptional);</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;        <span class="keywordflow">return</span> option;</div>
@@ -219,13 +219,13 @@ $(document).ready(function(){initNavTree('ArgDef_8java_source.html','');});
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
 <div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> addOptionDesc(String name, String desc) {</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;        <span class="keywordflow">if</span> (name.startsWith(<span class="stringliteral">&quot;-&quot;</span>)) {</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a> o : optionDescs) {</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a> o : optionDescs) {</div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                <span class="keywordflow">if</span> (name.equals(o.getName())) {</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                    o.setDesc(desc);</div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;                }</div>
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;            }</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a> o : argDescs) {</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a> o : argDescs) {</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;                <span class="keywordflow">if</span> (name.equals(o.getName())) {</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;                    o.setDesc(desc);</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;                }</div>
@@ -259,8 +259,8 @@ $(document).ready(function(){initNavTree('ArgDef_8java_source.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d2cb48a05ceaa5ebcfe25be84c2916e6.html">server</a></li><li class="navelem"><a class="el" href="dir_db60037098d8b47100735153655396f8.html">java</a></li><li class="navelem"><a class="el" href="dir_3b925310fada0a2c5fa4aee29acc23fc.html">com</a></li><li class="navelem"><a class="el" href="dir_7252fe0bda32ecbaddf0ce0a10b4b18c.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_b5fca9b5538ff3d5be2b48a6d908a6e6.html">knife</a></li><li class="navelem"><a class="el" href="dir_5008b264276ab8b7de0403f0bddaa424.html">agent</a></li><li class="navelem"><a class="el" href="dir_33ea5670303bf96e409eea9026a9e197.html">args</a></li><li class="navelem"><b>ArgDef.java</b></li>
-    <li class="footer">Generated on Fri Dec 21 2012 00:45:54 for knife doc by
+    <li class="navelem"><a class="el" href="dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="dir_daa6e865c37e9fae9a2af0f4987207e0.html">java</a></li><li class="navelem"><a class="el" href="dir_1eed3ba8d73fc16e63606d6a656bf531.html">com</a></li><li class="navelem"><a class="el" href="dir_40dffaa3eaf3a1a80fe864bcaa9cda1c.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_94aca49a3c0d718c97fe79448ec1f876.html">knife</a></li><li class="navelem"><a class="el" href="dir_9ce66ddd004714c488649f46edb9c4e6.html">core</a></li><li class="navelem"><a class="el" href="dir_b53df1ef2dfdb1784401c8d8a2021d31.html">args</a></li><li class="navelem"><b>ArgDef.java</b></li>
+    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

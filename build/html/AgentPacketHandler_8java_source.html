@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('AgentPacketHandler_8java_source.html',
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span> java.util.Properties;</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">import</span> java.util.ServiceLoader;</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.args.ArgDef;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.args.Args;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.args.OptionDesc;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.CommandDispatcher;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.CommandHandler;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ResultHelper;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.CommandDispatcher;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.CommandHandler;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ResultHelper;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.args.ArgDef;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.args.Args;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.args.OptionDesc;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.Command;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ObjectPacket;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.Packet;</div>
@@ -160,7 +160,7 @@ $(document).ready(function(){initNavTree('AgentPacketHandler_8java_source.html',
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> addCommandHandler(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandHandler.html">CommandHandler</a> commandHandler) {</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">ArgDef</a> def = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">ArgDef</a>();</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1ArgDef.html">ArgDef</a> def = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1ArgDef.html">ArgDef</a>();</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">try</span> {</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            commandHandler.declareArgs(def);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            argDefMap.put(def.getCommandName(), def);</div>
@@ -180,13 +180,13 @@ $(document).ready(function(){initNavTree('AgentPacketHandler_8java_source.html',
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandHandler.html">CommandHandler</a> handler = handlerMap.get(command.getName());</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">if</span> (handler != null) {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            String argStr = command.getArgs();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">ArgDef</a> def = argDefMap.get(command.getName());</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            String argStr = (String) command.getArgs();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1ArgDef.html">ArgDef</a> def = argDefMap.get(command.getName());</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            <span class="keywordflow">if</span> (<span class="stringliteral">&quot;-h&quot;</span>.equals(argStr)) {</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                argHelp(def);</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            }</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1Args.html">Args</a> args = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1Args.html">Args</a>();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1Args.html">Args</a> args = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1Args.html">Args</a>();</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            <span class="keywordflow">try</span> {</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                args.parse(argStr, def);</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
@@ -245,7 +245,7 @@ $(document).ready(function(){initNavTree('AgentPacketHandler_8java_source.html',
 <div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">return</span> r;</div>
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    }</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> argHelp(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1ArgDef.html">ArgDef</a> def) {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> argHelp(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1ArgDef.html">ArgDef</a> def) {</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.info(<span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.info(<span class="stringliteral">&quot;-------------------------------------------------------&quot;</span>);</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.info(<span class="stringliteral">&quot;  usage: &quot;</span> + def.getCommandName() + <span class="stringliteral">&quot; &quot;</span> + def.getDef());</div>
@@ -253,12 +253,12 @@ $(document).ready(function(){initNavTree('AgentPacketHandler_8java_source.html',
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.info(<span class="stringliteral">&quot;  &quot;</span> + def.getDesc());</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.info(<span class="stringliteral">&quot;&quot;</span>);</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <span class="keywordtype">int</span> maxN = 30;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a> decs : def.getArgDescs()) {</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a> decs : def.getArgDescs()) {</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <span class="keywordtype">int</span> length = decs.getFullName().length();</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.info(<span class="stringliteral">&quot;   &quot;</span> + decs.getFullName() + d(maxN - length)</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;                    + decs.getDesc());</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        }</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1args_1_1OptionDesc.html">OptionDesc</a> decs : def.getOptionDescs()) {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1OptionDesc.html">OptionDesc</a> decs : def.getOptionDescs()) {</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;            <span class="keywordtype">int</span> length = decs.getFullName().length();</div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.info(<span class="stringliteral">&quot;   &quot;</span> + decs.getFullName() + d(maxN - length)</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;                    + decs.getDesc());</div>
@@ -277,8 +277,8 @@ $(document).ready(function(){initNavTree('AgentPacketHandler_8java_source.html',
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d2cb48a05ceaa5ebcfe25be84c2916e6.html">server</a></li><li class="navelem"><a class="el" href="dir_db60037098d8b47100735153655396f8.html">java</a></li><li class="navelem"><a class="el" href="dir_3b925310fada0a2c5fa4aee29acc23fc.html">com</a></li><li class="navelem"><a class="el" href="dir_7252fe0bda32ecbaddf0ce0a10b4b18c.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_b5fca9b5538ff3d5be2b48a6d908a6e6.html">knife</a></li><li class="navelem"><a class="el" href="dir_5008b264276ab8b7de0403f0bddaa424.html">agent</a></li><li class="navelem"><b>AgentPacketHandler.java</b></li>
-    <li class="footer">Generated on Fri Dec 21 2012 00:45:54 for knife doc by
+    <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="dir_f7474e4c48fc4e9821194d5a90653f49.html">java</a></li><li class="navelem"><a class="el" href="dir_5ca8fb9f6ca06b822204a1d190f20110.html">com</a></li><li class="navelem"><a class="el" href="dir_c72cee276ec01819a356f15b5a562f9a.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_82a3dbbfc66fbeedeb54968e60a75b82.html">knife</a></li><li class="navelem"><a class="el" href="dir_ef06a12e4e1799194d557302235cf0f7.html">agent</a></li><li class="navelem"><b>AgentPacketHandler.java</b></li>
+    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

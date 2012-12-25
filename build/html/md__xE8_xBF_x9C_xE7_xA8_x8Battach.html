@@ -95,7 +95,15 @@ $(document).ready(function(){initNavTree('md__xE8_xBF_x9C_xE7_xA8_x8Battach.html
 <div class="title">远程attach </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>需要在待监控的机器上启动监控进程（使用的是同一份knife程序）。</p>
+<div class="textblock"><h2>方案一： 直接连接到远程机器，需要可以提供用户名密码。</h2>
+<p>在监控机上</p>
+<blockquote class="doxtable">
+<p>knife.sh 192.168.1.100 username/password</p>
+<p></p>
+</blockquote>
+<p>连接到待监控机器（192.168.1.100是待监控机的IP）username和password为待监控机帐号和密码。</p>
+<h2>方案二： 手动待监控的机器上启动监控进程。</h2>
+<p>登录到待监控机上启动脚本(使用的是同一份knife程序)：</p>
 <blockquote class="doxtable">
 <p>proxy.sh</p>
 <p></p>
@@ -112,7 +120,7 @@ $(document).ready(function(){initNavTree('md__xE8_xBF_x9C_xE7_xA8_x8Battach.html
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Dec 21 2012 00:45:55 for knife doc by
+    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

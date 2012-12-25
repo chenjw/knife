@@ -12,12 +12,12 @@ import com.chenjw.knife.client.constants.Constants;
 import com.chenjw.knife.client.core.VMConnection;
 import com.chenjw.knife.client.core.VMConnector;
 import com.chenjw.knife.client.model.AttachRequest;
-import com.chenjw.knife.client.model.AttachResult;
 import com.chenjw.knife.client.model.VMDescriptor;
 import com.chenjw.knife.core.PacketResolver;
+import com.chenjw.knife.core.model.Command;
+import com.chenjw.knife.core.packet.CommandPacket;
 import com.chenjw.knife.core.packet.Packet;
-import com.chenjw.knife.core.packet.RequestPacket;
-import com.chenjw.knife.core.packet.ResponsePacket;
+import com.chenjw.knife.core.packet.ResultPacket;
 
 /**
  * 远程链接
@@ -45,10 +45,12 @@ public class RemoteVMConnector implements VMConnector {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<VMDescriptor> listVM() throws Exception {
-		sendPacket(new RequestPacket(Constants.REQUEST_LIST_VM));
+		Command command = new Command();
+		command.setName(Constants.REQUEST_LIST_VM);
+		sendPacket(new CommandPacket(command));
 		Packet p = readPacket();
-		ResponsePacket rp = (ResponsePacket) p;
-		return (List<VMDescriptor>) rp.getObject().getContext()[0];
+		ResultPacket rp = (ResultPacket) p;
+		return (List<VMDescriptor>) rp.getObject().getContent();
 	}
 
 	@Override
@@ -57,12 +59,14 @@ public class RemoteVMConnector implements VMConnector {
 		AttachRequest r = new AttachRequest();
 		r.setPid(pid);
 		r.setPort(port);
-		sendPacket(new RequestPacket(Constants.REQUEST_ATTACH_VM, r));
+		Command command = new Command();
+		command.setName(Constants.REQUEST_ATTACH_VM);
+		command.setArgs(r);
+		sendPacket(new CommandPacket(command));
 		Packet p = readPacket();
-		ResponsePacket rp = (ResponsePacket) p;
-		AttachResult result = (AttachResult) rp.getObject().getContext()[0];
-		if (!result.isSuccess()) {
-			throw new Exception(result.getErrorInfo());
+		ResultPacket rp = (ResultPacket) p;
+		if (!rp.getObject().isSuccess()) {
+			throw new Exception(rp.getObject().getErrorMessage());
 		}
 	}
 
@@ -82,12 +86,12 @@ public class RemoteVMConnector implements VMConnector {
 
 	private void connect() throws IOException {
 		if (!isConnected) {
-			try{
+			try {
 				socket = new Socket();
 				socket.connect(new InetSocketAddress(ip, port), 3000);
-			}
-			catch(IOException e){
-				throw new IOException(ip+":"+port+" 连接不上，请确保目标机器防火墙端口已打开！",e);
+			} catch (IOException e) {
+				throw new IOException(ip + ":" + port
+						+ " 连接不上，请确保目标机器防火墙端口已打开！", e);
 			}
 			is = socket.getInputStream();
 			os = socket.getOutputStream();

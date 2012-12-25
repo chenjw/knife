@@ -1,8 +1,7 @@
 package com.chenjw.knife.core.model;
 
-import java.io.Serializable;
 
-public class Result implements Serializable {
+public class Result extends Response {
 
 	private static final long serialVersionUID = -1029895615419256975L;
 

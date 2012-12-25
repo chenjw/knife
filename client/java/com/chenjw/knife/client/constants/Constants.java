@@ -7,4 +7,7 @@ public class Constants {
 	public static final String REQUEST_LIST_VM = "listVM";
 
 	public static final String REQUEST_ATTACH_VM = "attachVM";
+
+	public static final String PROXY_STARTED_MESSAGE = "proxy started!";
+
 }

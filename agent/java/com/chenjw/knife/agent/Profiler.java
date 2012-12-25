@@ -39,7 +39,7 @@ public class Profiler {
 		}
 
 		for (Method method : findInstanceMethod(obj.getClass(), methodName)) {
-			profile(method);
+			profile(obj, method);
 		}
 		Class<?> clazz = null;
 		try {
@@ -56,7 +56,7 @@ public class Profiler {
 		}
 
 		for (Method method : findInstanceMethod(clazz, methodName)) {
-			profile(method);
+			profile(obj, method);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class Profiler {
 			return;
 		}
 		for (Method method : findStaticMethod(clazz, methodName)) {
-			profile(method);
+			profile(null, method);
 		}
 
 	}
@@ -113,11 +113,12 @@ public class Profiler {
 	 * @param dep
 	 * @param clazz
 	 */
-	public static void profile(Method method) {
+	public static void profile(Object thisObject, Method method) {
 		if (Profiler.listener == null) {
 			return;
 		}
 		MethodProfileEvent event = new MethodProfileEvent();
+		event.setThisObject(thisObject);
 		event.setMethod(method);
 		sendEvent(event);
 	}

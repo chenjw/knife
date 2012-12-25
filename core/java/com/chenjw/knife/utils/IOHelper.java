@@ -10,6 +10,21 @@ import java.io.Writer;
 
 public class IOHelper {
 
+	public static int readBytes(InputStream is, byte[] bytes)
+			throws IOException {
+		int i = 0;
+		while (i < bytes.length) {
+			int a = is.read(bytes, i, bytes.length - i);
+			if (a == -1) {
+				break;
+			} else {
+				i += a;
+			}
+		}
+		return i;
+
+	}
+
 	public static long copyLarge(Reader input, Writer output)
 			throws IOException {
 		char buffer[] = new char[4096];

@@ -109,12 +109,12 @@ $(document).ready(function(){initNavTree('RemoteVMConnector_8java_source.html','
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.core.VMConnection;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.core.VMConnector;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.model.AttachRequest;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.model.AttachResult;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.model.VMDescriptor;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.PacketResolver;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.Packet;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.RequestPacket;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ResponsePacket;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.model.VMDescriptor;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.PacketResolver;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.Command;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.CommandPacket;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.Packet;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.packet.ResultPacket;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00028"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1connector_1_1RemoteVMConnector.html">   28</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1connector_1_1RemoteVMConnector.html">RemoteVMConnector</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnector.html">VMConnector</a> {</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
@@ -136,63 +136,67 @@ $(document).ready(function(){initNavTree('RemoteVMConnector_8java_source.html','
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    @SuppressWarnings(<span class="stringliteral">&quot;unchecked&quot;</span>)</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    @Override</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">public</span> List&lt;VMDescriptor&gt; listVM() <span class="keywordflow">throws</span> Exception {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        sendPacket(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1RequestPacket.html">RequestPacket</a>(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1constants_1_1Constants.html">Constants</a>.REQUEST_LIST_VM));</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> p = readPacket();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResponsePacket.html">ResponsePacket</a> rp = (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResponsePacket.html">ResponsePacket</a>) p;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <span class="keywordflow">return</span> (List&lt;VMDescriptor&gt;) rp.getObject().getContext()[0];</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    }</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    @Override</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> attachVM(String pid, <span class="keywordtype">int</span> port) <span class="keywordflow">throws</span> Exception {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        connect();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachRequest.html">AttachRequest</a> r = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachRequest.html">AttachRequest</a>();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        r.setPid(pid);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        r.setPort(port);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        sendPacket(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1RequestPacket.html">RequestPacket</a>(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1constants_1_1Constants.html">Constants</a>.REQUEST_ATTACH_VM, r));</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> p = readPacket();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResponsePacket.html">ResponsePacket</a> rp = (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResponsePacket.html">ResponsePacket</a>) p;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachResult.html">AttachResult</a> result = (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachResult.html">AttachResult</a>) rp.getObject().getContext()[0];</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <span class="keywordflow">if</span> (!result.isSuccess()) {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(result.getErrorInfo());</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">public</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnection.html">VMConnection</a> createVMConnection(<span class="keywordtype">int</span> port) <span class="keywordflow">throws</span> Exception {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1connection_1_1DefaultVMConnection.html">DefaultVMConnection</a>(ip, port);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html">Command</a> command = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html">Command</a>();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        command.setName(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1constants_1_1Constants.html">Constants</a>.REQUEST_LIST_VM);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        sendPacket(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1CommandPacket.html">CommandPacket</a>(command));</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> p = readPacket();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResultPacket.html">ResultPacket</a> rp = (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResultPacket.html">ResultPacket</a>) p;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        <span class="keywordflow">return</span> (List&lt;VMDescriptor&gt;) rp.getObject().getContent();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    @Override</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> attachVM(String pid, <span class="keywordtype">int</span> port) <span class="keywordflow">throws</span> Exception {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        connect();</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachRequest.html">AttachRequest</a> r = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachRequest.html">AttachRequest</a>();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        r.setPid(pid);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        r.setPort(port);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html">Command</a> command = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html">Command</a>();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        command.setName(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1constants_1_1Constants.html">Constants</a>.REQUEST_ATTACH_VM);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        command.setArgs(r);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        sendPacket(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1CommandPacket.html">CommandPacket</a>(command));</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> p = readPacket();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResultPacket.html">ResultPacket</a> rp = (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResultPacket.html">ResultPacket</a>) p;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        <span class="keywordflow">if</span> (!rp.getObject().isSuccess()) {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> Exception(rp.getObject().getErrorMessage());</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        }</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> sendPacket(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> p) <span class="keywordflow">throws</span> Exception {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        connect();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">PacketResolver</a>.write(p, os);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">private</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> readPacket() <span class="keywordflow">throws</span> Exception {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        connect();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">PacketResolver</a>.read(is);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> connect() <span class="keywordflow">throws</span> IOException {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">if</span> (!isConnected) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="keywordflow">try</span>{</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;                socket = <span class="keyword">new</span> Socket();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                socket.connect(<span class="keyword">new</span> InetSocketAddress(ip, port), 3000);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">catch</span>(IOException e){</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> IOException(ip+<span class="stringliteral">&quot;:&quot;</span>+port+<span class="stringliteral">&quot; 连接不上，请确保目标机器防火墙端口已打开！&quot;</span>,e);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            }</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            is = socket.getInputStream();</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            os = socket.getOutputStream();</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            isConnected = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">public</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnection.html">VMConnection</a> createVMConnection(<span class="keywordtype">int</span> port) <span class="keywordflow">throws</span> Exception {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1client_1_1connection_1_1DefaultVMConnection.html">DefaultVMConnection</a>(ip, port);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> sendPacket(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> p) <span class="keywordflow">throws</span> Exception {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        connect();</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">PacketResolver</a>.write(p, os);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">private</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html">Packet</a> readPacket() <span class="keywordflow">throws</span> Exception {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        connect();</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1PacketResolver.html">PacketResolver</a>.read(is);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">private</span> <span class="keywordtype">void</span> connect() <span class="keywordflow">throws</span> IOException {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        <span class="keywordflow">if</span> (!isConnected) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                socket = <span class="keyword">new</span> Socket();</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;                socket.connect(<span class="keyword">new</span> InetSocketAddress(ip, port), 3000);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            } <span class="keywordflow">catch</span> (IOException e) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                <span class="keywordflow">throw</span> <span class="keyword">new</span> IOException(ip + <span class="stringliteral">&quot;:&quot;</span> + port</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                        + <span class="stringliteral">&quot; 连接不上，请确保目标机器防火墙端口已打开！&quot;</span>, e);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            is = socket.getInputStream();</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;            os = socket.getOutputStream();</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            isConnected = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        }</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_ca80a2867a910d1703151176a5f3b001.html">client</a></li><li class="navelem"><a class="el" href="dir_c09a52d4cd725c818cfe3e8b832b5d0f.html">java</a></li><li class="navelem"><a class="el" href="dir_6a33a3cf18427bd1519c249c808da47b.html">com</a></li><li class="navelem"><a class="el" href="dir_b164abf5644c5608202b672c196ceb37.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_89de4244fc8d7268dd63d026cdd73983.html">knife</a></li><li class="navelem"><a class="el" href="dir_58f2c9660f47c6b30632deaf69c1fb9c.html">client</a></li><li class="navelem"><a class="el" href="dir_b5355b34a17c7b85462dad0a3ce0aaf5.html">connector</a></li><li class="navelem"><b>RemoteVMConnector.java</b></li>
-    <li class="footer">Generated on Fri Dec 21 2012 00:45:54 for knife doc by
+    <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_18876547919efd46f151d2587ad79f8f.html">java</a></li><li class="navelem"><a class="el" href="dir_991658177f0f466302589b8fe98a0481.html">com</a></li><li class="navelem"><a class="el" href="dir_16c890797e8b50cb465e4192b196ade7.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_e8f54020097f76395d854671c0c471df.html">knife</a></li><li class="navelem"><a class="el" href="dir_d0e43b1372a1f4f7422090fc6624e429.html">client</a></li><li class="navelem"><a class="el" href="dir_f1b11e38ce5bfaa8fcc9f1198558a699.html">connector</a></li><li class="navelem"><b>RemoteVMConnector.java</b></li>
+    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>
