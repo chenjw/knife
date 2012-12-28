@@ -45,18 +45,17 @@ public class ProxyClient implements Client {
 					if (Constants.REQUEST_LIST_VM.equals(rp.getObject()
 							.getName())) {
 						List<VMDescriptor> r = connector.listVM();
-						Result result = new Result();
+						Result result = new Result(rp.getObject().getId());
 						result.setSuccess(true);
 						result.setContent(r);
-						result.setRequestId(rp.getObject().getId());
+
 						PacketResolver.write(new ResultPacket(result), os);
 					} else if (Constants.REQUEST_ATTACH_VM.equals(rp
 							.getObject().getName())) {
 						AttachRequest req = (AttachRequest) rp.getObject()
 								.getArgs();
 
-						Result result = new Result();
-						result.setRequestId(rp.getObject().getId());
+						Result result = new Result(rp.getObject().getId());
 						try {
 							connector.attachVM(req.getPid(), req.getPort());
 							result.setSuccess(true);

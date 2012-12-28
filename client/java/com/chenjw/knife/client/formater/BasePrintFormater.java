@@ -3,11 +3,14 @@ package com.chenjw.knife.client.formater;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import com.chenjw.knife.core.Printer;
-import com.chenjw.knife.core.Printer.Level;
+import com.chenjw.knife.client.core.CommandListener;
+import com.chenjw.knife.client.core.Completable;
 
 public abstract class BasePrintFormater<T> extends GrepPrintFormater implements
 		TypePrintFormater<T> {
+
+	protected CommandListener commandListener;
+	protected Completable completeHandler;
 
 	@SuppressWarnings("unchecked")
 	public Class<T> getType() {
@@ -25,16 +28,21 @@ public abstract class BasePrintFormater<T> extends GrepPrintFormater implements
 	abstract protected void print(T obj);
 
 	@Override
-	public final void print(Level level, Printer printer, T obj) {
-		this.level = level;
-		this.printer = printer;
-		try{
+	public final void printObject(T obj) {
+		try {
 			print(obj);
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	public void setCompleteHandler(Completable completeHandler) {
+		this.completeHandler = completeHandler;
+	}
+
+	public void setCommandListener(CommandListener commandListener) {
+		this.commandListener = commandListener;
 	}
 
 }

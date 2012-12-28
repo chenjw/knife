@@ -2,6 +2,7 @@ package com.chenjw.knife.core.serializer;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.chenjw.knife.core.model.result.ClassInfo;
 
 /**
  * 使用fastjson方式实现的对象序列化和反序列化工具
@@ -45,5 +46,13 @@ public class JsonObjectSerializer implements ObjectSerializer {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public static void main(String[] args) {
+		ClassInfo c = new ClassInfo();
+		c.setName("aaa");
+		String s = JSON.toJSONString(c,
+				new SerializerFeature[] { SerializerFeature.WriteClassName });
+		System.out.println(s);
 	}
 }

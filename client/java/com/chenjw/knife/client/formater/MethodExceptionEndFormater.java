@@ -1,6 +1,6 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.core.model.MethodExceptionEndInfo;
+import com.chenjw.knife.core.model.result.MethodExceptionEndInfo;
 
 public class MethodExceptionEndFormater extends
 		BasePrintFormater<MethodExceptionEndInfo> {

@@ -1,7 +1,5 @@
 package com.chenjw.knife.agent.handler;
 
-import org.springframework.context.ApplicationContext;
-
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
@@ -9,47 +7,28 @@ import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
-import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
+import com.chenjw.knife.agent.utils.SpringHelper;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
-import com.chenjw.knife.core.model.Command;
+import com.chenjw.knife.core.model.result.CommandInfo;
+import com.chenjw.knife.core.model.result.CommandListInfo;
 
 public class DoCommandHandler implements CommandHandler {
-	private ApplicationContext[] contexts = null;
-
-	private void init() {
-		if (contexts == null) {
-			contexts = NativeHelper
-					.findInstancesByClass(ApplicationContext.class);
-		}
-	}
-
-	private Object getBean(String name) {
-		for (ApplicationContext context : contexts) {
-			Object bean = context.getBean(name);
-			if (bean != null) {
-				return bean;
-			}
-		}
-		return null;
-	}
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
 		ClassLoaderHelper.view();
-
 		do5(args, dispatcher);
-		Agent.sendResult(ResultHelper.newStringResult("do finished!"));
-
 	}
 
 	private void do1(Args args, CommandDispatcher dispatcher) {
-		init();
+
 		ServiceRegistry.getService(ContextService.class).put(Constants.THIS,
-				getBean("applyService"));
+				SpringHelper.getBeanById("applyService"));
 		// dispatcher.dispatch(new Command("invoke",
 		// "-f com.chenjw.* apply({\"id\":1})"));
-		dispatcher.dispatch(new Command("invoke", "-t apply({\"id\":1})"));
+		send(new CommandInfo[] { new CommandInfo("invoke",
+				"-t apply({\"id\":1})") });
 		// dispatcher.dispatch(new Command("trace", "-f com.chenjw.* apply"));
 	}
 
@@ -58,26 +37,32 @@ public class DoCommandHandler implements CommandHandler {
 		// dispatcher.dispatch(new Command("invoke",
 		// "-f com.chenjw.* apply({\"id\":1})"));
 		// dispatcher.dispatch(new Command("invoke", "-t apply({\"id\":1})"));
-		dispatcher.dispatch(new Command("find", "ApplyServiceImpl"));
-		dispatcher.dispatch(new Command("cd", "0"));
-		dispatcher.dispatch(new Command("trace", "-t apply"));
+		send(new CommandInfo[] {
+				//
+				new CommandInfo("find", "ApplyServiceImpl"),
+				new CommandInfo("cd", "0"),
+				new CommandInfo("trace", "-t apply") });
+	}
+
+	private void send(CommandInfo... infos) {
+		CommandListInfo list = new CommandListInfo();
+		list.setCommands(infos);
+		Agent.sendResult(ResultHelper.newResult(list));
 	}
 
 	private void do4(Args args, CommandDispatcher dispatcher) {
-		init();
 		ServiceRegistry.getService(ContextService.class).put(Constants.THIS,
-				getBean("applyService"));
+				SpringHelper.getBeanById("applyService"));
 		// dispatcher.dispatch(new Command("invoke",
 		// "-f com.chenjw.* apply({\"id\":1})"));
 		// dispatcher.dispatch(new Command("invoke", "-t apply({\"id\":1})"));
-		dispatcher.dispatch(new Command("trace", "-t apply"));
+		send(new CommandInfo[] { new CommandInfo("trace", "-t apply") });
 	}
 
 	private void do2(Args args, CommandDispatcher dispatcher) {
-		init();
 		ServiceRegistry.getService(ContextService.class).put(Constants.THIS,
-				getBean("pageCommonDataFeeder"));
-		dispatcher.dispatch(new Command("trace", "getData"));
+				SpringHelper.getBeanById("pageCommonDataFeeder"));
+		send(new CommandInfo[] { new CommandInfo("trace", "getData") });
 	}
 
 	private void do3(Args args, CommandDispatcher dispatcher) {
@@ -98,8 +83,7 @@ public class DoCommandHandler implements CommandHandler {
 				System.out.println(clazz.getClassLoader());
 			}
 		}
-
-		dispatcher.dispatch(new Command("trace", "getData"));
+		send(new CommandInfo[] { new CommandInfo("trace", "getData") });
 	}
 
 	public void declareArgs(ArgDef argDef) {

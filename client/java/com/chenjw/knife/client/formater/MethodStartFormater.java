@@ -1,7 +1,7 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.core.model.MethodStartInfo;
-import com.chenjw.knife.core.model.ObjectInfo;
+import com.chenjw.knife.core.model.result.MethodStartInfo;
+import com.chenjw.knife.core.model.result.ObjectInfo;
 
 public class MethodStartFormater extends BasePrintFormater<MethodStartInfo> {
 

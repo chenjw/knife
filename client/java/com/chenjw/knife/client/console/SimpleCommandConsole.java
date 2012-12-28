@@ -3,12 +3,13 @@ package com.chenjw.knife.client.console;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class SimpleCommandConsole extends CommandConsole {
+public class SimpleCommandConsole extends CommandConsoleTemplate {
 	private static final String OUT_PREFIX = "knife>";
 	private BufferedReader reader;
 
 	public SimpleCommandConsole() {
 		reader = new BufferedReader(new InputStreamReader(System.in));
+		start();
 	}
 
 	@Override
@@ -17,19 +18,24 @@ public class SimpleCommandConsole extends CommandConsole {
 	}
 
 	@Override
-	public String readConsoleLine() throws Exception {
-		String line;
+	public String readConsoleLine() {
+		String line = null;
 		while (true) {
-			if ((line = reader.readLine()) != null) {
+			try {
+				line = reader.readLine();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			if (line != null) {
 				return line;
-			} else {
-				Thread.sleep(1000);
 			}
 		}
 	}
 
 	@Override
-	public void writeConsoleLine(String line) throws Exception {
+	public void writeConsoleLine(String line) {
 		System.out.println(OUT_PREFIX + line);
 	}
 

@@ -112,10 +112,10 @@ $(document).ready(function(){initNavTree('FindCommandHandler_8java_source.html',
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ToStringHelper;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.args.ArgDef;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.args.Args;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.ClassInfo;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.ClassListInfo;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.InstanceListInfo;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.ObjectInfo;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ClassInfo;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ClassListInfo;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.InstanceListInfo;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ObjectInfo;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.StringHelper;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1FindCommandHandler.html">   24</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1FindCommandHandler.html">FindCommandHandler</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandHandler.html">CommandHandler</a> {</div>
@@ -158,10 +158,10 @@ $(document).ready(function(){initNavTree('FindCommandHandler_8java_source.html',
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html">ServiceRegistry</a>.getService(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService.html">ContextService</a>.class).put(</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1constants_1_1Constants.html">Constants</a>.CLASS_LIST, likeClazz);</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassListInfo.html">ClassListInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassListInfo.html">ClassListInfo</a>();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassListInfo.html">ClassListInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassListInfo.html">ClassListInfo</a>();</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                    List&lt;ClassInfo&gt; cInfoList = <span class="keyword">new</span> ArrayList&lt;ClassInfo&gt;();</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                    <span class="keywordflow">for</span> (Class&lt;?&gt; cc : likeClazz) {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassInfo.html">ClassInfo</a> cInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassInfo.html">ClassInfo</a>();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassInfo.html">ClassInfo</a> cInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassInfo.html">ClassInfo</a>();</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                        cInfo.setInterface(cc.isInterface());</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                        cInfo.setName(cc.getName());</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                        cInfo.setClassLoader(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ToStringHelper.html">ToStringHelper</a></div>
@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('FindCommandHandler_8java_source.html',
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                        cInfoList.add(cInfo);</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                    }</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                    info.setClasses(cInfoList.toArray(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassInfo.html">ClassInfo</a>[cInfoList</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                    info.setClasses(cInfoList.toArray(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassInfo.html">ClassInfo</a>[cInfoList</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                            .size()]));</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                    info.setExpression(className);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newResult(info));</div>
@@ -186,17 +186,17 @@ $(document).ready(function(){initNavTree('FindCommandHandler_8java_source.html',
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="comment">// //</span></div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        Object[] objs = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html#a9d83ab42988af42bac3c1f78d67d1259">findInstancesByClass</a>(clazz);</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1InstanceListInfo.html">InstanceListInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1InstanceListInfo.html">InstanceListInfo</a>();</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1InstanceListInfo.html">InstanceListInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1InstanceListInfo.html">InstanceListInfo</a>();</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        List&lt;ObjectInfo&gt; cInfoList = <span class="keyword">new</span> ArrayList&lt;ObjectInfo&gt;();</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">for</span> (Object obj : objs) {</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a> cInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a>();</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a> cInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a>();</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            cInfo.setObjectId(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html">ServiceRegistry</a>.getService(</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ObjectHolderService.html">ObjectHolderService</a>.class).toId(obj));</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;            cInfo.setValueString(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ToStringHelper.html">ToStringHelper</a>.toDetailString(obj));</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;            cInfoList.add(cInfo);</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        info.setInstances(cInfoList.toArray(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a>[cInfoList.size()]));</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        info.setInstances(cInfoList.toArray(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a>[cInfoList.size()]));</div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        info.setClassName(clazz.getName());</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newResult(info));</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    }</div>
@@ -213,7 +213,7 @@ $(document).ready(function(){initNavTree('FindCommandHandler_8java_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="dir_f7474e4c48fc4e9821194d5a90653f49.html">java</a></li><li class="navelem"><a class="el" href="dir_5ca8fb9f6ca06b822204a1d190f20110.html">com</a></li><li class="navelem"><a class="el" href="dir_c72cee276ec01819a356f15b5a562f9a.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_82a3dbbfc66fbeedeb54968e60a75b82.html">knife</a></li><li class="navelem"><a class="el" href="dir_ef06a12e4e1799194d557302235cf0f7.html">agent</a></li><li class="navelem"><a class="el" href="dir_b88ce5d570e2817bd3243aae43d8b3f5.html">handler</a></li><li class="navelem"><b>FindCommandHandler.java</b></li>
-    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
+    <li class="footer">Generated on Fri Dec 28 2012 16:25:32 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

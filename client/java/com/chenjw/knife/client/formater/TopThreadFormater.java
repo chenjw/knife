@@ -1,13 +1,13 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.core.model.ThreadInfo;
-import com.chenjw.knife.core.model.TopThreadInfo;
+import com.chenjw.knife.core.model.result.ThreadInfo;
+import com.chenjw.knife.core.model.result.TopThreadInfo;
 
 public class TopThreadFormater extends BasePrintFormater<TopThreadInfo> {
 
 	@Override
 	protected void print(TopThreadInfo topThreadInfo) {
-		PreparedTableFormater table = new PreparedTableFormater(level,printer, grep);
+		PreparedTableFormater table = new PreparedTableFormater(printer, grep);
 		table.setTitle("idx", "tid", "thread-name", "cpu%");
 		ThreadInfo[] threadInfos = topThreadInfo.getThreads();
 		if (threadInfos != null) {
@@ -19,7 +19,7 @@ public class TopThreadFormater extends BasePrintFormater<TopThreadInfo> {
 			}
 		}
 		table.print();
-		this.printLine( "finished!");
+		this.printLine("finished!");
 	}
 
 }

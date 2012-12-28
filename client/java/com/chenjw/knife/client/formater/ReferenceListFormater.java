@@ -1,15 +1,13 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.core.model.ObjectInfo;
-import com.chenjw.knife.core.model.ReferenceListInfo;
+import com.chenjw.knife.core.model.result.ObjectInfo;
+import com.chenjw.knife.core.model.result.ReferenceListInfo;
 
 public class ReferenceListFormater extends BasePrintFormater<ReferenceListInfo> {
 
-
-
 	@Override
 	protected void print(ReferenceListInfo referenceListInfo) {
-		PreparedTableFormater table = new PreparedTableFormater(level,printer, grep);
+		PreparedTableFormater table = new PreparedTableFormater(printer, grep);
 		table.setTitle("type", "obj-id", "obj");
 		ObjectInfo[] references = referenceListInfo.getReferences();
 		if (references != null) {
@@ -20,7 +18,7 @@ public class ReferenceListFormater extends BasePrintFormater<ReferenceListInfo> 
 			}
 		}
 		table.print();
-		this.printLine( "finished!");
+		this.printLine("finished!");
 	}
 
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chenjw.knife.core.Printer;
-import com.chenjw.knife.core.Printer.Level;
 
 public class PreparedTableFormater extends GrepPrintFormater {
 
@@ -13,8 +12,8 @@ public class PreparedTableFormater extends GrepPrintFormater {
 	private String[] title;
 	private List<String[]> lines = new ArrayList<String[]>();
 
-	public PreparedTableFormater(Level level, Printer printer, String grep) {
-		this.level = level;
+	public PreparedTableFormater(Printer printer, String grep) {
+
 		this.printer = printer;
 		this.grep = grep;
 	}
@@ -86,7 +85,7 @@ public class PreparedTableFormater extends GrepPrintFormater {
 		doPrint();
 	}
 
-	private void printSeparatLine(Level level) {
+	private void printSeparatLine() {
 		StringBuffer ss = new StringBuffer();
 		for (int w : width) {
 			appendBlank(ss, w + BORDER, "-");
@@ -104,7 +103,7 @@ public class PreparedTableFormater extends GrepPrintFormater {
 			}
 			this.printLine(sb.toString());
 		}
-		printSeparatLine(level);
+		printSeparatLine();
 		if (!lines.isEmpty()) {
 			for (String[] line : lines) {
 				StringBuffer sb = new StringBuffer();
@@ -119,7 +118,7 @@ public class PreparedTableFormater extends GrepPrintFormater {
 
 			this.printLine("not found!");
 		}
-		printSeparatLine(level);
+		printSeparatLine();
 	}
 
 }

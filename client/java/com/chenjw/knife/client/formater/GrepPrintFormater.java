@@ -1,18 +1,12 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.client.core.Completable;
 import com.chenjw.knife.core.Printer;
-import com.chenjw.knife.core.Printer.Level;
 
 public abstract class GrepPrintFormater {
 
 	protected String grep;
-	protected Level level;
 	protected Printer printer;
-	
-	protected Completable completeHandler;
 
-	
 	protected final void printLine(String str) {
 		if (printer == null) {
 			return;
@@ -25,10 +19,11 @@ public abstract class GrepPrintFormater {
 				return;
 			}
 		}
-		printer.print(level, str);
+		printer.info(str);
 	}
 
-	public void setCompleteHandler(Completable completeHandler){
-		this.completeHandler=completeHandler;
+	public void setPrinter(Printer printer) {
+		this.printer = printer;
 	}
+
 }

@@ -15,10 +15,10 @@ import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
-import com.chenjw.knife.core.model.ClassInfo;
-import com.chenjw.knife.core.model.ClassListInfo;
-import com.chenjw.knife.core.model.InstanceListInfo;
-import com.chenjw.knife.core.model.ObjectInfo;
+import com.chenjw.knife.core.model.result.ClassInfo;
+import com.chenjw.knife.core.model.result.ClassListInfo;
+import com.chenjw.knife.core.model.result.InstanceListInfo;
+import com.chenjw.knife.core.model.result.ObjectInfo;
 import com.chenjw.knife.utils.StringHelper;
 
 public class FindCommandHandler implements CommandHandler {

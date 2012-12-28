@@ -15,8 +15,8 @@ import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
-import com.chenjw.knife.core.model.ObjectInfo;
-import com.chenjw.knife.core.model.ReferenceListInfo;
+import com.chenjw.knife.core.model.result.ObjectInfo;
+import com.chenjw.knife.core.model.result.ReferenceListInfo;
 
 public class RefCommandHandler implements CommandHandler {
 

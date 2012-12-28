@@ -54,7 +54,7 @@ public class AgentServer implements Runnable {
 				command = PacketResolver.read(is);
 				try {
 					handler.handle(command);
-				} catch (Throwable e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

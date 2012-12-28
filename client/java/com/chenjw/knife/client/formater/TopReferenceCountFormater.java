@@ -1,17 +1,17 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.core.model.ReferenceCountInfo;
-import com.chenjw.knife.core.model.TopReferenceCountInfo;
+import com.chenjw.knife.core.model.result.ReferenceCountInfo;
+import com.chenjw.knife.core.model.result.TopReferenceCountInfo;
 
-public class TopReferenceCountFormater extends BasePrintFormater<TopReferenceCountInfo> {
-
-
+public class TopReferenceCountFormater extends
+		BasePrintFormater<TopReferenceCountInfo> {
 
 	@Override
 	protected void print(TopReferenceCountInfo topReferenceInfo) {
-		PreparedTableFormater table = new PreparedTableFormater(level,printer, grep);
+		PreparedTableFormater table = new PreparedTableFormater(printer, grep);
 		table.setTitle("idx", "obj-id", "info", "ref-count");
-		ReferenceCountInfo[] referenceInfos = topReferenceInfo.getReferenceCounts();
+		ReferenceCountInfo[] referenceInfos = topReferenceInfo
+				.getReferenceCounts();
 		if (referenceInfos != null) {
 			int i = 0;
 			for (ReferenceCountInfo info : referenceInfos) {
@@ -22,7 +22,7 @@ public class TopReferenceCountFormater extends BasePrintFormater<TopReferenceCou
 			}
 		}
 		table.print();
-		this.printLine( "finished!");
+		this.printLine("finished!");
 	}
 
 }

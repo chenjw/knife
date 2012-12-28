@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('OSHelper_8java_source.html','');});
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">import</span> java.util.List;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> java.util.Map;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.ThreadInfo;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ThreadInfo;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1OSHelper.html">   15</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1OSHelper.html">OSHelper</a> {</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
@@ -123,14 +123,14 @@ $(document).ready(function(){initNavTree('OSHelper_8java_source.html','');});
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordflow">try</span> {</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            List&lt;ThreadInfo&gt; threadInfos = execTop(pid);</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            Map&lt;String, ThreadInfo&gt; threadInfoMap = <span class="keyword">new</span> HashMap&lt;String, ThreadInfo&gt;();</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ThreadInfo.html">ThreadInfo</a> threadInfo : threadInfos) {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ThreadInfo.html">ThreadInfo</a> threadInfo : threadInfos) {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                threadInfoMap.put(threadInfo.getTid(), threadInfo);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            }</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            threadDump(pid, threadInfoMap);</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;            List&lt;ThreadInfo&gt; result = <span class="keyword">new</span> ArrayList&lt;ThreadInfo&gt;();</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;            <span class="keywordtype">int</span> n = 0;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ThreadInfo.html">ThreadInfo</a> threadInfo : threadInfos) {</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;            <span class="keywordflow">for</span> (<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ThreadInfo.html">ThreadInfo</a> threadInfo : threadInfos) {</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;                <span class="keywordflow">if</span> (n &gt; num) {</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                    <span class="keywordflow">break</span>;</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                }</div>
@@ -208,7 +208,7 @@ $(document).ready(function(){initNavTree('OSHelper_8java_source.html','');});
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;                    <span class="keywordflow">continue</span>;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;                }</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;                String cpu = valueList.get(cpuIndex);</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ThreadInfo.html">ThreadInfo</a> threadInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ThreadInfo.html">ThreadInfo</a>();</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ThreadInfo.html">ThreadInfo</a> threadInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ThreadInfo.html">ThreadInfo</a>();</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;                threadInfo.setCpu(cpu);</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;                threadInfo.setTid(<span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;                result.add(threadInfo);</div>
@@ -248,7 +248,7 @@ $(document).ready(function(){initNavTree('OSHelper_8java_source.html','');});
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;                            <span class="keywordtype">id</span> = String.valueOf(Integer.parseInt(id16, 16));</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                        }</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;                    }</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ThreadInfo.html">ThreadInfo</a> threadInfo = threadInfoMap.get(<span class="keywordtype">id</span>);</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ThreadInfo.html">ThreadInfo</a> threadInfo = threadInfoMap.get(<span class="keywordtype">id</span>);</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;                    <span class="keywordflow">if</span> (threadInfo == null) {</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;                        <span class="keywordflow">continue</span>;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;                    }</div>
@@ -275,7 +275,7 @@ $(document).ready(function(){initNavTree('OSHelper_8java_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="dir_daa6e865c37e9fae9a2af0f4987207e0.html">java</a></li><li class="navelem"><a class="el" href="dir_1eed3ba8d73fc16e63606d6a656bf531.html">com</a></li><li class="navelem"><a class="el" href="dir_40dffaa3eaf3a1a80fe864bcaa9cda1c.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_94aca49a3c0d718c97fe79448ec1f876.html">knife</a></li><li class="navelem"><a class="el" href="dir_02f48f1d0e19ede48cd27d0458a53622.html">utils</a></li><li class="navelem"><b>OSHelper.java</b></li>
-    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
+    <li class="footer">Generated on Fri Dec 28 2012 16:25:33 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

@@ -8,5 +8,6 @@
 	<classpathentry kind="var" path="JAVA_HOME/lib/tools.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/knife.core"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/sinetfactory.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/pmd-5.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

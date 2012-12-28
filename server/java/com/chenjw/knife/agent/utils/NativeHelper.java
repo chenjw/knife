@@ -20,7 +20,7 @@ import java.util.Set;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.utils.jvmti.Capabilitie;
 import com.chenjw.knife.core.Printer;
-import com.chenjw.knife.core.model.ThreadInfo;
+import com.chenjw.knife.core.model.result.ThreadInfo;
 import com.chenjw.knife.utils.IOHelper;
 import com.chenjw.knife.utils.PlatformHelper;
 import com.chenjw.knife.utils.StringHelper;

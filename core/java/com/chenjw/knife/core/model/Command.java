@@ -1,9 +1,14 @@
 package com.chenjw.knife.core.model;
 
-public class Command extends Request {
+import java.io.Serializable;
+
+import com.chenjw.knife.utils.GlobalIdHelper;
+
+public class Command implements Serializable {
 	private static final long serialVersionUID = -5652970762701374531L;
 	private String name;
 	private Object args;
+	private String id = GlobalIdHelper.getGlobalId();
 
 	public Command() {
 	}
@@ -11,6 +16,14 @@ public class Command extends Request {
 	public Command(String name, Object args) {
 		this.name = name;
 		this.args = args;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {

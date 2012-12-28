@@ -12,6 +12,7 @@ import java.util.List;
  * @author chenjw
  * 
  */
+// TODO hello world
 public class JarHelper {
 	private static final String LIB_FOLDER = "../dist/knife/lib/";
 

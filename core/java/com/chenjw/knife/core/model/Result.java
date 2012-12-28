@@ -1,23 +1,42 @@
 package com.chenjw.knife.core.model;
 
+import java.io.Serializable;
 
-public class Result extends Response {
+public class Result implements Serializable {
 
 	private static final long serialVersionUID = -1029895615419256975L;
 
-	private boolean isSuccess;
+	private boolean success = true;
 
 	private String errorMessage;
 	private String errorTrace;
 
 	private Object content;
 
-	public boolean isSuccess() {
-		return isSuccess;
+	private String requestId;
+
+	public Result(String requestId) {
+		this.requestId = requestId;
 	}
 
-	public void setSuccess(boolean isSuccess) {
-		this.isSuccess = isSuccess;
+	public Result() {
+
+	}
+
+	public void setRequestId(String requestId) {
+		this.requestId = requestId;
+	}
+
+	public String getRequestId() {
+		return requestId;
+	}
+
+	public boolean isSuccess() {
+		return success;
+	}
+
+	public void setSuccess(boolean success) {
+		this.success = success;
 	}
 
 	public Object getContent() {

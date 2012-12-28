@@ -23,7 +23,7 @@ public class CdCommandHandler implements CommandHandler {
 			int index = Integer.parseInt(param);
 			obj = ServiceRegistry.getService(HistoryService.class).cd(index);
 		}
-		Agent.sendResult(ResultHelper.newStringResult("into "
+		Agent.sendResult(ResultHelper.newResult("into "
 				+ ServiceRegistry.getService(ObjectHolderService.class).toId(
 						obj) + ToStringHelper.toString(obj)));
 	}

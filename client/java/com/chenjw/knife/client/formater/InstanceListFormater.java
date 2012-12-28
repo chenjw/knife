@@ -1,13 +1,13 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.core.model.InstanceListInfo;
-import com.chenjw.knife.core.model.ObjectInfo;
+import com.chenjw.knife.core.model.result.InstanceListInfo;
+import com.chenjw.knife.core.model.result.ObjectInfo;
 
 public class InstanceListFormater extends BasePrintFormater<InstanceListInfo> {
 
 	@Override
 	protected void print(InstanceListInfo instanceListInfo) {
-		PreparedTableFormater table = new PreparedTableFormater(level,printer, grep);
+		PreparedTableFormater table = new PreparedTableFormater(printer, grep);
 		table.setTitle("type", "obj-id", "detail");
 		ObjectInfo[] instanceInfos = instanceListInfo.getInstances();
 		int i = 0;
@@ -19,7 +19,8 @@ public class InstanceListFormater extends BasePrintFormater<InstanceListInfo> {
 			}
 		}
 		table.print();
-		this.printLine("find " + i + " instances of " + instanceListInfo.getClassName());
+		this.printLine("find " + i + " instances of "
+				+ instanceListInfo.getClassName());
 	}
 
 }

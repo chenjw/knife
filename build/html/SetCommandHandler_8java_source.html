@@ -169,38 +169,37 @@ $(document).ready(function(){initNavTree('SetCommandHandler_8java_source.html','
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        }</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        Object newValue = <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ParseHelper.html">ParseHelper</a>.parseValue(value, field.getType());</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        setFieldValue(obj, field, newValue);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newStringResult(<span class="stringliteral">&quot;finished!&quot;</span>));</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> setFieldValue(Object obj, Field field, Object newValue) {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keywordflow">if</span> (Modifier.isStatic(field.getModifiers())) {</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.setStaticFieldValue(field.getDeclaringClass(), field,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;                    newValue);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.setFieldValue(obj, field, newValue);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> handle(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1Args.html">Args</a> args, <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandDispatcher.html">CommandDispatcher</a> dispatcher) {</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        setField(args);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    }</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    @Override</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> declareArgs(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1ArgDef.html">ArgDef</a> argDef) {</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        argDef.setDefinition(<span class="stringliteral">&quot;set [-s] &lt;fieldname&gt; &lt;new-value&gt;&quot;</span>);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    }</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;}</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> setFieldValue(Object obj, Field field, Object newValue) {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">if</span> (Modifier.isStatic(field.getModifiers())) {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.setStaticFieldValue(field.getDeclaringClass(), field,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;                    newValue);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1NativeHelper.html">NativeHelper</a>.setFieldValue(obj, field, newValue);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        }</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> handle(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1Args.html">Args</a> args, <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandDispatcher.html">CommandDispatcher</a> dispatcher) {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        setField(args);</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    @Override</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> declareArgs(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1args_1_1ArgDef.html">ArgDef</a> argDef) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        argDef.setDefinition(<span class="stringliteral">&quot;set [-s] &lt;fieldname&gt; &lt;new-value&gt;&quot;</span>);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="dir_f7474e4c48fc4e9821194d5a90653f49.html">java</a></li><li class="navelem"><a class="el" href="dir_5ca8fb9f6ca06b822204a1d190f20110.html">com</a></li><li class="navelem"><a class="el" href="dir_c72cee276ec01819a356f15b5a562f9a.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_82a3dbbfc66fbeedeb54968e60a75b82.html">knife</a></li><li class="navelem"><a class="el" href="dir_ef06a12e4e1799194d557302235cf0f7.html">agent</a></li><li class="navelem"><a class="el" href="dir_b88ce5d570e2817bd3243aae43d8b3f5.html">handler</a></li><li class="navelem"><b>SetCommandHandler.java</b></li>
-    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
+    <li class="footer">Generated on Fri Dec 28 2012 16:25:33 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

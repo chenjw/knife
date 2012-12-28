@@ -9,6 +9,8 @@ import java.util.ServiceLoader;
 
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
+import com.chenjw.knife.agent.core.ServiceRegistry;
+import com.chenjw.knife.agent.service.CommandStatusService;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
@@ -80,6 +82,7 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 	}
 
 	public void dispatch(Command command) {
+
 		CommandHandler handler = handlerMap.get(command.getName());
 
 		if (handler != null) {
@@ -94,8 +97,9 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 				args.parse(argStr, def);
 
 			} catch (Exception e) {
-				Agent.sendResult(ResultHelper.newErrorResult("args error, "
-						+ e.getClass().getName() + ":"
+				Agent.sendResult(ResultHelper.newErrorResult(
+
+				"args error, " + e.getClass().getName() + ":"
 						+ e.getLocalizedMessage()));
 				argHelp(def);
 				return;
@@ -119,7 +123,29 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 
 		ObjectPacket<Command> objectPacket = (ObjectPacket<Command>) packet;
 		Command cmd = objectPacket.getObject();
-		dispatch(cmd);
+
+		CommandStatusService commandStatusService = ServiceRegistry
+				.getService(CommandStatusService.class);
+		// 结束上一次命令
+		if (commandStatusService.getCurrentCommand() != null) {
+			Agent.sendResult(ResultHelper
+					.newErrorResult("stop by next command! id="
+							+ commandStatusService.getCurrentCommand().getId()
+							+ " ,name= "
+							+ commandStatusService.getCurrentCommand()
+									.getName()));
+		}
+
+		// 设置当前命令
+		commandStatusService.setCurrentCommand(cmd);
+		try {
+			dispatch(cmd);
+		} finally {
+			if (commandStatusService.getCurrentCommand() != null
+					&& !commandStatusService.isWaiting()) {
+				Agent.sendResult(ResultHelper.newResult("finished!"));
+			}
+		}
 
 	}
 

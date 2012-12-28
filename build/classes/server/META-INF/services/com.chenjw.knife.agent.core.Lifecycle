@@ -8,3 +8,4 @@ com.chenjw.knife.agent.service.ObjectHolderService
 com.chenjw.knife.agent.service.PrinterService
 com.chenjw.knife.agent.service.SystemTagService
 com.chenjw.knife.agent.service.TimingService
+com.chenjw.knife.agent.service.CommandStatusService

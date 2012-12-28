@@ -15,11 +15,11 @@ import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
-import com.chenjw.knife.core.model.ObjectInfo;
-import com.chenjw.knife.core.model.ReferenceCountInfo;
-import com.chenjw.knife.core.model.ThreadInfo;
-import com.chenjw.knife.core.model.TopReferenceCountInfo;
-import com.chenjw.knife.core.model.TopThreadInfo;
+import com.chenjw.knife.core.model.result.ObjectInfo;
+import com.chenjw.knife.core.model.result.ReferenceCountInfo;
+import com.chenjw.knife.core.model.result.ThreadInfo;
+import com.chenjw.knife.core.model.result.TopReferenceCountInfo;
+import com.chenjw.knife.core.model.result.TopThreadInfo;
 import com.chenjw.knife.utils.OSHelper;
 
 public class TopCommandHandler implements CommandHandler {

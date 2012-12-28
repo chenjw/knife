@@ -1,6 +1,6 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.core.model.ExceptionInfo;
+import com.chenjw.knife.core.model.result.ExceptionInfo;
 import com.chenjw.knife.utils.StringHelper;
 
 public class ExceptionFormater extends BasePrintFormater<ExceptionInfo> {

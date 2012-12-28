@@ -31,6 +31,7 @@ import com.chenjw.knife.agent.filter.TimesCountFilter;
 import com.chenjw.knife.agent.filter.TimingFilter;
 import com.chenjw.knife.agent.filter.TimingStopFilter;
 import com.chenjw.knife.agent.filter.TraceMethodFilter;
+import com.chenjw.knife.agent.service.CommandStatusService;
 import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.NativeHelper;
@@ -49,6 +50,10 @@ public class TraceCommandHandler implements CommandHandler {
 		if (methodInfo != null) {
 			configStrategy(args, methodInfo);
 			trace(methodInfo);
+			// 不结束，等待消息
+			ServiceRegistry.getService(CommandStatusService.class).waitResult();
+		} else {
+			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 		}
 
 	}

@@ -23,8 +23,9 @@ import com.sun.tools.attach.VirtualMachineDescriptor;
  */
 public class LocalVMConnector implements VMConnector {
 
-	private static final String[] exceptJars = new String[] { "jline-1.0.jar",
-			"knife-client.jar", "knife-agent.jar" };
+	private static final String[] agentJars = new String[] {
+			"fastjson-1.1.17.jar", "misc.javassist-3.9.0.GA.jar",
+			"knife-server.jar" };
 
 	public List<VMDescriptor> listVM() throws Exception {
 		List<VirtualMachineDescriptor> list = VirtualMachine.list();
@@ -35,7 +36,7 @@ public class LocalVMConnector implements VMConnector {
 				continue;
 			}
 			VMDescriptor vmd = new VMDescriptor();
-			vmd.setId(vm.id());
+			vmd.setPId(vm.id());
 			vmd.setName(vm.displayName());
 			vmList.add(vmd);
 		}
@@ -65,7 +66,7 @@ public class LocalVMConnector implements VMConnector {
 		String jars = JarHelper.getToolsJarPath();
 		for (String jar : JarHelper.findJars()) {
 			if (jars.length() != 0) {
-				if (!isExceptJar(jar)) {
+				if (isAgentJar(jar)) {
 					jars += ";" + jar;
 				}
 			}
@@ -73,9 +74,9 @@ public class LocalVMConnector implements VMConnector {
 		return jars;
 	}
 
-	private boolean isExceptJar(String str) {
-		for (String exceptJar : exceptJars) {
-			if (str.indexOf(exceptJar) != -1) {
+	private boolean isAgentJar(String str) {
+		for (String agentJar : agentJars) {
+			if (str.indexOf(agentJar) != -1) {
 				return true;
 			}
 		}

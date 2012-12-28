@@ -1,6 +1,6 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.core.model.MethodReturnEndInfo;
+import com.chenjw.knife.core.model.result.MethodReturnEndInfo;
 
 public class MethodReturnEndFormater extends
 		BasePrintFormater<MethodReturnEndInfo> {

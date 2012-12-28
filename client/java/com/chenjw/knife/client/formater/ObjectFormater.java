@@ -1,6 +1,6 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.core.model.ObjectInfo;
+import com.chenjw.knife.core.model.result.ObjectInfo;
 
 public class ObjectFormater extends BasePrintFormater<ObjectInfo> {
 

@@ -17,7 +17,7 @@ public class DecodeCommandHandler implements CommandHandler {
 			throws Exception {
 		String str = args.arg("string-to-decode");
 		String decodeStr = URLDecoder.decode(str, "UTF-8");
-		Agent.sendResult(ResultHelper.newStringResult("[decode] "
+		Agent.sendResult(ResultHelper.newResult("[decode] "
 				+ ServiceRegistry.getService(ObjectHolderService.class).toId(
 						decodeStr) + " " + decodeStr));
 	}

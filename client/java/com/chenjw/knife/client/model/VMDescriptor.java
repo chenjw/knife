@@ -30,15 +30,15 @@ import java.io.Serializable;
 public class VMDescriptor implements Serializable {
 
 	private static final long serialVersionUID = 3332030030981917133L;
-	private String id;
+	private String pid;
 	private String name;
 
-	public String getId() {
-		return id;
+	public String getPid() {
+		return pid;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setPId(String pid) {
+		this.pid = pid;
 	}
 
 	public String getName() {

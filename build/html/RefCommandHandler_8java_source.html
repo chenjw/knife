@@ -112,8 +112,8 @@ $(document).ready(function(){initNavTree('RefCommandHandler_8java_source.html','
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ToStringHelper;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.args.ArgDef;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.args.Args;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.ObjectInfo;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.ReferenceListInfo;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ObjectInfo;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ReferenceListInfo;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
 <div class="line"><a name="l00021"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1RefCommandHandler.html">   21</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1handler_1_1RefCommandHandler.html">RefCommandHandler</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1CommandHandler.html">CommandHandler</a> {</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
@@ -145,18 +145,18 @@ $(document).ready(function(){initNavTree('RefCommandHandler_8java_source.html','
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordflow">return</span>;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ReferenceListInfo.html">ReferenceListInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ReferenceListInfo.html">ReferenceListInfo</a>();</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ReferenceListInfo.html">ReferenceListInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ReferenceListInfo.html">ReferenceListInfo</a>();</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        info.setReferree(args.option(<span class="stringliteral">&quot;-r&quot;</span>) != null);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        List&lt;ObjectInfo&gt; references = <span class="keyword">new</span> ArrayList&lt;ObjectInfo&gt;();</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">for</span> (Object ref : refs) {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a> reference = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a> reference = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a>();</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            reference.setObjectId(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html">ServiceRegistry</a>.getService(</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                    <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ObjectHolderService.html">ObjectHolderService</a>.class).toId(ref));</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;            reference.setValueString(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ToStringHelper.html">ToStringHelper</a>.toString(ref));</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            references.add(reference);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        info.setReferences(references.toArray(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a>[references.size()]));</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        info.setReferences(references.toArray(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a>[references.size()]));</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newResult(info));</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('RefCommandHandler_8java_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="dir_f7474e4c48fc4e9821194d5a90653f49.html">java</a></li><li class="navelem"><a class="el" href="dir_5ca8fb9f6ca06b822204a1d190f20110.html">com</a></li><li class="navelem"><a class="el" href="dir_c72cee276ec01819a356f15b5a562f9a.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_82a3dbbfc66fbeedeb54968e60a75b82.html">knife</a></li><li class="navelem"><a class="el" href="dir_ef06a12e4e1799194d557302235cf0f7.html">agent</a></li><li class="navelem"><a class="el" href="dir_b88ce5d570e2817bd3243aae43d8b3f5.html">handler</a></li><li class="navelem"><b>RefCommandHandler.java</b></li>
-    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
+    <li class="footer">Generated on Fri Dec 28 2012 16:25:33 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

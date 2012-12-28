@@ -79,6 +79,7 @@ var annotated =
             [ "service", null, [
               [ "ByteCodeService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ByteCodeService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ByteCodeService" ],
               [ "CheckService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1CheckService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1CheckService" ],
+              [ "CommandStatusService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1CommandStatusService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1CommandStatusService" ],
               [ "ContextService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ContextService" ],
               [ "HistoryService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1HistoryService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1HistoryService" ],
               [ "InstrumentService", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InstrumentService.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InstrumentService" ],
@@ -120,7 +121,7 @@ var annotated =
               [ "divide", null, [
                 [ "FragmentManager", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1divide_1_1FragmentManager.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1divide_1_1FragmentManager" ]
               ] ],
-              [ "CommandConsole", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1CommandConsole.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1CommandConsole" ],
+              [ "CommandConsoleTemplate", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1CommandConsoleTemplate.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1CommandConsoleTemplate" ],
               [ "JlineCommandConsole", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1JlineCommandConsole.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1JlineCommandConsole" ],
               [ "SimpleCommandConsole", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1SimpleCommandConsole.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1console_1_1SimpleCommandConsole" ]
             ] ],
@@ -129,8 +130,13 @@ var annotated =
             ] ],
             [ "core", null, [
               [ "Client", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Client.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Client" ],
+              [ "CommandListener", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandListener.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandListener" ],
+              [ "CommandSender", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandSender.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandSender" ],
               [ "CommandService", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandService.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandService" ],
               [ "Completable", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Completable.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Completable" ],
+              [ "DefaultCommandListener", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1DefaultCommandListener.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1DefaultCommandListener" ],
+              [ "DefaultCommandSender", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1DefaultCommandSender.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1DefaultCommandSender" ],
+              [ "ResultModel", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1ResultModel.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1ResultModel" ],
               [ "VMConnection", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnection.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnection" ],
               [ "VMConnector", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnector.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnector" ]
             ] ],
@@ -141,7 +147,9 @@ var annotated =
               [ "ClassFieldFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassFieldFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassFieldFormater" ],
               [ "ClassListFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassListFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassListFormater" ],
               [ "ClassMethodFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassMethodFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassMethodFormater" ],
-              [ "CommandListFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandListFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandListFormater" ],
+              [ "CommandInfoFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandInfoFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandInfoFormater" ],
+              [ "CommandListInfoFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandListInfoFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandListInfoFormater" ],
+              [ "CommandNameListFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandNameListFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandNameListFormater" ],
               [ "ExceptionFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ExceptionFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ExceptionFormater" ],
               [ "FormaterManager", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1FormaterManager.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1FormaterManager" ],
               [ "GrepPrintFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1GrepPrintFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1GrepPrintFormater" ],
@@ -185,31 +193,34 @@ var annotated =
                 [ "Fragment", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Fragment.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1Fragment" ],
                 [ "HeaderFragment", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1HeaderFragment.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1divide_1_1HeaderFragment" ]
               ] ],
-              [ "ArrayInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ArrayInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ArrayInfo" ],
-              [ "ClassConstructorInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassConstructorInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassConstructorInfo" ],
-              [ "ClassFieldInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassFieldInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassFieldInfo" ],
-              [ "ClassInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassInfo" ],
-              [ "ClassListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassListInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassListInfo" ],
-              [ "ClassMethodInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassMethodInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ClassMethodInfo" ],
+              [ "result", null, [
+                [ "ArrayInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ArrayInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ArrayInfo" ],
+                [ "ClassConstructorInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassConstructorInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassConstructorInfo" ],
+                [ "ClassFieldInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassFieldInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassFieldInfo" ],
+                [ "ClassInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassInfo" ],
+                [ "ClassListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassListInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassListInfo" ],
+                [ "ClassMethodInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassMethodInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ClassMethodInfo" ],
+                [ "CommandInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1CommandInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1CommandInfo" ],
+                [ "CommandListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1CommandListInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1CommandListInfo" ],
+                [ "CommandNameListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1CommandNameListInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1CommandNameListInfo" ],
+                [ "ConstructorInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ConstructorInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ConstructorInfo" ],
+                [ "ExceptionInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ExceptionInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ExceptionInfo" ],
+                [ "FieldInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1FieldInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1FieldInfo" ],
+                [ "InstanceListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1InstanceListInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1InstanceListInfo" ],
+                [ "MethodExceptionEndInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodExceptionEndInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodExceptionEndInfo" ],
+                [ "MethodInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodInfo" ],
+                [ "MethodReturnEndInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodReturnEndInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodReturnEndInfo" ],
+                [ "MethodStartInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodStartInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodStartInfo" ],
+                [ "ObjectInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo" ],
+                [ "ReferenceCountInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ReferenceCountInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ReferenceCountInfo" ],
+                [ "ReferenceListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ReferenceListInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ReferenceListInfo" ],
+                [ "ThreadInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ThreadInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ThreadInfo" ],
+                [ "TopReferenceCountInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1TopReferenceCountInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1TopReferenceCountInfo" ],
+                [ "TopThreadInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1TopThreadInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1TopThreadInfo" ]
+              ] ],
               [ "Command", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command" ],
-              [ "CommandListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1CommandListInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1CommandListInfo" ],
-              [ "ConstructorInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ConstructorInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ConstructorInfo" ],
-              [ "ExceptionInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ExceptionInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ExceptionInfo" ],
-              [ "FieldInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1FieldInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1FieldInfo" ],
-              [ "InstanceListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1InstanceListInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1InstanceListInfo" ],
-              [ "MethodExceptionEndInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodExceptionEndInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodExceptionEndInfo" ],
-              [ "MethodInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodInfo" ],
-              [ "MethodReturnEndInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodReturnEndInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodReturnEndInfo" ],
-              [ "MethodStartInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodStartInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodStartInfo" ],
-              [ "ObjectInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo" ],
-              [ "ReferenceCountInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ReferenceCountInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ReferenceCountInfo" ],
-              [ "ReferenceListInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ReferenceListInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ReferenceListInfo" ],
-              [ "Request", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Request.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Request" ],
-              [ "Response", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Response.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Response" ],
               [ "Result", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Result.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Result" ],
-              [ "ThreadInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ThreadInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ThreadInfo" ],
-              [ "TopReferenceCountInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1TopReferenceCountInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1TopReferenceCountInfo" ],
-              [ "TopThreadInfo", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1TopThreadInfo.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1TopThreadInfo" ]
+              [ "ResultPart", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ResultPart.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ResultPart" ]
             ] ],
             [ "packet", null, [
               [ "ClosePacket", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ClosePacket.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ClosePacket" ],
@@ -218,6 +229,7 @@ var annotated =
               [ "Packet", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet.html", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1Packet" ],
               [ "PacketHandler", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1PacketHandler.html", "interfacecom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1PacketHandler" ],
               [ "ResultPacket", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResultPacket.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResultPacket" ],
+              [ "ResultPartPacket", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResultPartPacket.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1ResultPartPacket" ],
               [ "TextPacket", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1TextPacket.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1packet_1_1TextPacket" ]
             ] ],
             [ "serializer", null, [
@@ -229,11 +241,11 @@ var annotated =
             [ "Printer", "classcom_1_1chenjw_1_1knife_1_1core_1_1Printer.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1Printer" ]
           ] ],
           [ "testgt", null, [
-            [ "DefaultFuture", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1DefaultFuture.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1DefaultFuture" ],
+            [ "CommandFuture", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1CommandFuture.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1CommandFuture" ],
+            [ "DefaultResponseCallback", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1DefaultResponseCallback.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1DefaultResponseCallback" ],
             [ "ResponseCallback", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1ResponseCallback.html", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1ResponseCallback" ],
             [ "ResultHandler", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1ResultHandler.html", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1ResultHandler" ],
-            [ "TestgtHandler", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1TestgtHandler.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1TestgtHandler" ],
-            [ "TestgtService", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1TestgtService.html", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1TestgtService" ]
+            [ "Test", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1Test.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1Test" ]
           ] ],
           [ "utils", null, [
             [ "invoke", null, [
@@ -248,9 +260,7 @@ var annotated =
             [ "OSHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1OSHelper.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1OSHelper" ],
             [ "PlatformHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1PlatformHelper.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1PlatformHelper" ],
             [ "ReflectHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1ReflectHelper.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1ReflectHelper" ],
-            [ "SshExample", "classcom_1_1chenjw_1_1knife_1_1utils_1_1SshExample.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1SshExample" ],
-            [ "StringHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper" ],
-            [ "TelnetScriptExample", "classcom_1_1chenjw_1_1knife_1_1utils_1_1TelnetScriptExample.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1TelnetScriptExample" ]
+            [ "StringHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1StringHelper" ]
           ] ]
         ] ]
       ] ]

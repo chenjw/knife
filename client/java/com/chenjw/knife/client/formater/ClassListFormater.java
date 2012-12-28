@@ -3,8 +3,8 @@ package com.chenjw.knife.client.formater;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chenjw.knife.core.model.ClassInfo;
-import com.chenjw.knife.core.model.ClassListInfo;
+import com.chenjw.knife.core.model.result.ClassInfo;
+import com.chenjw.knife.core.model.result.ClassListInfo;
 import com.chenjw.knife.utils.StringHelper;
 
 public class ClassListFormater extends BasePrintFormater<ClassListInfo> {
@@ -12,8 +12,7 @@ public class ClassListFormater extends BasePrintFormater<ClassListInfo> {
 	@Override
 	protected void print(ClassListInfo classListInfo) {
 
-		PreparedTableFormater table = new PreparedTableFormater(level, printer,
-				grep);
+		PreparedTableFormater table = new PreparedTableFormater(printer, grep);
 		table.setTitle("idx", "type", "name", "classloader");
 		ClassInfo[] classInfos = classListInfo.getClasses();
 		int i = 0;

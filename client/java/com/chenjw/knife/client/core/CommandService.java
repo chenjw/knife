@@ -2,16 +2,17 @@ package com.chenjw.knife.client.core;
 
 import com.chenjw.knife.core.model.Command;
 import com.chenjw.knife.core.model.Result;
+import com.chenjw.knife.core.model.ResultPart;
 
 public interface CommandService {
 
-	public int waitVMIndex() throws Exception;
-
 	public Command waitCommand() throws Exception;
 
-	public void handleResult(Result result) throws Exception;
+	public void handleResult(Result result);
 
-	public void handleText(String text) throws Exception;
+	public void handlePart(ResultPart result);
+
+	public void handleText(String text);
 
 	public void close() throws Exception;
 

@@ -1,1 +1,1 @@
-com.chenjw.knife.core.serializer.JsonObjectSerializer
+com.chenjw.knife.core.serializer.JavaObjectSerializer

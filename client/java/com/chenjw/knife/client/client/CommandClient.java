@@ -9,12 +9,13 @@ import com.chenjw.knife.client.core.VMConnection;
 import com.chenjw.knife.client.core.VMConnector;
 import com.chenjw.knife.client.model.VMDescriptor;
 import com.chenjw.knife.core.model.Command;
-import com.chenjw.knife.core.model.Response;
 import com.chenjw.knife.core.model.Result;
+import com.chenjw.knife.core.model.ResultPart;
 import com.chenjw.knife.core.packet.ClosePacket;
 import com.chenjw.knife.core.packet.CommandPacket;
 import com.chenjw.knife.core.packet.Packet;
 import com.chenjw.knife.core.packet.ResultPacket;
+import com.chenjw.knife.core.packet.ResultPartPacket;
 
 public class CommandClient implements Client {
 
@@ -27,35 +28,31 @@ public class CommandClient implements Client {
 	}
 
 	public void start(VMConnector connector) throws Exception {
-
-		// 获得虚拟机列表
-		List<VMDescriptor> vmList = connector.listVM();
-		if (vmList.isEmpty()) {
-			commandService.handleText("cant find vm process!");
-			return;
-		}
-		for (int i = 0; i < vmList.size(); i++) {
-			commandService.handleText(i + ". " + vmList.get(i).getName());
-		}
-		String msg = "input [0-" + (vmList.size() - 1) + "] to choose vm! ";
-		commandService.handleText(msg);
-		int n = 0;
+		VMConnection conn = null;
+		// 等待启动
 		while (true) {
-			n = commandService.waitVMIndex();
-			if (n < 0 || n >= vmList.size()) {
-				commandService.handleText(msg);
-				continue;
+			Command command = commandService.waitCommand();
+			if (Constants.REQUEST_LIST_VM.equals(command.getName())) {
+				List<VMDescriptor> r = connector.listVM();
+				Result result = new Result(command.getId());
+				result.setSuccess(true);
+				result.setContent(r);
+
+				commandService.handleResult(result);
+			} else if (Constants.REQUEST_ATTACH_VM.equals(command.getName())) {
+				connector.attachVM(command.getArgs().toString(),
+						Constants.DEFAULT_AGENT_PORT);
+				conn = connector
+						.createVMConnection(Constants.DEFAULT_AGENT_PORT);
+				Result result = new Result(command.getId());
+				result.setSuccess(true);
+				commandService.handleResult(result);
+				break;
 			}
-			break;
 		}
-		connector.attachVM(vmList.get(n).getId(), Constants.DEFAULT_AGENT_PORT);
-		VMConnection conn = connector
-				.createVMConnection(Constants.DEFAULT_AGENT_PORT);
+
 		isRunning = true;
-		// 获取命令列表
-		Command c = new Command();
-		c.setName("cmd");
-		conn.sendPacket(new CommandPacket(c));
+
 		startPacketReader(conn);
 		startPacketSender(conn);
 		while (isRunning) {
@@ -106,28 +103,36 @@ public class CommandClient implements Client {
 
 		@Override
 		public void run() {
+			try {
+				while (isRunning) {
 
-			while (isRunning) {
-				try {
 					Packet p = conn.readPacket();
 					if (p instanceof ClosePacket) {
 						conn.close();
 						commandService.close();
 						isRunning = false;
 					} else if (p instanceof ResultPacket) {
-						Response r = ((ResultPacket) p).getObject();
-						if (r != null && (r instanceof Result)) {
-							commandService.handleResult((Result) r);
+						Result r = ((ResultPacket) p).getObject();
+						if (r != null) {
+							commandService.handleResult(r);
 						}
 
-					} else {
+					} else if (p instanceof ResultPartPacket) {
+						ResultPart r = ((ResultPartPacket) p).getObject();
+						if (r != null) {
+							commandService.handlePart(r);
+						}
+
+					}
+
+					else {
 						commandService.handleText(p.toString());
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
 
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

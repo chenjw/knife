@@ -11,7 +11,7 @@ import jline.Completor;
 import jline.ConsoleReader;
 import jline.SimpleCompletor;
 
-public class JlineCommandConsole extends CommandConsole {
+public class JlineCommandConsole extends CommandConsoleTemplate {
 	private static final String OUT_PREFIX = "knife>";
 	private ConsoleReader reader;
 
@@ -24,6 +24,7 @@ public class JlineCommandConsole extends CommandConsole {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		this.start();
 	}
 
 	@Override
@@ -33,20 +34,24 @@ public class JlineCommandConsole extends CommandConsole {
 	}
 
 	@Override
-	public String readConsoleLine() throws Exception {
-		String line;
-		while(true){
-			if(( line = reader.readLine())!=null){
-				return line;
+	public String readConsoleLine() {
+		String line = null;
+		while (true) {
+			try {
+				line = reader.readLine();
+
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			else{
-				Thread.sleep(1000);
+
+			if (line != null) {
+				return line;
 			}
 		}
 	}
 
 	@Override
-	public void writeConsoleLine(String line) throws Exception {
+	public void writeConsoleLine(String line) {
 		System.out.println(OUT_PREFIX + line);
 	}
 

@@ -42,8 +42,9 @@ public class NewCommandHandler implements CommandHandler {
 						StringHelper.substringAfter(argStr, "("), ")"),
 				constructor.getParameterTypes());
 		Object obj = newInstance(constructor, mArgs);
-		Agent.sendResult(ResultHelper.newStringResult(ServiceRegistry
-				.getService(ObjectHolderService.class).toId(obj) + "created!"));
+		Agent.sendResult(ResultHelper.newResult(ServiceRegistry.getService(
+				ObjectHolderService.class).toId(obj)
+				+ "created!"));
 	}
 
 	private Object newInstance(Constructor<?> constructor, Object[] args)

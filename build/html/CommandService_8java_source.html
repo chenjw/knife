@@ -99,27 +99,28 @@ $(document).ready(function(){initNavTree('CommandService_8java_source.html','');
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.Command;</div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.Result;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandService.html">    6</a></span>&#160;<span class="keyword">public</span> <span class="keyword">interface </span><a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandService.html">CommandService</a> {</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">int</span> waitVMIndex() <span class="keywordflow">throws</span> Exception;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">public</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html">Command</a> waitCommand() <span class="keywordflow">throws</span> Exception;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> handleResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Result.html">Result</a> result) <span class="keywordflow">throws</span> Exception;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> handleText(String text) <span class="keywordflow">throws</span> Exception;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> close() <span class="keywordflow">throws</span> Exception;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.ResultPart;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandService.html">    7</a></span>&#160;<span class="keyword">public</span> <span class="keyword">interface </span><a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandService.html">CommandService</a> {</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">public</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Command.html">Command</a> waitCommand() <span class="keywordflow">throws</span> Exception;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> handleResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1Result.html">Result</a> result);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> handlePart(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ResultPart.html">ResultPart</a> result);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> handleText(String text);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> close() <span class="keywordflow">throws</span> Exception;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_18876547919efd46f151d2587ad79f8f.html">java</a></li><li class="navelem"><a class="el" href="dir_991658177f0f466302589b8fe98a0481.html">com</a></li><li class="navelem"><a class="el" href="dir_16c890797e8b50cb465e4192b196ade7.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_e8f54020097f76395d854671c0c471df.html">knife</a></li><li class="navelem"><a class="el" href="dir_d0e43b1372a1f4f7422090fc6624e429.html">client</a></li><li class="navelem"><a class="el" href="dir_3511eca66361c9fcc149e0a18834e24e.html">core</a></li><li class="navelem"><b>CommandService.java</b></li>
-    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
+    <li class="footer">Generated on Fri Dec 28 2012 16:25:32 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

@@ -24,10 +24,9 @@ public class SpringCommandHandler implements CommandHandler {
 			Agent.sendResult(ResultHelper
 					.newErrorResult("spring context create fail!"));
 		} else {
-			Agent.sendResult(ResultHelper
-					.newStringResult("spring context created "
-							+ ServiceRegistry.getService(
-									ObjectHolderService.class).toId(context)));
+			Agent.sendResult(ResultHelper.newResult("spring context created "
+					+ ServiceRegistry.getService(ObjectHolderService.class)
+							.toId(context)));
 		}
 	}
 

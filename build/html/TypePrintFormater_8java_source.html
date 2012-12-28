@@ -97,24 +97,19 @@ $(document).ready(function(){initNavTree('TypePrintFormater_8java_source.html','
 <div class="contents">
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>com.chenjw.knife.client.formater;</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> com.chenjw.knife.client.core.Completable;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.Printer;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.Printer.Level;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
-<div class="line"><a name="l00007"></a><span class="lineno"><a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1TypePrintFormater_3_01T_01_4.html">    7</a></span>&#160;<span class="keyword">public</span> <span class="keyword">interface </span>TypePrintFormater&lt;T&gt; {</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <span class="keyword">public</span> Class&lt;T&gt; getType();</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> print(<a class="code" href="enumcom_1_1chenjw_1_1knife_1_1core_1_1Printer_1_1Level.html">Level</a> level, <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1Printer.html">Printer</a> printer, T obj);</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    </div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> setCompleteHandler(<a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Completable.html">Completable</a> completeHandler);</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;}</div>
+<div class="line"><a name="l00003"></a><span class="lineno"><a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1TypePrintFormater_3_01T_01_4.html">    3</a></span>&#160;<span class="keyword">public</span> <span class="keyword">interface </span>TypePrintFormater&lt;T&gt; {</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;    <span class="keyword">public</span> Class&lt;T&gt; getType();</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    <span class="keyword">public</span> <span class="keywordtype">void</span> printObject(T obj);</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_18876547919efd46f151d2587ad79f8f.html">java</a></li><li class="navelem"><a class="el" href="dir_991658177f0f466302589b8fe98a0481.html">com</a></li><li class="navelem"><a class="el" href="dir_16c890797e8b50cb465e4192b196ade7.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_e8f54020097f76395d854671c0c471df.html">knife</a></li><li class="navelem"><a class="el" href="dir_d0e43b1372a1f4f7422090fc6624e429.html">client</a></li><li class="navelem"><a class="el" href="dir_6744ba701c9c29cb876e02a566a08eac.html">formater</a></li><li class="navelem"><b>TypePrintFormater.java</b></li>
-    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
+    <li class="footer">Generated on Fri Dec 28 2012 16:25:33 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

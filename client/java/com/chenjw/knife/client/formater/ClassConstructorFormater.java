@@ -1,7 +1,7 @@
 package com.chenjw.knife.client.formater;
 
-import com.chenjw.knife.core.model.ClassConstructorInfo;
-import com.chenjw.knife.core.model.ConstructorInfo;
+import com.chenjw.knife.core.model.result.ClassConstructorInfo;
+import com.chenjw.knife.core.model.result.ConstructorInfo;
 import com.chenjw.knife.utils.StringHelper;
 
 public class ClassConstructorFormater extends
@@ -9,8 +9,7 @@ public class ClassConstructorFormater extends
 
 	@Override
 	protected void print(ClassConstructorInfo classConstructorInfo) {
-		PreparedTableFormater table = new PreparedTableFormater(level, printer,
-				grep);
+		PreparedTableFormater table = new PreparedTableFormater(printer, grep);
 		table.setTitle("idx", "name");
 		ConstructorInfo[] constructorInfos = classConstructorInfo
 				.getConstructors();

@@ -112,15 +112,15 @@ $(document).ready(function(){initNavTree('InvokePrintFilter_8java_source.html','
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.service.TimingService;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ResultHelper;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ToStringHelper;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.MethodExceptionEndInfo;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.MethodReturnEndInfo;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.MethodStartInfo;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.ObjectInfo;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.MethodExceptionEndInfo;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.MethodReturnEndInfo;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.MethodStartInfo;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ObjectInfo;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
 <div class="line"><a name="l00023"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1InvokePrintFilter.html">   23</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1InvokePrintFilter.html">InvokePrintFilter</a> <span class="keyword">implements</span> <a class="code" href="interfacecom_1_1chenjw_1_1knife_1_1agent_1_1filter_1_1Filter.html">Filter</a> {</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">protected</span> <span class="keywordtype">void</span> onStart(MethodStartEvent event) {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodStartInfo.html">MethodStartInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodStartInfo.html">MethodStartInfo</a>();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodStartInfo.html">MethodStartInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodStartInfo.html">MethodStartInfo</a>();</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        Object thisObject = <span class="keyword">event</span>.getThisObject();</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
@@ -138,24 +138,24 @@ $(document).ready(function(){initNavTree('InvokePrintFilter_8java_source.html','
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            <span class="keywordflow">if</span> (arg == null) {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                argInfos.add(null);</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a> argInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a>();</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a> argInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a>();</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                argInfo.setObjectId(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html">ServiceRegistry</a>.getService(</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ObjectHolderService.html">ObjectHolderService</a>.class).toId(arg));</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                argInfo.setValueString(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ToStringHelper.html">ToStringHelper</a>.toString(arg));</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                argInfos.add(argInfo);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            }</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        info.setArguments(argInfos.toArray(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a>[argInfos.size()]));</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        info.setArguments(argInfos.toArray(<span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a>[argInfos.size()]));</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        info.setLineNum(event.getLineNum());</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        info.setFileName(event.getFileName());</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        info.setDepth(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html">ServiceRegistry</a>.getService(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1InvokeDepthService.html">InvokeDepthService</a>.class)</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;                .getDep());</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newResult(info));</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendPart(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newFragment(info));</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">protected</span> <span class="keywordtype">void</span> onReturnEnd(MethodReturnEndEvent event) {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodReturnEndInfo.html">MethodReturnEndInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodReturnEndInfo.html">MethodReturnEndInfo</a>();</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodReturnEndInfo.html">MethodReturnEndInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodReturnEndInfo.html">MethodReturnEndInfo</a>();</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        Object r = <span class="keyword">event</span>.getResult();</div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">if</span> (r == Profiler.VOID) {</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            info.setVoid(<span class="keyword">true</span>);</div>
@@ -163,7 +163,7 @@ $(document).ready(function(){initNavTree('InvokePrintFilter_8java_source.html','
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        } <span class="keywordflow">else</span> {</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            info.setVoid(<span class="keyword">false</span>);</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;            <span class="keywordflow">if</span> (r != null) {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a> rInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a>();</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a> rInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a>();</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                rInfo.setObjectId(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html">ServiceRegistry</a>.getService(</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ObjectHolderService.html">ObjectHolderService</a>.class).toId(r));</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                rInfo.setValueString(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ToStringHelper.html">ToStringHelper</a>.toString(r));</div>
@@ -174,14 +174,14 @@ $(document).ready(function(){initNavTree('InvokePrintFilter_8java_source.html','
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        info.setDepth(dep);</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        info.setTime(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html">ServiceRegistry</a>.getService(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html">TimingService</a>.class)</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                .getMillisInterval(String.valueOf(dep)));</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newResult(info));</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendPart(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newFragment(info));</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    }</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">protected</span> <span class="keywordtype">void</span> onExceptionEnd(MethodExceptionEndEvent event) {</div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodExceptionEndInfo.html">MethodExceptionEndInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1MethodExceptionEndInfo.html">MethodExceptionEndInfo</a>();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodExceptionEndInfo.html">MethodExceptionEndInfo</a> info = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1MethodExceptionEndInfo.html">MethodExceptionEndInfo</a>();</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        Throwable e = <span class="keyword">event</span>.getE();</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a> rInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1ObjectInfo.html">ObjectInfo</a>();</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a> rInfo = <span class="keyword">new</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ObjectInfo.html">ObjectInfo</a>();</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        rInfo.setObjectId(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html">ServiceRegistry</a>.getService(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1ObjectHolderService.html">ObjectHolderService</a>.class)</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                .toId(e));</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        rInfo.setValueString(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ToStringHelper.html">ToStringHelper</a>.toString(e));</div>
@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('InvokePrintFilter_8java_source.html','
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        info.setDepth(dep);</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        info.setTime(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1core_1_1ServiceRegistry.html">ServiceRegistry</a>.getService(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1service_1_1TimingService.html">TimingService</a>.class)</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;                .getMillisInterval(String.valueOf(dep)));</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendResult(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newResult(info));</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1Agent.html">Agent</a>.sendPart(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ResultHelper.html">ResultHelper</a>.newFragment(info));</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
@@ -214,7 +214,7 @@ $(document).ready(function(){initNavTree('InvokePrintFilter_8java_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="dir_f7474e4c48fc4e9821194d5a90653f49.html">java</a></li><li class="navelem"><a class="el" href="dir_5ca8fb9f6ca06b822204a1d190f20110.html">com</a></li><li class="navelem"><a class="el" href="dir_c72cee276ec01819a356f15b5a562f9a.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_82a3dbbfc66fbeedeb54968e60a75b82.html">knife</a></li><li class="navelem"><a class="el" href="dir_ef06a12e4e1799194d557302235cf0f7.html">agent</a></li><li class="navelem"><a class="el" href="dir_241799571984fd5ef9e9a36de20ab315.html">filter</a></li><li class="navelem"><b>InvokePrintFilter.java</b></li>
-    <li class="footer">Generated on Tue Dec 25 2012 16:34:56 for knife doc by
+    <li class="footer">Generated on Fri Dec 28 2012 16:25:33 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>
