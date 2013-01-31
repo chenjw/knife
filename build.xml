@@ -197,4 +197,6 @@
     	<target name="main" depends="init,build-native,build-client,build-agent,build-server,copy-shell,copy-lib,tar"/>
 
 	<target name="all" depends="main,build-update-doc"/>
+
+	<target name="upload" depends="build-update-doc"/>
 </project>
