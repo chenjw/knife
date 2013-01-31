@@ -108,27 +108,27 @@ $(document).ready(function(){initNavTree('LsCommandHandler_8java_source.html',''
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">import</span> java.util.Map.Entry;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.Agent;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.bytecode.javassist.Helper;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.constants.Constants;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.CommandDispatcher;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.CommandHandler;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.ServiceRegistry;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.service.ContextService;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.service.ObjectHolderService;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.NativeHelper;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ResultHelper;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ToStringHelper;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.args.ArgDef;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.args.Args;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ArrayInfo;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ClassConstructorInfo;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ClassFieldInfo;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ClassMethodInfo;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ConstructorInfo;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ExceptionInfo;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.FieldInfo;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.MethodInfo;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ObjectInfo;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.constants.Constants;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.CommandDispatcher;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.CommandHandler;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.ServiceRegistry;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.service.ContextService;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.service.ObjectHolderService;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.NativeHelper;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ResultHelper;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.utils.ToStringHelper;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.args.ArgDef;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.args.Args;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ArrayInfo;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ClassConstructorInfo;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ClassFieldInfo;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ClassMethodInfo;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ConstructorInfo;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ExceptionInfo;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.FieldInfo;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.MethodInfo;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">import</span> com.chenjw.knife.core.model.result.ObjectInfo;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.ClassHelper;</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.ReflectHelper;</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.StringHelper;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
@@ -182,7 +182,7 @@ $(document).ready(function(){initNavTree('LsCommandHandler_8java_source.html',''
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                    .get(Integer.parseInt(className)));</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            target.setClazz(Helper.findClass(className));</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            target.setClazz(ClassHelper.findClass(className));</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        }</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        <span class="keywordflow">return</span> target;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
@@ -428,7 +428,7 @@ $(document).ready(function(){initNavTree('LsCommandHandler_8java_source.html',''
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;    <span class="keyword">public</span> <span class="keyword">static</span> String[] getParamClassNames(Class&lt;?&gt;[] classes) {</div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        String[] classNames = <span class="keyword">new</span> String[classes.length];</div>
 <div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; classes.length; i++) {</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;            classNames[i] = Helper.makeClassName(classes[i]);</div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;            classNames[i] = ClassHelper.makeClassName(classes[i]);</div>
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;        }</div>
 <div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;        <span class="keywordflow">return</span> classNames;</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    }</div>
@@ -447,7 +447,7 @@ $(document).ready(function(){initNavTree('LsCommandHandler_8java_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="dir_f7474e4c48fc4e9821194d5a90653f49.html">java</a></li><li class="navelem"><a class="el" href="dir_5ca8fb9f6ca06b822204a1d190f20110.html">com</a></li><li class="navelem"><a class="el" href="dir_c72cee276ec01819a356f15b5a562f9a.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_82a3dbbfc66fbeedeb54968e60a75b82.html">knife</a></li><li class="navelem"><a class="el" href="dir_ef06a12e4e1799194d557302235cf0f7.html">agent</a></li><li class="navelem"><a class="el" href="dir_b88ce5d570e2817bd3243aae43d8b3f5.html">handler</a></li><li class="navelem"><b>LsCommandHandler.java</b></li>
-    <li class="footer">Generated on Fri Dec 28 2012 16:25:33 for knife doc by
+    <li class="footer">Generated on Mon Jan 7 2013 00:39:29 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

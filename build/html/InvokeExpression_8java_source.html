@@ -95,48 +95,43 @@ $(document).ready(function(){initNavTree('InvokeExpression_8java_source.html',''
 <div class="title">InvokeExpression.java</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * Copyright 1999-2011 Alibaba.com All right reserved. This software is the confidential and proprietary information of</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * Alibaba.com (&quot;Confidential Information&quot;). You shall not disclose such Confidential Information and shall use it only</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> * in accordance with the terms of the license agreement you entered into with Alibaba.com.</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">package </span>com.chenjw.knife.agent.bytecode.javassist;</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">import</span> java.lang.reflect.Method;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">import</span> java.lang.reflect.Modifier;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1InvokeExpression.html">   16</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1InvokeExpression.html">InvokeExpression</a> <span class="keyword">extends</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Expression.html">Expression</a> {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1InvokeExpression.html#a72f2fb66d57a026cd5bd4ecab90163fd">   26</a></span>&#160;    <span class="keyword">public</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1InvokeExpression.html#a72f2fb66d57a026cd5bd4ecab90163fd">InvokeExpression</a>(Method method, <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Expression.html">Expression</a> field, <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Expression.html">Expression</a>[] param) {</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        sb.append(getFieldString(method, field) + <span class="stringliteral">&quot;.&quot;</span> + method.getName() + <span class="stringliteral">&quot;(&quot;</span>);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; method.getParameterTypes().length; i++) {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;            <span class="keywordflow">if</span> (i &gt; 0) {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                sb.append(<span class="stringliteral">&quot;,&quot;</span>);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;            }</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            sb.append(param[i].<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Expression.html#a13ccfba015f0fc222c1bffcc21f465de">box</a>(method.getParameterTypes()[i])</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                    .cast(method.getParameterTypes()[i]).getCode());</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        sb.append(<span class="stringliteral">&quot;)&quot;</span>);</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        this.code = sb.toString();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        this.type = method.getReturnType();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> String getFieldString(Method method, <a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Expression.html">Expression</a> field) {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">if</span> (Modifier.isStatic(method.getModifiers())) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keywordflow">return</span> method.getDeclaringClass().getName();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;(&quot;</span> + field.getCode() + <span class="stringliteral">&quot;)&quot;</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>com.chenjw.knife.bytecode.javassist;</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> java.lang.reflect.Method;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> java.lang.reflect.Modifier;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1InvokeExpression.html">   11</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1InvokeExpression.html">InvokeExpression</a> <span class="keyword">extends</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1Expression.html">Expression</a> {</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1InvokeExpression.html#af485c65c278b1b8cc9be1e851ffccd99">   21</a></span>&#160;    <span class="keyword">public</span> <a class="code" href="classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1InvokeExpression.html#af485c65c278b1b8cc9be1e851ffccd99">InvokeExpression</a>(Method method, <a class="code" href="classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1Expression.html">Expression</a> field, <a class="code" href="classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1Expression.html">Expression</a>[] param) {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        sb.append(getFieldString(method, field) + <span class="stringliteral">&quot;.&quot;</span> + method.getName() + <span class="stringliteral">&quot;(&quot;</span>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; method.getParameterTypes().length; i++) {</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            <span class="keywordflow">if</span> (i &gt; 0) {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;                sb.append(<span class="stringliteral">&quot;,&quot;</span>);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            }</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;            sb.append(param[i].<a class="code" href="classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1Expression.html#aa8992c61416e1fd49f8bc3ef6d3dfa02">box</a>(method.getParameterTypes()[i])</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;                    .cast(method.getParameterTypes()[i]).getCode());</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        }</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        sb.append(<span class="stringliteral">&quot;)&quot;</span>);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        this.code = sb.toString();</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        this.type = method.getReturnType();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">private</span> <span class="keyword">static</span> String getFieldString(Method method, <a class="code" href="classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1Expression.html">Expression</a> field) {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordflow">if</span> (Modifier.isStatic(method.getModifiers())) {</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;            <span class="keywordflow">return</span> method.getDeclaringClass().getName();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;(&quot;</span> + field.getCode() + <span class="stringliteral">&quot;)&quot;</span>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        }</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="dir_f7474e4c48fc4e9821194d5a90653f49.html">java</a></li><li class="navelem"><a class="el" href="dir_5ca8fb9f6ca06b822204a1d190f20110.html">com</a></li><li class="navelem"><a class="el" href="dir_c72cee276ec01819a356f15b5a562f9a.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_82a3dbbfc66fbeedeb54968e60a75b82.html">knife</a></li><li class="navelem"><a class="el" href="dir_ef06a12e4e1799194d557302235cf0f7.html">agent</a></li><li class="navelem"><a class="el" href="dir_489f20aee5749f71313711f9852e4d4e.html">bytecode</a></li><li class="navelem"><a class="el" href="dir_aceeaa996db59145a992957be3b26de3.html">javassist</a></li><li class="navelem"><b>InvokeExpression.java</b></li>
-    <li class="footer">Generated on Fri Dec 28 2012 16:25:33 for knife doc by
+    <li class="navelem"><a class="el" href="dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="dir_daa6e865c37e9fae9a2af0f4987207e0.html">java</a></li><li class="navelem"><a class="el" href="dir_1eed3ba8d73fc16e63606d6a656bf531.html">com</a></li><li class="navelem"><a class="el" href="dir_40dffaa3eaf3a1a80fe864bcaa9cda1c.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_94aca49a3c0d718c97fe79448ec1f876.html">knife</a></li><li class="navelem"><a class="el" href="dir_d059a5da407871e583932dcd459f1ede.html">bytecode</a></li><li class="navelem"><a class="el" href="dir_fdcde46063f9acf2a96f57083605faf0.html">javassist</a></li><li class="navelem"><b>InvokeExpression.java</b></li>
+    <li class="footer">Generated on Mon Jan 7 2013 00:39:29 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

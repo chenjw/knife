@@ -7,5 +7,7 @@
 	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17-sources.zip"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17.jar"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/sinetfactory.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/misc.javassist-3.9.0.GA-sources.zip"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/misc.javassist-3.9.0.GA.jar" sourcepath="/knife.lib/lib/misc.javassist-3.9.0.GA-sources.zip"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -6,19 +6,7 @@ var annotated =
           [ "agent", null, [
             [ "bytecode", null, [
               [ "javassist", null, [
-                [ "method", null, [
-                  [ "CopyMethodGenerator", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1method_1_1CopyMethodGenerator.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1method_1_1CopyMethodGenerator" ],
-                  [ "EnhanceMethodGenerator", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1method_1_1EnhanceMethodGenerator.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1method_1_1EnhanceMethodGenerator" ],
-                  [ "NewMethodGenerator", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1method_1_1NewMethodGenerator.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1method_1_1NewMethodGenerator" ]
-                ] ],
-                [ "ClassGenerator", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1ClassGenerator.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1ClassGenerator" ],
-                [ "ClassLoaderClassPath", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1ClassLoaderClassPath.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1ClassLoaderClassPath" ],
-                [ "Expression", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Expression.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Expression" ],
-                [ "Field", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Field.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Field" ],
-                [ "Helper", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Helper.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Helper" ],
-                [ "InvokeExpression", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1InvokeExpression.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1InvokeExpression" ],
-                [ "MethodGenerator", "interfacecom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1MethodGenerator.html", "interfacecom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1MethodGenerator" ],
-                [ "TrinocularExpression", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1TrinocularExpression.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1TrinocularExpression" ]
+                [ "ClassLoaderClassPath", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1ClassLoaderClassPath.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1ClassLoaderClassPath" ]
               ] ]
             ] ],
             [ "constants", null, [
@@ -105,6 +93,22 @@ var annotated =
             [ "AgentPacketHandler", "classcom_1_1chenjw_1_1knife_1_1agent_1_1AgentPacketHandler.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1AgentPacketHandler" ],
             [ "AgentServer", "classcom_1_1chenjw_1_1knife_1_1agent_1_1AgentServer.html", "classcom_1_1chenjw_1_1knife_1_1agent_1_1AgentServer" ]
           ] ],
+          [ "bytecode", null, [
+            [ "javassist", null, [
+              [ "method", null, [
+                [ "CopyMethodGenerator", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1CopyMethodGenerator.html", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1CopyMethodGenerator" ],
+                [ "EnhanceMethodGenerator", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1EnhanceMethodGenerator.html", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1EnhanceMethodGenerator" ],
+                [ "NewMethodGenerator", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1NewMethodGenerator.html", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1NewMethodGenerator" ]
+              ] ],
+              [ "ClassGenerator", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1ClassGenerator.html", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1ClassGenerator" ],
+              [ "Expression", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1Expression.html", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1Expression" ],
+              [ "Field", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1Field.html", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1Field" ],
+              [ "InvokeExpression", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1InvokeExpression.html", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1InvokeExpression" ],
+              [ "JavassistHelper", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1JavassistHelper.html", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1JavassistHelper" ],
+              [ "MethodGenerator", "interfacecom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1MethodGenerator.html", "interfacecom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1MethodGenerator" ],
+              [ "TrinocularExpression", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1TrinocularExpression.html", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1TrinocularExpression" ]
+            ] ]
+          ] ],
           [ "client", null, [
             [ "client", null, [
               [ "CommandClient", "classcom_1_1chenjw_1_1knife_1_1client_1_1client_1_1CommandClient.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1client_1_1CommandClient" ],
@@ -130,12 +134,15 @@ var annotated =
             ] ],
             [ "core", null, [
               [ "Client", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Client.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Client" ],
+              [ "CommandFuture", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandFuture.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandFuture" ],
               [ "CommandListener", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandListener.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandListener" ],
+              [ "CommandListenerTemplate", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandListenerTemplate.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandListenerTemplate" ],
               [ "CommandSender", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandSender.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandSender" ],
+              [ "CommandSenderTemplate", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandSenderTemplate.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandSenderTemplate" ],
               [ "CommandService", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandService.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1CommandService" ],
               [ "Completable", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Completable.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1Completable" ],
-              [ "DefaultCommandListener", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1DefaultCommandListener.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1DefaultCommandListener" ],
-              [ "DefaultCommandSender", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1DefaultCommandSender.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1DefaultCommandSender" ],
+              [ "ResponseCallback", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1ResponseCallback.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1ResponseCallback" ],
+              [ "ResponseCallbackTemplate", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1ResponseCallbackTemplate.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1ResponseCallbackTemplate" ],
               [ "ResultModel", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1ResultModel.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1core_1_1ResultModel" ],
               [ "VMConnection", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnection.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnection" ],
               [ "VMConnector", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnector.html", "interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnector" ]
@@ -147,8 +154,8 @@ var annotated =
               [ "ClassFieldFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassFieldFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassFieldFormater" ],
               [ "ClassListFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassListFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassListFormater" ],
               [ "ClassMethodFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassMethodFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ClassMethodFormater" ],
-              [ "CommandInfoFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandInfoFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandInfoFormater" ],
-              [ "CommandListInfoFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandListInfoFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandListInfoFormater" ],
+              [ "CommandFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandFormater" ],
+              [ "CommandListFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandListFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandListFormater" ],
               [ "CommandNameListFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandNameListFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1CommandNameListFormater" ],
               [ "ExceptionFormater", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ExceptionFormater.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ExceptionFormater" ],
               [ "FormaterManager", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1FormaterManager.html", "classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1FormaterManager" ],
@@ -241,17 +248,27 @@ var annotated =
             [ "Printer", "classcom_1_1chenjw_1_1knife_1_1core_1_1Printer.html", "classcom_1_1chenjw_1_1knife_1_1core_1_1Printer" ]
           ] ],
           [ "testgt", null, [
-            [ "CommandFuture", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1CommandFuture.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1CommandFuture" ],
-            [ "DefaultResponseCallback", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1DefaultResponseCallback.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1DefaultResponseCallback" ],
-            [ "ResponseCallback", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1ResponseCallback.html", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1ResponseCallback" ],
-            [ "ResultHandler", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1ResultHandler.html", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1ResultHandler" ],
-            [ "Test", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1Test.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1Test" ]
+            [ "AgentMain", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1AgentMain.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1AgentMain" ],
+            [ "FieldInfo", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1FieldInfo.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1FieldInfo" ],
+            [ "MockField", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1MockField.html", null ],
+            [ "MyAnnotationVisitor", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1MyAnnotationVisitor.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1MyAnnotationVisitor" ],
+            [ "MyClassVisitor", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1MyClassVisitor.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1MyClassVisitor" ],
+            [ "MyFieldVisitor", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1MyFieldVisitor.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1MyFieldVisitor" ],
+            [ "MyTest", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1MyTest.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1MyTest" ],
+            [ "TestClass", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1TestClass.html", null ],
+            [ "TestClassInfo", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1TestClassInfo.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1TestClassInfo" ],
+            [ "TestGtService", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1TestGtService.html", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1TestGtService" ],
+            [ "TestGtServiceImpl", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1TestGtServiceImpl.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1TestGtServiceImpl" ],
+            [ "TestMethod", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1TestMethod.html", null ],
+            [ "TestService", "interfacecom_1_1chenjw_1_1knife_1_1testgt_1_1TestService.html", null ],
+            [ "Transformer", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1Transformer.html", "classcom_1_1chenjw_1_1knife_1_1testgt_1_1Transformer" ]
           ] ],
           [ "utils", null, [
             [ "invoke", null, [
               [ "InvokeResult", "classcom_1_1chenjw_1_1knife_1_1utils_1_1invoke_1_1InvokeResult.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1invoke_1_1InvokeResult" ],
               [ "MethodInvokeException", "classcom_1_1chenjw_1_1knife_1_1utils_1_1invoke_1_1MethodInvokeException.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1invoke_1_1MethodInvokeException" ]
             ] ],
+            [ "ClassHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1ClassHelper.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1ClassHelper" ],
             [ "FileHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1FileHelper.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1FileHelper" ],
             [ "GlobalIdHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1GlobalIdHelper.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1GlobalIdHelper" ],
             [ "IOHelper", "classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper.html", "classcom_1_1chenjw_1_1knife_1_1utils_1_1IOHelper" ],

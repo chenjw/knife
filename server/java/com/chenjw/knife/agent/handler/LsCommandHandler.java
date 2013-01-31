@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.chenjw.knife.agent.Agent;
-import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
@@ -32,6 +31,7 @@ import com.chenjw.knife.core.model.result.ExceptionInfo;
 import com.chenjw.knife.core.model.result.FieldInfo;
 import com.chenjw.knife.core.model.result.MethodInfo;
 import com.chenjw.knife.core.model.result.ObjectInfo;
+import com.chenjw.knife.utils.ClassHelper;
 import com.chenjw.knife.utils.ReflectHelper;
 import com.chenjw.knife.utils.StringHelper;
 
@@ -85,7 +85,7 @@ public class LsCommandHandler implements CommandHandler {
 					.get(Integer.parseInt(className)));
 
 		} else {
-			target.setClazz(Helper.findClass(className));
+			target.setClazz(ClassHelper.findClass(className));
 		}
 		return target;
 	}
@@ -331,7 +331,7 @@ public class LsCommandHandler implements CommandHandler {
 	public static String[] getParamClassNames(Class<?>[] classes) {
 		String[] classNames = new String[classes.length];
 		for (int i = 0; i < classes.length; i++) {
-			classNames[i] = Helper.makeClassName(classes[i]);
+			classNames[i] = ClassHelper.makeClassName(classes[i]);
 		}
 		return classNames;
 	}

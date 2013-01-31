@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import com.chenjw.knife.agent.Agent;
-import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
@@ -15,6 +14,7 @@ import com.chenjw.knife.agent.utils.ParseHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
+import com.chenjw.knife.utils.ClassHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public class SetCommandHandler implements CommandHandler {
@@ -28,7 +28,7 @@ public class SetCommandHandler implements CommandHandler {
 		if (fieldName.indexOf(".") != -1) {
 			String className = StringHelper.substringBeforeLast(fieldName, ".");
 			fieldName = StringHelper.substringAfterLast(fieldName, ".");
-			Class<?> clazz = Helper.findClass(className);
+			Class<?> clazz = ClassHelper.findClass(className);
 			if (clazz == null) {
 				Agent.sendResult(ResultHelper
 						.newErrorResult("class not found!"));

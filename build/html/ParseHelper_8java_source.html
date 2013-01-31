@@ -98,9 +98,9 @@ $(document).ready(function(){initNavTree('ParseHelper_8java_source.html','');});
 <div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="keyword">package </span>com.chenjw.knife.agent.utils;</div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="keyword">import</span> com.alibaba.fastjson.JSON;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.bytecode.javassist.Helper;</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.ServiceRegistry;</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.service.ObjectHolderService;</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.core.ServiceRegistry;</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="keyword">import</span> com.chenjw.knife.agent.service.ObjectHolderService;</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.ClassHelper;</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">import</span> com.chenjw.knife.utils.StringHelper;</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
 <div class="line"><a name="l00009"></a><span class="lineno"><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ParseHelper.html">    9</a></span>&#160;<span class="keyword">public</span> <span class="keyword">class </span><a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1utils_1_1ParseHelper.html">ParseHelper</a> {</div>
@@ -120,7 +120,7 @@ $(document).ready(function(){initNavTree('ParseHelper_8java_source.html','');});
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            obj = JSON.parseObject(expr, type);</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;        }</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordflow">if</span> (obj != null &amp;&amp; !(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Helper.html">Helper</a>.<a class="code" href="classcom_1_1chenjw_1_1knife_1_1agent_1_1bytecode_1_1javassist_1_1Helper.html#a90809ec1ff08c454a6c0c370bf4207e8">getBoxClazz</a>(type).isInstance(obj))) {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        <span class="keywordflow">if</span> (obj != null &amp;&amp; !(<a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1ClassHelper.html">ClassHelper</a>.<a class="code" href="classcom_1_1chenjw_1_1knife_1_1utils_1_1ClassHelper.html#ad5457984811c06024e4cda9bd3aaedcc">getBoxClazz</a>(type).isInstance(obj))) {</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;            <span class="keywordflow">throw</span> <span class="keyword">new</span> java.lang.IllegalArgumentException(<span class="stringliteral">&quot;cant parse expr [&quot;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;                    + expr + <span class="stringliteral">&quot;] to type [&quot;</span> + type.getName() + <span class="stringliteral">&quot;]&quot;</span>);</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        }</div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('ParseHelper_8java_source.html','');});
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_41e1742e44e2de38b3bc91f993fed282.html">server</a></li><li class="navelem"><a class="el" href="dir_f7474e4c48fc4e9821194d5a90653f49.html">java</a></li><li class="navelem"><a class="el" href="dir_5ca8fb9f6ca06b822204a1d190f20110.html">com</a></li><li class="navelem"><a class="el" href="dir_c72cee276ec01819a356f15b5a562f9a.html">chenjw</a></li><li class="navelem"><a class="el" href="dir_82a3dbbfc66fbeedeb54968e60a75b82.html">knife</a></li><li class="navelem"><a class="el" href="dir_ef06a12e4e1799194d557302235cf0f7.html">agent</a></li><li class="navelem"><a class="el" href="dir_dc80086a10d0dae1fa18f0d94071f50f.html">utils</a></li><li class="navelem"><b>ParseHelper.java</b></li>
-    <li class="footer">Generated on Fri Dec 28 2012 16:25:33 for knife doc by
+    <li class="footer">Generated on Mon Jan 7 2013 00:39:29 for knife doc by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.2 </li>
   </ul>

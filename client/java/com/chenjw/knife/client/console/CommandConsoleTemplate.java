@@ -3,8 +3,9 @@ package com.chenjw.knife.client.console;
 import java.util.List;
 
 import com.chenjw.knife.client.constants.Constants;
+import com.chenjw.knife.client.core.CommandListenerTemplate;
 import com.chenjw.knife.client.core.Completable;
-import com.chenjw.knife.client.core.DefaultCommandListener;
+import com.chenjw.knife.client.core.ResponseCallbackTemplate;
 import com.chenjw.knife.client.core.ResultModel;
 import com.chenjw.knife.client.formater.FormaterManager;
 import com.chenjw.knife.client.formater.TypePrintFormater;
@@ -13,10 +14,9 @@ import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.model.Command;
 import com.chenjw.knife.core.model.Result;
 import com.chenjw.knife.core.model.ResultPart;
-import com.chenjw.knife.testgt.DefaultResponseCallback;
 import com.chenjw.knife.utils.StringHelper;
 
-public abstract class CommandConsoleTemplate extends DefaultCommandListener {
+public abstract class CommandConsoleTemplate extends CommandListenerTemplate {
 
 	private FormaterManager formaterManager = new FormaterManager(
 			new ClientPrinter(), this, new ClientCompletorProcesser());
@@ -39,7 +39,8 @@ public abstract class CommandConsoleTemplate extends DefaultCommandListener {
 		}
 
 		for (int i = 0; i < vmList.size(); i++) {
-			handleText(i + ". " + vmList.get(i).getName());
+			handleText(i + ". " + vmList.get(i).getPid() + " "
+					+ vmList.get(i).getName());
 		}
 		String msg = "input [0-" + (vmList.size() - 1) + "] to choose vm! ";
 		handleText(msg);
@@ -136,7 +137,7 @@ public abstract class CommandConsoleTemplate extends DefaultCommandListener {
 
 	};
 
-	private class CommandResponseCallback extends DefaultResponseCallback {
+	private class CommandResponseCallback extends ResponseCallbackTemplate {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		private void onSuccess(Object content) {
 			if (content != null) {

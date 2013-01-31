@@ -1,9 +1,9 @@
 package com.chenjw.knife.agent.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.service.ObjectHolderService;
+import com.chenjw.knife.utils.ClassHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public class ParseHelper {
@@ -23,7 +23,7 @@ public class ParseHelper {
 			obj = JSON.parseObject(expr, type);
 
 		}
-		if (obj != null && !(Helper.getBoxClazz(type).isInstance(obj))) {
+		if (obj != null && !(ClassHelper.getBoxClazz(type).isInstance(obj))) {
 			throw new java.lang.IllegalArgumentException("cant parse expr ["
 					+ expr + "] to type [" + type.getName() + "]");
 		}

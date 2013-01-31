@@ -15,11 +15,12 @@ import javassist.expr.MethodCall;
 
 import com.chenjw.knife.agent.AgentClassLoader;
 import com.chenjw.knife.agent.Profiler;
-import com.chenjw.knife.agent.bytecode.javassist.ClassGenerator;
 import com.chenjw.knife.agent.bytecode.javassist.ClassLoaderClassPath;
-import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.core.Lifecycle;
 import com.chenjw.knife.agent.core.ServiceRegistry;
+import com.chenjw.knife.bytecode.javassist.ClassGenerator;
+import com.chenjw.knife.bytecode.javassist.JavassistHelper;
+import com.chenjw.knife.utils.ClassHelper;
 
 public class InstrumentService implements Lifecycle {
 
@@ -52,7 +53,7 @@ public class InstrumentService implements Lifecycle {
 				.getDeclaringClass().getName(), new ClassLoaderClassPath(
 				AgentClassLoader.getAgentClassLoader()));
 		CtClass ctClass = newClassGenerator.getCtClass();
-		CtMethod newMethod = Helper.findCtMethod(ctClass, method);
+		CtMethod newMethod = JavassistHelper.findCtMethod(ctClass, method);
 
 		if (newMethod != null) {
 			newMethod.instrument(new MethodCallExprEditor());
@@ -85,13 +86,13 @@ public class InstrumentService implements Lifecycle {
 				.getDeclaringClass().getName(), new ClassLoaderClassPath(
 				AgentClassLoader.getAgentClassLoader()));
 		CtClass ctClass = newClassGenerator.getCtClass();
-		CtMethod newMethod = Helper.findCtMethod(ctClass, method);
+		CtMethod newMethod = JavassistHelper.findCtMethod(ctClass, method);
 		if (newMethod != null) {
 			// add enter leave code
 			addEnterLeaveCode(ctClass, newMethod);
 			byte[] classBytes = newClassGenerator.toBytecode();
 			ServiceRegistry.getService(ByteCodeService.class).tryRedefineClass(
-					Helper.findClass(newClassGenerator.getCtClass()),
+					JavassistHelper.findClass(newClassGenerator.getCtClass()),
 					classBytes);
 			ServiceRegistry.getService(ByteCodeService.class).commitAll();
 		}
@@ -103,7 +104,8 @@ public class InstrumentService implements Lifecycle {
 			// ////////////////
 			Class<?> returnClass = null;
 			try {
-				returnClass = Helper.findClass(ctMethod.getReturnType());
+				returnClass = JavassistHelper.findClass(ctMethod
+						.getReturnType());
 			} catch (NotFoundException e) {
 				e.printStackTrace();
 			}
@@ -118,29 +120,32 @@ public class InstrumentService implements Lifecycle {
 			// // /////////
 			if (Modifier.isStatic(ctMethod.getModifiers())) {
 
-				ctMethod.insertBefore("{" + PROFILER_CLASS.getName() + "."
-						+ Profiler.METHOD_NAME_ENTER + "(null,\""
-						+ Helper.makeClassName(Helper.findClass(ctClass))
-						+ "\",\"" + ctMethod.getName() + "\",$args);}");
+				ctMethod.insertBefore("{"
+						+ PROFILER_CLASS.getName()
+						+ "."
+						+ Profiler.METHOD_NAME_ENTER
+						+ "(null,\""
+						+ ClassHelper.makeClassName(JavassistHelper
+								.findClass(ctClass)) + "\",\""
+						+ ctMethod.getName() + "\",$args);}");
 
-				ctMethod.insertAfter(
-						"{" + PROFILER_CLASS.getName() + "."
-								+ Profiler.METHOD_NAME_LEAVE + "(null,\""
-								+ Helper.findClass(ctClass).getName() + "\",\""
-								+ ctMethod.getName() + "\",$args," + resultExpr
-								+ ");}", true);
+				ctMethod.insertAfter("{" + PROFILER_CLASS.getName() + "."
+						+ Profiler.METHOD_NAME_LEAVE + "(null,\""
+						+ JavassistHelper.findClass(ctClass).getName()
+						+ "\",\"" + ctMethod.getName() + "\",$args,"
+						+ resultExpr + ");}", true);
 			} else {
 				ctMethod.insertBefore("{" + PROFILER_CLASS.getName() + "."
 						+ Profiler.METHOD_NAME_ENTER + "($0,\""
-						+ Helper.findClass(ctClass).getName() + "\",\""
-						+ ctMethod.getName() + "\",$args);}");
+						+ JavassistHelper.findClass(ctClass).getName()
+						+ "\",\"" + ctMethod.getName() + "\",$args);}");
 				ctMethod.insertAfter(
 						"{"
 								+ PROFILER_CLASS.getName()
 								+ "."
 								+ Profiler.METHOD_NAME_LEAVE
 								+ "($0,\""
-								+ Helper.makeClassName(Helper
+								+ ClassHelper.makeClassName(JavassistHelper
 										.findClass(ctClass)) + "\",\""
 								+ ctMethod.getName() + "\",$args," + resultExpr
 								+ ");}", true);
@@ -242,7 +247,8 @@ public class InstrumentService implements Lifecycle {
 			}
 			Class<?> returnClass = null;
 			try {
-				returnClass = Helper.findClass(ctMethod.getReturnType());
+				returnClass = JavassistHelper.findClass(ctMethod
+						.getReturnType());
 			} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

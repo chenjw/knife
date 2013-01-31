@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.Profiler;
-import com.chenjw.knife.agent.bytecode.javassist.Helper;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
@@ -38,6 +37,7 @@ import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
+import com.chenjw.knife.utils.ClassHelper;
 import com.chenjw.knife.utils.ReflectHelper;
 import com.chenjw.knife.utils.StringHelper;
 
@@ -149,7 +149,7 @@ public class TraceCommandHandler implements CommandHandler {
 				m = StringHelper.substringAfterLast(m, ".");
 				Class<?> clazz = NativeHelper.findLoadedClass(className);
 				if (clazz == null) {
-					clazz = Helper.findClass(className);
+					clazz = ClassHelper.findClass(className);
 				}
 				if (clazz == null) {
 
@@ -202,7 +202,7 @@ public class TraceCommandHandler implements CommandHandler {
 	public static String getParamClassNames(Class<?>[] classes) {
 		String[] classNames = new String[classes.length];
 		for (int i = 0; i < classes.length; i++) {
-			classNames[i] = Helper.makeClassName(classes[i]);
+			classNames[i] = ClassHelper.makeClassName(classes[i]);
 		}
 		return StringHelper.join(classNames, ",");
 	}
