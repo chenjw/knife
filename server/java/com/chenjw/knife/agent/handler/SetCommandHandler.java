@@ -72,6 +72,7 @@ public class SetCommandHandler implements CommandHandler {
 		}
 		Object newValue = ParseHelper.parseValue(value, field.getType());
 		setFieldValue(obj, field, newValue);
+		Agent.sendResult(ResultHelper.newResult("set finished!"));
 
 	}
 

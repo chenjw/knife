@@ -10,7 +10,7 @@
 	<property name="dist.dir" location="${base.dir}/dist"/>
 	<property name="doc.dir" location="${base.dir}/doc"/>
 	<property environment="env"/>
-	<property name="version" value="0.7.8"/>
+	<property name="version" value="0.7.9"/>
 	<property name="appName" value="knife"/>
 	<property name="date" value="2012"/>
 	
@@ -154,17 +154,20 @@
     			<arg value="login"/>
 			<arg value="--email"/>
 			<arg value="cjw1983@gmail.com"/>
-			<arg value="--passwd"/>
+			<arg value="--password"/>
 			<arg value="19830926"/>
  		</exec>		
-		<exec executable="vmc">
-    			<arg value="--path"/>
-			<arg value="${dist.dir}/doc/"/>
-			<arg value="update"/>
- 		</exec>
-		<exec executable="vmc">
-    			<arg value="logout"/>
- 		</exec>	
+
+ 		<exec executable="vmc" dir="${dist.dir}/doc/">
+			<arg value="stop"/>
+		        <arg value="knife-doc"/>
+		</exec>
+		<exec executable="vmc" dir="${dist.dir}/doc/">
+			<arg value="push"/>
+		</exec>                                                                                                                                             			<exec executable="vmc" dir="${dist.dir}/doc/">
+			<arg value="start"/>
+			<arg value="knife-doc"/>
+		</exec>
 	</target>
 
 

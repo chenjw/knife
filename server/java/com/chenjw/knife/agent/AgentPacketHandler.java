@@ -129,13 +129,10 @@ public class AgentPacketHandler implements PacketHandler, CommandDispatcher {
 		// 结束上一次命令
 		if (commandStatusService.getCurrentCommand() != null) {
 			Agent.sendResult(ResultHelper
-					.newErrorResult("stop by next command! id="
-							+ commandStatusService.getCurrentCommand().getId()
-							+ " ,name= "
-							+ commandStatusService.getCurrentCommand()
-									.getName()));
+					.newErrorResult("The recent command '"
+							+ commandStatusService.getCurrentCommand().toString()
+							+ "' have not finished! It will be canceled by next command '"+cmd.toString()+"'! "));
 		}
-
 		// 设置当前命令
 		commandStatusService.setCurrentCommand(cmd);
 		try {

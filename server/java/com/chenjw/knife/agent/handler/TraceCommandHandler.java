@@ -1,14 +1,11 @@
 package com.chenjw.knife.agent.handler;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.Profiler;
-import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.core.ServiceRegistry;
@@ -26,19 +23,18 @@ import com.chenjw.knife.agent.filter.InvokePrintFilter;
 import com.chenjw.knife.agent.filter.PatternMethodFilter;
 import com.chenjw.knife.agent.filter.ProxyMethodFilter;
 import com.chenjw.knife.agent.filter.SystemOperationFilter;
-import com.chenjw.knife.agent.filter.TimesCountFilter;
+import com.chenjw.knife.agent.filter.TraceTimesCountFilter;
 import com.chenjw.knife.agent.filter.TimingFilter;
 import com.chenjw.knife.agent.filter.TimingStopFilter;
 import com.chenjw.knife.agent.filter.TraceMethodFilter;
 import com.chenjw.knife.agent.service.CommandStatusService;
-import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
-import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.CommandHelper;
+import com.chenjw.knife.agent.utils.CommandHelper.MethodInfo;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
 import com.chenjw.knife.utils.ClassHelper;
-import com.chenjw.knife.utils.ReflectHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public class TraceCommandHandler implements CommandHandler {
@@ -46,7 +42,8 @@ public class TraceCommandHandler implements CommandHandler {
 	public void handle(Args args, CommandDispatcher dispatcher)
 			throws Exception {
 
-		MethodInfo methodInfo = findMethod(args);
+		MethodInfo methodInfo = CommandHelper.findMethod(args
+				.arg("trace-expression"));
 		if (methodInfo != null) {
 			configStrategy(args, methodInfo);
 			trace(methodInfo);
@@ -90,7 +87,7 @@ public class TraceCommandHandler implements CommandHandler {
 		filters.add(new ProxyMethodFilter());
 		filters.add(new TraceMethodFilter(methodInfo.getThisObject(),
 				methodInfo.getClazz(), methodInfo.getMethod()));
-		filters.add(new TimesCountFilter(traceNum));
+		filters.add(new TraceTimesCountFilter(traceNum));
 		filters.add(new EnterLeavePrintFilter());
 		filters.add(new DepthFilter());
 		if (tOptions == null) {
@@ -100,103 +97,6 @@ public class TraceCommandHandler implements CommandHandler {
 		filters.add(new InvokePrintFilter());
 
 		Profiler.listener = new FilterInvocationListener(filters);
-	}
-
-	private class MethodInfo {
-		private Object thisObject;
-		private Class<?> clazz;
-		private Method method;
-
-		public Object getThisObject() {
-			return thisObject;
-		}
-
-		public void setThisObject(Object thisObject) {
-			this.thisObject = thisObject;
-		}
-
-		public Class<?> getClazz() {
-			return clazz;
-		}
-
-		public void setClazz(Class<?> clazz) {
-			this.clazz = clazz;
-		}
-
-		public Method getMethod() {
-			return method;
-		}
-
-		public void setMethod(Method method) {
-			this.method = method;
-		}
-
-	}
-
-	private MethodInfo findMethod(Args args) throws Exception {
-		MethodInfo methodInfo = new MethodInfo();
-		String m = args.arg("trace-expression");
-		m = m.trim();
-		Method method = null;
-		if (StringHelper.isNumeric(m)) {
-			method = ((Method[]) ServiceRegistry.getService(
-					ContextService.class).get(Constants.METHOD_LIST))[Integer
-					.parseInt(m)];
-
-		} else {
-			if (m.indexOf(".") != -1) {
-				String className = StringHelper.substringBeforeLast(m, ".");
-				m = StringHelper.substringAfterLast(m, ".");
-				Class<?> clazz = NativeHelper.findLoadedClass(className);
-				if (clazz == null) {
-					clazz = ClassHelper.findClass(className);
-				}
-				if (clazz == null) {
-
-					Agent.sendResult(ResultHelper.newErrorResult("class "
-							+ className + " not found!"));
-					return null;
-				}
-				Method[] methods = ReflectHelper.getMethods(clazz);
-				for (Method tm : methods) {
-					if (StringHelper.equals(tm.getName(), m)) {
-						if (Modifier.isStatic(tm.getModifiers())) {
-							method = tm;
-							break;
-						}
-					}
-				}
-			} else {
-				Object obj = ServiceRegistry.getService(ContextService.class)
-						.get(Constants.THIS);
-				if (obj == null) {
-					Agent.sendResult(ResultHelper.newErrorResult("not found!"));
-					return null;
-				}
-				Method[] methods = obj.getClass().getMethods();
-				for (Method tm : methods) {
-					if (StringHelper.equals(tm.getName(), m)) {
-						method = tm;
-						break;
-					}
-				}
-			}
-		}
-		if (method == null) {
-			Agent.sendResult(ResultHelper.newErrorResult("cant find method!"));
-			return null;
-		}
-		methodInfo.setMethod(method);
-		if (Modifier.isStatic(method.getModifiers())) {
-			methodInfo.setClazz(method.getDeclaringClass());
-			methodInfo.setThisObject(null);
-		} else {
-			Object thisObject = ServiceRegistry
-					.getService(ContextService.class).get(Constants.THIS);
-			methodInfo.setThisObject(thisObject);
-			methodInfo.setClazz(thisObject.getClass());
-		}
-		return methodInfo;
 	}
 
 	public static String getParamClassNames(Class<?>[] classes) {

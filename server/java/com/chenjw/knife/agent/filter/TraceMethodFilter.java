@@ -26,7 +26,9 @@ public class TraceMethodFilter implements Filter {
 				isCan = true;
 			}
 		} else {
-			if (this.thisObject == thisObject) {
+			if (this.thisObject == null) {
+				isCan = true;
+			} else if (this.thisObject == thisObject) {
 				if (clazz.getName().equals(className)
 						&& method.getName().equals(methodName)) {
 					isCan = true;

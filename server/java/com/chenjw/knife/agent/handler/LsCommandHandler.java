@@ -17,6 +17,8 @@ import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.service.ObjectHolderService;
+import com.chenjw.knife.agent.utils.CommandHelper;
+import com.chenjw.knife.agent.utils.CommandHelper.ClassOrObject;
 import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.ToStringHelper;
@@ -33,65 +35,17 @@ import com.chenjw.knife.core.model.result.MethodInfo;
 import com.chenjw.knife.core.model.result.ObjectInfo;
 import com.chenjw.knife.utils.ClassHelper;
 import com.chenjw.knife.utils.ReflectHelper;
-import com.chenjw.knife.utils.StringHelper;
 
 public class LsCommandHandler implements CommandHandler {
 
-	public class ClassOrObject {
-		private Object obj = null;
-		private Class<?> clazz = null;
 
-		public boolean isObject() {
-			return obj != null;
-		}
-
-		public boolean isClazz() {
-			return obj == null && clazz != null;
-		}
-
-		public boolean isNotFound() {
-			return obj == null && clazz == null;
-		}
-
-		public Object getObj() {
-			return obj;
-		}
-
-		public void setObj(Object obj) {
-			if (obj != null) {
-				this.obj = obj;
-				this.clazz = obj.getClass();
-			}
-		}
-
-		public Class<?> getClazz() {
-			return clazz;
-		}
-
-		public void setClazz(Class<?> clazz) {
-			this.clazz = clazz;
-		}
-	}
-
-	private ClassOrObject getTarget(Args args) {
-		ClassOrObject target = new ClassOrObject();
+	private ClassOrObject findTarget(Args args) {
 		String className = args.arg("classname");
-		if (StringHelper.isBlank(className)) {
-			target.setObj(ServiceRegistry.getService(ContextService.class).get(
-					Constants.THIS));
-
-		} else if (StringHelper.isNumeric(className)) {
-			target.setObj(ServiceRegistry.getService(ObjectHolderService.class)
-					.get(Integer.parseInt(className)));
-
-		} else {
-			target.setClazz(ClassHelper.findClass(className));
-		}
-		return target;
+		return CommandHelper.findTarget(className);
 	}
 
 	private void lsField(Args args) {
-		ClassOrObject target = getTarget(args);
+		ClassOrObject target = findTarget(args);
 		if (target.isNotFound()) {
 			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
@@ -137,7 +91,7 @@ public class LsCommandHandler implements CommandHandler {
 	}
 
 	private void lsMethod(Args args) {
-		ClassOrObject target = getTarget(args);
+		ClassOrObject target = findTarget(args);
 		if (target.isNotFound()) {
 			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
@@ -181,7 +135,7 @@ public class LsCommandHandler implements CommandHandler {
 	}
 
 	private void lsConstruct(Args args) {
-		ClassOrObject target = getTarget(args);
+		ClassOrObject target = findTarget(args);
 		if (target.isNotFound()) {
 			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
@@ -212,7 +166,7 @@ public class LsCommandHandler implements CommandHandler {
 	}
 
 	private void lsClass(Args args) {
-		ClassOrObject target = getTarget(args);
+		ClassOrObject target = findTarget(args);
 		if (target.isNotFound()) {
 			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;
@@ -237,7 +191,7 @@ public class LsCommandHandler implements CommandHandler {
 
 	@SuppressWarnings("unchecked")
 	private void lsArray(Args args) {
-		ClassOrObject target = getTarget(args);
+		ClassOrObject target = findTarget(args);
 		if (target.isNotFound()) {
 			Agent.sendResult(ResultHelper.newErrorResult("not found!"));
 			return;

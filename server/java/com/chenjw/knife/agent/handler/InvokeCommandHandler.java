@@ -31,13 +31,13 @@ import com.chenjw.knife.agent.filter.TimingStopFilter;
 import com.chenjw.knife.agent.service.ByteCodeService;
 import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
-import com.chenjw.knife.agent.utils.NativeHelper;
+import com.chenjw.knife.agent.utils.CommandHelper;
+import com.chenjw.knife.agent.utils.CommandHelper.MethodInfo;
 import com.chenjw.knife.agent.utils.ParseHelper;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.agent.utils.SpringHelper;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
-import com.chenjw.knife.utils.ClassHelper;
 import com.chenjw.knife.utils.ReflectHelper;
 import com.chenjw.knife.utils.StringHelper;
 import com.chenjw.knife.utils.invoke.InvokeResult;
@@ -103,59 +103,18 @@ public class InvokeCommandHandler implements CommandHandler {
 
 		String argStr = methodSig;
 		String m = StringHelper.substringBefore(argStr, "(");
-		m = m.trim();
-		Method method = null;
-		if (StringHelper.isNumeric(m)) {
-			method = ((Method[]) ServiceRegistry.getService(
-					ContextService.class).get(Constants.METHOD_LIST))[Integer
-					.parseInt(m)];
-		} else {
-			if (m.indexOf(".") != -1) {
-				String className = StringHelper.substringBeforeLast(m, ".");
-				m = StringHelper.substringAfterLast(m, ".");
-				Class<?> clazz = NativeHelper.findLoadedClass(className);
-				if (clazz == null) {
-					clazz = ClassHelper.findClass(className);
-				}
-				if (clazz == null) {
-					Agent.sendResult(ResultHelper.newErrorResult("class "
-							+ className + " not found!"));
-					return;
-				}
-				Method[] methods = ReflectHelper.getMethods(clazz);
-				for (Method tm : methods) {
-					if (tm.getName().equals(m)) {
-						if (Modifier.isStatic(tm.getModifiers())) {
-							method = tm;
-							break;
-						}
-					}
-				}
-
-			} else {
-				Object obj = ServiceRegistry.getService(ContextService.class)
-						.get(Constants.THIS);
-				if (obj == null) {
-					Agent.sendResult(ResultHelper.newErrorResult("not found!"));
-					return;
-				}
-				Method[] methods = ReflectHelper.getMethods(obj.getClass());
-				for (Method tm : methods) {
-					if (tm.getName().equals(m)) {
-						method = tm;
-						break;
-					}
-				}
-			}
-		}
-		if (method == null) {
+		
+		MethodInfo methodInfo=CommandHelper.findMethod(m);
+		
+		if (methodInfo == null) {
 			Agent.sendResult(ResultHelper.newErrorResult("method not found!"));
 			return;
 		}
+		Method method =methodInfo.getMethod();
 		Object[] mArgs = ParseHelper.parseMethodArgs(
 				StringHelper.substringBeforeLast(
 						StringHelper.substringAfter(argStr, "("), ")"),
-				method.getParameterTypes());
+						method.getParameterTypes());
 
 		if (Modifier.isStatic(method.getModifiers())) {
 			invoke(isTrace, method, null, mArgs);

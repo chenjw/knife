@@ -3,6 +3,7 @@ package com.chenjw.knife.agent.handler;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
+import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
 
@@ -18,6 +19,7 @@ public class PropCommandHandler implements CommandHandler {
 		} else if ("language".equals(args.arg("type"))) {
 			dispatcher.setDescLanguage(args.arg("status"));
 		}
+		Agent.sendResult(ResultHelper.newResult("prop finished!"));
 	}
 
 	@Override
