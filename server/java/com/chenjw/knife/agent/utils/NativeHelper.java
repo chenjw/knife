@@ -50,7 +50,11 @@ public class NativeHelper {
 			suffix = ".so";
 		} else if (PlatformHelper.isWindows()) {
 			suffix = ".dll";
-		} else {
+		} 
+		else if(PlatformHelper.isMac()){
+			suffix= ".dylib";
+		}
+		else {
 			return;
 		}
 		InputStream is = null;
