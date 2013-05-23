@@ -5,5 +5,6 @@ var classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1NewMethodG
     [ "addVariableAssign", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1NewMethodGenerator.html#a29ea16a58a1c9077e89f9dfa67314c29", null ],
     [ "generate", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1NewMethodGenerator.html#a16e715a56cc9520d371422aea0e0d710", null ],
     [ "getMethodLines", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1NewMethodGenerator.html#a891065b6126a03ddd3260c9cdfa493af", null ],
-    [ "getSignature", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1NewMethodGenerator.html#ad33c1d45a37d5026e881e8876a64c711", null ]
+    [ "getSignature", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1NewMethodGenerator.html#ad33c1d45a37d5026e881e8876a64c711", null ],
+    [ "newInstance", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1method_1_1NewMethodGenerator.html#a4ca26a70f704aaa46770a7c8d6491cb3", null ]
 ];

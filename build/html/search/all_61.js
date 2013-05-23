@@ -17,5 +17,5 @@ var searchData=
   ['arrayformater',['ArrayFormater',['../classcom_1_1chenjw_1_1knife_1_1client_1_1formater_1_1ArrayFormater.html',1,'com::chenjw::knife::client::formater']]],
   ['arrayinfo',['ArrayInfo',['../classcom_1_1chenjw_1_1knife_1_1core_1_1model_1_1result_1_1ArrayInfo.html',1,'com::chenjw::knife::core::model::result']]],
   ['attachrequest',['AttachRequest',['../classcom_1_1chenjw_1_1knife_1_1client_1_1model_1_1AttachRequest.html',1,'com::chenjw::knife::client::model']]],
-  ['attachvm',['attachVM',['../classcom_1_1chenjw_1_1knife_1_1client_1_1connector_1_1LocalVMConnector.html#a99b0a6533fc4e062326294dc2a34115a',1,'com.chenjw.knife.client.connector.LocalVMConnector.attachVM()'],['../classcom_1_1chenjw_1_1knife_1_1client_1_1connector_1_1RemoteVMConnector.html#a634129d15ae32aef3c2e98766213a52c',1,'com.chenjw.knife.client.connector.RemoteVMConnector.attachVM()'],['../interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnector.html#a3aa4bb9f75187f4466112846764d1641',1,'com.chenjw.knife.client.core.VMConnector.attachVM()']]]
+  ['attachvm',['attachVM',['../interfacecom_1_1chenjw_1_1knife_1_1client_1_1core_1_1VMConnector.html#a3aa4bb9f75187f4466112846764d1641',1,'com::chenjw::knife::client::core::VMConnector']]]
 ];

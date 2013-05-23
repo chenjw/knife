@@ -7,6 +7,9 @@ var classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1ClassGenerator =
     [ "findCtClass", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1ClassGenerator.html#a13e86c99bfcff5cc35a76b34d721c6b4", null ],
     [ "getCtClass", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1ClassGenerator.html#a1de4dc0b7180693ce39590b0dea25821", null ],
     [ "initClassPaths", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1ClassGenerator.html#ab78ca3a406dd43daac6b7ac535f4434c", null ],
+    [ "newInstance", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1ClassGenerator.html#a074ca75216c3f758bca8c3587951e9a6", null ],
+    [ "newInstance", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1ClassGenerator.html#a0b78ab7744a4b3070fa6cc6a80d644c1", null ],
+    [ "newInstance", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1ClassGenerator.html#ae19d7dac5aa35262e05171fac9e74e33", null ],
     [ "toBytecode", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1ClassGenerator.html#aa8b30a984f5146daaef32799e7fed2a7", null ],
     [ "toClass", "classcom_1_1chenjw_1_1knife_1_1bytecode_1_1javassist_1_1ClassGenerator.html#ab63a035bb8b987ea7421cf19b4d448c1", null ]
 ];
