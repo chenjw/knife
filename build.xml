@@ -163,7 +163,8 @@
 		        <arg value="knife-doc"/>
 		</exec>
 		<exec executable="vmc" dir="${dist.dir}/doc/">
-			<arg value="push"/>
+			<arg value="update"/>
+			<arg value="knife-doc"/>
 		</exec>                                                                                                                                             			<exec executable="vmc" dir="${dist.dir}/doc/">
 			<arg value="start"/>
 			<arg value="knife-doc"/>
