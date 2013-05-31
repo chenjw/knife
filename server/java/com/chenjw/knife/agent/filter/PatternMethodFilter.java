@@ -7,6 +7,12 @@ import com.chenjw.knife.agent.event.MethodExceptionEndEvent;
 import com.chenjw.knife.agent.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.event.MethodStartEvent;
 
+/**
+ * 根据正则表达式过滤掉不需要了解的调用细节
+ * 
+ * @author chenjw
+ *
+ */
 public class PatternMethodFilter implements Filter {
 	private Pattern pattern;
 

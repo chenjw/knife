@@ -7,6 +7,12 @@ import com.chenjw.knife.agent.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.event.MethodStartEvent;
 import com.chenjw.knife.agent.service.InvokeDepthService;
 
+/**
+ * 用于过滤掉当前方法深度不为0时候的MethodStartEvent、MethodExceptionEndEvent、MethodReturnEndEvent等时间
+ * <p>顺序上必须放在DepthFilter之后</p>
+ * @author chenjw
+ *
+ */
 public class Depth0Filter implements Filter {
 
 	@Override

@@ -5,6 +5,12 @@ import com.chenjw.knife.agent.event.Event;
 import com.chenjw.knife.agent.event.MethodProfileEnterLeaveEvent;
 import com.chenjw.knife.agent.event.MethodProfileEvent;
 
+/**
+ * 设置当前classloader
+ * 
+ * @author chenjw
+ *
+ */
 public class InstrumentClassLoaderFilter implements Filter {
 
 	@Override

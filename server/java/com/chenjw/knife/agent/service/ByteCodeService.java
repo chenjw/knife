@@ -11,6 +11,14 @@ import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.utils.FileHelper;
 import com.chenjw.knife.utils.StringHelper;
 
+/**
+ * <p>字节码管理服务</p>
+ * <p>框架里所有的字节码变更都会经由这个服务来完成</p>
+ * <p>字节码变更后都会保留原始版本，随时都可以恢复成原始版本</p>
+ * 
+ * @author chenjw
+ *
+ */
 public class ByteCodeService implements Lifecycle {
 
 	private Map<Class<?>, byte[]> backupMap = new ConcurrentHashMap<Class<?>, byte[]>();

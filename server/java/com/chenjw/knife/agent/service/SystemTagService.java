@@ -9,6 +9,12 @@ import java.util.Map.Entry;
 import com.chenjw.knife.agent.core.Lifecycle;
 import com.chenjw.knife.agent.utils.NativeHelper;
 
+/**
+ * 用于记录一些系统对象，比如上下文等，这样在使用top,ref这些命令是如果返回的是系统对象就可以方便的标记出来
+ * 
+ * @author chenjw
+ *
+ */
 public class SystemTagService implements Lifecycle {
 
 	private Map<String, Object> systemTags = new HashMap<String, Object>();

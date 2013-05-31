@@ -20,6 +20,12 @@ import com.chenjw.knife.core.model.result.MethodReturnEndInfo;
 import com.chenjw.knife.core.model.result.MethodStartInfo;
 import com.chenjw.knife.core.model.result.ObjectInfo;
 
+/**
+ * 打印调用结果
+ * 
+ * @author chenjw
+ *
+ */
 public class InvokePrintFilter implements Filter {
 
 	protected void onStart(MethodStartEvent event) {

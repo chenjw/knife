@@ -2,6 +2,12 @@ package com.chenjw.knife.agent.service;
 
 import com.chenjw.knife.agent.core.Lifecycle;
 
+/**
+ * 记录某一个方法调用的当前设深度（用于invoke或trace方法打印调用栈时确定最前面加多少个"--"））
+ * 
+ * @author chenjw
+ *
+ */
 public class InvokeDepthService implements Lifecycle {
 
 	private ThreadLocal<Integer> dep = new ThreadLocal<Integer>();

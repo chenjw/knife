@@ -6,6 +6,12 @@ import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.Lifecycle;
 import com.chenjw.knife.agent.core.ServiceRegistry;
 
+/**
+ * 记录当前对象的变化历史，用来支持“cd ..”这个操作
+ * 
+ * @author chenjw
+ *
+ */
 public class HistoryService implements Lifecycle {
 
 	private Stack<Integer> history = new Stack<Integer>();

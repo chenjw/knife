@@ -3,6 +3,12 @@ package com.chenjw.knife.agent.service;
 import com.chenjw.knife.agent.core.Lifecycle;
 import com.chenjw.knife.core.model.Command;
 
+/**
+ * 用来记录当前命令的执行状态
+ * 
+ * @author chenjw
+ *
+ */
 public class CommandStatusService implements Lifecycle {
 
 	private Command currentCommand = null;

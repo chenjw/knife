@@ -7,6 +7,12 @@ import com.chenjw.knife.agent.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.event.MethodStartEvent;
 import com.chenjw.knife.agent.service.InvokeDepthService;
 
+/**
+ * 用于记录当前方法帧的深度
+ * 
+ * @author chenjw
+ *
+ */
 public class DepthFilter implements Filter {
 
 	@Override

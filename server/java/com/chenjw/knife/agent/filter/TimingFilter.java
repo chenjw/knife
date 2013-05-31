@@ -8,6 +8,12 @@ import com.chenjw.knife.agent.event.MethodStartEvent;
 import com.chenjw.knife.agent.service.InvokeDepthService;
 import com.chenjw.knife.agent.service.TimingService;
 
+/**
+ * 记录调用时间
+ * 
+ * @author chenjw
+ *
+ */
 public class TimingFilter implements Filter {
 	@Override
 	public void doFilter(Event event, FilterChain chain) throws Exception {

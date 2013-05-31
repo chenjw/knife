@@ -6,6 +6,12 @@ import com.chenjw.knife.agent.event.MethodLeaveEvent;
 import com.chenjw.knife.agent.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.event.MethodStartEvent;
 
+/**
+ * 当进入和离开方法时打印出相关输出
+ * 
+ * @author chenjw
+ *
+ */
 public class EnterLeavePrintFilter implements Filter {
 
 	public void doFilter(Event event, FilterChain chain) throws Exception {

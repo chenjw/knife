@@ -2,6 +2,12 @@ package com.chenjw.knife.agent.filter;
 
 import com.chenjw.knife.agent.event.Event;
 
+/**
+ * 过滤到非当前线程产生的事件
+ * 
+ * @author chenjw
+ *
+ */
 public class FixThreadFilter implements Filter {
 	private volatile Thread checkThread = null;
 

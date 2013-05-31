@@ -8,6 +8,13 @@ import java.util.Map;
 import com.chenjw.knife.agent.core.Lifecycle;
 import com.chenjw.knife.agent.core.ServiceRegistry;
 
+/**
+ * 
+ * 对象引用服务，管理框架保存的业务对象的引用( 返回结果里出现的 @1 @2 那些)
+ * 
+ * @author chenjw
+ *
+ */
 public class ObjectHolderService implements Lifecycle {
 
 	private ObjectHolder holder;

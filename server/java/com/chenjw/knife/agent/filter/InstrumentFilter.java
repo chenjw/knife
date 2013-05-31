@@ -6,6 +6,12 @@ import com.chenjw.knife.agent.event.MethodProfileEnterLeaveEvent;
 import com.chenjw.knife.agent.event.MethodProfileEvent;
 import com.chenjw.knife.agent.service.InstrumentService;
 
+/**
+ * 增强
+ * 
+ * @author chenjw
+ *
+ */
 public class InstrumentFilter implements Filter {
 
 	@Override

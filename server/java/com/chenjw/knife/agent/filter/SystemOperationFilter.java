@@ -2,6 +2,12 @@ package com.chenjw.knife.agent.filter;
 
 import com.chenjw.knife.agent.event.Event;
 
+/**
+ * 用于过滤掉框架类的调用
+ * 
+ * @author chenjw
+ *
+ */
 public class SystemOperationFilter implements Filter {
 	private volatile boolean isOnSystemOperation = false;
 

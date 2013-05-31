@@ -4,6 +4,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
 
+/**
+ * 服务注册中心，所以注册的服务都可以从这里取到，并且保证所有服务的生命周期相关方法在相应的时候被调用
+ * 
+ * @author chenjw
+ *
+ */
 public class ServiceRegistry {
 
 	private static Map<Class<?>, Lifecycle> services = new LinkedHashMap<Class<?>, Lifecycle>();

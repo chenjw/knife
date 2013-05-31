@@ -11,6 +11,12 @@ import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.agent.utils.jvmti.Capabilitie;
 import com.chenjw.knife.utils.StringHelper;
 
+/**
+ * 用来检测当前java虚拟机对于jvmti接口的实现情况
+ * 
+ * @author chenjw
+ *
+ */
 public class CheckService implements Lifecycle {
 
 	@Override

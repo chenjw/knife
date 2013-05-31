@@ -6,6 +6,12 @@ import com.chenjw.knife.agent.event.Event;
 import com.chenjw.knife.agent.event.MethodEnterEvent;
 import com.chenjw.knife.agent.event.MethodLeaveEvent;
 
+/**
+ * 用于指定需要监控的对象调用
+ * 
+ * @author chenjw
+ *
+ */
 public class TraceMethodFilter implements Filter {
 	private Class<?> clazz;
 	private Method method;

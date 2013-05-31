@@ -16,6 +16,12 @@ import com.chenjw.knife.agent.event.MethodStartEvent;
 import com.chenjw.knife.agent.service.InvokeDepthService;
 import com.chenjw.knife.agent.utils.ResultHelper;
 
+/**
+ * 用于指定需要监视的方法调用次数，达到次数后会结束监视
+ * 
+ * @author chenjw
+ *
+ */
 public class TraceTimesCountFilter implements Filter {
 	private Set<Thread> threadSet = new HashSet<Thread>();
 	private int num;

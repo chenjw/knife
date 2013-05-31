@@ -4,6 +4,12 @@ import java.util.List;
 
 import com.chenjw.knife.agent.event.Event;
 
+/**
+ * 过滤器链的默认实现
+ * 
+ * @author chenjw
+ *
+ */
 public class FilterChainImpl implements FilterChain {
 	private List<Filter> filters;
 	private int index;

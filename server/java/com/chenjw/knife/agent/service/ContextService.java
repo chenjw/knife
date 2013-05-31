@@ -6,6 +6,12 @@ import java.util.Map;
 import com.chenjw.knife.agent.core.Lifecycle;
 import com.chenjw.knife.agent.core.ServiceRegistry;
 
+/**
+ * 上下文服务，作用域全局，用来保存命令执行过程中的上下文，比如当前对象等
+ * 
+ * @author chenjw
+ *
+ */
 public class ContextService implements Lifecycle {
 
 	private Map<String, Object> map = new HashMap<String, Object>();

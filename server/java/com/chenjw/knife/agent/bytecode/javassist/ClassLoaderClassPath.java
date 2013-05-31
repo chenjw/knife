@@ -10,6 +10,12 @@ import javassist.ClassPath;
 import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.service.ByteCodeService;
 
+/**
+ * 
+ * 
+ * @author chenjw
+ *
+ */
 public class ClassLoaderClassPath implements ClassPath {
 	private ClassLoader classLoader;
 

@@ -7,6 +7,12 @@ import com.chenjw.knife.agent.event.MethodExceptionEndEvent;
 import com.chenjw.knife.agent.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.service.InvokeDepthService;
 
+/**
+ * 结束调用
+ * 
+ * @author chenjw
+ *
+ */
 public class InvokeFinishFilter implements Filter {
 
 	@Override

@@ -22,6 +22,12 @@ import com.chenjw.knife.bytecode.javassist.ClassGenerator;
 import com.chenjw.knife.bytecode.javassist.JavassistHelper;
 import com.chenjw.knife.utils.ClassHelper;
 
+/**
+ * 用于增强某个类的某个方法，增强后的方法会在一些地方发出事件（Event）
+ * 
+ * @author chenjw
+ *
+ */
 public class InstrumentService implements Lifecycle {
 
 	private static final String[] CLASS_WHITE_LIST = new String[] {

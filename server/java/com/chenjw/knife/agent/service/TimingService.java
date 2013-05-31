@@ -9,6 +9,12 @@ import java.util.Map.Entry;
 import com.chenjw.knife.agent.core.Lifecycle;
 import com.chenjw.knife.core.Printer;
 
+/**
+ * 用于记录和计算方法调用的执行时间
+ * 
+ * @author chenjw
+ *
+ */
 public class TimingService implements Lifecycle {
 
 	private static final String DEFAULT_NAME = "DEFAULT";

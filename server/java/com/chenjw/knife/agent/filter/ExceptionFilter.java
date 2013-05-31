@@ -4,6 +4,12 @@ import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.event.Event;
 import com.chenjw.knife.agent.utils.ResultHelper;
 
+/**
+ * 发生异常时打印到client
+ * 
+ * @author chenjw
+ *
+ */
 public class ExceptionFilter implements Filter {
 
 	@Override
