@@ -23,7 +23,7 @@
  * questions.
  */
 
-package com.chenjw.knife.client.model;
+package com.chenjw.knife.core.model;
 
 import java.io.Serializable;
 

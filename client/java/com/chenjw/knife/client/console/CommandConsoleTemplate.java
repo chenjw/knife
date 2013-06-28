@@ -9,11 +9,11 @@ import com.chenjw.knife.client.core.ResponseCallbackTemplate;
 import com.chenjw.knife.client.core.ResultModel;
 import com.chenjw.knife.client.formater.FormaterManager;
 import com.chenjw.knife.client.formater.TypePrintFormater;
-import com.chenjw.knife.client.model.VMDescriptor;
 import com.chenjw.knife.core.Printer;
 import com.chenjw.knife.core.model.Command;
 import com.chenjw.knife.core.model.Result;
 import com.chenjw.knife.core.model.ResultPart;
+import com.chenjw.knife.core.model.VMDescriptor;
 import com.chenjw.knife.utils.StringHelper;
 
 public abstract class CommandConsoleTemplate extends CommandListenerTemplate {

@@ -9,7 +9,8 @@ import com.chenjw.knife.client.core.Client;
 import com.chenjw.knife.client.core.VMConnector;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
-import com.chenjw.knife.utils.OSHelper;
+import com.chenjw.knife.utils.JarHelper;
+import com.chenjw.knife.utils.LinuxHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public final class ProxyMain {
@@ -33,7 +34,7 @@ public final class ProxyMain {
 		}
 		Map<String, String> dOptions = arg.option("-d");
 		if (dOptions != null) {
-			OSHelper.removeKnifeDirOnExit();
+			JarHelper.removeKnifeDirOnExit();
 		}
 		Client client = new ProxyClient(port);
 		VMConnector connector = new LocalVMConnector();

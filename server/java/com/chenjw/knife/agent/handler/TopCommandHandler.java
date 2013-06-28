@@ -20,7 +20,7 @@ import com.chenjw.knife.core.model.result.ReferenceCountInfo;
 import com.chenjw.knife.core.model.result.ThreadInfo;
 import com.chenjw.knife.core.model.result.TopReferenceCountInfo;
 import com.chenjw.knife.core.model.result.TopThreadInfo;
-import com.chenjw.knife.utils.OSHelper;
+import com.chenjw.knife.utils.LinuxHelper;
 
 public class TopCommandHandler implements CommandHandler {
 	private void handleRef(Args args, CommandDispatcher dispatcher) {
@@ -53,7 +53,7 @@ public class TopCommandHandler implements CommandHandler {
 			num = Integer.parseInt(nOptions.get("num"));
 		}
 		TopThreadInfo info = new TopThreadInfo();
-		List<ThreadInfo> threadInfos = OSHelper.findTopThread(num);
+		List<ThreadInfo> threadInfos = LinuxHelper.findTopThread(num);
 		info.setThreads(threadInfos.toArray(new ThreadInfo[threadInfos.size()]));
 		Agent.sendResult(ResultHelper.newResult(info));
 	}

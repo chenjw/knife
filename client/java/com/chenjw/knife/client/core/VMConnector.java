@@ -3,7 +3,7 @@ package com.chenjw.knife.client.core;
 import java.io.IOException;
 import java.util.List;
 
-import com.chenjw.knife.client.model.VMDescriptor;
+import com.chenjw.knife.core.model.VMDescriptor;
 
 public interface VMConnector {
 

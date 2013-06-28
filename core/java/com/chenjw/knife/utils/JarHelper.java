@@ -1,6 +1,7 @@
 package com.chenjw.knife.utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -16,6 +17,12 @@ import java.util.List;
 public class JarHelper {
 	private static final String LIB_FOLDER = "../dist/knife/lib/";
 
+	public static void removeKnifeDirOnExit() throws IOException {
+		File path = JarHelper.findJarFolder().getParentFile();
+
+		path.deleteOnExit();
+	}
+	
 	public static String[] findJars() {
 		File folder = findJarFolder();
 		File[] fs = folder.listFiles();

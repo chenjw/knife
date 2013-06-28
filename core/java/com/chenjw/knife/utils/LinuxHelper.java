@@ -1,25 +1,21 @@
 package com.chenjw.knife.utils;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.chenjw.knife.core.model.VMDescriptor;
 import com.chenjw.knife.core.model.result.ThreadInfo;
 
-public class OSHelper {
+public class LinuxHelper {
 
-	public static void removeKnifeDirOnExit() throws IOException {
-		File path = JarHelper.findJarFolder().getParentFile();
-		// System.out.println("delete " + path.getCanonicalPath() + " "
-		// + path.isDirectory());
-		path.deleteOnExit();
-	}
+
 
 	public static List<ThreadInfo> findTopThread(int num) {
 		String pid = JvmHelper.getPID();
@@ -46,6 +42,60 @@ public class OSHelper {
 			return result;
 		} catch (Exception e) {
 			return null;
+		}
+	}
+
+	public static void main(String[] args) throws Exception{
+		List<VMDescriptor> vms=listVM();
+		for(VMDescriptor vm:vms){
+			System.out.println(vm.getPid()+" | "+vm.getName());
+		}
+	}
+	
+	public static List<VMDescriptor> listVM() throws Exception {
+		List<VMDescriptor> result = new ArrayList<VMDescriptor>();
+		String command = "ps ax";
+		InputStream is = null;
+		Process process = Runtime.getRuntime().exec(command);
+		try {
+			is = process.getInputStream();
+			BufferedReader input = new BufferedReader(new InputStreamReader(is));
+			String line;
+			while ((line = input.readLine()) != null) {
+				VMDescriptor vm=new VMDescriptor();
+				String[] ss=line.split(" ");
+				int index=0;
+				for(int i=0;i<ss.length;i++){
+					String s=ss[i];
+					if(StringHelper.isBlank(s)){
+						continue;
+					}
+					else{
+						if(index==0){
+							vm.setPId(s);
+						}
+						else if(index==4){
+							String[] nameA=Arrays.copyOfRange(ss, i, ss.length);
+							vm.setName(StringHelper.join(nameA , " "));
+						}
+						index++;
+					}
+				}
+				String cmd=StringHelper.substringBefore(vm.getName(), " ");
+				if("java".equals(cmd)||cmd.endsWith("/java")){
+					result.add(vm);
+				}
+			}
+			return result;
+		} finally {
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+			process.destroy();
 		}
 	}
 

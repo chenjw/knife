@@ -28,7 +28,7 @@ public final class ClientMain {
 		Client client = new CommandClient(console);
 		VMConnector connector = null;
 		if (args == null || args.length == 0) {
-			connector = new LocalVMConnector();
+				connector = new LocalVMConnector();
 		} else {
 
 			String ip = args[0];

@@ -8,10 +8,12 @@ import java.util.List;
 import com.chenjw.knife.client.connection.DefaultVMConnection;
 import com.chenjw.knife.client.core.VMConnection;
 import com.chenjw.knife.client.core.VMConnector;
-import com.chenjw.knife.client.model.VMDescriptor;
+import com.chenjw.knife.core.model.VMDescriptor;
 import com.chenjw.knife.utils.FileHelper;
 import com.chenjw.knife.utils.JarHelper;
 import com.chenjw.knife.utils.JvmHelper;
+import com.chenjw.knife.utils.LinuxHelper;
+import com.chenjw.knife.utils.PlatformHelper;
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
 
@@ -28,6 +30,11 @@ public class LocalVMConnector implements VMConnector {
 			"knife-server.jar" };
 
 	public List<VMDescriptor> listVM() throws Exception {
+
+		if (PlatformHelper.isLinux()) {
+			return LinuxHelper.listVM();
+		}
+
 		List<VirtualMachineDescriptor> list = VirtualMachine.list();
 		List<VMDescriptor> vmList = new ArrayList<VMDescriptor>();
 		String selfJvmId = JvmHelper.getPID();
