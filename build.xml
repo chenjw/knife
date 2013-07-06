@@ -3,14 +3,14 @@
     
     <!-- Properties -->
 
-    	<property name="base.dir" value="."/>
+	<property name="base.dir" value="."/>
 	<property name="native.dir" location="${base.dir}/native"/>
 	<property name="build.dir" location="${base.dir}/build"/>
 	<property name="build.classes.dir" location="${build.dir}/classes"/>
 	<property name="dist.dir" location="${base.dir}/dist"/>
 	<property name="doc.dir" location="${base.dir}/doc"/>
 	<property environment="env"/>
-	<property name="version" value="0.7.11"/>
+	<property name="version" value="0.7.12"/>
 	<property name="appName" value="knife"/>
 	<property name="date" value="2012"/>
 	
@@ -18,10 +18,9 @@
 		<fileset dir="${base.dir}/lib/lib">
    			<include name="**/*.jar"/>
 		</fileset>
-	 	<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
-
   	</path>
-    	<target name="init">
+
+	<target name="init">
   		<delete dir="${build.dir}" quiet="true"/>
 		<mkdir dir="${build.dir}"/>
 		<mkdir dir="${build.classes.dir}"/>
@@ -34,97 +33,98 @@
 		<mkdir dir="${dist.dir}/doc"/>
 	</target>
 
-    	<target name="build-native">
+	<target name="build-native">
   		<!--exec executable="make" dir="${native.dir}">
   		</exec-->
 		<copy overwrite="true" file="${native.dir}/linux/Default/libnativehelper.so" todir="${base.dir}/server/resources" failonerror="false"/>
 		<copy overwrite="true" file="${native.dir}/windows/Default/libnativehelper.dll" todir="${base.dir}/server/resources" failonerror="false"/>
 	</target>
 
-       	<target name="build-client">
+	<target name="build-client">
 		<local name="name"/>
 		<property name="name" value="client"/>
   		<javac destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false" encoding="UTF-8">
-    			<src path="${base.dir}/${name}/java"/>
+			<src path="${base.dir}/${name}/java"/>
 			<src path="${base.dir}/core/java"/>
-    			<include name="**/*.java"/>
+			<include name="**/*.java"/>
 			<classpath>
 				<path refid="lib.path"/>
 			</classpath>
   		</javac>
  		<copy todir="${build.classes.dir}/${name}">
-    			<fileset dir="${base.dir}/${name}/resources"/>
+			<fileset dir="${base.dir}/${name}/resources"/>
 			<fileset dir="${base.dir}/core/resources"/>
   		</copy>
 		<copy todir="${build.classes.dir}/${name}">
-    			<fileset dir="${base.dir}/${name}/java" excludes="**/*.java"/>
+    		<fileset dir="${base.dir}/${name}/java" excludes="**/*.java"/>
   		</copy>
 		<jar destfile="${dist.dir}/knife/lib/knife-${name}.jar" manifest="${base.dir}/${name}/resources/META-INF/MANIFEST.MF">
-    			<fileset dir="${build.classes.dir}/${name}"/>
+    		<fileset dir="${build.classes.dir}/${name}"/>
   		</jar>
 	</target>
 
-       	<target name="build-agent">
+	<target name="build-agent">
 		<local name="name"/>
 		<property name="name" value="agent"/>
   		<javac destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false" encoding="UTF-8">
-    			<src path="${base.dir}/${name}/java"/>
-    			<include name="**/*.java"/>
+    		<src path="${base.dir}/${name}/java"/>
+			<include name="**/*.java"/>
 			<classpath>
 				<path refid="lib.path"/>
 			</classpath>
   		</javac>
  		<copy todir="${build.classes.dir}/${name}">
-    			<fileset dir="${base.dir}/${name}/resources"/>
+			<fileset dir="${base.dir}/${name}/resources"/>
   		</copy>
 		<copy todir="${build.classes.dir}/${name}">
-    			<fileset dir="${base.dir}/${name}/java" excludes="**/*.java"/>
+    		<fileset dir="${base.dir}/${name}/java" excludes="**/*.java"/>
   		</copy>
 		<jar destfile="${dist.dir}/knife/lib/knife-${name}.jar" manifest="${base.dir}/${name}/resources/META-INF/MANIFEST.MF">
-    			<fileset dir="${build.classes.dir}/${name}"/>
+    		<fileset dir="${build.classes.dir}/${name}"/>
   		</jar>
 	</target>
 
-       	<target name="build-server">
+	<target name="build-server">
 		<local name="name"/>
 		<property name="name" value="server"/>
   		<javac destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false" encoding="UTF-8">
-    			<src path="${base.dir}/${name}/java"/>
+			<src path="${base.dir}/${name}/java"/>
 			<src path="${base.dir}/core/java"/>
-    			<include name="**/*.java"/>
+			<include name="**/*.java"/>
 			<classpath>
 				<path refid="lib.path"/>
 				<pathelement location="${dist.dir}/knife/lib/knife-agent.jar"/>
 			</classpath>
   		</javac>
  		<copy todir="${build.classes.dir}/${name}">
-    			<fileset dir="${base.dir}/${name}/resources"/>
+			<fileset dir="${base.dir}/${name}/resources"/>
 			<fileset dir="${base.dir}/core/resources"/>
   		</copy>
 		<copy todir="${build.classes.dir}/${name}">
-    			<fileset dir="${base.dir}/${name}/java" excludes="**/*.java"/>
+    		<fileset dir="${base.dir}/${name}/java" excludes="**/*.java"/>
   		</copy>
 		<jar destfile="${dist.dir}/knife/lib/knife-${name}.jar" manifest="${base.dir}/${name}/resources/META-INF/MANIFEST.MF">
-    			<fileset dir="${build.classes.dir}/${name}"/>
+			<fileset dir="${build.classes.dir}/${name}"/>
   		</jar>
 	</target>
 
 	<target name="copy-shell">
  		<copy todir="${dist.dir}/knife">
-    			<fileset dir="${base.dir}/shell"/>
+			<fileset dir="${base.dir}/shell"/>
   		</copy>
 		<chmod dir="${dist.dir}/knife" perm="774" includes="**/*.sh"/>
 	</target>
 
 	<target name="copy-lib">
  		<copy todir="${dist.dir}/knife/lib">
-    			<fileset dir="${base.dir}/lib/lib">
+    		<fileset dir="${base.dir}/lib/lib">
 				<include name="fastjson-1.1.17.jar"/>
 				<include name="jline-1.0.jar"/>
 				<include name="knife-agent.jar"/>
 				<include name="knife-client.jar"/>
 				<include name="knife-server.jar"/>
 				<include name="misc.javassist-3.9.0.GA.jar"/>
+				
 				<include name="sinetfactory.jar"/>
 			</fileset>
   		</copy>
@@ -137,21 +137,24 @@
 	<target name="build-update-doc">
 		<!-- build doc-->
 		<exec executable="doxygen">
-    			<arg value="${doc.dir}/config/doxygen/setting.cfg"/>
+    		<arg value="${doc.dir}/config/doxygen/setting.cfg"/>
  		</exec>
+
 		<copy todir="${dist.dir}/doc">
-    			<fileset dir="${doc.dir}/config/deploy">
+			<fileset dir="${doc.dir}/config/deploy">
 				<include name="manifest.yml"/>
 			</fileset>
   		</copy>
+
 		<war destfile="${dist.dir}/doc/knife-doc.war" webxml="${doc.dir}/config/deploy/web.xml" basedir="${build.dir}/html" encoding="utf-8"/>
+
 		<exec executable="vmc">
-    			<arg value="target"/>
+			<arg value="target"/>
 			<arg value="https://api.cloudfoundry.com"/>
  		</exec>	
 		<!-- upload to cloudfoundry-->
 		<exec executable="vmc">
-    			<arg value="login"/>
+			<arg value="login"/>
 			<arg value="--email"/>
 			<arg value="cjw1983@gmail.com"/>
 			<arg value="--password"/>
@@ -159,16 +162,29 @@
  		</exec>		
 
  		<exec executable="vmc" dir="${dist.dir}/doc/">
+			
 			<arg value="stop"/>
-		        <arg value="knife-doc"/>
+		        
+			<arg value="knife-doc"/>
+		
 		</exec>
+		
+		
 		<exec executable="vmc" dir="${dist.dir}/doc/">
+			
 			<arg value="update"/>
+			
 			<arg value="knife-doc"/>
-		</exec>                                                                                                                                             			<exec executable="vmc" dir="${dist.dir}/doc/">
+		</exec>                                                                                                                                             			
+		
+		<exec executable="vmc" dir="${dist.dir}/doc/">
+			
 			<arg value="start"/>
+			
 			<arg value="knife-doc"/>
+		
 		</exec>
+	
 	</target>
 
 
@@ -198,7 +214,7 @@
  		<rpm specFile="rpm.spec" topDir="${rpmbuildRoot}" cleanBuildDir="true" failOnError="false"/>
 	</target>
     
-    	<target name="main" depends="init,build-native,build-client,build-agent,build-server,copy-shell,copy-lib,tar"/>
+	<target name="main" depends="init,build-native,build-client,build-agent,build-server,copy-shell,copy-lib,tar"/>
 
 	<target name="all" depends="main,build-update-doc"/>
 
