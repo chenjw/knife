@@ -38,6 +38,7 @@
   		</exec-->
 		<copy overwrite="true" file="${native.dir}/linux/Default/libnativehelper.so" todir="${base.dir}/server/resources" failonerror="false"/>
 		<copy overwrite="true" file="${native.dir}/windows/Default/libnativehelper.dll" todir="${base.dir}/server/resources" failonerror="false"/>
+		<copy overwrite="true" file="${native.dir}/windows64/Default/libnativehelper64.dll" todir="${base.dir}/server/resources" failonerror="false"/>
 	</target>
 
 	<target name="build-client">

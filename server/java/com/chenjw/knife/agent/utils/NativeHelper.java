@@ -49,7 +49,12 @@ public class NativeHelper {
 		if (PlatformHelper.isLinux()) {
 			suffix = ".so";
 		} else if (PlatformHelper.isWindows()) {
-			suffix = ".dll";
+		    if(PlatformHelper.is64bit()){
+		        suffix = "64.dll";
+		    }
+		    else{
+		        suffix = ".dll";
+		    }
 		} 
 		else if(PlatformHelper.isMac()){
 			suffix= ".dylib";

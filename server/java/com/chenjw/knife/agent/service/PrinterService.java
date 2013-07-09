@@ -24,7 +24,7 @@ public class PrinterService implements Lifecycle {
 
 	@Override
 	public void close() {
-		ClassLoaderHelper.printer = null;
-		NativeHelper.printer = null;
+		//ClassLoaderHelper.printer = null;
+		//NativeHelper.printer = null;
 	}
 }

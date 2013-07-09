@@ -17,7 +17,9 @@ public class IOHelper {
 			int a = is.read(bytes, i, bytes.length - i);
 			if (a == -1) {
 				break;
-			} else {
+			} 
+
+			else {
 				i += a;
 			}
 		}
