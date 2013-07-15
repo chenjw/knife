@@ -90,12 +90,11 @@ public class ObjectHolderService implements Lifecycle {
     public void clear() {
         if (holder != null) {
             holder.clear();
-            holder = null;
         }
     }
 
     @Override
     public void close() {
-
+        holder = null;
     }
 }
