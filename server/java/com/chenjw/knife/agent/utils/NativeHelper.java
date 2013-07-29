@@ -47,7 +47,12 @@ public class NativeHelper {
 	public static void loadNativeLibrary(String libName) {
 		String suffix = null;
 		if (PlatformHelper.isLinux()) {
-			suffix = ".so";
+			if(PlatformHelper.is64bit()){
+		        suffix = "64.so";
+		    }
+		    else{
+		    	suffix = ".so";
+		    }
 		} else if (PlatformHelper.isWindows()) {
 		    if(PlatformHelper.is64bit()){
 		        suffix = "64.dll";

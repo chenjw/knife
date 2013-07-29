@@ -31,18 +31,18 @@ public class LocalVMConnector implements VMConnector {
 
 	public List<VMDescriptor> listVM() throws Exception {
 
-		if (PlatformHelper.isLinux()) {
-			List<VMDescriptor> vmList = new ArrayList<VMDescriptor>();
-			String selfJvmId = JvmHelper.getPID();
-			for( VMDescriptor vm:LinuxHelper.listVM()){
-				if (vm.getPid().equals(selfJvmId)) {
-					continue;
-				}
-				vmList.add(vm);
-			}
-			return vmList;
-		}
-		else{
+//		if (PlatformHelper.isLinux()) {
+//			List<VMDescriptor> vmList = new ArrayList<VMDescriptor>();
+//			String selfJvmId = JvmHelper.getPID();
+//			for( VMDescriptor vm:LinuxHelper.listVM()){
+//				if (vm.getPid().equals(selfJvmId)) {
+//					continue;
+//				}
+//				vmList.add(vm);
+//			}
+//			return vmList;
+//		}
+//		else{
 			List<VirtualMachineDescriptor> list = VirtualMachine.list();
 			List<VMDescriptor> vmList = new ArrayList<VMDescriptor>();
 			String selfJvmId = JvmHelper.getPID();
@@ -56,7 +56,7 @@ public class LocalVMConnector implements VMConnector {
 				vmList.add(vmd);
 			}
 			return vmList;
-		}
+//		}
 		
 	}
 
