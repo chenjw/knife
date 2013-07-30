@@ -1,5 +1,7 @@
 package com.chenjw.knife.client;
 
+import java.util.Map.Entry;
+
 import com.chenjw.knife.client.client.CommandClient;
 import com.chenjw.knife.client.connector.LocalVMConnector;
 import com.chenjw.knife.client.connector.RemoteVMConnector;
@@ -29,8 +31,16 @@ public final class ClientMain {
 		VMConnector connector = null;
 		if (args == null || args.length == 0) {
 				connector = new LocalVMConnector();
-		} else {
-
+		} 
+		else if(args.length==1 && "view".equals(args[0])){
+			if("view".equals(args[0])){
+				for(Entry<Object,Object> entry:System.getProperties().entrySet()){
+					System.out.println(entry.getKey()+"="+entry.getValue());
+				}
+			}
+		}
+		else {
+			
 			String ip = args[0];
 			if (args.length >= 2) {
 				String userName = StringHelper.substringBefore(args[1], "/");

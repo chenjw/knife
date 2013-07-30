@@ -79,12 +79,19 @@ public class NativeHelper {
 			IOHelper.copy(is, os);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuntimeException("load " + libName + " error!", e);
 		} finally {
 			IOHelper.closeQuietly(is);
 			IOHelper.closeQuietly(os);
 		}
-		System.load(tmpFile.getAbsolutePath());
+		try{
+			System.load(tmpFile.getAbsolutePath());
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			throw new RuntimeException("load " + libName + " error!", e);
+		}
 	}
 
 	public static Class<?> findLoadedClass(String className) {
