@@ -12,8 +12,6 @@ import com.chenjw.knife.core.model.VMDescriptor;
 import com.chenjw.knife.utils.FileHelper;
 import com.chenjw.knife.utils.JarHelper;
 import com.chenjw.knife.utils.JvmHelper;
-import com.chenjw.knife.utils.LinuxHelper;
-import com.chenjw.knife.utils.PlatformHelper;
 import com.sun.tools.attach.VirtualMachine;
 import com.sun.tools.attach.VirtualMachineDescriptor;
 

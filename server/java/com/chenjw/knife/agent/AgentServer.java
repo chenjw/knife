@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import com.chenjw.knife.agent.core.ServiceRegistry;
+import com.chenjw.knife.agent.utils.NativeHelper;
 import com.chenjw.knife.core.PacketResolver;
 import com.chenjw.knife.core.packet.Packet;
 import com.chenjw.knife.core.packet.PacketHandler;
@@ -47,7 +48,6 @@ public class AgentServer implements Runnable {
 			agentInfo.setSocket(socket);
 			Agent.setAgentInfo(agentInfo);
 			Agent.info("connected!");
-
 			ServiceRegistry.init();
 			Packet command = null;
 			while (true) {

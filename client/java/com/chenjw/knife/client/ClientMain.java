@@ -22,7 +22,7 @@ public final class ClientMain {
 	public static void main(String args[]) throws Exception {
 		CommandService console = null;
 		// jline对windows的eclipse控制台支持不好
-		if (PlatformHelper.isWindows() && JarHelper.isDevMode()) {
+		if (PlatformHelper.isWindows() ){//&& JarHelper.isDevMode()) {
 			console = new SimpleCommandConsole();
 		} else {
 			console = new JlineCommandConsole();

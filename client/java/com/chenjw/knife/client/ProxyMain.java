@@ -10,7 +10,6 @@ import com.chenjw.knife.client.core.VMConnector;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
 import com.chenjw.knife.utils.JarHelper;
-import com.chenjw.knife.utils.LinuxHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public final class ProxyMain {

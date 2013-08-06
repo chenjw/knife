@@ -40,6 +40,9 @@ public final class ClassGenerator {
 
 	public static ClassGenerator newInstance(String className,
 			ClassPath... classPaths) {
+	    
+	   
+	    
 		ClassGenerator classGenerator = new ClassGenerator();
 		classGenerator.initPool(null);
 		classGenerator.initClassPaths(classPaths);
@@ -192,7 +195,7 @@ public final class ClassGenerator {
 	}
 
 	/**
-	 * 添加静态常量，默认是private statif final的
+	 * 添加静态常量，默认是private static final的
 	 * 
 	 * @param type
 	 * @param expr
@@ -220,9 +223,11 @@ public final class ClassGenerator {
 	 * @param expr
 	 * @return
 	 */
-	public Field addField(Class<?> type, Expression expr) {
-		String name = generateClassVariableName();
-		this.fields.add(makeFieldStr(name, "private", type, expr));
+	public Field addField(Class<?> type, String name,Expression expr,boolean isStatic) {
+	    if(name==null){
+	        name = generateClassVariableName();
+	    }
+		this.fields.add(makeFieldStr(name, "private"+(isStatic?" static":""), type, expr));
 		return new Field(name, type, false);
 	}
 
