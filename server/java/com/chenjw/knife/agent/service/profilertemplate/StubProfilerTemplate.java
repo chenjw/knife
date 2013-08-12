@@ -1,10 +1,9 @@
 package com.chenjw.knife.agent.service.profilertemplate;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import sun.awt.image.ImageWatched;
 import javassist.CtMethod;
+import sun.awt.image.ImageWatched;
 
 import com.chenjw.knife.agent.AgentClassLoader;
 import com.chenjw.knife.agent.Profiler;

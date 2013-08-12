@@ -39,7 +39,7 @@ public class InstrumentService implements Lifecycle {
 
     private final Set<String>     ENTER_TRACED_METHOD = new HashSet<String>();
 
-    private ProfilerTemplate      template            = new DefaultProfilerTemplate();
+    private ProfilerTemplate      template            = new StubProfilerTemplate();
 
     private void buildMethodAccess(Method method) throws Exception {
         
