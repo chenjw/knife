@@ -6,7 +6,7 @@ public class MethodStartEvent extends Event {
 	private String methodName;
 	private Object[] arguments;
 	private String fileName;
-	private int lineNum;
+	private String lineNum;
 
 	public Object getThisObject() {
 		return thisObject;
@@ -48,11 +48,11 @@ public class MethodStartEvent extends Event {
 		this.fileName = fileName;
 	}
 
-	public int getLineNum() {
+	public String getLineNum() {
 		return lineNum;
 	}
 
-	public void setLineNum(int lineNum) {
+	public void setLineNum(String lineNum) {
 		this.lineNum = lineNum;
 	}
 

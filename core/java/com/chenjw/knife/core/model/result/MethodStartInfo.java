@@ -10,7 +10,7 @@ public class MethodStartInfo implements Serializable {
 	private String methodName;
 	private ObjectInfo[] arguments;
 	private String fileName;
-	private int lineNum;
+	private String lineNum;
 	private int depth;
 
 	public String getThisObjectId() {
@@ -61,11 +61,11 @@ public class MethodStartInfo implements Serializable {
 		this.depth = depth;
 	}
 
-	public int getLineNum() {
+	public String getLineNum() {
 		return lineNum;
 	}
 
-	public void setLineNum(int lineNum) {
+	public void setLineNum(String lineNum) {
 		this.lineNum = lineNum;
 	}
 

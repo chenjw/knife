@@ -30,7 +30,7 @@ public class LinkAdapter extends Link {
                 args[5]);
         } else if (Profiler.METHOD_NAME_START.equals(name)) {
             Profiler.start(args[1], (String) args[2], (String) args[3], (Object[]) args[4],
-                (String) args[5], (Integer) args[6]);
+                (String) args[5], (String) args[6]);
         }
         return false;
     }

@@ -43,7 +43,6 @@ public final class CopyMethodGenerator implements MethodGenerator {
 				.setModifiers(newCtMethod.getModifiers() & ~Modifier.PRIVATE);
 		StringBuffer sb = new StringBuffer();
 		sb.append("{");
-		sb.append("System.out.println(11);");
 		for (String line : methodLines) {
 			sb.append(line);
 		}

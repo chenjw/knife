@@ -23,7 +23,7 @@ public class EnterLeavePrintFilter implements Filter {
 			newEvent.setMethodName(e.getMethodName());
 			newEvent.setArguments(e.getArguments());
 			newEvent.setFileName(null);
-			newEvent.setLineNum(-1);
+			newEvent.setLineNum("-1");
 			chain.doFilter(newEvent);
 		} else if (event instanceof MethodLeaveEvent) {
 			MethodLeaveEvent e = (MethodLeaveEvent) event;

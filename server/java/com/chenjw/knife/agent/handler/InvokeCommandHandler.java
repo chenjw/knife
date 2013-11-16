@@ -148,7 +148,7 @@ public class InvokeCommandHandler implements CommandHandler {
 		}
 		try {
 			Profiler.start(thisObject, clazz.getName(), method.getName(), args,
-					null, -1);
+					null, "-1");
 			if (isTrace) {
 				Profiler.profile(thisObject, method);
 			}

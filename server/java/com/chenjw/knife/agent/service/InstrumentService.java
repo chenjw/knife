@@ -39,7 +39,7 @@ public class InstrumentService implements Lifecycle {
 
     private final Set<String>     ENTER_TRACED_METHOD = new HashSet<String>();
 
-    private ProfilerTemplate      template            = new DefaultProfilerTemplate();
+    private ProfilerTemplate      template            = new StubProfilerTemplate();
 
     private void buildMethodAccess(Method method) throws Exception {
         
@@ -260,7 +260,7 @@ public class InstrumentService implements Lifecycle {
 
             String startCode = template.startCode(new String[] { "$0", wrrapString(className),
                     wrrapString(methodName), "$args", wrrapString(methodcall.getFileName()),
-                    String.valueOf(methodcall.getLineNumber()) });
+                   "\""+ String.valueOf(methodcall.getLineNumber())+"\"" });
 
             String returnEndCode = template.returnEndCode(new String[] { "$0",
                     wrrapString(className), wrrapString(methodName), "$args", resultExpr });

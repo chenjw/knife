@@ -161,7 +161,7 @@ public class Profiler {
 	}
 
 	public static void start(Object thisObject, String className,
-			String methodName, Object[] arguments, String fileName, int lineNum) {
+			String methodName, Object[] arguments, String fileName, String lineNum) {
 		if (Profiler.listener == null) {
 			return;
 		}

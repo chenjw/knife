@@ -2,6 +2,7 @@ package com.chenjw.knife.client.formater;
 
 import com.chenjw.knife.core.model.result.MethodStartInfo;
 import com.chenjw.knife.core.model.result.ObjectInfo;
+import com.chenjw.knife.utils.StringHelper;
 
 public class MethodStartFormater extends BasePrintFormater<MethodStartInfo> {
 
@@ -31,7 +32,7 @@ public class MethodStartFormater extends BasePrintFormater<MethodStartInfo> {
 			}
 		}
 		msg.append(")");
-		if (methodFrameInfo.getLineNum() == -1) {
+		if (StringHelper.equals(methodFrameInfo.getLineNum() , "-1")) {
 			msg.append(" <unknow>");
 		} else {
 			msg.append(" <" + methodFrameInfo.getFileName() + ":");

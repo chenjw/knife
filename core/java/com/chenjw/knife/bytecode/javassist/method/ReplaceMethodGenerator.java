@@ -32,11 +32,11 @@ public final class ReplaceMethodGenerator implements MethodGenerator {
     public void generate(CtClass ctClass) throws CannotCompileException {
         StringBuffer sb = new StringBuffer();
         sb.append("{");
-        sb.append("System.out.println(11);");
         for (String line : methodLines) {
             sb.append(line);
         }
         sb.append("}");
+       
         ctMethod.setBody(sb.toString());
     }
 

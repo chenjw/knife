@@ -47,10 +47,11 @@ public class StubProfilerTemplate implements ProfilerTemplate {
 
         methodGenerator.addExpression("if(\"" + MARK + "\".equals($1)){return true;}");
         methodGenerator
-            .addExpression("if(($1 instanceof DynamicStub)||($1 instanceof ObjectImpl)){return true;}");
+            .addExpression("if(($1 instanceof com.sun.corba.se.spi.presentation.rmi.DynamicStub)||($1 instanceof org.omg.CORBA.portable.ObjectImpl)){return true;}");
         methodGenerator
             .addExpression("if($1 instanceof Object[]){ sun.awt.image.ImageWatched.endlink.equals((Object[])$1) ;}");
         methodGenerator.addExpression("return false;");
+        classGenerator.addMethod(methodGenerator);
         byte[] classBytes = classGenerator.toBytecode();
         ServiceRegistry.getService(ByteCodeService.class).tryRedefineClass(CLASS, classBytes);
         ServiceRegistry.getService(ByteCodeService.class).commitAll();
@@ -93,7 +94,7 @@ public class StubProfilerTemplate implements ProfilerTemplate {
         StringBuffer sb = new StringBuffer();
         sb.append(CLASS_NAME + "." + METHOD_NAME);
         sb.append("(new Object[]{");
-        sb.append(methodName + ",");
+        sb.append("\""+methodName + "\",");
         sb.append(StringHelper.join(args, ","));
         sb.append("});");
         return sb.toString();
