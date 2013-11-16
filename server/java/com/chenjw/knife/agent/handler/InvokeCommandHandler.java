@@ -12,6 +12,7 @@ import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.core.ServiceRegistry;
+import com.chenjw.knife.agent.filter.StatPrintFilter;
 import com.chenjw.knife.agent.filter.Depth0Filter;
 import com.chenjw.knife.agent.filter.DepthFilter;
 import com.chenjw.knife.agent.filter.ExceptionFilter;
@@ -83,7 +84,14 @@ public class InvokeCommandHandler implements CommandHandler {
 		}
 		filters.add(new TimingFilter());
 		filters.add(new InvokeFinishFilter());
-		filters.add(new InvokePrintFilter());
+		Map<String, String> cOptions = args.option("-c");
+		if(cOptions!=null){
+		    filters.add(new StatPrintFilter());
+		}
+		else{
+		    filters.add(new InvokePrintFilter());
+		}
+		
 		Profiler.listener = new FilterInvocationListener(filters);
 	}
 
@@ -167,7 +175,7 @@ public class InvokeCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 
-		argDef.setDefinition("invoke [-f <filter-expression>] [-t] [-sb <stop-bean-ids>] <invoke-expression>");
+		argDef.setDefinition("invoke [-f <filter-expression>] [-t] [-c] [-sb <stop-bean-ids>] <invoke-expression>");
 
 	}
 

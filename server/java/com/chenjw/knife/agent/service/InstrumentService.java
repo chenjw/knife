@@ -39,7 +39,7 @@ public class InstrumentService implements Lifecycle {
 
     private final Set<String>     ENTER_TRACED_METHOD = new HashSet<String>();
 
-    private ProfilerTemplate      template            = new StubProfilerTemplate();
+    private ProfilerTemplate      template            = new DefaultProfilerTemplate();
 
     private void buildMethodAccess(Method method) throws Exception {
         
@@ -147,6 +147,7 @@ public class InstrumentService implements Lifecycle {
                         wrrapString(methodName), "$args", resultExpr });
                 ctMethod.insertBefore("{" + beforeCode + "}");
                 ctMethod.insertAfter("{" + afterCode + "}", true);
+            
             }
         } catch (CannotCompileException e) {
             e.printStackTrace();
@@ -276,7 +277,6 @@ public class InstrumentService implements Lifecycle {
             code.append(exceptionEndCode);
             code.append("throw $e;");
             code.append("}");
-
             methodcall.replace(code.toString());
         }
 
