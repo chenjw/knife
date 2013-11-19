@@ -18,7 +18,7 @@ public class DoCommandHandler implements CommandHandler {
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
 		ClassLoaderHelper.view();
-		do5(args, dispatcher);
+		do6(args, dispatcher);
 	}
 
 	private void do1(Args args, CommandDispatcher dispatcher) {
@@ -43,6 +43,18 @@ public class DoCommandHandler implements CommandHandler {
 				new CommandInfo("cd", "0"),
 				new CommandInfo("trace", "-t apply") });
 	}
+	
+	   private void do6(Args args, CommandDispatcher dispatcher) {
+
+	        // dispatcher.dispatch(new Command("invoke",
+	        // "-f com.chenjw.* apply({\"id\":1})"));
+	        // dispatcher.dispatch(new Command("invoke", "-t apply({\"id\":1})"));
+	        send(new CommandInfo[] {
+	                //
+	                new CommandInfo("find", "OfficialAccountManagerImpl"),
+	                new CommandInfo("cd", "0"),
+	                new CommandInfo("invoke", "-t queryUserFollowAccount(\"2088102011188231\",null,null,null,1,10)") });
+	    }
 
 	private void send(CommandInfo... infos) {
 		CommandListInfo list = new CommandListInfo();
