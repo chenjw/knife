@@ -184,6 +184,8 @@ public final class EnhanceMethodGenerator implements MethodGenerator {
 	public void addExpression(TypeEnum linetype, Expression expr) {
 		addLine(linetype, expr.getCode() + ';');
 	}
+	
+
 
 	public enum TypeEnum {
 		BEFORE, AFTER, CATCH, FINALLY

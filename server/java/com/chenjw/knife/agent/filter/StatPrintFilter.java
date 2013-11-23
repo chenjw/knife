@@ -1,7 +1,12 @@
 package com.chenjw.knife.agent.filter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.Profiler;
@@ -11,109 +16,63 @@ import com.chenjw.knife.agent.event.MethodExceptionEndEvent;
 import com.chenjw.knife.agent.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.event.MethodStartEvent;
 import com.chenjw.knife.agent.service.InvokeDepthService;
-import com.chenjw.knife.agent.service.ObjectHolderService;
-import com.chenjw.knife.agent.service.TimingService;
 import com.chenjw.knife.agent.utils.ResultHelper;
-import com.chenjw.knife.agent.utils.ToStringHelper;
-import com.chenjw.knife.core.model.result.MethodExceptionEndInfo;
-import com.chenjw.knife.core.model.result.MethodReturnEndInfo;
-import com.chenjw.knife.core.model.result.MethodStartInfo;
-import com.chenjw.knife.core.model.result.ObjectInfo;
+import com.chenjw.knife.core.model.result.MethodStatInfo;
+import com.chenjw.knife.core.model.result.MethodStatListInfo;
 
 /**
- * 统计方法调用
+ * 统计调用结果
  * 
  * @author chenjw
  *
  */
 public class StatPrintFilter implements Filter {
+    private Map<String, Long> times = new HashMap<String, Long>();
 
-	protected void onStart(MethodStartEvent event) {
-		MethodStartInfo info = new MethodStartInfo();
+    protected void onStart(MethodStartEvent event) {
+        String key = event.getClassName() + "." + event.getMethodName();
+        Long value = times.get(key);
+        if (value == null) {
+            value = 1L;
+        } else {
+            value++;
+        }
+        times.put(key, value);
+    }
 
-		Object thisObject = event.getThisObject();
+    protected void onEnd() {
+        // 表示结束了
+        if (ServiceRegistry.getService(InvokeDepthService.class).getDep() == 0) {
+            List<MethodStatInfo> infos = new ArrayList<MethodStatInfo>();
+            for (Entry<String, Long> entry : times.entrySet()) {
+                MethodStatInfo info = new MethodStatInfo();
+                info.setMethod(entry.getKey());
+                info.setCount(entry.getValue());
+                infos.add(info);
+            }
+            Collections.sort(infos, new Comparator<MethodStatInfo>() {
 
-		if (thisObject != null) {
-			info.setThisObjectId(ServiceRegistry.getService(
-					ObjectHolderService.class).toId(thisObject));
-			info.setClassName(thisObject.getClass().getName());
-		} else {
-			info.setClassName(event.getClassName());
-		}
-		info.setMethodName(event.getMethodName());
+                @Override
+                public int compare(MethodStatInfo o1, MethodStatInfo o2) {
+                    return (int) (o1.getCount() - o2.getCount());
+                }
+            });
+            MethodStatListInfo listInfo = new MethodStatListInfo();
+            listInfo.setMethodStatInfos(infos.toArray(new MethodStatInfo[infos.size()]));
+            Agent.sendResult(ResultHelper.newResult(listInfo));
+        }
+    }
 
-		List<ObjectInfo> argInfos = new ArrayList<ObjectInfo>();
-		for (Object arg : event.getArguments()) {
-			if (arg == null) {
-				argInfos.add(null);
-			} else {
-				ObjectInfo argInfo = new ObjectInfo();
-				argInfo.setObjectId(ServiceRegistry.getService(
-						ObjectHolderService.class).toId(arg));
-				argInfo.setValueString(ToStringHelper.toString(arg));
-				argInfos.add(argInfo);
-			}
-		}
-		info.setArguments(argInfos.toArray(new ObjectInfo[argInfos.size()]));
-		info.setLineNum(event.getLineNum());
-		info.setFileName(event.getFileName());
-		info.setDepth(ServiceRegistry.getService(InvokeDepthService.class)
-				.getDep());
-		Agent.sendPart(ResultHelper.newFragment(info));
-
-	}
-
-	protected void onReturnEnd(MethodReturnEndEvent event) {
-		MethodReturnEndInfo info = new MethodReturnEndInfo();
-		Object r = event.getResult();
-		if (r == Profiler.VOID) {
-			info.setVoid(true);
-
-		} else {
-			info.setVoid(false);
-			if (r != null) {
-				ObjectInfo rInfo = new ObjectInfo();
-				rInfo.setObjectId(ServiceRegistry.getService(
-						ObjectHolderService.class).toId(r));
-				rInfo.setValueString(ToStringHelper.toString(r));
-				info.setResult(rInfo);
-			}
-		}
-		int dep = ServiceRegistry.getService(InvokeDepthService.class).getDep();
-		info.setDepth(dep);
-		info.setTime(ServiceRegistry.getService(TimingService.class)
-				.getMillisInterval(String.valueOf(dep)));
-		Agent.sendPart(ResultHelper.newFragment(info));
-	}
-
-	protected void onExceptionEnd(MethodExceptionEndEvent event) {
-
-		MethodExceptionEndInfo info = new MethodExceptionEndInfo();
-		Throwable e = event.getE();
-		ObjectInfo rInfo = new ObjectInfo();
-		rInfo.setObjectId(ServiceRegistry.getService(ObjectHolderService.class)
-				.toId(e));
-		rInfo.setValueString(ToStringHelper.toString(e));
-		info.setE(rInfo);
-
-		int dep = ServiceRegistry.getService(InvokeDepthService.class).getDep();
-		info.setDepth(dep);
-		info.setTime(ServiceRegistry.getService(TimingService.class)
-				.getMillisInterval(String.valueOf(dep)));
-		Agent.sendPart(ResultHelper.newFragment(info));
-
-	}
-
-	@Override
-	public void doFilter(Event event, FilterChain chain) throws Exception {
-		if (event instanceof MethodStartEvent) {
-			onStart((MethodStartEvent) event);
-		} else if (event instanceof MethodReturnEndEvent) {
-			onReturnEnd((MethodReturnEndEvent) event);
-		} else if (event instanceof MethodExceptionEndEvent) {
-			onExceptionEnd((MethodExceptionEndEvent) event);
-		}
-		chain.doFilter(event);
-	}
+    @Override
+    public void doFilter(Event event, FilterChain chain) throws Exception {
+        if (event instanceof MethodStartEvent) {
+            onStart((MethodStartEvent) event);
+        } else if (event instanceof MethodReturnEndEvent) {
+            onEnd();
+        } else if (event instanceof MethodExceptionEndEvent) {
+            onEnd();
+        }
+        chain.doFilter(event);
+    }
 
 }

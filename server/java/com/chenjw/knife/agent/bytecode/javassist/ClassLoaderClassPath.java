@@ -31,7 +31,9 @@ public class ClassLoaderClassPath implements ClassPath {
 	}
 
 	public InputStream openClassfile(String classname) {
-
+	    if(classLoader==null){
+	        return null;
+	    }
 		Class<?> clazz;
 		try {
 

@@ -12,7 +12,6 @@ import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
 import com.chenjw.knife.agent.core.CommandHandler;
 import com.chenjw.knife.agent.core.ServiceRegistry;
-import com.chenjw.knife.agent.filter.StatPrintFilter;
 import com.chenjw.knife.agent.filter.Depth0Filter;
 import com.chenjw.knife.agent.filter.DepthFilter;
 import com.chenjw.knife.agent.filter.ExceptionFilter;
@@ -25,6 +24,7 @@ import com.chenjw.knife.agent.filter.InvokeFinishFilter;
 import com.chenjw.knife.agent.filter.InvokePrintFilter;
 import com.chenjw.knife.agent.filter.PatternMethodFilter;
 import com.chenjw.knife.agent.filter.ProxyMethodFilter;
+import com.chenjw.knife.agent.filter.StatPrintFilter;
 import com.chenjw.knife.agent.filter.StopObjectsFilter;
 import com.chenjw.knife.agent.filter.SystemOperationFilter;
 import com.chenjw.knife.agent.filter.TimingFilter;
@@ -54,44 +54,42 @@ public class InvokeCommandHandler implements CommandHandler {
 	}
 
 	private void configStrategy(Args args) throws Exception {
+	    Map<String, String> cOptions = args.option("-c");
+	    Map<String, String> sbOptions = args.option("-sb");
+	    Map<String, String> tOptions = args.option("-t");
+	    Map<String, String> fOptions = args.option("-f");
 		List<Filter> filters = new ArrayList<Filter>();
 		filters.add(new SystemOperationFilter());
 		filters.add(new FixThreadFilter(Thread.currentThread()));
 		filters.add(new ExceptionFilter());
 		filters.add(new TimingStopFilter());
-
-		Map<String, String> sbOptions = args.option("-sb");
 		if (sbOptions != null) {
 			// clear instrument
 			ServiceRegistry.getService(ByteCodeService.class).clear();
 			filters.add(new StopObjectsFilter(getSpringBeansByIds(sbOptions
 					.get("stop-bean-ids"))));
 		}
-		Map<String, String> tOptions = args.option("-t");
-		if (tOptions != null) {
+		if (tOptions != null || cOptions!=null) {
 			filters.add(new InstrumentClassLoaderFilter());
 			filters.add(new InstrumentFilter());
 		}
-		Map<String, String> fOptions = args.option("-f");
 		if (fOptions != null) {
 			filters.add(new PatternMethodFilter(fOptions
 					.get("filter-expression")));
 		}
 		filters.add(new ProxyMethodFilter());
 		filters.add(new DepthFilter());
-		if (tOptions == null) {
+		if (tOptions == null && cOptions==null) {
 			filters.add(new Depth0Filter());
 		}
 		filters.add(new TimingFilter());
 		filters.add(new InvokeFinishFilter());
-		Map<String, String> cOptions = args.option("-c");
 		if(cOptions!=null){
 		    filters.add(new StatPrintFilter());
 		}
 		else{
 		    filters.add(new InvokePrintFilter());
 		}
-		
 		Profiler.listener = new FilterInvocationListener(filters);
 	}
 
@@ -158,7 +156,6 @@ public class InvokeCommandHandler implements CommandHandler {
 			} else {
 				r = ReflectHelper.invokeMethod(thisObject, method, args);
 			}
-
 			if (r.isSuccess()) {
 				Profiler.returnEnd(thisObject, clazz.getName(),
 						method.getName(), args, r.getResult());

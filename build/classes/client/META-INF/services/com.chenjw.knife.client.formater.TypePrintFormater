@@ -16,3 +16,4 @@ com.chenjw.knife.client.formater.StringFormater
 com.chenjw.knife.client.formater.CommandFormater
 com.chenjw.knife.client.formater.CommandListFormater
 com.chenjw.knife.client.formater.CommandNameListFormater
+com.chenjw.knife.client.formater.MethodStatListFormater

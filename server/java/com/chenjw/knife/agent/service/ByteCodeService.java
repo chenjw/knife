@@ -38,7 +38,7 @@ public class ByteCodeService implements Lifecycle {
 			byte[] bytes = NativeHelper.getClassBytes(clazz);
 			backupMap.put(clazz, bytes);
 			definedMap.put(clazz, bytes);
-			saveOrignFile(clazz, bytes);
+			//saveOrignFile(clazz, bytes);
 			Agent.debug("[ByteCodeManager] backup " + clazz + "("
 					+ bytes.length + ")");
 		}
@@ -90,7 +90,7 @@ public class ByteCodeService implements Lifecycle {
 		if (defineingBytes != null) {
 			byte[] bb = backupMap.get(clazz);
 
-			saveNewFile(clazz, defineingBytes);
+			//saveNewFile(clazz, defineingBytes);
 			NativeHelper.redefineClass(clazz, defineingBytes);
 			definedMap.put(clazz, defineingBytes);
 			defineingMap.remove(clazz);
@@ -118,7 +118,6 @@ public class ByteCodeService implements Lifecycle {
 		String path = "/tmp/knife/new/"
 				+ StringHelper.replaceChars(clazz.getName(), ".",
 						File.separator) + ".class";
-		clazz.getName().replaceAll(".", File.separator);
 		try {
 			FileHelper.writeByteArrayToFile(new File(path), byteCode);
 		} catch (IOException e) {

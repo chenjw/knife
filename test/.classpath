@@ -3,15 +3,15 @@
 	<classpathentry kind="src" path="java"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/asm-all-4.1.jar"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/aspectjrt.jar"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/aspectjweaver.jar"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/cglib-nodep-2.1_3.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17-sources.zip"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17.jar"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/sourceforge.spring-2.5.6-sources.zip"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/sourceforge.spring-2.5.6.jar"/>
-	<classpathentry kind="lib" path="/knife.lib/lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/java.j2ee-1.4.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/knife.agent"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/knife.core"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/knife.server"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

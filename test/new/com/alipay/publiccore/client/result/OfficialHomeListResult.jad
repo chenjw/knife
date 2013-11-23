@@ -1,0 +1,114 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   OfficialHomeListResult.java
+
+package com.alipay.publiccore.client.result;
+
+import com.alipay.publiccore.common.service.facade.model.result.PagingResult;
+import com.sun.corba.se.spi.presentation.rmi.StubAdapter;
+import com.vladium.emma.rt.RT;
+import java.util.ArrayList;
+import java.util.List;
+import javassist.runtime.Desc;
+
+public class OfficialHomeListResult extends PagingResult
+{
+
+    public OfficialHomeListResult()
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[0];
+        super();
+        followAccounts = new ArrayList();
+        aflag[0] = true;
+    }
+
+    public List getFollowAccounts()
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[1];
+        aflag[0] = true;
+        return followAccounts;
+    }
+
+    public void setFollowAccounts(List list)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[2];
+        followAccounts = list;
+        aflag[0] = true;
+    }
+
+    public String getUserId()
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[3];
+        aflag[0] = true;
+        return userId;
+    }
+
+    public void setUserId(String s)
+    {
+        $VRc;
+        if($VRc != null) goto _L2; else goto _L1
+_L1:
+        JVM INSTR pop ;
+        boolean aflag1[][];
+        Object obj = null;
+        aflag1 = null;
+        try
+        {
+            StubAdapter.isStub(((Object) (new Object[] {
+                "start", obj, "com.alipay.publiccore.client.result.OfficialHomeListResult", "$VRi", new Object[0], "OfficialHomeListResult.java", "68"
+            })));
+            StubAdapter.isStub(((Object) (new Object[] {
+                "profileStaticMethod", Desc.getClazz("com.alipay.publiccore.client.result.OfficialHomeListResult"), "com.alipay.publiccore.client.result.OfficialHomeListResult", "$VRi"
+            })));
+            aflag1 = $VRi();
+            StubAdapter.isStub(((Object) (new Object[] {
+                "returnEnd", obj, "com.alipay.publiccore.client.result.OfficialHomeListResult", "$VRi", new Object[0], aflag1
+            })));
+        }
+        catch(Throwable throwable)
+        {
+            StubAdapter.isStub(((Object) (new Object[] {
+                "exceptionEnd", obj, "com.alipay.publiccore.client.result.OfficialHomeListResult", "$VRi", new Object[0], throwable
+            })));
+            throw throwable;
+        }
+        aflag1;
+_L2:
+        4;
+        JVM INSTR aaload ;
+        boolean aflag[];
+        aflag;
+        userId = s;
+        aflag[0] = true;
+        return;
+    }
+
+    private static boolean[][] $VRi()
+    {
+        boolean aflag[][] = $VRc = new boolean[6][];
+        aflag[0] = new boolean[1];
+        aflag[1] = new boolean[1];
+        aflag[2] = new boolean[1];
+        aflag[3] = new boolean[1];
+        aflag[4] = new boolean[1];
+        aflag[5] = new boolean[1];
+        RT.r(aflag, "com/alipay/publiccore/client/result/OfficialHomeListResult", 0x12b1287205596339L, new long[] {
+            33338L, 33327L, 33328L, 33327L, 33328L
+        }, new String[] {
+            "<init>()V", "getFollowAccounts()Ljava/util/List;", "setFollowAccounts(Ljava/util/List;)V", "getUserId()Ljava/lang/String;", "setUserId(Ljava/lang/String;)V"
+        });
+        return aflag;
+    }
+
+    private static final long serialVersionUID = 0x6a1639dcb6cedc93L;
+    private List followAccounts;
+    private String userId;
+    private static final boolean $VRc[][];
+
+    static 
+    {
+        boolean aflag[] = $VRi()[5];
+        aflag[0] = true;
+    }
+}

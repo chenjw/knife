@@ -2,8 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="java"/>
 	<classpathentry kind="src" path="resources"/>
-	<classpathentry kind="lib" path="/knife.lib/lib/misc.javassist-3.9.0.GA-sources.zip"/>
-	<classpathentry kind="lib" path="/knife.lib/lib/misc.javassist-3.9.0.GA.jar" sourcepath="/knife.lib/lib/misc.javassist-3.9.0.GA-sources.zip"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17-sources.zip"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/fastjson-1.1.17.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
@@ -12,5 +10,7 @@
 	<classpathentry kind="lib" path="/knife.lib/lib/hessian-4.0.7.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/knife.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/knife.agent"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/misc.javassist-3.9.0.GA-sources.zip"/>
+	<classpathentry kind="lib" path="/knife.lib/lib/misc.javassist-3.9.0.GA.jar" sourcepath="/knife.lib/lib/misc.javassist-3.9.0.GA-sources.zip"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

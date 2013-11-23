@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.chenjw.knife.utils.ClassHelper;
-
 import javassist.CannotCompileException;
 import javassist.ClassPath;
 import javassist.ClassPool;
@@ -19,6 +17,8 @@ import javassist.CtField;
 import javassist.CtNewConstructor;
 import javassist.Modifier;
 import javassist.NotFoundException;
+
+import com.chenjw.knife.utils.ClassHelper;
 
 /**
  * 只实现了基本功能，定制父类，构造函数等功能未实现。

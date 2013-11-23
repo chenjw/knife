@@ -1,0 +1,1549 @@
+// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
+// Jad home page: http://www.kpdus.com/jad.html
+// Decompiler options: packimports(3) 
+// Source File Name:   OfficialAccountManagerImpl.java
+
+package com.alipay.publiccore.biz.relation.impl;
+
+import com.alibaba.common.lang.StringUtil;
+import com.alibaba.common.logging.Logger;
+import com.alibaba.common.logging.LoggerFactory;
+import com.alipay.cif.model.core.emuns.EnableStatusEnum;
+import com.alipay.cif.user.model.UserInfo;
+import com.alipay.common.event.UniformEvent;
+import com.alipay.common.event.UniformEventPublisher;
+import com.alipay.mobileevent.common.service.facade.event.MobileBehaviorEvent;
+import com.alipay.mobilegw.adapterservice.model.CacheSession;
+import com.alipay.mobilegw.adapterservice.model.ClientInfo;
+import com.alipay.mobilegw.mobileservice.invoke.MobileRpcHolder;
+import com.alipay.opencore.service.facade.domain.*;
+import com.alipay.opencore.service.facade.domain.enums.*;
+import com.alipay.opencore.service.facade.result.*;
+import com.alipay.opencore.service.facade.util.AppUtil;
+import com.alipay.publiccore.biz.account.thirdparty.ThirdPartyAccountManager;
+import com.alipay.publiccore.biz.relation.OfficialAccountManager;
+import com.alipay.publiccore.biz.relation.msg.MessageInfoManager;
+import com.alipay.publiccore.biz.relation.msg.WelcomeMessageSendManager;
+import com.alipay.publiccore.biz.relation.msg.model.FollowSceneEnum;
+import com.alipay.publiccore.biz.relation.msg.model.MsgTypeEnum;
+import com.alipay.publiccore.biz.relation.msg.query.MessageCountQuery;
+import com.alipay.publiccore.biz.relation.msg.result.*;
+import com.alipay.publiccore.biz.relation.sla.SlaLimitService;
+import com.alipay.publiccore.biz.shared.request.organization.RequestOrganizationFacade;
+import com.alipay.publiccore.client.model.*;
+import com.alipay.publiccore.client.req.OfficialAccountSetReq;
+import com.alipay.publiccore.client.result.*;
+import com.alipay.publiccore.common.service.facade.model.enums.PublicResultEnum;
+import com.alipay.publiccore.common.service.facade.model.result.PublicResult;
+import com.alipay.publiccore.common.service.integration.cif.UserInfoQueryClient;
+import com.alipay.publiccore.common.service.integration.mdap.LogFacadeClient;
+import com.alipay.publiccore.common.service.integration.mobileprod.ImgUrlServiceClient;
+import com.alipay.publiccore.common.service.integration.opencore.OfficialAccountClient;
+import com.alipay.publiccore.common.util.*;
+import com.alipay.publiccore.core.model.assertion.Argument;
+import com.alipay.publiccore.core.model.util.ResultUtils;
+import com.alipay.publiccore.core.service.systemparam.SystemParamService;
+import com.alipay.publiccore.core.service.thirdparty.ThirdPartyAccountService;
+import com.alipay.publiccore.core.service.utils.SessionUtils;
+import com.alipay.sla.disaster.exception.DisasterOuterException;
+import com.vladium.emma.rt.RT;
+import java.util.*;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+public class OfficialAccountManagerImpl
+    implements OfficialAccountManager
+{
+
+    public OfficialAccountManagerImpl()
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[0];
+        super();
+        aflag[0] = true;
+    }
+
+    public PublicResult addFollow(UserInfo userinfo, String s, String s1, FollowSceneEnum followsceneenum)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[1];
+        aflag[0] = true;
+        return addFollowByUID(userinfo.getUserId(), s, s1, followsceneenum);
+    }
+
+    public PublicResult addFollowByUID(String s, String s1, String s2, FollowSceneEnum followsceneenum)
+    {
+        PublicResult publicresult;
+        boolean aflag[];
+        aflag = ($VRc != null ? $VRc : $VRi())[2];
+        Assert.notNull(s1, "\u88AB\u5173\u6CE8\u5BF9\u8C61\u7684id\u4E0D\u80FD\u4E3A\u7A7A!!!");
+        Assert.notNull(s2, "\u88AB\u5173\u6CE8\u5BF9\u8C61\u7C7B\u578B\u4E0D\u80FD\u4E3A\u7A7A!!!(\u516C\u4F17\u53F7|\u652F\u4ED8\u5B9D\u8D26\u53F7)");
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("userId=").append(s).append(" ,\u5173\u6CE8\u7C7B\u578B\u4E3A").append(s2).append(",id\u4E3A").append(s1).toString());
+        publicresult = new PublicResult();
+        FollowResult followresult = null;
+        AppInfo appinfo;
+        UniformEvent uniformevent;
+        try
+        {
+            followresult = officialAccountClient.addFollow(s, s1, s2);
+            aflag[0] = true;
+            if(StringUtil.equals("PUBLIC_ACCOUNT_INVALID", followresult.getResultCode()))
+            {
+                publicresult.setResultCode(PublicResultEnum.NOT_VALIDATED.getResultCode());
+                publicresult.setResultMsg(PublicResultEnum.NOT_VALIDATED.getResultMsg());
+                LoggerUtil.info(LOGGER, String.format("\u516C\u4F17\u53F7%s\u5DF2\u4E0B\u67B6 ", new Object[] {
+                    s1
+                }));
+                aflag[1] = true;
+                return publicresult;
+            }
+        }
+        catch(Exception exception)
+        {
+            followMdapLog(s, s1, false, followsceneenum.getCode(), "\u6DFB\u52A0\u5173\u6CE8\u5F02\u5E38");
+            LoggerUtil.error(LOGGER, (new StringBuilder()).append("userId=").append(s).append(" \u6DFB\u52A0\u5173\u6CE8\u7C7B\u578B\u4E3A").append(s2).append(",id\u4E3A").append(s1).append("\u5F02\u5E38").toString(), exception);
+            publicresult.setResultCode(PublicResultEnum.FAILURE_CODE.getResultCode());
+            publicresult.setResultMsg("\u6DFB\u52A0\u5173\u6CE8\u53D1\u751F\u5F02\u5E38");
+            aflag[12] = true;
+            return publicresult;
+        }
+        appinfo = officialAccountClient.getOfficialAccountById(s1);
+        aflag[2] = true;
+        if(StringUtil.equals(FollowTypeEnum.PUBLIC.getType(), s2))
+        {
+            aflag[3] = true;
+            if(null != appinfo)
+            {
+                aflag[4] = true;
+                if(StringUtil.equalsIgnoreCase(PublicAccountType.USER_APPLY.getCode(), appinfo.getPublicInfo().getAccountType().getCode()))
+                {
+                    uniformevent = buildUniformEvent(s, s1, followsceneenum, appinfo);
+                    sendMessageTaskExecutor.execute(new  Object(s1, s, uniformevent)     /* anonymous class not found */
+    class _anm1 {}
+
+);
+                    aflag[5] = true;
+                }
+            }
+            aflag[6] = true;
+            if(followresult.isSuccess())
+            {
+                welcomeMessageSendManager.sendWelcomeMessage(s1, s, followsceneenum);
+                aflag[7] = true;
+            }
+        }
+        aflag[8] = true;
+        if(followresult.isSuccess())
+        {
+            followMdapLog(s, s1, true, followsceneenum.getCode(), "");
+            publicresult.setResultCode(PublicResultEnum.SUCCESS_CODE.getResultCode());
+            publicresult.setResultMsg("\u6DFB\u52A0\u5173\u6CE8\u6210\u529F");
+            aflag[9] = true;
+        } else
+        {
+            followMdapLog(s, s1, false, followsceneenum.getCode(), "\u6DFB\u52A0\u5173\u6CE8\u5931\u8D25");
+            publicresult.setResultCode(PublicResultEnum.FAILURE_CODE.getResultCode());
+            publicresult.setResultMsg("\u6DFB\u52A0\u5173\u6CE8\u5931\u8D25");
+            aflag[10] = true;
+        }
+        aflag[11] = true;
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u6DFB\u52A0\u5173\u6CE8\u7ED3\u679C\uFF1A<<<result=").append(publicresult).append(">>>").toString());
+        aflag[13] = true;
+        return publicresult;
+    }
+
+    private UniformEvent buildUniformEvent(String s, String s1, FollowSceneEnum followsceneenum, AppInfo appinfo)
+    {
+        UniformEvent uniformevent;
+        MobileBehaviorEvent mobilebehaviorevent;
+        boolean aflag[];
+label0:
+        {
+            aflag = ($VRc != null ? $VRc : $VRi())[3];
+            CacheSession cachesession = MobileRpcHolder.getSession();
+            uniformevent = mobileEventPublisher.constructUniformEvent("EC-mobile-behavior", "TP_S_MOBILE");
+            mobilebehaviorevent = new MobileBehaviorEvent();
+            mobilebehaviorevent.setAlipayProductId("ALIPAYAPP");
+            mobilebehaviorevent.setBehaviorId("follow");
+            mobilebehaviorevent.setBehaviorDate(new Date());
+            mobilebehaviorevent.setBehaviorObject("public");
+            mobilebehaviorevent.setObjectId(s1);
+            mobilebehaviorevent.setObjectType(followsceneenum.getCode());
+            mobilebehaviorevent.setBuyerUserId(s);
+            mobilebehaviorevent.setSellerUserId(appinfo.getDevId());
+            mobilebehaviorevent.setObjectName(appinfo.getAppName());
+            mobilebehaviorevent.setPartnerId(AppUtil.getPID(appinfo));
+            aflag[0] = true;
+            if(null != cachesession)
+            {
+                aflag[1] = true;
+                if(null != cachesession.getClientInfo())
+                {
+                    mobilebehaviorevent.setTermId(cachesession.getClientInfo().getDid());
+                    mobilebehaviorevent.setAlipayProductVersion(cachesession.getClientInfo().getProductVersion());
+                    mobilebehaviorevent.setTermChannel(cachesession.getClientInfo().getChannel());
+                    aflag[2] = true;
+                    break label0;
+                }
+            }
+            LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u5BA2\u6237\u7AEFsession\u4FE1\u606F\u83B7\u53D6\u5931\u8D25\uFF1ACacheSession=").append(cachesession).toString());
+            aflag[3] = true;
+        }
+        mobilebehaviorevent.setTermOstype(SessionUtils.getSystemType());
+        mobilebehaviorevent.setBehaviorSubId(followsceneenum.getCode());
+        uniformevent.setEventPayload(mobilebehaviorevent);
+        uniformevent.setTransactional(false);
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u5F00\u59CB\u53D1\u9001\u8425\u9500\u4E8B\u4EF6\uFF1AuEvent=").append(uniformevent.getId()).append(";mobileEventContext=").append(ToStringBuilder.reflectionToString(mobilebehaviorevent, ToStringStyle.SHORT_PREFIX_STYLE)).append(",userId=").append(s).toString());
+        aflag[4] = true;
+        return uniformevent;
+    }
+
+    public UserAccountResult getUserAccount(String s, String s1)
+    {
+        UserAccountResult useraccountresult;
+        UserInfo userinfo;
+        boolean aflag[];
+        aflag = ($VRc != null ? $VRc : $VRi())[4];
+        Assert.notNull(s1, "\u652F\u4ED8\u5B9D\u8D26\u6237\u540D\u4E0D\u80FD\u4E3A\u7A7A!!!");
+        useraccountresult = new UserAccountResult();
+        userinfo = userInfoQueryClient.queryUserInfoByLogonId(s1);
+        userinfo;
+        aflag[0] = true;
+        JVM INSTR ifnonnull 97;
+           goto _L1 _L2
+_L1:
+        break MISSING_BLOCK_LABEL_51;
+_L2:
+        break MISSING_BLOCK_LABEL_97;
+        useraccountresult.setResultMsg("\u627E\u4E0D\u5230\u7528\u6237\u4FE1\u606F");
+        useraccountresult.setResultCode(PublicResultEnum.NOT_FOUND.getResultCode());
+        LoggerUtil.info(LOGGER, String.format("\u7528\u6237userid=%s\u67E5\u627E\u652F\u4ED8\u5B9D\u8D26\u6237%s\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684\u7528\u6237\u4FE1\u606F,\u539F\u56E0:\u627E\u4E0D\u5230\u7528\u6237|\u67E5\u8BE2\u81EA\u5DF1|\u51BB\u7ED3\u7528\u6237", new Object[] {
+            s, s1
+        }));
+        aflag[1] = true;
+        return useraccountresult;
+        AppInfo appinfo;
+        String s2 = userinfo.getUserId();
+        appinfo = officialAccountClient.getAppInfoByUserId(s2);
+        String s3 = "";
+        appinfo;
+        aflag[2] = true;
+        JVM INSTR ifnull 292;
+           goto _L3 _L4
+_L3:
+        break MISSING_BLOCK_LABEL_131;
+_L4:
+        break MISSING_BLOCK_LABEL_292;
+        aflag[3] = true;
+        if(!StringUtil.equals(AppStatus.ON_LINE.getCode(), appinfo.getStatus().getCode()))
+            break MISSING_BLOCK_LABEL_292;
+        useraccountresult.setUserId(appinfo.getAppId());
+        useraccountresult.setLoginId(HideUtils.hideLoginId(s1));
+        useraccountresult.setRealName(appinfo.getAppName());
+        useraccountresult.setAvatar(appinfo.getLogoUrl());
+        useraccountresult.setDesc(appinfo.getAppDesc());
+        useraccountresult.setFollowType(FollowTypeEnum.PUBLIC.getType());
+        appinfo.getPublicInfo();
+        aflag[4] = true;
+        JVM INSTR ifnull 260;
+           goto _L5 _L6
+_L5:
+        break MISSING_BLOCK_LABEL_223;
+_L6:
+        break MISSING_BLOCK_LABEL_260;
+        appinfo.getPublicInfo().getAccountType();
+        aflag[5] = true;
+        JVM INSTR ifnull 260;
+           goto _L7 _L8
+_L7:
+        break MISSING_BLOCK_LABEL_239;
+_L8:
+        break MISSING_BLOCK_LABEL_260;
+        useraccountresult.setPublicType(appinfo.getPublicInfo().getAccountType().getCode());
+        aflag[6] = true;
+        String s4;
+        s4 = appinfo.getAppId();
+        useraccountresult.setResultCode(PublicResultEnum.SUCCESS_CODE.getResultCode());
+        useraccountresult.setResultMsg("\u67E5\u8BE2\u6210\u529F");
+        aflag[7] = true;
+        break MISSING_BLOCK_LABEL_365;
+        useraccountresult.setUserId(userinfo.getUserId());
+        useraccountresult.setLoginId(HideUtils.hideLoginId(s1));
+        useraccountresult.setRealName(HideUtils.hideRealName(userinfo.getUserName()));
+        useraccountresult.setAvatar(getProfile(userinfo.getUserId()));
+        useraccountresult.setFollowType(FollowTypeEnum.PERSONAL.getType());
+        s4 = userinfo.getUserId();
+        checkUserStatus(userinfo, useraccountresult, s);
+        aflag[8] = true;
+        FollowResult followresult = officialAccountClient.checkFollowed(s, s4, useraccountresult.getFollowType());
+        aflag[9] = true;
+        if(followresult.isSuccess())
+        {
+            useraccountresult.setIsFollow("1");
+            aflag[10] = true;
+        } else
+        {
+            useraccountresult.setIsFollow("0");
+            aflag[11] = true;
+        }
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u67E5\u8BE2\u652F\u4ED8\u5B9D\u8D26\u53F7\u7ED3\u679C\uFF1A<<<result=").append(useraccountresult).append(">>>").toString());
+        aflag[12] = true;
+        return useraccountresult;
+    }
+
+    public OfficialAccountListResult queryMoreOfficialAccount(String s, boolean flag, int i, int j)
+    {
+        OfficialAccountListResult officialaccountlistresult;
+        ArrayList arraylist;
+        AppManageResult appmanageresult;
+        FollowedTargetQueryResult followedtargetqueryresult;
+        boolean aflag[];
+label0:
+        {
+            aflag = ($VRc != null ? $VRc : $VRi())[5];
+            officialaccountlistresult = new OfficialAccountListResult();
+            officialaccountlistresult.setPageNum(i);
+            officialaccountlistresult.setPageSize(j);
+            arraylist = new ArrayList();
+            appmanageresult = officialAccountClient.queryMoreOfficialAccount(s, OfficialAccountTypeEnum.MORE.getType(), flag, i, j);
+            followedtargetqueryresult = officialAccountClient.queryFollowedTarget(s, 1, 50);
+            aflag[0] = true;
+            if(appmanageresult.isSuccess())
+            {
+                aflag[1] = true;
+                if(followedtargetqueryresult.isSuccess())
+                    break label0;
+            }
+            officialaccountlistresult.setResultCode(PublicResultEnum.FAILURE_CODE.getResultCode());
+            officialaccountlistresult.setResultMsg("\u67E5\u8BE2\u516C\u4F17\u8D26\u53F7\u5931\u8D25");
+            LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u7528\u6237userID=").append(s).append("\u8FDB\u884C\u5176\u4ED6\u66F4\u591A\u516C\u4F17\u53F7\u641C\u7D22\u5931\u8D25...").append("\u641C\u7D22\u516C\u4F17\u53F7:").append(appmanageresult.isSuccess()).append("\u641C\u7D22\u5173\u6CE8\u5173\u7CFB:").append(followedtargetqueryresult.isSuccess()).toString());
+            aflag[2] = true;
+            return officialaccountlistresult;
+        }
+label1:
+        {
+            Iterator iterator = appmanageresult.getAppInfoList().iterator();
+            aflag[3] = true;
+            do
+            {
+                aflag[4] = true;
+                if(!iterator.hasNext())
+                    break label1;
+                AppInfo appinfo = (AppInfo)iterator.next();
+                OfficialAccountInfo officialaccountinfo = convertToOfficial(appinfo);
+                arraylist.add(officialaccountinfo);
+                aflag[5] = true;
+            } while(true);
+        }
+label2:
+        {
+            List list = getFollowIds(followedtargetqueryresult.getFollowInfoList());
+            Iterator iterator1 = arraylist.iterator();
+            aflag[6] = true;
+            do
+            {
+                aflag[7] = true;
+                if(!iterator1.hasNext())
+                    break label2;
+                OfficialAccountInfo officialaccountinfo1 = (OfficialAccountInfo)iterator1.next();
+                aflag[8] = true;
+                if(list.contains(officialaccountinfo1.getPublicId()))
+                {
+                    officialaccountinfo1.setIsFollow("1");
+                    aflag[9] = true;
+                } else
+                {
+                    officialaccountinfo1.setIsFollow("0");
+                    aflag[10] = true;
+                }
+                aflag[11] = true;
+            } while(true);
+        }
+        officialaccountlistresult.setOfficialAccounts(arraylist);
+        officialaccountlistresult.setPageNum(i);
+        officialaccountlistresult.setPageSize(j);
+        officialaccountlistresult.setRowCount(appmanageresult.getQueryTotalItem());
+        officialaccountlistresult.setResultCode(PublicResultEnum.SUCCESS_CODE.getResultCode());
+        officialaccountlistresult.setResultMsg("\u67E5\u8BE2\u516C\u4F17\u8D26\u53F7\u6210\u529F");
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u66F4\u591A\u67E5\u8BE2\u7ED3\u679C\uFF1A<<<result=").append(officialaccountlistresult).append(">>>").toString());
+        aflag[12] = true;
+        return officialaccountlistresult;
+    }
+
+    public OfficialAccountListResult queryOfficialAccount(String s, String s1, String s2, String s3, int i, int j)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[6];
+        s2;
+        aflag[0] = true;
+        JVM INSTR ifnull 34;
+           goto _L1 _L2
+_L1:
+        break MISSING_BLOCK_LABEL_25;
+_L2:
+        break MISSING_BLOCK_LABEL_34;
+        s1;
+        aflag[1] = true;
+        JVM INSTR ifnonnull 44;
+           goto _L3 _L4
+_L3:
+        break MISSING_BLOCK_LABEL_34;
+_L4:
+        break MISSING_BLOCK_LABEL_44;
+        s3;
+        aflag[2] = true;
+        JVM INSTR ifnull 53;
+           goto _L5 _L6
+_L5:
+        break MISSING_BLOCK_LABEL_44;
+_L6:
+        break MISSING_BLOCK_LABEL_53;
+        true;
+        aflag[3] = true;
+        break MISSING_BLOCK_LABEL_59;
+        OfficialAccountListResult officialaccountlistresult;
+        ArrayList arraylist;
+        AppManageResult appmanageresult;
+        FollowedTargetQueryResult followedtargetqueryresult;
+        aflag[4] = true;
+        Assert.isTrue(false, "\u4E24\u79CD\u7C7B\u578B\u4E0D\u80FD\u540C\u65F6\u4E3A\u7A7A!!!");
+label0:
+        {
+            officialaccountlistresult = new OfficialAccountListResult();
+            officialaccountlistresult.setPageNum(i);
+            officialaccountlistresult.setPageSize(j);
+            arraylist = new ArrayList();
+            appmanageresult = officialAccountClient.queryOfficialAccount(s, s1, s2, s3, i, j);
+            followedtargetqueryresult = officialAccountClient.queryFollowedTarget(s, 1, 50);
+            aflag[5] = true;
+            if(appmanageresult.isSuccess())
+            {
+                aflag[6] = true;
+                if(followedtargetqueryresult.isSuccess())
+                    break label0;
+            }
+            officialaccountlistresult.setResultCode(PublicResultEnum.FAILURE_CODE.getResultCode());
+            officialaccountlistresult.setResultMsg("\u67E5\u8BE2\u516C\u4F17\u8D26\u53F7\u5931\u8D25");
+            StringBuilder stringbuilder = new StringBuilder();
+            stringbuilder.append((new StringBuilder()).append("\u7528\u6237userID=").append(s).append("\u8FDB\u884C\u7C7B\u76EE\u641C\u7D22...\n").toString());
+            stringbuilder.append((new StringBuilder()).append("\u5927\u7C7B\u76EE=").append(s2).append(",\u5C0F\u7C7B\u76EE=").append(s3).append(",\u641C\u7D22=").append(s1).append("\u67E5\u8BE2\u5931\u8D25\n").toString());
+            stringbuilder.append((new StringBuilder()).append("\u641C\u7D22\u516C\u4F17\u53F7:").append(appmanageresult.isSuccess()).append("\n").toString());
+            stringbuilder.append((new StringBuilder()).append("\u641C\u7D22\u5173\u6CE8\u5173\u7CFB:").append(followedtargetqueryresult.isSuccess()).append("\n").toString());
+            LoggerUtil.info(LOGGER, stringbuilder.toString());
+            aflag[7] = true;
+            return officialaccountlistresult;
+        }
+        appmanageresult.getAppInfoList();
+        aflag[8] = true;
+        JVM INSTR ifnull 439;
+           goto _L7 _L8
+_L7:
+        break MISSING_BLOCK_LABEL_366;
+_L8:
+        break MISSING_BLOCK_LABEL_439;
+        Iterator iterator = appmanageresult.getAppInfoList().iterator();
+        aflag[9] = true;
+        do
+        {
+            aflag[10] = true;
+            if(!iterator.hasNext())
+                break MISSING_BLOCK_LABEL_439;
+            AppInfo appinfo = (AppInfo)iterator.next();
+            OfficialAccountInfo officialaccountinfo = convertToOfficial(appinfo);
+            arraylist.add(officialaccountinfo);
+            aflag[11] = true;
+        } while(true);
+label1:
+        {
+            List list = getFollowIds(followedtargetqueryresult.getFollowInfoList());
+            Iterator iterator1 = arraylist.iterator();
+            aflag[12] = true;
+            do
+            {
+                aflag[13] = true;
+                if(!iterator1.hasNext())
+                    break label1;
+                OfficialAccountInfo officialaccountinfo1 = (OfficialAccountInfo)iterator1.next();
+                aflag[14] = true;
+                if(list.contains(officialaccountinfo1.getPublicId()))
+                {
+                    officialaccountinfo1.setIsFollow("1");
+                    aflag[15] = true;
+                } else
+                {
+                    officialaccountinfo1.setIsFollow("0");
+                    aflag[16] = true;
+                }
+                aflag[17] = true;
+            } while(true);
+        }
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u7528\u6237userID=").append(s).append("\u641C\u7D22,").append("\u5927\u7C7B\u76EE=").append(s2).append(",\u5C0F\u7C7B\u76EE=").append(s3).append(",\u641C\u7D22=").append(s1).append("\u67E5\u8BE2\u6210\u529F").toString());
+        officialaccountlistresult.setOfficialAccounts(arraylist);
+        officialaccountlistresult.setPageNum(i);
+        officialaccountlistresult.setPageSize(j);
+        officialaccountlistresult.setRowCount(appmanageresult.getQueryTotalItem());
+        officialaccountlistresult.setResultCode(PublicResultEnum.SUCCESS_CODE.getResultCode());
+        officialaccountlistresult.setResultMsg("\u67E5\u8BE2\u516C\u4F17\u8D26\u53F7\u6210\u529F");
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u641C\u7D22\u5230\u7684\u7ED3\u679C\uFF1A<<<result=").append(officialaccountlistresult).append(">>>").toString());
+        aflag[18] = true;
+        return officialaccountlistresult;
+    }
+
+    public OfficialAccountResult queryOfficialDetail(String s, String s1, String s2)
+    {
+        boolean aflag[];
+        aflag = ($VRc != null ? $VRc : $VRi())[7];
+        Assert.notNull(s1, "\u516C\u4F17\u53F7ID\u4E0D\u80FD\u4E3A\u7A7A!!!");
+        s2;
+        aflag[0] = true;
+        JVM INSTR ifnonnull 43;
+           goto _L1 _L2
+_L1:
+        break MISSING_BLOCK_LABEL_31;
+_L2:
+        break MISSING_BLOCK_LABEL_43;
+        s2 = FollowTypeEnum.PUBLIC.getType();
+        aflag[1] = true;
+        OfficialAccountResult officialaccountresult;
+        AppInfo appinfo;
+        officialaccountresult = new OfficialAccountResult();
+        OfficialAccountInfo officialaccountinfo = null;
+        aflag[2] = true;
+        if(!StringUtil.equals(FollowTypeEnum.PUBLIC.getType(), s2))
+            break MISSING_BLOCK_LABEL_283;
+        officialaccountinfo = new OfficialAccountInfo();
+        appinfo = officialAccountClient.getOfficialAccountById(s1);
+        appinfo;
+        aflag[3] = true;
+        JVM INSTR ifnonnull 169;
+           goto _L3 _L4
+_L3:
+        break MISSING_BLOCK_LABEL_104;
+_L4:
+        break MISSING_BLOCK_LABEL_169;
+        officialaccountresult.setResultCode(PublicResultEnum.FAILURE_CODE.getResultCode());
+        officialaccountresult.setResultMsg("\u67E5\u627E\u516C\u4F17\u8D26\u53F7\u8BE6\u60C5\u5931\u8D25");
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u7528\u6237userId=").append(s).append("\u67E5\u8BE2\u516C\u4F17\u53F7\u8BE6\u60C5publicId=").append(s1).append("\u5931\u8D25").toString());
+        aflag[4] = true;
+        return officialaccountresult;
+        OfficialAccountInfo officialaccountinfo1;
+        aflag[5] = true;
+        if(StringUtil.equals(AppStatus.OFF_LINE.getCode(), appinfo.getStatus().getCode()))
+        {
+            officialaccountresult.setResultCode(PublicResultEnum.NOT_VALIDATED.getResultCode());
+            officialaccountresult.setResultMsg(PublicResultEnum.NOT_VALIDATED.getResultMsg());
+            LoggerUtil.info(LOGGER, String.format("\u516C\u4F17\u53F7%s\u5DF2\u4E0B\u67B6 ", new Object[] {
+                appinfo.getAppId()
+            }));
+            aflag[6] = true;
+            return officialaccountresult;
+        }
+        officialaccountinfo1 = convertToOfficial(appinfo);
+        officialaccountresult.setResultCode(PublicResultEnum.SUCCESS_CODE.getResultCode());
+        officialaccountresult.setResultMsg("\u67E5\u8BE2\u8BE6\u60C5\u6210\u529F");
+        aflag[7] = true;
+        break MISSING_BLOCK_LABEL_425;
+        aflag[8] = true;
+        if(StringUtil.equals(FollowTypeEnum.PERSONAL.getType(), s2))
+        {
+            officialaccountinfo1 = new OfficialAccountInfo();
+            UserInfo userinfo = userInfoQueryClient.queryUserInfoByUserId(s1);
+            officialaccountinfo1.setPublicId(s1);
+            officialaccountinfo1.setName(HideUtils.hideRealName(userinfo.getUserName()));
+            officialaccountinfo1.setLoginId(HideUtils.hideLoginId(userinfo.getLogonId()));
+            officialaccountinfo1.setAvatar(getProfile(userinfo.getUserId()));
+            officialaccountinfo1.setFollowType(FollowTypeEnum.PERSONAL.getType());
+            checkUserStatus(userinfo, officialaccountresult, s);
+            aflag[9] = true;
+        } else
+        {
+            officialaccountresult.setResultCode(PublicResultEnum.FAILURE_CODE.getResultCode());
+            officialaccountresult.setResultMsg("\u8BF7\u9009\u62E9\u6B63\u786E\u7684\u7C7B\u578B,\u4E2A\u4EBA=PERSONAL \u516C\u4F17\u53F7=PUBLIC");
+            aflag[10] = true;
+            return officialaccountresult;
+        }
+        FollowResult followresult = officialAccountClient.checkFollowed(s, officialaccountinfo1.getPublicId(), officialaccountinfo1.getFollowType());
+        aflag[11] = true;
+        if(followresult.isSuccess())
+        {
+            officialaccountinfo1.setIsFollow("1");
+            aflag[12] = true;
+        } else
+        {
+            officialaccountinfo1.setIsFollow("0");
+            aflag[13] = true;
+        }
+        officialaccountresult.setOfficialAccount(officialaccountinfo1);
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u67E5\u8BE2\u8BE6\u60C5\uFF1A<<<result=").append(officialaccountresult).append(">>>").toString());
+        aflag[14] = true;
+        return officialaccountresult;
+    }
+
+    public OfficialTypeListResult querySubOfficialType(String s)
+    {
+        OfficialTypeListResult officialtypelistresult;
+        ArrayList arraylist;
+        PublicCategoryResult publiccategoryresult;
+        boolean aflag[];
+        aflag = ($VRc != null ? $VRc : $VRi())[8];
+        officialtypelistresult = new OfficialTypeListResult();
+        arraylist = new ArrayList();
+        publiccategoryresult = officialAccountClient.querySubCategory(s);
+        publiccategoryresult;
+        aflag[0] = true;
+        JVM INSTR ifnonnull 68;
+           goto _L1 _L2
+_L1:
+        break MISSING_BLOCK_LABEL_54;
+_L2:
+        break MISSING_BLOCK_LABEL_68;
+        publiccategoryresult = new PublicCategoryResult();
+        aflag[1] = true;
+        aflag[2] = true;
+        if(!publiccategoryresult.isSuccess())
+        {
+            officialtypelistresult.setResultCode(PublicResultEnum.FAILURE_CODE.getResultCode());
+            officialtypelistresult.setResultMsg("\u67E5\u8BE2\u5B50\u7C7B\u76EE\u5931\u8D25");
+            LoggerUtil.debug(LOGGER, (new StringBuilder()).append("\u67E5\u8BE2\u5B50\u7C7B\u76EE\u5931\u8D25").append(s).toString());
+            aflag[3] = true;
+            return officialtypelistresult;
+        }
+        publiccategoryresult.getCategorys();
+        aflag[4] = true;
+        JVM INSTR ifnull 266;
+           goto _L3 _L4
+_L3:
+        break MISSING_BLOCK_LABEL_142;
+_L4:
+        break MISSING_BLOCK_LABEL_266;
+        Iterator iterator = publiccategoryresult.getCategorys().iterator();
+        aflag[5] = true;
+        do
+        {
+            aflag[6] = true;
+            if(!iterator.hasNext())
+                break MISSING_BLOCK_LABEL_266;
+            PublicCategory publiccategory = (PublicCategory)iterator.next();
+            OfficialTypeInfo officialtypeinfo = new OfficialTypeInfo();
+            officialtypeinfo.setAvatar(publiccategory.getAvatar());
+            officialtypeinfo.setName(publiccategory.getCategory());
+            officialtypeinfo.setSecondOfficialType((new StringBuilder()).append(s).append("|").append(publiccategory.getId()).toString());
+            arraylist.add(officialtypeinfo);
+            aflag[7] = true;
+        } while(true);
+        officialtypelistresult.setOfficialTypes(arraylist);
+        officialtypelistresult.setResultCode(PublicResultEnum.SUCCESS_CODE.getResultCode());
+        officialtypelistresult.setResultMsg("\u67E5\u8BE2\u5B50\u7C7B\u76EE\u6210\u529F");
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u67E5\u8BE2\u5B50\u7C7B\u76EE\u4FE1\u606F\u7ED3\u679C\uFF1A<<<result=").append(officialtypelistresult).append(">>>").toString());
+        aflag[8] = true;
+        return officialtypelistresult;
+    }
+
+    public OfficialHomeListResult queryUserFollowAccount(String s, String s1, String s2, String s3, int i, int j)
+    {
+        OfficialHomeListResult officialhomelistresult;
+        ArrayList arraylist;
+        FollowedTargetQueryResult followedtargetqueryresult;
+        HashMap hashmap;
+        boolean aflag[];
+        aflag = ($VRc != null ? $VRc : $VRi())[9];
+        officialhomelistresult = new OfficialHomeListResult();
+        officialhomelistresult.setUserId(s);
+        aflag[0] = true;
+        if(isClientCache())
+        {
+            officialhomelistresult.setResultCode(PublicResultEnum.HOME_FOLLOW_CLIENT_CACHE.getResultCode());
+            officialhomelistresult.setResultMsg(PublicResultEnum.HOME_FOLLOW_CLIENT_CACHE.getResultMsg());
+            aflag[1] = true;
+            return officialhomelistresult;
+        }
+        arraylist = new ArrayList();
+        followedtargetqueryresult = buildSuccessResult();
+        aflag[2] = true;
+        if(systemParamService.isHomeQueryFollow())
+        {
+            followedtargetqueryresult = officialAccountClient.queryFollowedTarget(s, i, j);
+            aflag[3] = true;
+        } else
+        {
+            LoggerUtil.info(LOGGER, "\u6253\u5F00\u67E5\u8BE2\u5173\u6CE8\u5F00\u5173\uFF0C\u4E0D\u5BF9opencore\u67E5\u8BE2\u5173\u6CE8\u5173\u7CFB");
+            aflag[4] = true;
+        }
+        aflag[5] = true;
+        if(!followedtargetqueryresult.isSuccess())
+        {
+            officialhomelistresult.setResultCode(PublicResultEnum.FAILURE_CODE.getResultCode());
+            officialhomelistresult.setResultMsg("\u67E5\u8BE2\u9996\u9875\u5173\u6CE8\u65F6\u5931\u8D25");
+            LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u7528\u6237userId=").append(s).append(",\u67E5\u8BE2\u6240\u5173\u6CE8\u7684\u7528\u6237\u4FE1\u606F\u65F6\u5931\u8D25").toString());
+            aflag[6] = true;
+            return officialhomelistresult;
+        }
+        hashmap = new HashMap();
+        followedtargetqueryresult.getFollowInfoList();
+        aflag[7] = true;
+        JVM INSTR ifnull 659;
+           goto _L1 _L2
+_L1:
+        break MISSING_BLOCK_LABEL_235;
+_L2:
+        break MISSING_BLOCK_LABEL_659;
+        Map map;
+        Iterator iterator;
+        aflag[8] = true;
+        if(followedtargetqueryresult.getFollowInfoList().size() == 0)
+            break MISSING_BLOCK_LABEL_659;
+        map = thirdPartyAccountService.findThirdPartyAccountByUserId(s);
+        iterator = followedtargetqueryresult.getFollowInfoList().iterator();
+        aflag[9] = true;
+_L8:
+        FollowInfo followinfo;
+        FollowAccountInfo followaccountinfo;
+        Object obj;
+        aflag[10] = true;
+        if(!iterator.hasNext())
+            break MISSING_BLOCK_LABEL_659;
+        followinfo = (FollowInfo)iterator.next();
+        followaccountinfo = new FollowAccountInfo();
+        followaccountinfo.setFollowObjectId(followinfo.getFolloweeId());
+        followaccountinfo.setGmtFollowTime(followinfo.getGmtFollow().getTime());
+        aflag[11] = true;
+        if(!StringUtil.equals(FollowTypeEnum.PERSONAL.getType(), followinfo.getFolloweeType().getCode()))
+            break MISSING_BLOCK_LABEL_483;
+        followaccountinfo.setFollowType(FollowTypeEnum.PERSONAL.getType());
+        obj = followinfo.getUserInfo();
+        ((UserInfo) (obj)).getUserName();
+        aflag[12] = true;
+        JVM INSTR ifnull 419;
+           goto _L3 _L4
+_L3:
+        break MISSING_BLOCK_LABEL_402;
+_L4:
+        break MISSING_BLOCK_LABEL_419;
+        HideUtils.hideRealName(((UserInfo) (obj)).getUserName());
+        aflag[13] = true;
+        break MISSING_BLOCK_LABEL_433;
+        HideUtils.hideLoginId(((UserInfo) (obj)).getEmail());
+        aflag[14] = true;
+        String s4;
+        s4;
+        followaccountinfo.setName(s4);
+        followaccountinfo.setAvatar(getProfile(((UserInfo) (obj)).getUserId()));
+        followaccountinfo.setLatestMsg("\u8F6C\u8D26\u7684\u5C0F\u4F19\u4F34");
+        followaccountinfo.setLatestMsgTime(followaccountinfo.getGmtFollowTime());
+        aflag[15] = true;
+        break MISSING_BLOCK_LABEL_622;
+        aflag[16] = true;
+        if(!StringUtil.equals(FollowTypeEnum.PUBLIC.getType(), followinfo.getFolloweeType().getCode()))
+            break MISSING_BLOCK_LABEL_622;
+        followaccountinfo.setFollowType(FollowTypeEnum.PUBLIC.getType());
+        obj = followinfo.getAppInfo();
+        followaccountinfo.setName(((AppInfo) (obj)).getAppName());
+        followaccountinfo.setAvatar(((AppInfo) (obj)).getLogoUrl());
+        ((AppInfo) (obj)).getPublicInfo();
+        aflag[17] = true;
+        JVM INSTR ifnull 596;
+           goto _L5 _L6
+_L5:
+        break MISSING_BLOCK_LABEL_561;
+_L6:
+        break MISSING_BLOCK_LABEL_596;
+        followaccountinfo.setThirdPartyNo(((AppInfo) (obj)).getPublicInfo().getInstId());
+        followaccountinfo.setPublicType(((AppInfo) (obj)).getPublicInfo().getAccountType().getCode());
+        aflag[18] = true;
+        followaccountinfo.setThirdPartyAccounts((List)map.get(((AppInfo) (obj)).getAppId()));
+        aflag[19] = true;
+        arraylist.add(followaccountinfo);
+        hashmap.put(followaccountinfo.getFollowObjectId(), followaccountinfo.getFollowType());
+        aflag[20] = true;
+        if(true) goto _L8; else goto _L7
+_L7:
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u7528\u6237userId=").append(s).append("\u67E5\u8BE2\u9996\u9875\u5173\u6CE8\u5173\u7CFB\u6210\u529F").toString());
+        addMessageToOfficial(s, s1, s2, s3, arraylist, hashmap);
+        officialhomelistresult.setFollowAccounts(arraylist);
+        officialhomelistresult.setPageNum(i);
+        officialhomelistresult.setPageSize(j);
+        officialhomelistresult.setRowCount(followedtargetqueryresult.getTotalItems());
+        officialhomelistresult.setResultCode(PublicResultEnum.SUCCESS_CODE.getResultCode());
+        officialhomelistresult.setResultMsg("\u67E5\u8BE2\u9996\u9875\u5173\u6CE8");
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u9996\u9875\u67E5\u8BE2\u7ED3\u679C\uFF1A<<<result=").append(officialhomelistresult).append(">>>").toString());
+        aflag[21] = true;
+        return officialhomelistresult;
+    }
+
+    public boolean removeFollow(UserInfo userinfo, String s, String s1)
+    {
+        FollowResult followresult;
+        boolean aflag[];
+label0:
+        {
+            aflag = ($VRc != null ? $VRc : $VRi())[10];
+            Assert.notNull(s, "\u5173\u6CE8\u5BF9\u8C61\u7684id\u4E0D\u80FD\u4E3A\u7A7A!!!");
+            Assert.notNull(s1, "\u5173\u6CE8\u5BF9\u8C61\u7C7B\u578B\u4E0D\u80FD\u4E3A\u7A7A!!!(\u516C\u4F17\u53F7|\u652F\u4ED8\u5B9D\u8D26\u53F7)");
+            followresult = null;
+            try
+            {
+label1:
+                {
+label2:
+                    {
+                        followresult = officialAccountClient.removeFollow(userinfo.getUserId(), s, s1);
+                        aflag[0] = true;
+                        if(!StringUtil.equals(FollowTypeEnum.PUBLIC.getType(), s1))
+                            break label1;
+                        AppInfo appinfo = officialAccountClient.getOfficialAccountById(s);
+                        aflag[1] = true;
+                        if(null == appinfo)
+                            break label1;
+                        aflag[2] = true;
+                        if(null == appinfo.getPublicInfo())
+                            break label1;
+                        aflag[3] = true;
+                        if(!StringUtil.equalsIgnoreCase(PublicAccountType.USER_APPLY.getCode(), appinfo.getPublicInfo().getAccountType().getCode()))
+                            break label1;
+                        String s2 = (String)appinfo.getPublicInfo().getExtInfos().get("remove_external_users");
+                        aflag[4] = true;
+                        if(null != s2)
+                        {
+                            aflag[5] = true;
+                            if(!StringUtil.equalsIgnoreCase("true", s2))
+                                break label2;
+                        }
+                        thirdPartyAccountManager.removeThirdPartyAccount(userinfo.getUserId(), s);
+                        aflag[6] = true;
+                    }
+                    sendMessageTaskExecutor.execute(new  Object(userinfo, s)     /* anonymous class not found */
+    class _anm2 {}
+
+);
+                    aflag[7] = true;
+                }
+                LoggerUtil.info(LOGGER, (new StringBuilder()).append("userId=").append(userinfo.getUserId()).append(" \u5220\u9664\u5173\u6CE8\u7C7B\u578B\u4E3A").append(s1).append(",id\u4E3A").append(s).append("\u7ED3\u679C:").append(followresult.isSuccess()).toString());
+                aflag[8] = true;
+                break label0;
+            }
+            catch(Exception exception)
+            {
+                unFollowMdapLog(userinfo.getUserId(), s, false, "\u5220\u9664\u5173\u6CE8\u5F02\u5E38");
+                LoggerUtil.error(LOGGER, (new StringBuilder()).append("userId=").append(userinfo.getUserId()).append(" \u5220\u9664\u5173\u6CE8\u7C7B\u578B\u4E3A").append(s1).append(",id\u4E3A").append(s).append("\u5F02\u5E38").toString(), exception);
+                aflag[9] = true;
+                return false;
+            }
+        }
+        aflag[10] = true;
+        if(followresult.isSuccess())
+        {
+            unFollowMdapLog(userinfo.getUserId(), s, true, "");
+            aflag[11] = true;
+            return true;
+        } else
+        {
+            unFollowMdapLog(userinfo.getUserId(), s, false, "\u53D6\u6D88\u5173\u6CE8\u9519\u8BEF");
+            aflag[12] = true;
+            return false;
+        }
+    }
+
+    public OfficialAccountSetResult queryOfficialAccountSetMsg(OfficialAccountSetReq officialaccountsetreq)
+    {
+        String s;
+        String s1;
+        String s2;
+        OfficialAccountSetResult officialaccountsetresult;
+        OfficialAccountSetInfo officialaccountsetinfo;
+        AppInfo appinfo;
+        boolean aflag[];
+        aflag = ($VRc != null ? $VRc : $VRi())[11];
+        Argument.notNull(officialaccountsetreq, "officialAccountSetReq\u4E3A\u7A7A", new Object[0]);
+        s = officialaccountsetreq.getUserId();
+        s1 = officialaccountsetreq.getPublicId();
+        s2 = officialaccountsetreq.getFollowType();
+        Argument.notEmpty(s, "userId\u4E3A\u7A7A", new Object[0]);
+        Argument.notEmpty(s1, "publicId\u4E3A\u7A7A", new Object[0]);
+        Argument.notEmpty(s2, "followType\u4E3A\u7A7A", new Object[0]);
+        officialaccountsetresult = (OfficialAccountSetResult)ResultUtils.buidSuccessResult(com/alipay/publiccore/client/result/OfficialAccountSetResult);
+        officialaccountsetinfo = null;
+        aflag[0] = true;
+        if(!StringUtil.equals(FollowTypeEnum.PUBLIC.getType(), s2))
+            break MISSING_BLOCK_LABEL_445;
+        appinfo = officialAccountClient.getOfficialAccountById(s1);
+        Argument.notNull(appinfo, "\u516C\u4F17\u53F7\u4E0D\u5B58\u5728,userId:%s,publicId:%s", new Object[] {
+            s, s1
+        });
+        aflag[1] = true;
+        if(StringUtil.equals(AppStatus.OFF_LINE.getCode(), appinfo.getStatus().getCode()))
+        {
+            officialaccountsetresult.setResultCode(PublicResultEnum.NOT_VALIDATED.getResultCode());
+            officialaccountsetresult.setResultMsg(PublicResultEnum.NOT_VALIDATED.getResultMsg());
+            LoggerUtil.info(LOGGER, String.format("\u516C\u4F17\u53F7%s\u5DF2\u4E0B\u67B6 ", new Object[] {
+                appinfo.getAppId()
+            }));
+            aflag[2] = true;
+            return officialaccountsetresult;
+        }
+        officialaccountsetinfo = new OfficialAccountSetInfo();
+        appinfo.getPublicInfo();
+        aflag[3] = true;
+        JVM INSTR ifnull 359;
+           goto _L1 _L2
+_L1:
+        break MISSING_BLOCK_LABEL_242;
+_L2:
+        break MISSING_BLOCK_LABEL_359;
+        appinfo.getPublicInfo().getExtInfos();
+        aflag[4] = true;
+        JVM INSTR ifnull 359;
+           goto _L3 _L4
+_L3:
+        break MISSING_BLOCK_LABEL_258;
+_L4:
+        break MISSING_BLOCK_LABEL_359;
+        String s3 = (String)appinfo.getPublicInfo().getExtInfos().get("bind_external_users");
+        aflag[5] = true;
+        if("true".equalsIgnoreCase(s3))
+        {
+            s3 = "1";
+            aflag[6] = true;
+        } else
+        {
+            s3 = "0";
+            aflag[7] = true;
+        }
+        officialaccountsetinfo.setIsBind(s3);
+        String s4 = (String)appinfo.getPublicInfo().getExtInfos().get("bind_users_copywriter");
+        officialaccountsetinfo.setDisThirdAccountText(s4);
+        aflag[8] = true;
+        fillOfficialAccountInfo(appinfo, officialaccountsetinfo);
+        fillThirdPartyAccount(s, s1, officialaccountsetresult);
+        officialaccountsetresult.setResultCode(PublicResultEnum.SUCCESS_CODE.getResultCode());
+        officialaccountsetresult.setResultMsg("\u67E5\u8BE2\u8BBE\u7F6E\u8BE6\u60C5\u6210\u529F");
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u7528\u6237=").append(s).append(",\u516C\u4F17\u53F7=").append(s1).append("\u8BBE\u7F6E\u8BE6\u60C5\u67E5\u8BE2\u6210\u529F").toString());
+        aflag[9] = true;
+        break MISSING_BLOCK_LABEL_601;
+        aflag[10] = true;
+        if(StringUtil.equals(FollowTypeEnum.PERSONAL.getType(), s2))
+        {
+            UserInfo userinfo = userInfoQueryClient.queryUserInfoByUserId(s1);
+            Argument.notNull(userinfo, "\u88AB\u5173\u6CE8\u7528\u6237\u4E0D\u5B58\u5728,userId:%s,publicId:%s", new Object[] {
+                s, s1
+            });
+            officialaccountsetinfo = new OfficialAccountSetInfo();
+            fillOfficialAccountInfo(officialaccountsetinfo, userinfo);
+            checkUserStatus(userinfo, officialaccountsetresult, s);
+            LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u7528\u6237=").append(s).append(",\u67E5\u8BE2\u7528\u6237=").append(s1).append("\u8BBE\u7F6E\u8BE6\u60C5\u67E5\u8BE2\u6210\u529F").toString());
+            aflag[11] = true;
+        } else
+        {
+            officialaccountsetresult.setResultCode(PublicResultEnum.FAILURE_CODE.getResultCode());
+            officialaccountsetresult.setResultMsg("\u8BF7\u9009\u62E9\u6B63\u786E\u7684\u7C7B\u578B,\u4E2A\u4EBA=PERSONAL \u516C\u4F17\u53F7=PUBLIC");
+            aflag[12] = true;
+            return officialaccountsetresult;
+        }
+        FollowResult followresult = officialAccountClient.checkFollowed(s, s1, s2);
+        aflag[13] = true;
+        if(followresult.isSuccess())
+        {
+            officialaccountsetinfo.setIsFollow("1");
+            aflag[14] = true;
+        } else
+        {
+            officialaccountsetinfo.setIsFollow("0");
+            aflag[15] = true;
+        }
+        officialaccountsetresult.setOfficialAccountSetInfo(officialaccountsetinfo);
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u8BBE\u7F6E\u9875\u9762\u4FE1\u606F\u7ED3\u679C\uFF1A<<<result=").append(officialaccountsetinfo).append(">>>").toString());
+        aflag[16] = true;
+        return officialaccountsetresult;
+    }
+
+    private void fillThirdPartyAccount(String s, String s1, OfficialAccountSetResult officialaccountsetresult)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[12];
+        List list = thirdPartyAccountService.queryThirdPartyAccount(s, s1);
+        aflag[0] = true;
+        if(null != list)
+        {
+            aflag[1] = true;
+            if(!list.isEmpty())
+            {
+                List list1 = buildThirdPartyAccountInfos(list);
+                officialaccountsetresult.setThirdPartyAccountInfos(list1);
+                aflag[2] = true;
+            }
+        }
+        aflag[3] = true;
+    }
+
+    private void fillOfficialAccountInfo(OfficialAccountSetInfo officialaccountsetinfo, UserInfo userinfo)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[13];
+        officialaccountsetinfo.setPublicId(userinfo.getUserId());
+        officialaccountsetinfo.setName(HideUtils.hideRealName(userinfo.getUserName()));
+        officialaccountsetinfo.setLoginId(HideUtils.hideLoginId(userinfo.getLogonId()));
+        officialaccountsetinfo.setAvatar(getProfile(userinfo.getUserId()));
+        officialaccountsetinfo.setFollowType(FollowTypeEnum.PERSONAL.getType());
+        aflag[0] = true;
+    }
+
+    private void checkUserStatus(UserInfo userinfo, PublicResult publicresult, String s)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[14];
+        aflag[0] = true;
+        if(StringUtil.equals(s, userinfo.getUserId()))
+        {
+            publicresult.setResultCode(PublicResultEnum.SEARCH_CURRENT_USER.getResultCode());
+            publicresult.setResultMsg(PublicResultEnum.SEARCH_CURRENT_USER.getResultMsg());
+            aflag[1] = true;
+        } else
+        {
+            aflag[2] = true;
+            if(StringUtil.equals(userinfo.getEnabledStatus(), EnableStatusEnum.BLOCK_STATUS.getValue()))
+            {
+                publicresult.setResultCode(PublicResultEnum.SEARCH_BLOCK_STATUS.getResultCode());
+                publicresult.setResultMsg(PublicResultEnum.SEARCH_BLOCK_STATUS.getResultMsg());
+                aflag[3] = true;
+            } else
+            {
+                publicresult.setResultCode(PublicResultEnum.SUCCESS_CODE.getResultCode());
+                publicresult.setResultMsg("\u67E5\u8BE2\u6210\u529F");
+                aflag[4] = true;
+            }
+        }
+        aflag[5] = true;
+    }
+
+    private List getFollowIds(List list)
+    {
+        ArrayList arraylist;
+        boolean aflag[];
+label0:
+        {
+            aflag = ($VRc != null ? $VRc : $VRi())[15];
+            arraylist = new ArrayList();
+            Iterator iterator = list.iterator();
+            aflag[0] = true;
+            do
+            {
+                aflag[1] = true;
+                if(!iterator.hasNext())
+                    break label0;
+                FollowInfo followinfo = (FollowInfo)iterator.next();
+                arraylist.add(followinfo.getFolloweeId());
+                aflag[2] = true;
+            } while(true);
+        }
+        aflag[3] = true;
+        return arraylist;
+    }
+
+    private OfficialAccountInfo convertToOfficial(AppInfo appinfo)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[16];
+        OfficialAccountInfo officialaccountinfo = new OfficialAccountInfo();
+        fillOfficialAccountInfo(appinfo, officialaccountinfo);
+        aflag[0] = true;
+        return officialaccountinfo;
+    }
+
+    private String getProfile(String s)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[17];
+        aflag[0] = true;
+        return imgUrlServiceClient.getAlipayHeadImgs(s);
+    }
+
+    private void addMessageToOfficial(String s, String s1, String s2, String s3, List list, Map map)
+    {
+        CountMessageResult countmessageresult;
+        boolean aflag[];
+        aflag = ($VRc != null ? $VRc : $VRi())[18];
+        aflag[0] = true;
+        if(!systemParamService.isHomeQueryMessage())
+        {
+            LoggerUtil.info(LOGGER, "\u6253\u5F00\u9996\u9875\u67E5\u8BE2\u6D88\u606F\u5F00\u5173\uFF0C\u4E0D\u67E5\u8BE2\u6D88\u606F");
+            aflag[1] = true;
+            return;
+        }
+        MessageCountQuery messagecountquery = new MessageCountQuery();
+        messagecountquery.setUserId(s);
+        messagecountquery.setTerminal(s1);
+        messagecountquery.setChannelPackage(s3);
+        messagecountquery.setClientVersion(s2);
+        messagecountquery.setFilterReadRecord(false);
+        messagecountquery.setIncludeMsgType(new String[] {
+            "S", "image-text"
+        });
+        countmessageresult = null;
+        try
+        {
+            countmessageresult = messageInfoManager.countMessageByQuery(messagecountquery, map);
+            LoggerUtil.debug(LOGGER, (new StringBuilder()).append("\u9996\u9875\u67E5\u8BE2\u7684\u6D88\u606F\uFF1A[result=").append(countmessageresult).append("]").toString());
+            aflag[2] = true;
+        }
+        catch(Exception exception)
+        {
+            LoggerUtil.warn(LOGGER, "\u9996\u9875\u67E5\u8BE2\u6700\u65B0\u6D88\u606F\u5F02\u5E38", exception);
+            aflag[3] = true;
+        }
+        countmessageresult;
+        aflag[4] = true;
+        JVM INSTR ifnull 228;
+           goto _L1 _L2
+_L1:
+        break MISSING_BLOCK_LABEL_196;
+_L2:
+        break MISSING_BLOCK_LABEL_228;
+        aflag[5] = true;
+        if(countmessageresult.isSuccess())
+        {
+            aflag[6] = true;
+            if(countmessageresult.getGroupMessage().size() != 0)
+                break MISSING_BLOCK_LABEL_235;
+        }
+        aflag[7] = true;
+        return;
+        Iterator iterator;
+        Map map1 = countmessageresult.getGroupMessage();
+        iterator = map1.entrySet().iterator();
+        aflag[8] = true;
+_L8:
+        String s4;
+        int i;
+        String s5;
+        String s6;
+        String s7;
+        MessageInfo messageinfo;
+        aflag[9] = true;
+        if(!iterator.hasNext())
+            break MISSING_BLOCK_LABEL_908;
+        java.util.Map.Entry entry = (java.util.Map.Entry)iterator.next();
+        s4 = (String)entry.getKey();
+        i = ((CountMessageInfo)entry.getValue()).getTotal();
+        s5 = null;
+        s6 = null;
+        s7 = null;
+        messageinfo = ((CountMessageInfo)entry.getValue()).getLatestMessage();
+        messageinfo;
+        aflag[10] = true;
+        JVM INSTR ifnull 559;
+           goto _L3 _L4
+_L3:
+        break MISSING_BLOCK_LABEL_352;
+_L4:
+        break MISSING_BLOCK_LABEL_559;
+        String s8;
+        List list1;
+        s6 = messageinfo.getTime();
+        s8 = messageinfo.getMsgType();
+        aflag[11] = true;
+        if(!StringUtil.equals(MESSAGE_TEXT, s8))
+            break MISSING_BLOCK_LABEL_495;
+        ImageMsgEntry imagemsgentry = (ImageMsgEntry)messageinfo.fetcheMsgData();
+        s7 = imagemsgentry.getThirdAccountId();
+        list1 = imagemsgentry.getArticles();
+        list1;
+        aflag[12] = true;
+        JVM INSTR ifnull 486;
+           goto _L5 _L6
+_L5:
+        break MISSING_BLOCK_LABEL_418;
+_L6:
+        break MISSING_BLOCK_LABEL_486;
+        aflag[13] = true;
+        if(list1.size() != 0)
+        {
+            s5 = ((ImageMsgItem)list1.get(0)).getTitle();
+            aflag[14] = true;
+            if(StringUtil.isEmpty(s5))
+            {
+                s5 = ((ImageMsgItem)list1.get(0)).getText();
+                aflag[15] = true;
+            }
+        }
+        aflag[16] = true;
+        break MISSING_BLOCK_LABEL_559;
+        aflag[17] = true;
+        if(!StringUtil.equals("M", s8))
+        {
+            aflag[18] = true;
+            if(!StringUtil.equals("S", s8))
+                break MISSING_BLOCK_LABEL_559;
+        }
+        TodoMsgEntry todomsgentry = (TodoMsgEntry)messageinfo.fetcheMsgData();
+        s7 = todomsgentry.getThirdAccountId();
+        s5 = todomsgentry.getTitle();
+        aflag[19] = true;
+        aflag[20] = true;
+        if(StringUtil.equals(FollowTypeEnum.ALIPAY_MSG.getType(), s4))
+        {
+            FollowAccountInfo followaccountinfo = new FollowAccountInfo();
+            followaccountinfo.setFollowObjectId(s4);
+            followaccountinfo.setName(FollowTypeEnum.ALIPAY_MSG.getDesc());
+            followaccountinfo.setAvatar("http://pic.alipayobjects.com/e/201308/xRZadUdZN.png");
+            followaccountinfo.setFollowType(FollowTypeEnum.ALIPAY_MSG.getType());
+            followaccountinfo.setLatestMsg(s5);
+            followaccountinfo.setLatestMsgThridAccount(s7);
+            followaccountinfo.setUnReadMsgCount(i);
+            followaccountinfo.setLatestMsgTime(Long.parseLong(s6));
+            list.add(followaccountinfo);
+            aflag[21] = true;
+            break MISSING_BLOCK_LABEL_899;
+        }
+        aflag[22] = true;
+        if(StringUtil.equals(FollowTypeEnum.PREFER_MSG.getType(), s4))
+        {
+            FollowAccountInfo followaccountinfo1 = new FollowAccountInfo();
+            followaccountinfo1.setFollowObjectId(s4);
+            followaccountinfo1.setName(FollowTypeEnum.PREFER_MSG.getDesc());
+            followaccountinfo1.setAvatar("http://pic.alipayobjects.com/e/201308/xRaQhvNq9.png");
+            followaccountinfo1.setFollowType(FollowTypeEnum.PREFER_MSG.getType());
+            followaccountinfo1.setLatestMsg(s5);
+            followaccountinfo1.setLatestMsgThridAccount(s7);
+            followaccountinfo1.setUnReadMsgCount(i);
+            followaccountinfo1.setLatestMsgTime(Long.parseLong(s6));
+            list.add(followaccountinfo1);
+            aflag[23] = true;
+            break MISSING_BLOCK_LABEL_899;
+        }
+        Iterator iterator1 = list.iterator();
+        aflag[24] = true;
+        do
+        {
+            aflag[25] = true;
+            if(!iterator1.hasNext())
+                break MISSING_BLOCK_LABEL_899;
+            FollowAccountInfo followaccountinfo2 = (FollowAccountInfo)iterator1.next();
+            aflag[26] = true;
+            if(followaccountinfo2.getFollowObjectId().equals(s4))
+            {
+                followaccountinfo2.setLatestMsg(s5);
+                followaccountinfo2.setUnReadMsgCount(i);
+                followaccountinfo2.setLatestMsgTime(Long.parseLong(s6));
+                followaccountinfo2.setLatestMsgThridAccount(s7);
+                aflag[27] = true;
+            }
+            aflag[28] = true;
+        } while(true);
+        aflag[29] = true;
+        if(true) goto _L8; else goto _L7
+_L7:
+        LoggerUtil.info(LOGGER, (new StringBuilder()).append("\u7528\u6237userId=").append(s).append("\u67E5\u8BE2\u9996\u9875\u6D88\u606F\u6210\u529F").toString());
+        aflag[30] = true;
+        return;
+    }
+
+    private List buildThirdPartyAccountInfos(List list)
+    {
+    /* anonymous class not found */
+    class _anm3 {}
+
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[19];
+        aflag[0] = true;
+        return ListUtils.toList(new _cls3(), list);
+    }
+
+    private void fillOfficialAccountInfo(AppInfo appinfo, OfficialAccountInfo officialaccountinfo)
+    {
+        boolean aflag[];
+        aflag = ($VRc != null ? $VRc : $VRi())[20];
+        officialaccountinfo.setPublicId(appinfo.getAppId());
+        officialaccountinfo.setName(appinfo.getAppName());
+        officialaccountinfo.setDesc(appinfo.getAppDesc());
+        officialaccountinfo.setAvatar(appinfo.getLogoUrl());
+        officialaccountinfo.setFollowType(FollowTypeEnum.PUBLIC.getType());
+        appinfo.getPublicInfo();
+        aflag[0] = true;
+        JVM INSTR ifnull 165;
+           goto _L1 _L2
+_L1:
+        break MISSING_BLOCK_LABEL_70;
+_L2:
+        break MISSING_BLOCK_LABEL_165;
+        appinfo.getPublicInfo().getAccountType();
+        aflag[1] = true;
+        JVM INSTR ifnull 165;
+           goto _L3 _L4
+_L3:
+        break MISSING_BLOCK_LABEL_85;
+_L4:
+        break MISSING_BLOCK_LABEL_165;
+        UserInfo userinfo;
+        officialaccountinfo.setPublicType(appinfo.getPublicInfo().getAccountType().getCode());
+        aflag[2] = true;
+        if(!StringUtil.equals(PublicAccountType.USER_APPLY.getCode(), appinfo.getPublicInfo().getAccountType().getCode()))
+            break MISSING_BLOCK_LABEL_165;
+        userinfo = userInfoQueryClient.queryUserInfoByUserId(appinfo.getDevId());
+        userinfo;
+        aflag[3] = true;
+        JVM INSTR ifnull 165;
+           goto _L5 _L6
+_L5:
+        break MISSING_BLOCK_LABEL_149;
+_L6:
+        break MISSING_BLOCK_LABEL_165;
+        officialaccountinfo.setLoginId(HideUtils.hideLoginId(userinfo.getLogonId()));
+        aflag[4] = true;
+        aflag[5] = true;
+        return;
+    }
+
+    private void followMdapLog(String s, String s1, boolean flag, String s2, String s3)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[21];
+        aflag[0] = true;
+        if(StringUtil.equals(FollowSceneEnum.INIT_FOLLOW.getCode(), s2))
+        {
+            logFacadeClient.recordMdapLog(s, "follow", flag, s3, "u", "s", s1, "", "", "passivity");
+            aflag[1] = true;
+        } else
+        {
+            logFacadeClient.recordMdapLog(s, "follow", flag, s3, "u", "s", s1, "", "", "initiative");
+            aflag[2] = true;
+        }
+        aflag[3] = true;
+    }
+
+    private void unFollowMdapLog(String s, String s1, boolean flag, String s2)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[22];
+        logFacadeClient.recordMdapLog(s, "unfollow", flag, s2, "u", "s", s1, "", "", "initiative");
+        aflag[0] = true;
+    }
+
+    private FollowedTargetQueryResult buildSuccessResult()
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[23];
+        FollowedTargetQueryResult followedtargetqueryresult = new FollowedTargetQueryResult();
+        followedtargetqueryresult.setSuccess(true);
+        followedtargetqueryresult.setResultCode(FollowResultCode.SUCCESS.getCode());
+        aflag[0] = true;
+        return followedtargetqueryresult;
+    }
+
+    private boolean isClientCache()
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[24];
+        try
+        {
+            slaLimitService.homeFollowLimitCount();
+            aflag[0] = true;
+            return false;
+        }
+        catch(DisasterOuterException disasterouterexception)
+        {
+            LoggerUtil.info(LOGGER, "\u9996\u9875\u5F00\u5173\u9650\u6D41\uFF0C\u88AB\u9650\u6D41\u7684\u76F4\u63A5\u4F7F\u7528\u5BA2\u6237\u7AEF\u7F13\u5B58");
+        }
+        aflag[1] = true;
+        return true;
+    }
+
+    public void setOfficialAccountClient(OfficialAccountClient officialaccountclient)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[25];
+        officialAccountClient = officialaccountclient;
+        aflag[0] = true;
+    }
+
+    public void setUserInfoQueryClient(UserInfoQueryClient userinfoqueryclient)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[26];
+        userInfoQueryClient = userinfoqueryclient;
+        aflag[0] = true;
+    }
+
+    public void setMessageInfoManager(MessageInfoManager messageinfomanager)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[27];
+        messageInfoManager = messageinfomanager;
+        aflag[0] = true;
+    }
+
+    public void setRequestOrganizationFacade(RequestOrganizationFacade requestorganizationfacade)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[28];
+        requestOrganizationFacade = requestorganizationfacade;
+        aflag[0] = true;
+    }
+
+    public void setThirdPartyAccountService(ThirdPartyAccountService thirdpartyaccountservice)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[29];
+        thirdPartyAccountService = thirdpartyaccountservice;
+        aflag[0] = true;
+    }
+
+    public void setWelcomeMessageSendManager(WelcomeMessageSendManager welcomemessagesendmanager)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[30];
+        welcomeMessageSendManager = welcomemessagesendmanager;
+        aflag[0] = true;
+    }
+
+    public void setSendMessageTaskExecutor(ThreadPoolTaskExecutor threadpooltaskexecutor)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[31];
+        sendMessageTaskExecutor = threadpooltaskexecutor;
+        aflag[0] = true;
+    }
+
+    public void setSystemParamService(SystemParamService systemparamservice)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[32];
+        systemParamService = systemparamservice;
+        aflag[0] = true;
+    }
+
+    public void setLogFacadeClient(LogFacadeClient logfacadeclient)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[33];
+        logFacadeClient = logfacadeclient;
+        aflag[0] = true;
+    }
+
+    public void setImgUrlServiceClient(ImgUrlServiceClient imgurlserviceclient)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[34];
+        imgUrlServiceClient = imgurlserviceclient;
+        aflag[0] = true;
+    }
+
+    public void setThirdPartyAccountManager(ThirdPartyAccountManager thirdpartyaccountmanager)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[35];
+        thirdPartyAccountManager = thirdpartyaccountmanager;
+        aflag[0] = true;
+    }
+
+    public void setSlaLimitService(SlaLimitService slalimitservice)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[36];
+        slaLimitService = slalimitservice;
+        aflag[0] = true;
+    }
+
+    public void setMobileEventPublisher(UniformEventPublisher uniformeventpublisher)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[37];
+        mobileEventPublisher = uniformeventpublisher;
+        aflag[0] = true;
+    }
+
+    private static boolean[][] $VRi()
+    {
+        boolean aflag[][] = $VRc = new boolean[42][];
+        aflag[0] = new boolean[1];
+        aflag[1] = new boolean[1];
+        aflag[2] = new boolean[14];
+        aflag[3] = new boolean[5];
+        aflag[4] = new boolean[13];
+        aflag[5] = new boolean[13];
+        aflag[6] = new boolean[19];
+        aflag[7] = new boolean[15];
+        aflag[8] = new boolean[9];
+        aflag[9] = new boolean[22];
+        aflag[10] = new boolean[13];
+        aflag[11] = new boolean[17];
+        aflag[12] = new boolean[4];
+        aflag[13] = new boolean[1];
+        aflag[14] = new boolean[6];
+        aflag[15] = new boolean[4];
+        aflag[16] = new boolean[1];
+        aflag[17] = new boolean[1];
+        aflag[18] = new boolean[31];
+        aflag[19] = new boolean[1];
+        aflag[20] = new boolean[6];
+        aflag[21] = new boolean[4];
+        aflag[22] = new boolean[1];
+        aflag[23] = new boolean[1];
+        aflag[24] = new boolean[2];
+        aflag[25] = new boolean[1];
+        aflag[26] = new boolean[1];
+        aflag[27] = new boolean[1];
+        aflag[28] = new boolean[1];
+        aflag[29] = new boolean[1];
+        aflag[30] = new boolean[1];
+        aflag[31] = new boolean[1];
+        aflag[32] = new boolean[1];
+        aflag[33] = new boolean[1];
+        aflag[34] = new boolean[1];
+        aflag[35] = new boolean[1];
+        aflag[36] = new boolean[1];
+        aflag[37] = new boolean[1];
+        aflag[38] = new boolean[1];
+        aflag[39] = new boolean[1];
+        aflag[40] = new boolean[1];
+        aflag[41] = new boolean[1];
+        RT.r(aflag, "com/alipay/publiccore/biz/relation/impl/OfficialAccountManagerImpl", 0x718faf0b45e5741aL, new long[] {
+            33327L, 33335L, 0xcacb5bf8872cb550L, 0x130b0a9f09bb6aeeL, 0xacac9afd1a0d1421L, 0xa74221674556961bL, 0x5c7d28b4e15b2eeL, 0x7c176b6cf1f52fc2L, 0xcce1cf990c0e0652L, 0xb56b5d8b2e9381d2L, 
+            0x1d1f75723e3bba4bL, 0x37f831e2b2a2748fL, 0x5591844bd6cdd74L, 33375L, 0xff90534eb10c5caL, 0x559077122780dbeL, 33338L, 33333L, 0xfb8aa8d4d314cad6L, 33335L, 
+            0xd2a7c9597501e7a4L, 0x559033dccfc4981L, 33354L, 33347L, 0x31a5cf29L, 33328L, 33328L, 33328L, 33328L, 33328L, 
+            33328L, 33328L, 33328L, 33328L, 33328L, 33328L, 33328L, 33328L, 33327L, 33326L, 
+            33327L
+        }, new String[] {
+            "<init>()V", "addFollow(Lcom/alipay/cif/user/model/UserInfo;Ljava/lang/String;Ljava/lang/String;Lcom/alipay/publiccore/biz/relation/msg/model/FollowSceneEnum;)Lcom/alipay/publiccore/common/service/facade/model/result/PublicResult;", "addFollowByUID(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/alipay/publiccore/biz/relation/msg/model/FollowSceneEnum;)Lcom/alipay/publiccore/common/service/facade/model/result/PublicResult;", "buildUniformEvent(Ljava/lang/String;Ljava/lang/String;Lcom/alipay/publiccore/biz/relation/msg/model/FollowSceneEnum;Lcom/alipay/opencore/service/facade/domain/AppInfo;)Lcom/alipay/common/event/UniformEvent;", "getUserAccount(Ljava/lang/String;Ljava/lang/String;)Lcom/alipay/publiccore/client/result/UserAccountResult;", "queryMoreOfficialAccount(Ljava/lang/String;ZII)Lcom/alipay/publiccore/client/result/OfficialAccountListResult;", "queryOfficialAccount(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;II)Lcom/alipay/publiccore/client/result/OfficialAccountListResult;", "queryOfficialDetail(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/alipay/publiccore/client/result/OfficialAccountResult;", "querySubOfficialType(Ljava/lang/String;)Lcom/alipay/publiccore/client/result/OfficialTypeListResult;", "queryUserFollowAccount(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;II)Lcom/alipay/publiccore/client/result/OfficialHomeListResult;", 
+            "removeFollow(Lcom/alipay/cif/user/model/UserInfo;Ljava/lang/String;Ljava/lang/String;)Z", "queryOfficialAccountSetMsg(Lcom/alipay/publiccore/client/req/OfficialAccountSetReq;)Lcom/alipay/publiccore/client/result/OfficialAccountSetResult;", "fillThirdPartyAccount(Ljava/lang/String;Ljava/lang/String;Lcom/alipay/publiccore/client/result/OfficialAccountSetResult;)V", "fillOfficialAccountInfo(Lcom/alipay/publiccore/client/model/OfficialAccountSetInfo;Lcom/alipay/cif/user/model/UserInfo;)V", "checkUserStatus(Lcom/alipay/cif/user/model/UserInfo;Lcom/alipay/publiccore/common/service/facade/model/result/PublicResult;Ljava/lang/String;)V", "getFollowIds(Ljava/util/List;)Ljava/util/List;", "convertToOfficial(Lcom/alipay/opencore/service/facade/domain/AppInfo;)Lcom/alipay/publiccore/client/model/OfficialAccountInfo;", "getProfile(Ljava/lang/String;)Ljava/lang/String;", "addMessageToOfficial(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;)V", "buildThirdPartyAccountInfos(Ljava/util/List;)Ljava/util/List;", 
+            "fillOfficialAccountInfo(Lcom/alipay/opencore/service/facade/domain/AppInfo;Lcom/alipay/publiccore/client/model/OfficialAccountInfo;)V", "followMdapLog(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;Ljava/lang/String;)V", "unFollowMdapLog(Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)V", "buildSuccessResult()Lcom/alipay/opencore/service/facade/result/FollowedTargetQueryResult;", "isClientCache()Z", "setOfficialAccountClient(Lcom/alipay/publiccore/common/service/integration/opencore/OfficialAccountClient;)V", "setUserInfoQueryClient(Lcom/alipay/publiccore/common/service/integration/cif/UserInfoQueryClient;)V", "setMessageInfoManager(Lcom/alipay/publiccore/biz/relation/msg/MessageInfoManager;)V", "setRequestOrganizationFacade(Lcom/alipay/publiccore/biz/shared/request/organization/RequestOrganizationFacade;)V", "setThirdPartyAccountService(Lcom/alipay/publiccore/core/service/thirdparty/ThirdPartyAccountService;)V", 
+            "setWelcomeMessageSendManager(Lcom/alipay/publiccore/biz/relation/msg/WelcomeMessageSendManager;)V", "setSendMessageTaskExecutor(Lorg/springframework/scheduling/concurrent/ThreadPoolTaskExecutor;)V", "setSystemParamService(Lcom/alipay/publiccore/core/service/systemparam/SystemParamService;)V", "setLogFacadeClient(Lcom/alipay/publiccore/common/service/integration/mdap/LogFacadeClient;)V", "setImgUrlServiceClient(Lcom/alipay/publiccore/common/service/integration/mobileprod/ImgUrlServiceClient;)V", "setThirdPartyAccountManager(Lcom/alipay/publiccore/biz/account/thirdparty/ThirdPartyAccountManager;)V", "setSlaLimitService(Lcom/alipay/publiccore/biz/relation/sla/SlaLimitService;)V", "setMobileEventPublisher(Lcom/alipay/common/event/UniformEventPublisher;)V", "access$000(Lcom/alipay/publiccore/biz/relation/impl/OfficialAccountManagerImpl;)Lcom/alipay/publiccore/biz/shared/request/organization/RequestOrganizationFacade;", "access$100()Lcom/alibaba/common/logging/Logger;", 
+            "access$200(Lcom/alipay/publiccore/biz/relation/impl/OfficialAccountManagerImpl;)Lcom/alipay/common/event/UniformEventPublisher;"
+        });
+        return aflag;
+    }
+
+    private static final Logger LOGGER = LoggerFactory.getLogger("com.alipay.publiccore.thirdparty.account");
+    private static final String ALIPAY_MSG_AVATAR = "http://pic.alipayobjects.com/e/201308/xRZadUdZN.png";
+    private static final String PREFER_MSG_AVATAR = "http://pic.alipayobjects.com/e/201308/xRaQhvNq9.png";
+    private ThreadPoolTaskExecutor sendMessageTaskExecutor;
+    private OfficialAccountClient officialAccountClient;
+    private UserInfoQueryClient userInfoQueryClient;
+    private ImgUrlServiceClient imgUrlServiceClient;
+    private MessageInfoManager messageInfoManager;
+    private RequestOrganizationFacade requestOrganizationFacade;
+    private ThirdPartyAccountService thirdPartyAccountService;
+    private ThirdPartyAccountManager thirdPartyAccountManager;
+    private WelcomeMessageSendManager welcomeMessageSendManager;
+    private SystemParamService systemParamService;
+    private LogFacadeClient logFacadeClient;
+    private SlaLimitService slaLimitService;
+    private UniformEventPublisher mobileEventPublisher;
+    private static final String MESSAGE_TEXT;
+    private static final String MESSAGE_TODO_S = "S";
+    private static final String MESSAGE_TODO_M = "M";
+    private static final boolean $VRc[][];
+
+    static 
+    {
+        boolean aflag[] = $VRi()[41];
+        MESSAGE_TEXT = MsgTypeEnum.IMAGE_TEXT.getCode();
+        aflag[0] = true;
+    }
+
+
+/*
+    static RequestOrganizationFacade access$000(OfficialAccountManagerImpl officialaccountmanagerimpl)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[38];
+        aflag[0] = true;
+        return officialaccountmanagerimpl.requestOrganizationFacade;
+    }
+
+*/
+
+
+/*
+    static Logger access$100()
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[39];
+        aflag[0] = true;
+        return LOGGER;
+    }
+
+*/
+
+
+/*
+    static UniformEventPublisher access$200(OfficialAccountManagerImpl officialaccountmanagerimpl)
+    {
+        boolean aflag[] = ($VRc != null ? $VRc : $VRi())[40];
+        aflag[0] = true;
+        return officialaccountmanagerimpl.mobileEventPublisher;
+    }
+
+*/
+}

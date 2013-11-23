@@ -22,11 +22,12 @@ import com.chenjw.knife.agent.filter.InstrumentFilter;
 import com.chenjw.knife.agent.filter.InvokePrintFilter;
 import com.chenjw.knife.agent.filter.PatternMethodFilter;
 import com.chenjw.knife.agent.filter.ProxyMethodFilter;
+import com.chenjw.knife.agent.filter.StatPrintFilter;
 import com.chenjw.knife.agent.filter.SystemOperationFilter;
-import com.chenjw.knife.agent.filter.TraceTimesCountFilter;
 import com.chenjw.knife.agent.filter.TimingFilter;
 import com.chenjw.knife.agent.filter.TimingStopFilter;
 import com.chenjw.knife.agent.filter.TraceMethodFilter;
+import com.chenjw.knife.agent.filter.TraceTimesCountFilter;
 import com.chenjw.knife.agent.service.CommandStatusService;
 import com.chenjw.knife.agent.utils.ClassLoaderHelper;
 import com.chenjw.knife.agent.utils.CommandHelper;
@@ -65,6 +66,9 @@ public class TraceCommandHandler implements CommandHandler {
 			throws Exception {
 		int traceNum = 1;
 		Map<String, String> nOptions = args.option("-n");
+		Map<String, String> cOptions = args.option("-c");
+		Map<String, String> tOptions = args.option("-t");
+		Map<String, String> fOptions = args.option("-f");
 		if (nOptions != null) {
 			traceNum = Integer.parseInt(nOptions.get("trace-num"));
 		}
@@ -74,12 +78,10 @@ public class TraceCommandHandler implements CommandHandler {
 		filters.add(new TimingStopFilter());
 		filters.add(new CurrentContextClassLoaderFilter());
 		filters.add(new InstrumentClassLoaderFilter());
-		Map<String, String> tOptions = args.option("-t");
-		if (tOptions != null) {
+		if (tOptions != null || cOptions!=null) {
 			filters.add(new InstrumentFilter());
 		}
 		filters.add(new InstrumentEnterLeaveFilter());
-		Map<String, String> fOptions = args.option("-f");
 		if (fOptions != null) {
 			filters.add(new PatternMethodFilter(fOptions
 					.get("filter-expression")));
@@ -90,12 +92,16 @@ public class TraceCommandHandler implements CommandHandler {
 		filters.add(new TraceTimesCountFilter(traceNum));
 		filters.add(new EnterLeavePrintFilter());
 		filters.add(new DepthFilter());
-		if (tOptions == null) {
+		if (tOptions == null && cOptions==null) {
 			filters.add(new Depth0Filter());
 		}
 		filters.add(new TimingFilter());
-		filters.add(new InvokePrintFilter());
-
+        if(cOptions!=null){
+            filters.add(new StatPrintFilter());
+        }
+        else{
+            filters.add(new InvokePrintFilter());
+        }
 		Profiler.listener = new FilterInvocationListener(filters);
 	}
 
@@ -109,7 +115,7 @@ public class TraceCommandHandler implements CommandHandler {
 
 	public void declareArgs(ArgDef argDef) {
 
-		argDef.setDefinition("trace [-f <filter-expression>] [-n <trace-num>] [-t] <trace-expression>");
+		argDef.setDefinition("trace [-f <filter-expression>] [-n <trace-num>]  [-c] [-t] <trace-expression>");
 
 	}
 }

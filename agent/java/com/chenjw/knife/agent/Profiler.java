@@ -23,7 +23,7 @@ public class Profiler {
 	public static final String METHOD_NAME_RETURN_END = "returnEnd";
 	public static final String METHOD_NAME_EXCEPTION_END = "exceptionEnd";
 
-	public static final Object VOID = new Object();
+	public static final String VOID = "vvvvvvvvvvvvvvvooooooooooooooiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiddddddddddddddddd";
 
 	public static volatile ProfilerListener listener = null;
 

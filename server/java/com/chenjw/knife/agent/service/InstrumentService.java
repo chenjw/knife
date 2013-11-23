@@ -18,7 +18,6 @@ import com.chenjw.knife.agent.bytecode.javassist.ClassLoaderClassPath;
 import com.chenjw.knife.agent.core.Lifecycle;
 import com.chenjw.knife.agent.core.ProfilerTemplate;
 import com.chenjw.knife.agent.core.ServiceRegistry;
-import com.chenjw.knife.agent.service.profilertemplate.DefaultProfilerTemplate;
 import com.chenjw.knife.agent.service.profilertemplate.StubProfilerTemplate;
 import com.chenjw.knife.bytecode.javassist.ClassGenerator;
 import com.chenjw.knife.bytecode.javassist.JavassistHelper;
@@ -244,7 +243,7 @@ public class InstrumentService implements Lifecycle {
 
             if (isStatic(ctMethod)) {
 
-                proxyCode = template.profileStaticCode(new String[] { "$class",
+                proxyCode = template.profileStaticCode(new String[] { "java.lang.Class.forName("+wrrapString(className)+")",
                         wrrapString(className), wrrapString(methodName)
 
                 });

@@ -18,7 +18,14 @@ public class DoCommandHandler implements CommandHandler {
 
 	public void handle(Args args, CommandDispatcher dispatcher) {
 		ClassLoaderHelper.view();
-		do6(args, dispatcher);
+		String num = args.arg("num");
+		if("6".equals(num)){
+		    do6(args, dispatcher);
+		}
+		else{
+		    do5(args, dispatcher);
+		}
+	
 	}
 
 	private void do1(Args args, CommandDispatcher dispatcher) {
@@ -41,7 +48,8 @@ public class DoCommandHandler implements CommandHandler {
 				//
 				new CommandInfo("find", "ApplyServiceImpl"),
 				new CommandInfo("cd", "0"),
-				new CommandInfo("trace", "-t apply") });
+				//new CommandInfo("trace", "-t apply"),
+				new CommandInfo("trace", "-c apply")});
 	}
 	
 	   private void do6(Args args, CommandDispatcher dispatcher) {
@@ -99,7 +107,7 @@ public class DoCommandHandler implements CommandHandler {
 	}
 
 	public void declareArgs(ArgDef argDef) {
-		argDef.setDefinition("do");
+		argDef.setDefinition("do <num>");
 
 	}
 }

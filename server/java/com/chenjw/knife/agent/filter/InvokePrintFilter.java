@@ -66,9 +66,8 @@ public class InvokePrintFilter implements Filter {
 	protected void onReturnEnd(MethodReturnEndEvent event) {
 		MethodReturnEndInfo info = new MethodReturnEndInfo();
 		Object r = event.getResult();
-		if (r == Profiler.VOID) {
+		if (Profiler.VOID.equals(r)) {
 			info.setVoid(true);
-
 		} else {
 			info.setVoid(false);
 			if (r != null) {

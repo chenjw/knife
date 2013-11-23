@@ -87,7 +87,7 @@ public class StubProfilerTemplate implements ProfilerTemplate {
     }
 
     public String voidCode() {
-        return Profiler.class.getName() + ".VOID";
+        return  "\""+Profiler.VOID+"\"";
     }
 
     private String getCode(String methodName, String[] args) {

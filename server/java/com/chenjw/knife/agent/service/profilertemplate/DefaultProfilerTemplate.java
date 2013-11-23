@@ -41,7 +41,7 @@ public class DefaultProfilerTemplate implements ProfilerTemplate {
     }
     
     public String voidCode(){
-       return PROFILER_CLASS.getName() + ".VOID";
+       return  "\""+Profiler.VOID+"\"";
     }
     
     private String getCode(String methodName,String[] args){
