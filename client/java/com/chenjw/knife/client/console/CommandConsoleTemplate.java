@@ -1,5 +1,8 @@
 package com.chenjw.knife.client.console;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 import com.chenjw.knife.client.constants.Constants;
@@ -17,7 +20,16 @@ import com.chenjw.knife.core.model.VMDescriptor;
 import com.chenjw.knife.utils.StringHelper;
 
 public abstract class CommandConsoleTemplate extends CommandListenerTemplate {
-
+    private FileWriter fileLog;
+    {
+        try {
+            File file=new File("knife.log");
+            fileLog=new FileWriter(file);
+            System.out.println("log to "+file.getAbsolutePath());
+        } catch (IOException e) {
+           e.printStackTrace();
+        }
+    }
 	private FormaterManager formaterManager = new FormaterManager(
 			new ClientPrinter(), this, new ClientCompletorProcesser());
 
@@ -85,9 +97,19 @@ public abstract class CommandConsoleTemplate extends CommandListenerTemplate {
 	}
 
 	public final void handleText(String line) {
+	    writeLogLine(line);
 		writeConsoleLine(line);
 	}
 
+	private void writeLogLine(String line){
+	    try {
+            fileLog.write(line+"\n");
+            fileLog.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
 	public abstract String readConsoleLine();
 
 	public abstract void writeConsoleLine(String line);

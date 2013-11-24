@@ -46,10 +46,12 @@ public class DoCommandHandler implements CommandHandler {
 		// dispatcher.dispatch(new Command("invoke", "-t apply({\"id\":1})"));
 		send(new CommandInfo[] {
 				//
+				new CommandInfo("prop", "debug on"),
 				new CommandInfo("find", "ApplyServiceImpl"),
 				new CommandInfo("cd", "0"),
-				//new CommandInfo("trace", "-t apply"),
-				new CommandInfo("trace", "-c apply")});
+				new CommandInfo("trace", "-t apply")
+				//new CommandInfo("trace", "-c apply")
+				});
 	}
 	
 	   private void do6(Args args, CommandDispatcher dispatcher) {
@@ -61,7 +63,7 @@ public class DoCommandHandler implements CommandHandler {
 	                //
 	                new CommandInfo("find", "OfficialAccountManagerImpl"),
 	                new CommandInfo("cd", "0"),
-	                new CommandInfo("invoke", "-t queryUserFollowAccount(\"2088102011188231\",null,null,null,1,10)") });
+	                new CommandInfo("invoke", "-t queryUserFollowAccount(\"2088102011188231\",\"iPhone\",\"7.7.0.1128\",\"apple-iphone\",1,10)") });
 	    }
 
 	private void send(CommandInfo... infos) {

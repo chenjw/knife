@@ -105,6 +105,7 @@ public class ByteCodeService implements Lifecycle {
 		String path = "/tmp/knife/orign/"
 				+ StringHelper.replaceChars(clazz.getName(), ".",
 						File.separator) + ".class";
+		System.out.println("saveOrignFile to"+path);
 		try {
 			FileHelper.writeByteArrayToFile(new File(path), byteCode);
 		} catch (IOException e) {
@@ -119,6 +120,7 @@ public class ByteCodeService implements Lifecycle {
 				+ StringHelper.replaceChars(clazz.getName(), ".",
 						File.separator) + ".class";
 		try {
+		    System.out.println("saveNewFile to"+path);
 			FileHelper.writeByteArrayToFile(new File(path), byteCode);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

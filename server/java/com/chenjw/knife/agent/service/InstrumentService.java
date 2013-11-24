@@ -12,6 +12,7 @@ import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
 import javassist.expr.MethodCall;
 
+import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.AgentClassLoader;
 import com.chenjw.knife.agent.Profiler;
 import com.chenjw.knife.agent.bytecode.javassist.ClassLoaderClassPath;
@@ -41,7 +42,7 @@ public class InstrumentService implements Lifecycle {
     private ProfilerTemplate      template            = new StubProfilerTemplate();
 
     private void buildMethodAccess(Method method) throws Exception {
-        
+
         // System.out.println(InstrumentManager.class.getClassLoader());
         String methodFullName = method.toGenericString();
         // filter traced method
@@ -53,6 +54,9 @@ public class InstrumentService implements Lifecycle {
         // filter unsupport method
         if (!isSupportTrace(method.getDeclaringClass().getName(), method.getName(),
             method.getModifiers())) {
+            if(Agent.isDebugOn()){
+                Agent.debug("not support trace when buildMethodAccess : "+method.getDeclaringClass().getName()+"."+method.getName()+" "+method.getModifiers());
+            }
             return;
         }
 
@@ -66,11 +70,16 @@ public class InstrumentService implements Lifecycle {
             // add enter leave code
             // addEnterLeaveCode(ctClass, newMethod);
             byte[] classBytes = newClassGenerator.toBytecode();
-
-            ServiceRegistry.getService(ByteCodeService.class).tryRedefineClass(
-                method.getDeclaringClass(), classBytes);
-            ServiceRegistry.getService(ByteCodeService.class).commitAll();
-
+            try {
+                ServiceRegistry.getService(ByteCodeService.class).tryRedefineClass(
+                    method.getDeclaringClass(), classBytes);
+                ServiceRegistry.getService(ByteCodeService.class).commitAll();
+            } catch (Exception e) {
+                if(Agent.isDebugOn()){
+                    Agent.debug("redefine class fail "+method.getDeclaringClass());
+                }
+                e.printStackTrace();
+            }
         }
 
     }
@@ -85,9 +94,12 @@ public class InstrumentService implements Lifecycle {
         }
         // filter unsupport method
         template.init();
-        
+
         if (!isSupportTrace(method.getDeclaringClass().getName(), method.getName(),
             method.getModifiers())) {
+            if(Agent.isDebugOn()){
+                Agent.debug("not support trace when buildMethodEnterLeave : "+method.getDeclaringClass().getName()+"."+method.getName()+" "+method.getModifiers());
+            }
             return;
         }
         ClassGenerator newClassGenerator = ClassGenerator.newInstance(method.getDeclaringClass()
@@ -98,9 +110,13 @@ public class InstrumentService implements Lifecycle {
             // add enter leave code
             addEnterLeaveCode(ctClass, newMethod);
             byte[] classBytes = newClassGenerator.toBytecode();
-            ServiceRegistry.getService(ByteCodeService.class).tryRedefineClass(
-                JavassistHelper.findClass(newClassGenerator.getCtClass()), classBytes);
-            ServiceRegistry.getService(ByteCodeService.class).commitAll();
+            try {
+                ServiceRegistry.getService(ByteCodeService.class).tryRedefineClass(
+                    JavassistHelper.findClass(newClassGenerator.getCtClass()), classBytes);
+                ServiceRegistry.getService(ByteCodeService.class).commitAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -146,7 +162,7 @@ public class InstrumentService implements Lifecycle {
                         wrrapString(methodName), "$args", resultExpr });
                 ctMethod.insertBefore("{" + beforeCode + "}");
                 ctMethod.insertAfter("{" + afterCode + "}", true);
-            
+
             }
         } catch (CannotCompileException e) {
             e.printStackTrace();
@@ -165,11 +181,13 @@ public class InstrumentService implements Lifecycle {
 
     public void buildTraceMethod(Method method) throws Exception {
         if (!isCanTrace(method.getDeclaringClass())) {
+            if(Agent.isDebugOn()){
+                Agent.debug("not trace "+method.getDeclaringClass().getName());
+            }
             return;
         }
         template.init();
         buildMethodAccess(method);
-
     }
 
     private static boolean isSupportClassNameAndMethodName(String className, String methodName) {
@@ -184,8 +202,9 @@ public class InstrumentService implements Lifecycle {
             isLog = false;
         } else if (className.startsWith("sun.")) {
             isLog = false;
+        } else if (className.startsWith("com.sun.")) {
+            isLog = false;
         }
-
         String name = className + "." + methodName;
         // pass for white list
         if (!isLog) {
@@ -215,6 +234,7 @@ public class InstrumentService implements Lifecycle {
     private class MethodCallExprEditor extends ExprEditor {
 
         public void edit(MethodCall methodcall) throws CannotCompileException {
+
             String className = methodcall.getClassName();
             String methodName = methodcall.getMethodName();
             CtMethod ctMethod = null;
@@ -224,13 +244,15 @@ public class InstrumentService implements Lifecycle {
                 throw new RuntimeException(methodName + " not found!", e1);
             }
             if (!isSupportTrace(className, ctMethod.getName(), ctMethod.getModifiers())) {
+                if(Agent.isDebugOn()){
+                    Agent.debug("not support trace when edit method : "+className+"."+ctMethod.getName()+" "+ctMethod.getModifiers());
+                }
                 return;
             }
             Class<?> returnClass = null;
             try {
                 returnClass = JavassistHelper.findClass(ctMethod.getReturnType());
             } catch (NotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             String resultExpr = null;
@@ -243,7 +265,8 @@ public class InstrumentService implements Lifecycle {
 
             if (isStatic(ctMethod)) {
 
-                proxyCode = template.profileStaticCode(new String[] { "java.lang.Class.forName("+wrrapString(className)+")",
+                proxyCode = template.profileStaticCode(new String[] {
+                        "java.lang.Class.forName(" + wrrapString(className) + ")",
                         wrrapString(className), wrrapString(methodName)
 
                 });
@@ -259,7 +282,7 @@ public class InstrumentService implements Lifecycle {
 
             String startCode = template.startCode(new String[] { "$0", wrrapString(className),
                     wrrapString(methodName), "$args", wrrapString(methodcall.getFileName()),
-                   "\""+ String.valueOf(methodcall.getLineNumber())+"\"" });
+                    wrrapString(String.valueOf(methodcall.getLineNumber())) });
 
             String returnEndCode = template.returnEndCode(new String[] { "$0",
                     wrrapString(className), wrrapString(methodName), "$args", resultExpr });
