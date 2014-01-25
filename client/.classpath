@@ -9,6 +9,6 @@
 	<classpathentry kind="lib" path="/knife.lib/lib/sinetfactory.jar"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/pmd-5.0.jar"/>
 	<classpathentry kind="lib" path="/knife.lib/lib/asm-all-4.1.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.6.0_45/lib/tools.jar"/>
+	<classpathentry kind="lib" path="/home/chenjw/software/jdk1.6.0_45/lib/tools.jar" sourcepath="/home/chenjw/software/jdk1.6.0_45/lib/tools.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
