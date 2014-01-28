@@ -29,8 +29,10 @@ import com.chenjw.knife.core.model.result.ClassConstructorInfo;
 import com.chenjw.knife.core.model.result.ClassFieldInfo;
 import com.chenjw.knife.core.model.result.ClassMethodInfo;
 import com.chenjw.knife.core.model.result.ConstructorInfo;
+import com.chenjw.knife.core.model.result.EntryInfo;
 import com.chenjw.knife.core.model.result.ExceptionInfo;
 import com.chenjw.knife.core.model.result.FieldInfo;
+import com.chenjw.knife.core.model.result.MapInfo;
 import com.chenjw.knife.core.model.result.MethodInfo;
 import com.chenjw.knife.core.model.result.ObjectInfo;
 import com.chenjw.knife.utils.ClassHelper;
@@ -249,8 +251,47 @@ public class LsCommandHandler implements CommandHandler {
 			ArrayInfo info = new ArrayInfo();
 			info.setElements(elements.toArray(new ObjectInfo[elements.size()]));
 			Agent.sendResult(ResultHelper.newResult(info));
-		} else {
-			Agent.sendResult(ResultHelper.newErrorResult("not array!"));
+		}
+		else if (target.getObj() instanceof Map) {
+
+            Map<Object,Object> map = (Map<Object,Object>) target.getObj();
+            List<EntryInfo> elements = new ArrayList<EntryInfo>();
+            int maxNum = 0;
+            int length = map.size();
+            Map<String, String> nOptions = args.option("-n");
+            if (nOptions != null) {
+                maxNum = Integer.parseInt(nOptions.get("num"));
+                if (maxNum > length) {
+                    maxNum = length;
+                }
+            } else {
+                maxNum = length;
+            }
+            int i=0;
+            for(Entry<Object,Object> entry:map.entrySet()){
+                if(i>=maxNum){
+                    break;
+                }
+                EntryInfo element = new EntryInfo();
+                ObjectInfo key=new ObjectInfo();
+                ObjectInfo value=new ObjectInfo();
+                key.setObjectId(ServiceRegistry.getService(
+                    ObjectHolderService.class).toId(entry.getKey()));
+                key.setValueString(toString(args, entry.getKey()));
+                value.setObjectId(ServiceRegistry.getService(
+                    ObjectHolderService.class).toId(entry.getValue()));
+                value.setValueString(toString(args, entry.getValue()));
+                element.setKey(key);
+                element.setValue(value);
+                elements.add(element);
+                i++;
+            }
+            MapInfo info = new MapInfo();
+            info.setElements(elements.toArray(new EntryInfo[elements.size()]));
+            Agent.sendResult(ResultHelper.newResult(info));
+        }
+		else {
+			Agent.sendResult(ResultHelper.newErrorResult("not array or map!"));
 		}
 
 	}

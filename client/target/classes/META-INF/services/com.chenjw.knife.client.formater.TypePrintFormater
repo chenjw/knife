@@ -1,4 +1,5 @@
 com.chenjw.knife.client.formater.ArrayFormater
+com.chenjw.knife.client.formater.MapFormater
 com.chenjw.knife.client.formater.ClassConstructorFormater
 com.chenjw.knife.client.formater.ClassFieldFormater
 com.chenjw.knife.client.formater.ClassListFormater
