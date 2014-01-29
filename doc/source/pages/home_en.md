@@ -23,7 +23,7 @@ Features btrace not support:
 
 # Download
 
-https://github.com/chenjw/knife/downloads
+https://sourceforge.net/projects/knife-download/files/
 
 # How to start?
 1. download knife-XXX.tar.gz

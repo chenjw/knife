@@ -138,7 +138,7 @@
 	
 	<target name="build-update-doc">
 		<!-- build doc-->
-		<exec executable="doxygen">
+		<exec executable="/home/chenjw/flareGet/Compressed/doxygen-1.8.6/bin/doxygen">
     		<arg value="${doc.dir}/config/doxygen/setting.cfg"/>
  		</exec>
 
