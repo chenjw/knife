@@ -10,7 +10,7 @@
 	<property name="dist.dir" location="${base.dir}/dist"/>
 	<property name="doc.dir" location="${base.dir}/doc"/>
 	<property environment="env"/>
-	<property name="version" value="0.8.3"/>
+	<property name="version" value="0.8.4"/>
 	<property name="appName" value="knife"/>
 	<property name="date" value="2012"/>
 	
@@ -115,6 +115,7 @@
 			<fileset dir="${base.dir}/shell"/>
   		</copy>
 		<chmod dir="${dist.dir}/knife" perm="774" includes="**/*.sh"/>
+		<echo message="${version}" file="${dist.dir}/knife/VERSION" />
 	</target>
 
 	<target name="copy-lib">

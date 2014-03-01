@@ -1,5 +1,7 @@
 package com.chenjw.knife.client;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map.Entry;
 
 import com.chenjw.knife.client.client.CommandClient;
@@ -13,12 +15,39 @@ import com.chenjw.knife.client.core.CommandService;
 import com.chenjw.knife.client.core.VMConnector;
 import com.chenjw.knife.client.utils.InetHelper;
 import com.chenjw.knife.client.utils.ssh.SshClient;
+import com.chenjw.knife.utils.FileHelper;
 import com.chenjw.knife.utils.JarHelper;
 import com.chenjw.knife.utils.PlatformHelper;
 import com.chenjw.knife.utils.StringHelper;
 
 public final class ClientMain {
 
+    private static void install(String ip,String userName,String password,String programePath){
+        System.out.print("installing...");
+        boolean neadReinstall=true;
+        File versionFile=InetHelper.scpGet(ip, userName, password, "/tmp/knife/VERSION");
+        if(versionFile!=null){
+            String remoteVersion;
+            try {
+                remoteVersion = FileHelper.readFileToString(versionFile, "UTF-8");
+                String localVersion=FileHelper.readFileToString(new File(programePath+"/VERSION"), "UTF-8");
+                if(StringHelper.equals(localVersion, remoteVersion)){
+                    neadReinstall=false;
+                }
+            } catch (IOException e) {
+                //
+                e.printStackTrace();
+            }
+        }
+        if(neadReinstall){
+            InetHelper.scpPut(ip, userName, password, programePath, "/tmp/");
+            System.out.println(" done!");
+        }
+        else{
+            System.out.println(" ignored!");
+        }
+    }
+    
 	public static void main(String args[]) throws Exception {
 		CommandService console = null;
 		// jline对windows的eclipse控制台支持不好
@@ -46,16 +75,15 @@ public final class ClientMain {
 				String userName = StringHelper.substringBefore(args[1], "/");
 				String password = StringHelper.substringAfterLast(args[1], "/");
 
-				String programePath = JarHelper.findJarFolder().getParentFile()
-						.getCanonicalPath();
-				InetHelper.scp(ip, userName, password, programePath, "/tmp/");
-				System.out.println("copy proxy to remote server!");
+				String programePath = JarHelper.findJarFolder().getParentFile().getAbsolutePath();
+				// 安装
+				install(ip,userName,password,programePath);
+				System.out.print("connecting...");
 				final SshClient sshClient = InetHelper.ssh(ip, userName,
 						password);
-				System.out.println("ssh connected!");
-
+				System.out.println(" done!");
+				System.out.print("proxy starting...");
 				sshClient.exec("cd /tmp/knife/;sh proxy.sh -d;");
-				System.out.println("starting proxy...");
 				while (true) {
 					String line = sshClient.readLine();
 					if (line != null
@@ -63,7 +91,7 @@ public final class ClientMain {
 						break;
 					}
 				}
-				System.out.println("proxy started!");
+				System.out.println(" done!");
 				Runtime.getRuntime().addShutdownHook(new Thread() {
 					@Override
 					public void run() {

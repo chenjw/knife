@@ -6,6 +6,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import com.chenjw.knife.client.utils.ssh.SshClient;
+import com.chenjw.knife.utils.StringHelper;
 import com.jscape.inet.scp.Scp;
 import com.jscape.inet.ssh.Ssh;
 import com.jscape.inet.ssh.SshConnectedEvent;
@@ -16,12 +17,27 @@ import com.jscape.inet.ssh.util.SshParameters;
 
 public class InetHelper {
 
-    public static void scp(String hostname, String username, String password,
-            String srcPath, String targetPath) {
+    public static File scpGet(String hostname, String username, String password,String targetFile) {
         SshParameters params = new SshParameters(hostname, username, password);
-
         Scp scp = new Scp(params);
+        File f =null;
+        try {
+            scp.connect();
+            String path=StringHelper.substringBeforeLast(targetFile, "/")+"/";
+            String fileName=StringHelper.substringAfterLast(targetFile, "/");
+            f =scp.download(path, fileName);
+            return f;
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+        scp.disconnect();
+        return f;
+    }
 
+    public static void scpPut(String hostname, String username, String password, String srcPath,
+                              String targetPath) {
+        SshParameters params = new SshParameters(hostname, username, password);
+        Scp scp = new Scp(params);
         try {
 
             scp.connect();
@@ -37,15 +53,12 @@ public class InetHelper {
         scp.disconnect();
     }
 
-    public static SshClient ssh(String hostname, String username,
-            String password) {
+    public static SshClient ssh(String hostname, String username, String password) {
 
         try {
-            SshParameters sshParams = new SshParameters(hostname, username,
-                    password);
+            SshParameters sshParams = new SshParameters(hostname, username, password);
             final StringBuffer sb = new StringBuffer();
-            final BlockingQueue<String> lines = new ArrayBlockingQueue<String>(
-                    1);
+            final BlockingQueue<String> lines = new ArrayBlockingQueue<String>(1);
             final Ssh ssh = new Ssh(sshParams);
             ssh.addSshListener(new SshListener() {
 
@@ -122,9 +135,9 @@ public class InetHelper {
             return null;
         }
     }
-    
+
     public static void main(String[] args) {
-        InetHelper.scp("aggrbillinfo.d934aqcn.alipay.net", "admin", "Aqc_paas",
+        InetHelper.scpPut("aggrbillinfo.d934aqcn.alipay.net", "admin", "Aqc_paas",
             "/home/chenjw/my_workspace/knife/lib/lib", "/tmp/");
     }
 }
