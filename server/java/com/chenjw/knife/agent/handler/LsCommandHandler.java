@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.chenjw.knife.agent.Agent;
 import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.CommandDispatcher;
@@ -303,7 +305,12 @@ public class LsCommandHandler implements CommandHandler {
 		String rr = null;
 		if (args.option("-d") != null) {
 			rr = ToStringHelper.toDetailString(obj);
-		} else {
+		}
+		else if(args.option("-j") != null){
+		    rr = JSON.toJSONString(obj,SerializerFeature.PrettyFormat);		    
+		}
+		
+		else {
 			rr = ToStringHelper.toString(obj);
 		}
 		return rr;
@@ -334,7 +341,7 @@ public class LsCommandHandler implements CommandHandler {
 	@Override
 	public void declareArgs(ArgDef argDef) {
 
-		argDef.setDefinition("ls [-f] [-m] [-c] [-a] [-d] [-n <num>] [<classname>]");
+		argDef.setDefinition("ls [-f] [-m] [-c] [-a] [-d] [-j] [-n <num>] [<classname>]");
 
 	}
 

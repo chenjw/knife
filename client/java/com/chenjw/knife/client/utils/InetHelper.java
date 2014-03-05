@@ -1,5 +1,6 @@
 package com.chenjw.knife.client.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -17,21 +18,24 @@ import com.jscape.inet.ssh.util.SshParameters;
 
 public class InetHelper {
 
-    public static File scpGet(String hostname, String username, String password,String targetFile) {
+    public static byte[] scpGet(String hostname, String username, String password,String targetFile) {
         SshParameters params = new SshParameters(hostname, username, password);
         Scp scp = new Scp(params);
-        File f =null;
+        byte[] bytes=null;
         try {
+            ByteArrayOutputStream f =new ByteArrayOutputStream();
             scp.connect();
             String path=StringHelper.substringBeforeLast(targetFile, "/")+"/";
             String fileName=StringHelper.substringAfterLast(targetFile, "/");
-            f =scp.download(path, fileName);
-            return f;
+            scp.download(f,path, fileName);
+            bytes= f.toByteArray();
         } catch (Exception e) {
             //e.printStackTrace();
         }
-        scp.disconnect();
-        return f;
+        finally{
+            scp.disconnect();
+        }
+        return bytes;
     }
 
     public static void scpPut(String hostname, String username, String password, String srcPath,
@@ -52,6 +56,24 @@ public class InetHelper {
         }
         scp.disconnect();
     }
+    
+    
+    public static void ssh(String command,String hostname, String username, String password) {
+
+        try {
+            SshParameters sshParams = new SshParameters(hostname, username, password);
+            final Ssh ssh = new Ssh(sshParams);
+            ssh.setReadTimeout(0);
+            ssh.setTimeout(0);
+            ssh.connect();
+            ssh.requestExec(command);
+            
+            ssh.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
 
     public static SshClient ssh(String hostname, String username, String password) {
 
