@@ -8,7 +8,6 @@ import com.chenjw.knife.agent.constants.Constants;
 import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.service.ContextService;
 import com.chenjw.knife.agent.service.ObjectHolderService;
-import com.chenjw.knife.utils.ClassHelper;
 import com.chenjw.knife.utils.ReflectHelper;
 import com.chenjw.knife.utils.StringHelper;
 
@@ -30,11 +29,11 @@ public class CommandHelper {
 					.get(Integer.parseInt(expression)));
 
 		} else {
-			target.setClazz(ClassHelper.findClass(expression));
+			target.setClazz(NativeHelper.findLoadedClass(expression));
 		}
 		return target;
 	}
-	
+
 	/**
 	 * 根据表达式从上下文中找到需要的对象
 	 * 
@@ -43,12 +42,12 @@ public class CommandHelper {
 	 * @throws Exception
 	 */
 	public static MethodInfo findMethod(String expression) throws Exception {
-		if(StringHelper.isBlank(expression)){
+		if (StringHelper.isBlank(expression)) {
 			return null;
 		}
 		// 是否針對目標對象
-		boolean isUserThisObject=true;
-		expression=expression.trim();
+		boolean isUserThisObject = true;
+		expression = expression.trim();
 		MethodInfo methodInfo = new MethodInfo();
 		Method method = null;
 		if (StringHelper.isNumeric(expression)) {
@@ -58,19 +57,20 @@ public class CommandHelper {
 
 		} else {
 			if (expression.indexOf(".") != -1) {
-				String className = StringHelper.substringBeforeLast(expression, ".");
+				String className = StringHelper.substringBeforeLast(expression,
+						".");
 				expression = StringHelper.substringAfterLast(expression, ".");
-				Class<?> clazz = ClassHelper.findClass(className);
+				Class<?> clazz = NativeHelper.findLoadedClass(className);
 				if (clazz == null) {
 					Agent.sendResult(ResultHelper.newErrorResult("class "
 							+ className + " not found!"));
 					return null;
 				}
-				
+
 				Method[] methods = ReflectHelper.getMethods(clazz);
 				for (Method tm : methods) {
 					if (StringHelper.equals(tm.getName(), expression)) {
-						isUserThisObject=false;
+						isUserThisObject = false;
 						method = tm;
 						break;
 					}
@@ -99,7 +99,7 @@ public class CommandHelper {
 		if (Modifier.isStatic(method.getModifiers())) {
 			methodInfo.setClazz(method.getDeclaringClass());
 			methodInfo.setThisObject(null);
-		} else if(isUserThisObject) {
+		} else if (isUserThisObject) {
 			Object thisObject = ServiceRegistry
 					.getService(ContextService.class).get(Constants.THIS);
 			methodInfo.setThisObject(thisObject);
@@ -107,7 +107,7 @@ public class CommandHelper {
 		}
 		return methodInfo;
 	}
-	
+
 	public static class MethodInfo {
 		private Object thisObject;
 		private Class<?> clazz;
@@ -138,7 +138,7 @@ public class CommandHelper {
 		}
 
 	}
-	
+
 	public static class ClassOrObject {
 		private Object obj = null;
 		private Class<?> clazz = null;
