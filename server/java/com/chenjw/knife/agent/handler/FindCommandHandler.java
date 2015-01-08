@@ -23,90 +23,85 @@ import com.chenjw.knife.utils.StringHelper;
 
 public class FindCommandHandler implements CommandHandler {
 
-	private Class<?> findClass(String className) {
-		try {
-			return Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
-	}
+    private Class<?> findClass(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            return null;
+        }
+    }
 
-	private Class<?>[] findLikeClass(String className) {
-		List<Class<?>> likeClass = new ArrayList<Class<?>>();
-		for (Class<?> clazz : Agent.getAllLoadedClasses()) {
-			if (clazz.getName().indexOf(className) != -1) {
-				likeClass.add(clazz);
-			}
-		}
-		return likeClass.toArray(new Class<?>[likeClass.size()]);
-	}
+    private Class<?>[] findLikeClass(String className) {
+        List<Class<?>> likeClass = new ArrayList<Class<?>>();
+        for (Class<?> clazz : Agent.getAllLoadedClasses()) {
+            if (StringHelper.matchIgnoreCase(className, clazz.getName())) {
+                likeClass.add(clazz);
+            }
+        }
+        return likeClass.toArray(new Class<?>[likeClass.size()]);
+    }
 
-	private boolean isNumeric(String str) {
-		return StringHelper.isNumeric(str);
-	}
+    private boolean isNumeric(String str) {
+        return StringHelper.isNumeric(str);
+    }
 
-	public void handle(Args args, CommandDispatcher dispatcher) {
-		Class<?> clazz = null;
-		String className = args.arg("find-expression");
-		if (isNumeric(className)) {
-			Class<?>[] likeClazz = (Class<?>[]) ServiceRegistry.getService(
-					ContextService.class).get(Constants.CLASS_LIST);
-			clazz = likeClazz[Integer.parseInt(className)];
-		} else {
-			clazz = findClass(className);
-			if (clazz == null) {
-				Class<?>[] likeClazz = findLikeClass(className);
-				if (likeClazz.length > 1) {
+    public void handle(Args args, CommandDispatcher dispatcher) {
+        Class<?> clazz = null;
+        String className = args.arg("find-expression");
+        if (isNumeric(className)) {
+            Class<?>[] likeClazz = (Class<?>[]) ServiceRegistry.getService(ContextService.class).get(Constants.CLASS_LIST);
+            clazz = likeClazz[Integer.parseInt(className)];
+        } else {
+            clazz = findClass(className);
+            if (clazz == null) {
+                Class<?>[] likeClazz = findLikeClass(className);
+                if (likeClazz.length > 1) {
 
-					ServiceRegistry.getService(ContextService.class).put(
-							Constants.CLASS_LIST, likeClazz);
+                    ServiceRegistry.getService(ContextService.class).put(Constants.CLASS_LIST, likeClazz);
 
-					ClassListInfo info = new ClassListInfo();
-					List<ClassInfo> cInfoList = new ArrayList<ClassInfo>();
-					for (Class<?> cc : likeClazz) {
-						ClassInfo cInfo = new ClassInfo();
-						cInfo.setInterface(cc.isInterface());
-						cInfo.setName(cc.getName());
-						cInfo.setClassLoader(ToStringHelper
-								.toClassLoaderString(cc));
-						cInfoList.add(cInfo);
+                    ClassListInfo info = new ClassListInfo();
+                    List<ClassInfo> cInfoList = new ArrayList<ClassInfo>();
+                    for (Class<?> cc : likeClazz) {
+                        ClassInfo cInfo = new ClassInfo();
+                        cInfo.setInterface(cc.isInterface());
+                        cInfo.setName(cc.getName());
+                        cInfo.setClassLoader(ToStringHelper.toClassLoaderString(cc));
+                        cInfoList.add(cInfo);
 
-					}
-					info.setClasses(cInfoList.toArray(new ClassInfo[cInfoList
-							.size()]));
-					info.setExpression(className);
-					Agent.sendResult(ResultHelper.newResult(info));
-					return;
-				} else if (likeClazz.length == 1) {
-					clazz = likeClazz[0];
-				}
-			}
-			if (clazz == null) {
-				Agent.sendResult(ResultHelper.newErrorResult("not found!"));
-				return;
-			}
-		}
-		// //
-		Object[] objs = NativeHelper.findInstancesByClass(clazz);
+                    }
+                    info.setClasses(cInfoList.toArray(new ClassInfo[cInfoList.size()]));
+                    info.setExpression(className);
+                    Agent.sendResult(ResultHelper.newResult(info));
+                    return;
+                } else if (likeClazz.length == 1) {
+                    clazz = likeClazz[0];
+                }
+            }
+            if (clazz == null) {
+                Agent.sendResult(ResultHelper.newErrorResult("not found!"));
+                return;
+            }
+        }
+        // //
+        Object[] objs = NativeHelper.findInstancesByClass(clazz);
 
-		InstanceListInfo info = new InstanceListInfo();
-		List<ObjectInfo> cInfoList = new ArrayList<ObjectInfo>();
-		for (Object obj : objs) {
-			ObjectInfo cInfo = new ObjectInfo();
-			cInfo.setObjectId(ServiceRegistry.getService(
-					ObjectHolderService.class).toId(obj));
-			cInfo.setValueString(ToStringHelper.toDetailString(obj));
-			cInfoList.add(cInfo);
+        InstanceListInfo info = new InstanceListInfo();
+        List<ObjectInfo> cInfoList = new ArrayList<ObjectInfo>();
+        for (Object obj : objs) {
+            ObjectInfo cInfo = new ObjectInfo();
+            cInfo.setObjectId(ServiceRegistry.getService(ObjectHolderService.class).toId(obj));
+            cInfo.setValueString(ToStringHelper.toDetailString(obj));
+            cInfoList.add(cInfo);
 
-		}
-		info.setInstances(cInfoList.toArray(new ObjectInfo[cInfoList.size()]));
-		info.setClassName(clazz.getName());
-		Agent.sendResult(ResultHelper.newResult(info));
-	}
+        }
+        info.setInstances(cInfoList.toArray(new ObjectInfo[cInfoList.size()]));
+        info.setClassName(clazz.getName());
+        Agent.sendResult(ResultHelper.newResult(info));
+    }
 
-	public void declareArgs(ArgDef argDef) {
+    public void declareArgs(ArgDef argDef) {
 
-		argDef.setDefinition("find <find-expression>");
+        argDef.setDefinition("find <find-expression>");
 
-	}
+    }
 }
