@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import com.chenjw.knife.agent.core.ServiceRegistry;
 import com.chenjw.knife.agent.service.SystemTagService;
@@ -133,15 +134,18 @@ public class ToStringHelper {
 	private static void _mapToString(Object obj, StringBuilder sb,
 			Map<Object, String> objMap, String path, boolean isDetail) {
 		sb.append("{");
-		Iterator<?> iterator = ((Map<?, ?>) obj).entrySet().iterator();
-		int i = 0;
-		while (iterator.hasNext()) {
-			if (i != 0) {
-				sb.append(",");
+		Set<?> entrySet=((Map<?, ?>) obj).entrySet();
+		if(entrySet!=null){
+			Iterator<?> iterator = entrySet.iterator();
+			int i = 0;
+			while (iterator.hasNext()) {
+				if (i != 0) {
+					sb.append(",");
+				}
+				_toString(iterator.next(), sb, objMap, path + "[" + i + "]",
+						isDetail);
+				i++;
 			}
-			_toString(iterator.next(), sb, objMap, path + "[" + i + "]",
-					isDetail);
-			i++;
 		}
 		sb.append("}");
 	}

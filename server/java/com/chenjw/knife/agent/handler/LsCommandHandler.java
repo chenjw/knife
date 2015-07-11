@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -41,7 +42,6 @@ import com.chenjw.knife.utils.ClassHelper;
 import com.chenjw.knife.utils.ReflectHelper;
 
 public class LsCommandHandler implements CommandHandler {
-
 
 	private ClassOrObject findTarget(Args args) {
 		String className = args.arg("classname");
@@ -226,12 +226,40 @@ public class LsCommandHandler implements CommandHandler {
 			ArrayInfo info = new ArrayInfo();
 			info.setElements(elements.toArray(new ObjectInfo[elements.size()]));
 			Agent.sendResult(ResultHelper.newResult(info));
-		} else if (target.getObj() instanceof List) {
+		} else if (target.getObj() instanceof Iterable) {
 
-			List<Object> list = (List<Object>) target.getObj();
+			Iterable<Object> list = (Iterable<Object>) target.getObj();
+			Iterator<Object> iterator = list.iterator();
 			List<ObjectInfo> elements = new ArrayList<ObjectInfo>();
 			int maxNum = 0;
-			int length = list.size();
+			Map<String, String> nOptions = args.option("-n");
+			if (nOptions != null) {
+				maxNum = Integer.parseInt(nOptions.get("num"));
+			} else {
+				maxNum = Integer.MAX_VALUE;
+			}
+			int num = 0;
+			while (iterator.hasNext()) {
+				if (num >= maxNum) {
+					break;
+				}
+				Object aObj = iterator.next();
+				ObjectInfo element = new ObjectInfo();
+				element.setObjectId(ServiceRegistry.getService(
+						ObjectHolderService.class).toId(aObj));
+				element.setValueString(toString(args, aObj));
+				elements.add(element);
+				num++;
+			}
+			ArrayInfo info = new ArrayInfo();
+			info.setElements(elements.toArray(new ObjectInfo[elements.size()]));
+			Agent.sendResult(ResultHelper.newResult(info));
+		} else if (target.getObj() instanceof Map) {
+
+			Map<Object, Object> map = (Map<Object, Object>) target.getObj();
+			List<EntryInfo> elements = new ArrayList<EntryInfo>();
+			int maxNum = 0;
+			int length = map.size();
 			Map<String, String> nOptions = args.option("-n");
 			if (nOptions != null) {
 				maxNum = Integer.parseInt(nOptions.get("num"));
@@ -241,58 +269,29 @@ public class LsCommandHandler implements CommandHandler {
 			} else {
 				maxNum = length;
 			}
-
-			for (int i = 0; i < maxNum; i++) {
-				Object aObj = list.get(i);
-				ObjectInfo element = new ObjectInfo();
-				element.setObjectId(ServiceRegistry.getService(
-						ObjectHolderService.class).toId(aObj));
-				element.setValueString(toString(args, aObj));
+			int i = 0;
+			for (Entry<Object, Object> entry : map.entrySet()) {
+				if (i >= maxNum) {
+					break;
+				}
+				EntryInfo element = new EntryInfo();
+				ObjectInfo key = new ObjectInfo();
+				ObjectInfo value = new ObjectInfo();
+				key.setObjectId(ServiceRegistry.getService(
+						ObjectHolderService.class).toId(entry.getKey()));
+				key.setValueString(toString(args, entry.getKey()));
+				value.setObjectId(ServiceRegistry.getService(
+						ObjectHolderService.class).toId(entry.getValue()));
+				value.setValueString(toString(args, entry.getValue()));
+				element.setKey(key);
+				element.setValue(value);
 				elements.add(element);
+				i++;
 			}
-			ArrayInfo info = new ArrayInfo();
-			info.setElements(elements.toArray(new ObjectInfo[elements.size()]));
+			MapInfo info = new MapInfo();
+			info.setElements(elements.toArray(new EntryInfo[elements.size()]));
 			Agent.sendResult(ResultHelper.newResult(info));
-		}
-		else if (target.getObj() instanceof Map) {
-
-            Map<Object,Object> map = (Map<Object,Object>) target.getObj();
-            List<EntryInfo> elements = new ArrayList<EntryInfo>();
-            int maxNum = 0;
-            int length = map.size();
-            Map<String, String> nOptions = args.option("-n");
-            if (nOptions != null) {
-                maxNum = Integer.parseInt(nOptions.get("num"));
-                if (maxNum > length) {
-                    maxNum = length;
-                }
-            } else {
-                maxNum = length;
-            }
-            int i=0;
-            for(Entry<Object,Object> entry:map.entrySet()){
-                if(i>=maxNum){
-                    break;
-                }
-                EntryInfo element = new EntryInfo();
-                ObjectInfo key=new ObjectInfo();
-                ObjectInfo value=new ObjectInfo();
-                key.setObjectId(ServiceRegistry.getService(
-                    ObjectHolderService.class).toId(entry.getKey()));
-                key.setValueString(toString(args, entry.getKey()));
-                value.setObjectId(ServiceRegistry.getService(
-                    ObjectHolderService.class).toId(entry.getValue()));
-                value.setValueString(toString(args, entry.getValue()));
-                element.setKey(key);
-                element.setValue(value);
-                elements.add(element);
-                i++;
-            }
-            MapInfo info = new MapInfo();
-            info.setElements(elements.toArray(new EntryInfo[elements.size()]));
-            Agent.sendResult(ResultHelper.newResult(info));
-        }
-		else {
+		} else {
 			Agent.sendResult(ResultHelper.newErrorResult("not array or map!"));
 		}
 
@@ -305,11 +304,10 @@ public class LsCommandHandler implements CommandHandler {
 		String rr = null;
 		if (args.option("-d") != null) {
 			rr = ToStringHelper.toDetailString(obj);
+		} else if (args.option("-j") != null) {
+			rr = JSON.toJSONString(obj, SerializerFeature.PrettyFormat);
 		}
-		else if(args.option("-j") != null){
-		    rr = JSON.toJSONString(obj,SerializerFeature.PrettyFormat);		    
-		}
-		
+
 		else {
 			rr = ToStringHelper.toString(obj);
 		}
