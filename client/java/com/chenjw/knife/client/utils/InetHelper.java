@@ -162,9 +162,5 @@ public class InetHelper {
 		}
 	}
 
-	public static void main(String[] args) {
-		InetHelper.scpPut("publicexprod.d7064aqcn.alipay.net", "admin",
-				"Aqc_paas", "/home/chenjw/my_workspace/knife/lib/lib", "/tmp/",
-				"aaa");
-	}
+
 }
