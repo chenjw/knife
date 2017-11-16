@@ -32,6 +32,13 @@ public class Agent {
                                            }
                                        };
 
+    public static long getObjectSize(Object obj) {
+        if (obj == null) {
+            return 0;
+        }
+        return agentInfo.getInst().getObjectSize(obj);
+    }
+
     public static void redefineClasses(Class<?> clazz, byte[] bytes) {
         try {
             agentInfo.getInst().redefineClasses(new ClassDefinition(clazz, bytes));

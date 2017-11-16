@@ -33,16 +33,14 @@ public final class ClassGenerator {
 	private ClassPool classPool;
 	private CtClass ctClass;
 
-	private Set<Class<?>> interfaces = new HashSet<Class<?>>();
+	private final Set<Class<?>> interfaces = new HashSet<Class<?>>();
 
-	private List<String> fields = new ArrayList<String>();
-	private List<MethodGenerator> methods = new ArrayList<MethodGenerator>();
+	private final List<String> fields = new ArrayList<String>();
+	private final List<MethodGenerator> methods = new ArrayList<MethodGenerator>();
 
 	public static ClassGenerator newInstance(String className,
 			ClassPath... classPaths) {
-	    
-	   
-	    
+
 		ClassGenerator classGenerator = new ClassGenerator();
 		classGenerator.initPool(null);
 		classGenerator.initClassPaths(classPaths);
@@ -153,6 +151,7 @@ public final class ClassGenerator {
 
 	private CtClass createNewCtClass(String className) {
 		CtClass newCtClass = classPool.makeClass(className);
+
 		// 添加默认构造函数
 		try {
 			newCtClass.addConstructor(CtNewConstructor
@@ -223,11 +222,13 @@ public final class ClassGenerator {
 	 * @param expr
 	 * @return
 	 */
-	public Field addField(Class<?> type, String name,Expression expr,boolean isStatic) {
-	    if(name==null){
-	        name = generateClassVariableName();
-	    }
-		this.fields.add(makeFieldStr(name, "private"+(isStatic?" static":""), type, expr));
+	public Field addField(Class<?> type, String name, Expression expr,
+			boolean isStatic) {
+		if (name == null) {
+			name = generateClassVariableName();
+		}
+		this.fields.add(makeFieldStr(name, "private"
+				+ (isStatic ? " static" : ""), type, expr));
 		return new Field(name, type, false);
 	}
 

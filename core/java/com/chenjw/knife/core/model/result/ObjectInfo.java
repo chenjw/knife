@@ -4,24 +4,33 @@ import java.io.Serializable;
 
 public class ObjectInfo implements Serializable {
 
-	private static final long serialVersionUID = 4479892158579401619L;
-	private String objectId;
-	private String valueString;
 
-	public String getObjectId() {
-		return objectId;
-	}
+    private static final long serialVersionUID = 4479892158579401619L;
+    private String            objectId;
+    private String            valueString;
+    private long              objectSize;
 
-	public void setObjectId(String objectId) {
-		this.objectId = objectId;
-	}
+    public String getObjectId() {
+        return objectId;
+    }
 
-	public String getValueString() {
-		return valueString;
-	}
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
 
-	public void setValueString(String valueString) {
-		this.valueString = valueString;
-	}
+    public String getValueString() {
+        return valueString;
+    }
 
+    public void setValueString(String valueString) {
+        this.valueString = valueString;
+    }
+
+    public long getObjectSize() {
+        return objectSize;
+    }
+
+    public void setObjectSize(long objectSize) {
+        this.objectSize = objectSize;
+    }
 }

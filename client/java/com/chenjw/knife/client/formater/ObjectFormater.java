@@ -4,12 +4,11 @@ import com.chenjw.knife.core.model.result.ObjectInfo;
 
 public class ObjectFormater extends BasePrintFormater<ObjectInfo> {
 
-	@Override
-	protected void print(ObjectInfo objectInfo) {
+    @Override
+    protected void print(ObjectInfo objectInfo) {
 
-		this.printLine(
-				" " + objectInfo.getObjectId() + objectInfo.getValueString());
+        this.printLine(" " + objectInfo.getObjectId() + objectInfo.getValueString() + " " + objectInfo.getObjectSize());
 
-		this.printLine( "finished!");
-	}
+        this.printLine("finished!");
+    }
 }

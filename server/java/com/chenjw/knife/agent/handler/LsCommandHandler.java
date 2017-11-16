@@ -188,6 +188,7 @@ public class LsCommandHandler implements CommandHandler {
 			info.setObjectId(ServiceRegistry.getService(
 					ObjectHolderService.class).toId(target.getObj()));
 			info.setValueString(toString(args, target.getObj()));
+            info.setObjectSize(Agent.getObjectSize(target.getObj()));
 			Agent.sendResult(ResultHelper.newResult(info));
 		}
 
@@ -314,7 +315,8 @@ public class LsCommandHandler implements CommandHandler {
 		return rr;
 	}
 
-	public void handle(Args args, CommandDispatcher dispatcher) {
+	@Override
+    public void handle(Args args, CommandDispatcher dispatcher) {
 		if (args.option("-f") != null) {
 			lsField(args);
 		} else if (args.option("-m") != null) {

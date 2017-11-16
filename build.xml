@@ -10,7 +10,7 @@
 	<property name="dist.dir" location="${base.dir}/dist"/>
 	<property name="doc.dir" location="${base.dir}/doc"/>
 	<property environment="env"/>
-	<property name="version" value="0.8.7"/>
+	<property name="version" value="0.8.9"/>
 	<property name="appName" value="knife"/>
 	<property name="date" value="2012"/>
 	
@@ -45,7 +45,7 @@
 	<target name="build-client">
 		<local name="name"/>
 		<property name="name" value="client"/>
-  		<javac destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false" encoding="UTF-8">
+  		<javac source="1.6" target="1.6" destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false" encoding="UTF-8">
 			<src path="${base.dir}/${name}/java"/>
 			<src path="${base.dir}/core/java"/>
 			<include name="**/*.java"/>
@@ -68,7 +68,7 @@
 	<target name="build-agent">
 		<local name="name"/>
 		<property name="name" value="agent"/>
-  		<javac destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false" encoding="UTF-8">
+  		<javac source="1.6" target="1.6" destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false" encoding="UTF-8">
     		<src path="${base.dir}/${name}/java"/>
 			<include name="**/*.java"/>
 			<classpath>
@@ -89,7 +89,7 @@
 	<target name="build-server">
 		<local name="name"/>
 		<property name="name" value="server"/>
-  		<javac destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false" encoding="UTF-8">
+  		<javac source="1.6" target="1.6" destdir="${build.classes.dir}/${name}" debug="on" includeantruntime="false" encoding="UTF-8">
 			<src path="${base.dir}/${name}/java"/>
 			<src path="${base.dir}/core/java"/>
 			<include name="**/*.java"/>
