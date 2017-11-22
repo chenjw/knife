@@ -28,7 +28,7 @@ public class SetCommandHandler implements CommandHandler {
 		if (fieldName.indexOf(".") != -1) {
 			String className = StringHelper.substringBeforeLast(fieldName, ".");
 			fieldName = StringHelper.substringAfterLast(fieldName, ".");
-			Class<?> clazz = ClassHelper.findClass(className);
+			Class<?> clazz = NativeHelper.findLoadedClass(className);
 			if (clazz == null) {
 				Agent.sendResult(ResultHelper
 						.newErrorResult("class not found!"));
