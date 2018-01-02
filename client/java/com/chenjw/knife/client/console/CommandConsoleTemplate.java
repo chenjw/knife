@@ -102,11 +102,9 @@ public abstract class CommandConsoleTemplate extends CommandListenerTemplate {
   }
 
   public void start() {
-
     Thread th = new Thread(new ConsoleWorker(), "knife-console-worker");
     th.setDaemon(true);
     th.start();
-
   }
 
   public final void handleText(String line) {
