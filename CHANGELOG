@@ -1,6 +1,6 @@
-0.8.12
-添加find -hc hexhashcode功能，支持根据对象toString时打印的hash码来查找对象
-
+0.8.13
+1. 添加find -hc hexhashcode功能，支持根据对象toString时打印的hash码来查找对象
+2. 连接选择进程时原来只能输入进程序号，修改为还可以直接输入进程号
 
 
 
