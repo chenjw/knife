@@ -1,5 +1,5 @@
-0.8.11
-添加ls -hc hexhashcode功能，支持根据一般对象toString时打印的hash码来查找对象
+0.8.12
+添加find -hc hexhashcode功能，支持根据对象toString时打印的hash码来查找对象
 
 
 
