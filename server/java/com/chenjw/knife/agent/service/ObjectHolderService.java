@@ -1,7 +1,6 @@
 package com.chenjw.knife.agent.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,14 +37,8 @@ public class ObjectHolderService implements Lifecycle {
   }
 
   public Object get(int num) {
-
     ObjectHolder r = getObjectHolder();
     return r.get(num);
-  }
-
-  public Object getByHexHashCode(String hexHashCode) {
-    ObjectHolder r = getObjectHolder();
-    return r.getByHexHashCode(hexHashCode);
   }
 
   private static class ObjectHolder {
@@ -53,29 +46,16 @@ public class ObjectHolderService implements Lifecycle {
 
     private Map<Object, Integer> map = new IdentityHashMap<Object, Integer>();
 
-    private Map<String, Integer> hexHashCodeMap = new HashMap<String, Integer>();
-
     public ObjectHolder() {
       ServiceRegistry.getService(SystemTagService.class).registerSystemTag("SYSTEM_RECORD_LIST",
           list);
       ServiceRegistry.getService(SystemTagService.class)
           .registerSystemTag("SYSTEM_RECORD_MAP", map);
-      ServiceRegistry.getService(SystemTagService.class).registerSystemTag(
-          "SYSTEM_RECORD_HEX_HASHCODE_MAP", hexHashCodeMap);
     }
 
     public void clear() {
       list.clear();
       map.clear();
-      hexHashCodeMap.clear();
-    }
-
-    public Object getByHexHashCode(String hexHashCode) {
-      Integer idx = hexHashCodeMap.get(hexHashCode);
-      if (idx == null) {
-        return null;
-      }
-      return get(idx);
     }
 
     public Object get(int i) {
@@ -94,7 +74,6 @@ public class ObjectHolderService implements Lifecycle {
         list.add(obj);
         i = list.size() - 1;
         map.put(obj, i);
-        hexHashCodeMap.put(Integer.toHexString(obj.hashCode()), i);
         return i;
       }
       return i;

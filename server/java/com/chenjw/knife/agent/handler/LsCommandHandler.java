@@ -48,20 +48,6 @@ public class LsCommandHandler implements CommandHandler {
     return CommandHelper.findTarget(className);
   }
 
-  private void lsHashCode(Args args) {
-    String className = args.arg("classname");
-    Object obj = ServiceRegistry.getService(ObjectHolderService.class).getByHexHashCode(className);
-    if (obj == null) {
-      Agent.sendResult(ResultHelper.newErrorResult("not found!"));
-      return;
-    }
-    ObjectInfo info = new ObjectInfo();
-    info.setObjectId(ServiceRegistry.getService(ObjectHolderService.class).toId(obj));
-    info.setValueString(toString(args, obj));
-    info.setObjectSize(Agent.getObjectSize(obj));
-    Agent.sendResult(ResultHelper.newResult(info));
-  }
-
   private void lsField(Args args) {
     ClassOrObject target = findTarget(args);
     if (target.isNotFound()) {
@@ -324,9 +310,7 @@ public class LsCommandHandler implements CommandHandler {
       lsArray(args);
     } else if (args.option("-c") != null) {
       lsConstruct(args);
-    } else if (args.option("-hc") != null) {
-      lsHashCode(args);
-    } else {
+    }  else {
       lsClass(args);
     }
   }
@@ -342,7 +326,7 @@ public class LsCommandHandler implements CommandHandler {
   @Override
   public void declareArgs(ArgDef argDef) {
 
-    argDef.setDefinition("ls [-f] [-m] [-c] [-a] [-d] [-j] [-hc] [-n <num>] [<classname>]");
+    argDef.setDefinition("ls [-f] [-m] [-c] [-a] [-d] [-j] [-n <num>] [<classname>]");
 
   }
 
