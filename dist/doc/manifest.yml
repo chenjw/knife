@@ -1,0 +1,13 @@
+--- 
+applications: 
+  .: 
+    framework: 
+      name: java_web
+      info: 
+        exec: 
+        description: Java Web Application
+        mem: 512M
+    name: knife-doc
+    url: ${name}.${target-base}
+    instances: 1
+    mem: 512M
