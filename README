@@ -1,3 +1,13 @@
-A java runtime diagnostic tool like Btrace. And provides many features btrace not support.More information see http://knifedoc.duapp.com/ .
+A java runtime diagnostic tool like Btrace. And provides many features btrace not support.
 
-download http://sourceforge.net/projects/knife-download/files/
+document
+
+git clone https://github.com/chenjw/knife.git
+open build/html/index.html
+
+
+
+
+download 
+
+http://sourceforge.net/projects/knife-download/files/
