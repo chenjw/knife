@@ -5,17 +5,20 @@ public abstract class Printer {
 		INFO, DEBUG;
 	}
 
-	public abstract void info(String str);
+	
+	public abstract void clear();
+	
+	public abstract int info(String str);
 
-	public abstract void debug(String str);
+	public abstract int debug(String str);
 
-	public void print(Level level, String str) {
+	public int print(Level level, String str) {
 		if (level == Level.INFO) {
-			info(str);
+			return info(str);
 		} else if (level == Level.INFO) {
-			debug(str);
+			return debug(str);
 		} else {
-			info(str);
+			return info(str);
 		}
 	}
 }

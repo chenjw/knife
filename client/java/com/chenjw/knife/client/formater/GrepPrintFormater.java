@@ -4,26 +4,32 @@ import com.chenjw.knife.core.Printer;
 
 public abstract class GrepPrintFormater {
 
-	protected String grep;
-	protected Printer printer;
+  protected String grep;
+  protected Printer printer;
 
-	protected final void printLine(String str) {
-		if (printer == null) {
-			return;
-		}
-		if (str == null) {
-			return;
-		}
-		if (grep != null) {
-			if (str.indexOf(grep) == -1) {
-				return;
-			}
-		}
-		printer.info(str);
-	}
+  protected int printLine(String str) {
+    if (printer == null) {
+      return 0;
+    }
+    if (str == null) {
+      return 0;
+    }
+    if (grep != null) {
+      if (str.indexOf(grep) == -1) {
+        return 0;
+      }
+    }
+    return printer.info(str);
+  }
 
-	public void setPrinter(Printer printer) {
-		this.printer = printer;
-	}
+  protected void clear() {
+    if (printer != null) {
+      printer.clear();
+    }
+  }
+
+  public void setPrinter(Printer printer) {
+    this.printer = printer;
+  }
 
 }

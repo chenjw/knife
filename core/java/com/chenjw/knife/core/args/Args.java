@@ -52,6 +52,9 @@ public class Args {
 					for (String valueDef : valueDefs) {
 						start = end + 1;
 						end = StringHelper.indexOf(tmp, ' ', start);
+						if (end == -1) {
+		                    end = tmp.length();
+		                }
 						String value = tmp.substring(start, end);
 						values.put(valueDef, value);
 					}

@@ -10,7 +10,7 @@ public class PreparedTableFormater extends GrepPrintFormater {
 	private static final int BORDER = 2;
 	private int[] width;
 	private String[] title;
-	private List<String[]> lines = new ArrayList<String[]>();
+	private List<Object[]> lines = new ArrayList<Object[]>();
 
 	public PreparedTableFormater(Printer printer, String grep) {
 
@@ -22,7 +22,7 @@ public class PreparedTableFormater extends GrepPrintFormater {
 		this.title = title;
 	}
 
-	protected void addLine(String... line) {
+	protected void addLine(Object... line) {
 		lines.add(line);
 	}
 
@@ -31,7 +31,7 @@ public class PreparedTableFormater extends GrepPrintFormater {
 		if (title != null) {
 			size = title.length;
 		}
-		for (String[] line : lines) {
+		for (Object[] line : lines) {
 			if (size == 0) {
 				size = line.length;
 			} else {
@@ -59,9 +59,9 @@ public class PreparedTableFormater extends GrepPrintFormater {
 				}
 			}
 
-			for (String[] line : lines) {
+			for (Object[] line : lines) {
 				if (line[i] != null) {
-					int len = line[i].length();
+					int len = String.valueOf(line[i]).length();
 					if (len > width[i]) {
 						width[i] = len;
 					}
@@ -105,10 +105,10 @@ public class PreparedTableFormater extends GrepPrintFormater {
 		}
 		printSeparatLine();
 		if (!lines.isEmpty()) {
-			for (String[] line : lines) {
+			for (Object[] line : lines) {
 				StringBuffer sb = new StringBuffer();
 				for (int i = 0; i < line.length; i++) {
-					int d = width[i] - line[i].length();
+					int d = width[i] - String.valueOf(line[i]).length();
 					sb.append(line[i]);
 					appendBlank(sb, d + BORDER, " ");
 				}

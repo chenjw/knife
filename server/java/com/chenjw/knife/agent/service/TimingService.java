@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import com.chenjw.knife.agent.core.Lifecycle;
 import com.chenjw.knife.core.Printer;
 
@@ -21,13 +20,20 @@ public class TimingService implements Lifecycle {
   private static final String DEFAULT_NAME = "DEFAULT";
   private static final Printer DEFAULT_PRINTER = new Printer() {
     @Override
-    public void info(String str) {
+    public int info(String str) {
       System.out.println(str);
+      return 0;
     }
 
     @Override
-    public void debug(String str) {
+    public int debug(String str) {
       System.out.println(str);
+      return 0;
+    }
+
+    @Override
+    public void clear() {
+      throw new IllegalStateException("not support");
     }
   };
   private final Map<String, Long> RECORDS = new HashMap<String, Long>();

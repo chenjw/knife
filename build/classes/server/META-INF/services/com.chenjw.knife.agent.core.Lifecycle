@@ -9,3 +9,4 @@ com.chenjw.knife.agent.service.PrinterService
 com.chenjw.knife.agent.service.SystemTagService
 com.chenjw.knife.agent.service.TimingService
 com.chenjw.knife.agent.service.CommandStatusService
+com.chenjw.knife.agent.service.HeapHistogramService

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-
 import com.chenjw.knife.client.constants.Constants;
 import com.chenjw.knife.client.core.CommandListenerTemplate;
 import com.chenjw.knife.client.core.Completable;
@@ -24,7 +23,7 @@ public abstract class CommandConsoleTemplate extends CommandListenerTemplate {
   {
     try {
       File file = new File("knife.log");
-      fileLog = new FileWriter(file, true);
+      fileLog = new FileWriter(file, false);
       System.out.println("log to " + file.getAbsolutePath());
     } catch (IOException e) {
       e.printStackTrace();
@@ -108,13 +107,12 @@ public abstract class CommandConsoleTemplate extends CommandListenerTemplate {
   }
 
   public final void handleText(String line) {
-    writeLogLine(line);
     writeConsoleLine(line);
   }
 
-  private void writeLogLine(String line) {
+  protected void writeLog(String line) {
     try {
-      fileLog.write(line + "\n");
+      fileLog.write(line);
       fileLog.flush();
     } catch (IOException e) {
       e.printStackTrace();
@@ -123,7 +121,9 @@ public abstract class CommandConsoleTemplate extends CommandListenerTemplate {
 
   public abstract String readConsoleLine();
 
-  public abstract void writeConsoleLine(String line);
+  public abstract int writeConsoleLine(String line);
+
+  public abstract void clearConsole();
 
   public abstract void setCompletors(String[]... strs);
 
@@ -145,24 +145,37 @@ public abstract class CommandConsoleTemplate extends CommandListenerTemplate {
   private class ClientPrinter extends Printer {
 
     @Override
-    public void info(String str) {
+    public int info(String str) {
       if (str == null) {
-        return;
+        return 0;
       }
       try {
-        writeConsoleLine(str);
+
+        return writeConsoleLine(str);
+
       } catch (Exception e) {
         e.printStackTrace();
       }
+      return 0;
     }
 
     @Override
-    public void debug(String str) {
+    public int debug(String str) {
       if (str == null) {
-        return;
+        return 0;
       }
       try {
-        writeConsoleLine(str);
+        return writeConsoleLine(str);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      return 0;
+    }
+
+    @Override
+    public void clear() {
+      try {
+        clearConsole();
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -176,6 +189,7 @@ public abstract class CommandConsoleTemplate extends CommandListenerTemplate {
       if (content != null) {
         if (content != null) {
           TypePrintFormater formater = formaterManager.get(content.getClass());
+          //System.out.println(formater.getClass());
           formater.printObject(content);
         }
       }

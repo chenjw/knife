@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.chenjw.knife.client.core.CommandListener;
 import com.chenjw.knife.client.core.Completable;
+
 import com.chenjw.knife.core.Printer;
 
 public class FormaterManager {
@@ -18,6 +19,7 @@ public class FormaterManager {
 		this.printer = printer;
 		this.commandListener = commandListener;
 		this.completeHandler = completeHandler;
+
 		for (TypePrintFormater<?> service : ServiceLoader
 				.load(TypePrintFormater.class)) {
 			add(service);
@@ -39,6 +41,7 @@ public class FormaterManager {
 			BasePrintFormater bf = (BasePrintFormater) formater;
 			bf.setCompleteHandler(completeHandler);
 			bf.setCommandListener(commandListener);
+			
 			bf.setPrinter(printer);
 		}
 

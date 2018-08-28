@@ -9,12 +9,25 @@ import com.chenjw.knife.core.args.Args;
 
 public class LogCommandHandler implements CommandHandler {
 
-	public void handle(Args args, CommandDispatcher dispatcher) {
-		Agent.sendResult(ResultHelper.newResult("log finished!"));
-	}
+  public void handle(Args args, CommandDispatcher dispatcher) {
 
-	public void declareArgs(ArgDef argDef) {
-		argDef.setDefinition("log");
+    for (int i = 0; i < 10; i++) {
+      Agent.clearConsole();
+      Agent.sendPart(ResultHelper.newFragment(i * 10 + "% finished!"));
+      Agent.sendPart(ResultHelper.newFragment((100-i * 10) + "% remain!"));
+      try {
+        Thread.sleep(1000l);
+      } catch (InterruptedException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+    }
 
-	}
+    Agent.sendResult(ResultHelper.newResult("log finished!"));
+  }
+
+  public void declareArgs(ArgDef argDef) {
+    argDef.setDefinition("log");
+
+  }
 }

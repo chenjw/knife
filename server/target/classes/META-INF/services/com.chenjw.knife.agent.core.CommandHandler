@@ -17,3 +17,5 @@ com.chenjw.knife.agent.handler.PropCommandHandler
 com.chenjw.knife.agent.handler.TopCommandHandler
 com.chenjw.knife.agent.handler.CdCommandHandler
 com.chenjw.knife.agent.handler.CmdCommandHandler
+com.chenjw.knife.agent.handler.ThreadCommandHandler
+com.chenjw.knife.agent.handler.HeapCommandHandler
