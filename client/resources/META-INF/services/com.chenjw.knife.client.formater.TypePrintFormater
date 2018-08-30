@@ -20,3 +20,4 @@ com.chenjw.knife.client.formater.CommandNameListFormater
 com.chenjw.knife.client.formater.MethodStatListFormater
 com.chenjw.knife.client.formater.ClearConsoleFormater
 com.chenjw.knife.client.formater.HeapHistogramFormater
+com.chenjw.knife.client.formater.GcInfoFormater

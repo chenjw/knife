@@ -86,36 +86,41 @@ public class HeapHistogramService implements Lifecycle {
   }
 
   private HeapHistogram parse(String histogramText) {
-    //System.out.println(histogramText);
+    // System.out.println(histogramText);
     HeapHistogram heapHistogram = new HeapHistogram();
     SortedMap<String, HeapClassInfo> classesMap = new TreeMap<String, HeapClassInfo>();
 
     heapHistogram.setTime(new Date());
     Scanner sc = new Scanner(histogramText);
-    sc.useRadix(10);
-    while (!sc.hasNext("-+")) {
+    try {
+      sc.useRadix(10);
+      while (!sc.hasNext("-+")) {
+        sc.nextLine();
+      }
+      sc.skip("-+");
       sc.nextLine();
-    }
-    sc.skip("-+");
-    sc.nextLine();
 
-    while (sc.hasNext("[0-9]+:")) { // NOI18N
-      HeapClassInfo newClInfo = new HeapClassInfo();
-      String jvmName;
-      sc.next();
-      newClInfo.setInstancesCount(sc.nextLong());
-      newClInfo.setBytes(sc.nextLong());
-      jvmName = sc.next();
-      sc.nextLine(); // skip module name on JDK 9
-      newClInfo.setName(convertJVMName(jvmName));
-      storeClassInfo(newClInfo, classesMap);
+      while (sc.hasNext("[0-9]+:")) { // NOI18N
+        HeapClassInfo newClInfo = new HeapClassInfo();
+        String jvmName;
+        sc.next();
+        newClInfo.setInstancesCount(sc.nextLong());
+        newClInfo.setBytes(sc.nextLong());
+        jvmName = sc.next();
+        sc.nextLine(); // skip module name on JDK 9
+        newClInfo.setName(convertJVMName(jvmName));
+        storeClassInfo(newClInfo, classesMap);
 
+      }
+      sc.next("Total"); // NOI18N
+      heapHistogram.setTotalInstances(sc.nextLong());
+      heapHistogram.setTotalBytes(sc.nextLong());
+      heapHistogram.setClasses(new ArrayList<HeapClassInfo>(classesMap.values()));
+      return heapHistogram;
+    } finally {
+      sc.close();
     }
-    sc.next("Total"); // NOI18N
-    heapHistogram.setTotalInstances(sc.nextLong());
-    heapHistogram.setTotalBytes(sc.nextLong());
-    heapHistogram.setClasses(new ArrayList<HeapClassInfo>(classesMap.values()));
-    return heapHistogram;
+
   }
 
   private void storeClassInfo(final HeapClassInfo newClInfo, final Map<String, HeapClassInfo> map) {

@@ -9,15 +9,14 @@ import com.chenjw.knife.core.args.Args;
 
 public class GcCommandHandler implements CommandHandler {
 
-	@Override
-	public void handle(Args args, CommandDispatcher dispatcher) {
-		System.gc();
-		Agent.sendResult(ResultHelper.newResult("gc finished!"));
-	}
+  @Override
+  public void handle(Args args, CommandDispatcher dispatcher) {
+    System.gc();
+    Agent.sendResult(ResultHelper.newResult("gc finished!"));
+  }
 
-	public void declareArgs(ArgDef argDef) {
-		argDef.setDefinition("gc");
-
-	}
+  public void declareArgs(ArgDef argDef) {
+    argDef.setDefinition("gc");
+  }
 
 }

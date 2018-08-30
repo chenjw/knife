@@ -5,7 +5,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import com.chenjw.knife.utils.StringHelper;
 import jline.ArgumentCompletor;
 import jline.Completor;
 import jline.ConsoleReader;
