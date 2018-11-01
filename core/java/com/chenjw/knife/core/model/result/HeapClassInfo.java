@@ -8,10 +8,10 @@ public class HeapClassInfo implements Serializable {
    */
   private static final long serialVersionUID = -8249279063894335624L;
   private String name;
-  private long instancesCount;
-  private long instancesCountIncrement;
-  private long bytes;
-  private long bytesIncrement;
+  private LongValue instancesCount=new LongValue();
+
+  private LongValue bytes=new LongValue();
+
 
   public String getName() {
     return name;
@@ -21,38 +21,20 @@ public class HeapClassInfo implements Serializable {
     this.name = name;
   }
 
-  public long getInstancesCount() {
+  public LongValue getInstancesCount() {
     return instancesCount;
   }
 
-  public void setInstancesCount(long instancesCount) {
+  public void setInstancesCount(LongValue instancesCount) {
     this.instancesCount = instancesCount;
   }
 
-  public long getBytes() {
+  public LongValue getBytes() {
     return bytes;
   }
 
-  public void setBytes(long bytes) {
+  public void setBytes(LongValue bytes) {
     this.bytes = bytes;
   }
-
-  public long getInstancesCountIncrement() {
-    return instancesCountIncrement;
-  }
-
-  public void setInstancesCountIncrement(long instancesCountIncrement) {
-    this.instancesCountIncrement = instancesCountIncrement;
-  }
-
-  public long getBytesIncrement() {
-    return bytesIncrement;
-  }
-
-  public void setBytesIncrement(long bytesIncrement) {
-    this.bytesIncrement = bytesIncrement;
-  }
-
-
 
 }

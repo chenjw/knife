@@ -70,12 +70,13 @@ public class ProxyClient implements Client {
 				}
 			}
 		} catch (Exception e) {
-			// e.printStackTrace();
+			e.printStackTrace();
 		} finally {
 			if (socket != null) {
 				try {
 					socket.close();
 				} catch (Exception e) {
+				  e.printStackTrace();
 				}
 			}
 			socket = null;
@@ -96,6 +97,7 @@ public class ProxyClient implements Client {
 				try {
 					serverSocket.close();
 				} catch (IOException e) {
+				  e.printStackTrace();
 				}
 			}
 		}

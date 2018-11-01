@@ -50,10 +50,8 @@ public class Agent {
     try {
       agentInfo.getInst().redefineClasses(new ClassDefinition(clazz, bytes));
     } catch (ClassNotFoundException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     } catch (UnmodifiableClassException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
@@ -169,6 +167,7 @@ public class Agent {
 
   public static void close() {
     try {
+      System.out.println("start close");
       send(new ClosePacket());
       try {
         Thread.sleep(3000);

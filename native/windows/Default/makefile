@@ -4,7 +4,7 @@
 
 -include ../makefile.init
 
-RM := del
+RM := rm
 
 # All of the sources participating in the build are defined here
 -include sources.mk
@@ -35,10 +35,9 @@ libnativehelper.dll: $(OBJS) $(USER_OBJS)
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C_DEPS)$(LIBRARIES) libnativehelper.dll
+	-$(RM) $(LIBRARIES)$(OBJS)$(C_DEPS) libnativehelper.dll
 	-@echo ' '
 
 .PHONY: all clean dependents
-.SECONDARY:
 
 -include ../makefile.targets

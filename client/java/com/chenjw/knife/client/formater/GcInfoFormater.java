@@ -1,5 +1,6 @@
 package com.chenjw.knife.client.formater;
 
+import com.chenjw.knife.client.utils.FormatUtils;
 import com.chenjw.knife.core.model.result.GcInfo;
 
 public class GcInfoFormater extends BasePrintFormater<GcInfo> {
@@ -8,47 +9,45 @@ public class GcInfoFormater extends BasePrintFormater<GcInfo> {
   protected void print(GcInfo gcInfo) {
 
     PreparedTableFormater table = new PreparedTableFormater(printer, grep);
-    table.setTitle("idx", "key", "value", "percent", "increment");
-    table.addLine(0, "ygc_count", gcInfo.getYgc(), "", gcInfo.getYgcIncrement());
-    table.addLine(1, "fullgc_count", gcInfo.getFgc(), "", gcInfo.getFgcIncrement());
+    table.setTitle("idx", "key", "value");
+    table.addLine(0,
 
-    table.addLine(2, "heap_used",
-        numStr(gcInfo.getMemHeapUsed(), true, false) + " / "
-            + numStr(gcInfo.getMemHeapCommitted(), true, false),
-        String.format("%.2f", gcInfo.getMemHeapUsed() * 100f / gcInfo.getMemHeapCommitted()) + "%",
-        numStr(gcInfo.getMemHeapUsedIncrement(), true, true));
-    table.addLine(3, "non_heap_used",
-        numStr(gcInfo.getMemNonHeapUsed(), true, false) + " / "
-            + numStr(gcInfo.getMemNonHeapCommitted(), true, false),
-        String.format("%.2f", gcInfo.getMemNonHeapUsed() * 100f / gcInfo.getMemNonHeapCommitted())
-            + "%",
-        numStr(gcInfo.getMemNonHeapUsedIncrement(), true, true));
+        "ygc_count",
+
+        FormatUtils.printLongValue(gcInfo.getYgc())
+
+    );
+
+    table.addLine(1,
+
+        "fullgc_count",
+
+        FormatUtils.printLongValue(gcInfo.getFgc())
+
+    );
+
+    table.addLine(2,
+
+        "heap_used",
+
+        FormatUtils.printLongValue(gcInfo.getMemHeapUsed()) + " / "
+            + FormatUtils.printBytes(gcInfo.getMemHeapCommitted()) + " " + FormatUtils
+                .printPercent(gcInfo.getMemHeapUsed().getValue(), gcInfo.getMemHeapCommitted())
+
+    );
+    table.addLine(3,
+
+        "non_heap_used",
+
+        FormatUtils.printLongValue(gcInfo.getMemNonHeapUsed()) + " / "
+            + FormatUtils.printBytes(gcInfo.getMemNonHeapCommitted()) + " "
+            + FormatUtils.printPercent(gcInfo.getMemNonHeapUsed().getValue(),
+                gcInfo.getMemNonHeapCommitted())
+
+    );
     table.print();
   }
 
 
 
-  private String numStr(long num, boolean isBytes, boolean isIncrement) {
-    StringBuffer sb = new StringBuffer();
-    if (isIncrement) {
-      if (num >= 0) {
-        sb.append("+");
-      } else {
-        sb.append("-");
-        num = -num;
-      }
-    }
-    String numStr = String.valueOf(num);
-    if (isBytes) {
-      if (num > 1024 * 1024 * 1024) {
-        numStr = String.format("%.1fg", num * 1f / (1024 * 1024 * 1024));
-      } else if (num > 1024 * 1024) {
-        numStr = String.format("%.1fm", num * 1f / (1024 * 1024));
-      } else if (num > 1024) {
-        numStr = String.format("%.1fk", num * 1f / (1024));
-      }
-    }
-    sb.append(numStr);
-    return sb.toString();
-  }
 }

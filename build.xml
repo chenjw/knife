@@ -10,7 +10,7 @@
 	<property name="dist.dir" location="${base.dir}/dist"/>
 	<property name="doc.dir" location="${base.dir}/doc"/>
 	<property environment="env"/>
-	<property name="version" value="0.9.1"/>
+	<property name="version" value="0.9.2"/>
 	<property name="appName" value="knife"/>
 	<property name="date" value="2012"/>
 	
@@ -126,7 +126,8 @@
 				<include name="knife-agent.jar"/>
 				<include name="knife-client.jar"/>
 				<include name="knife-server.jar"/>
-				<include name="misc.javassist-3.9.0.GA.jar"/>
+				<!--include name="misc.javassist-3.9.0.GA.jar"/-->
+				<include name="javassist.jar"/>
 				
 				<include name="sinetfactory.jar"/>
 			</fileset>

@@ -3,8 +3,9 @@ package com.chenjw.knife.agent.service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
-import java.nio.charset.StandardCharsets;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -20,6 +21,7 @@ import javax.management.ReflectionException;
 import com.chenjw.knife.agent.core.Lifecycle;
 import com.chenjw.knife.core.model.result.HeapClassInfo;
 import com.chenjw.knife.core.model.result.HeapHistogram;
+import com.chenjw.knife.core.model.result.LongValue;
 import com.chenjw.knife.utils.IOHelper;
 
 
@@ -86,7 +88,7 @@ public class HeapHistogramService implements Lifecycle {
   }
 
   private HeapHistogram parse(String histogramText) {
-    // System.out.println(histogramText);
+    //System.out.println(histogramText);
     HeapHistogram heapHistogram = new HeapHistogram();
     SortedMap<String, HeapClassInfo> classesMap = new TreeMap<String, HeapClassInfo>();
 
@@ -104,8 +106,8 @@ public class HeapHistogramService implements Lifecycle {
         HeapClassInfo newClInfo = new HeapClassInfo();
         String jvmName;
         sc.next();
-        newClInfo.setInstancesCount(sc.nextLong());
-        newClInfo.setBytes(sc.nextLong());
+        newClInfo.setInstancesCount(new LongValue(sc.nextLong()));
+        newClInfo.setBytes(new LongValue(sc.nextLong()));
         jvmName = sc.next();
         sc.nextLine(); // skip module name on JDK 9
         newClInfo.setName(convertJVMName(jvmName));
@@ -113,8 +115,8 @@ public class HeapHistogramService implements Lifecycle {
 
       }
       sc.next("Total"); // NOI18N
-      heapHistogram.setTotalInstances(sc.nextLong());
-      heapHistogram.setTotalBytes(sc.nextLong());
+      heapHistogram.setTotalInstances(new LongValue(sc.nextLong()));
+      heapHistogram.setTotalBytes(new LongValue(sc.nextLong()));
       heapHistogram.setClasses(new ArrayList<HeapClassInfo>(classesMap.values()));
       return heapHistogram;
     } finally {
@@ -128,8 +130,10 @@ public class HeapHistogramService implements Lifecycle {
     if (oldClInfo == null) {
       map.put(newClInfo.getName(), newClInfo);
     } else {
-      oldClInfo.setBytes(oldClInfo.getBytes() + newClInfo.getBytes());
-      oldClInfo.setInstancesCount(oldClInfo.getInstancesCount() + newClInfo.getInstancesCount());
+      oldClInfo.setBytes(
+          new LongValue(oldClInfo.getBytes().getValue() + newClInfo.getBytes().getValue()));
+      oldClInfo.setInstancesCount(new LongValue(
+          oldClInfo.getInstancesCount().getValue() + newClInfo.getInstancesCount().getValue()));
     }
   }
 
@@ -139,7 +143,7 @@ public class HeapHistogramService implements Lifecycle {
           new Object[] {new String[] {ALL_OBJECTS_OPTION}},
           new String[] {String[].class.getName()});
       if (histo instanceof String) {
-        return new ByteArrayInputStream(((String) histo).getBytes(StandardCharsets.UTF_8));
+        return new ByteArrayInputStream(((String) histo).getBytes("UTF-8"));
       }
     } catch (InstanceNotFoundException ex) {
       ex.printStackTrace();
@@ -147,6 +151,9 @@ public class HeapHistogramService implements Lifecycle {
       ex.printStackTrace();
     } catch (ReflectionException ex) {
       ex.printStackTrace();
+    } catch (UnsupportedEncodingException e) {
+
+      e.printStackTrace();
     }
     return null;
   }

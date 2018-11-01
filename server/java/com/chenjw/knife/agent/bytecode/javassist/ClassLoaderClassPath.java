@@ -64,6 +64,7 @@ public class ClassLoaderClassPath implements ClassPath {
 		try {
 			return new URL("file:/ClassLoaderClassPath/" + cname);
 		} catch (MalformedURLException e) {
+		  e.printStackTrace();
 			return null;
 		}
 	}

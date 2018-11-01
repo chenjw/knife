@@ -11,3 +11,4 @@ com.chenjw.knife.agent.service.TimingService
 com.chenjw.knife.agent.service.CommandStatusService
 com.chenjw.knife.agent.service.HeapHistogramService
 com.chenjw.knife.agent.service.GcService
+com.chenjw.knife.agent.service.HeapProfilerService

@@ -24,7 +24,7 @@ import com.sun.tools.attach.VirtualMachineDescriptor;
 public class LocalVMConnector implements VMConnector {
 
 	private static final String[] agentJars = new String[] {
-			"fastjson-1.1.17.jar", "misc.javassist-3.9.0.GA.jar",
+			"fastjson-1.1.17.jar", "javassist.jar",
 			"knife-server.jar" };
 
 	public List<VMDescriptor> listVM() throws Exception {
@@ -101,7 +101,7 @@ public class LocalVMConnector implements VMConnector {
 	private String createArgFile(String str) {
 		File tmpFile = null;
 		try {
-			tmpFile = File.createTempFile("agentArgs", ".dat");
+			tmpFile = FileHelper.createTempFile("knifeAgentArgs.dat");//.createTempFile("agentArgs", ".dat");
 			FileHelper.writeStringToFile(tmpFile, str, "UTF-8");
 		} catch (IOException e) {
 			e.printStackTrace();

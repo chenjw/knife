@@ -32,7 +32,7 @@ public class InetHelper {
 			scp.download(f, path, fileName);
 			bytes = f.toByteArray();
 		} catch (Exception e) {
-			// e.printStackTrace();
+			 e.printStackTrace();
 		} finally {
 			scp.disconnect();
 		}
@@ -102,6 +102,7 @@ public class InetHelper {
 								try {
 									lines.put(sb.toString());
 								} catch (InterruptedException e) {
+								  e.printStackTrace();
 								}
 								sb.delete(0, sb.length());
 							} else {

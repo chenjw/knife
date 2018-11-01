@@ -105,9 +105,7 @@ public final class ClassGenerator {
 			throw new RuntimeException("className cant be null!");
 		}
 		this.ctClass = this.findCtClass(className);
-		if (this.ctClass == null) {
-			throw new RuntimeException("ctClass cant be null!");
-		}
+		
 	}
 
 	private CtClass makeClass(byte[] classBytes) {
@@ -123,6 +121,7 @@ public final class ClassGenerator {
 				try {
 					is.close();
 				} catch (IOException e) {
+				  e.printStackTrace();
 				}
 			}
 		}
@@ -161,6 +160,7 @@ public final class ClassGenerator {
 					& ~Modifier.ABSTRACT);
 			return newCtClass;
 		} catch (CannotCompileException e) {
+		  e.printStackTrace();
 			return null;
 		}
 	}
@@ -262,6 +262,7 @@ public final class ClassGenerator {
 		try {
 			targetCtClass = classPool.getCtClass(className);
 		} catch (NotFoundException e) {
+		  e.printStackTrace();
 			return null;
 		}
 		return targetCtClass;

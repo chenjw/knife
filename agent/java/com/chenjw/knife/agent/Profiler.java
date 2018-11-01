@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
-
+import com.chenjw.knife.agent.event.NewObjectEvent;
 import com.chenjw.knife.agent.event.Event;
 import com.chenjw.knife.agent.event.MethodEnterEvent;
 import com.chenjw.knife.agent.event.MethodExceptionEndEvent;
@@ -13,238 +13,267 @@ import com.chenjw.knife.agent.event.MethodProfileEnterLeaveEvent;
 import com.chenjw.knife.agent.event.MethodProfileEvent;
 import com.chenjw.knife.agent.event.MethodReturnEndEvent;
 import com.chenjw.knife.agent.event.MethodStartEvent;
+import com.chenjw.knife.agent.event.NewArrayEvent;
 
 public class Profiler {
-	public static final String METHOD_NAME_PROFILE_METHOD = "profileMethod";
-	public static final String METHOD_NAME_PROFILE_STATIC_METHOD = "profileStaticMethod";
-	public static final String METHOD_NAME_ENTER = "enter";
-	public static final String METHOD_NAME_LEAVE = "leave";
-	public static final String METHOD_NAME_START = "start";
-	public static final String METHOD_NAME_RETURN_END = "returnEnd";
-	public static final String METHOD_NAME_EXCEPTION_END = "exceptionEnd";
+  public static final String METHOD_NAME_PROFILE_METHOD = "profileMethod";
+  public static final String METHOD_NAME_PROFILE_STATIC_METHOD = "profileStaticMethod";
+  public static final String METHOD_NAME_ENTER = "enter";
+  public static final String METHOD_NAME_LEAVE = "leave";
 
-	public static final String VOID = "vvvvvvvvvvvvvvvooooooooooooooiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiddddddddddddddddd";
+  public static final String METHOD_NAME_NEW_OBJECT = "newObject";
 
-	public static volatile ProfilerListener listener = null;
+  public static final String METHOD_NAME_NEW_ARRAY = "newArray";
 
-	public static void profileMethod(Object obj, String className,
-			String methodName) {
+  public static final String METHOD_NAME_START = "start";
+  public static final String METHOD_NAME_RETURN_END = "returnEnd";
+  public static final String METHOD_NAME_EXCEPTION_END = "exceptionEnd";
 
-		if (Profiler.listener == null) {
-			return;
-		}
+  public static final String VOID =
+      "vvvvvvvvvvvvvvvooooooooooooooiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiddddddddddddddddd";
 
-		if (obj == null) {
-			return;
-		}
+  public static volatile ProfilerListener listener = null;
 
-		for (Method method : findInstanceMethod(obj.getClass(), methodName)) {
-			profile(obj, method);
-		}
-		Class<?> clazz = null;
-		try {
-			clazz = Class.forName(className);
+  public static void profileMethod(Object obj, String className, String methodName) {
 
-		} catch (ClassNotFoundException e) {
+    if (Profiler.listener == null) {
+      return;
+    }
 
-		}
-		if (clazz == null) {
-			return;
-		}
-		if (clazz.isInterface()) {
-			return;
-		}
+    if (obj == null) {
+      return;
+    }
 
-		for (Method method : findInstanceMethod(clazz, methodName)) {
-			profile(obj, method);
-		}
-	}
+    for (Method method : findInstanceMethod(obj.getClass(), methodName)) {
+      profile(obj, method);
+    }
+    Class<?> clazz = null;
+    try {
+      clazz = Class.forName(className);
 
-	public static void profileStaticMethod(Class<?> clazz, String className,
-			String methodName) {
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+    if (clazz == null) {
+      return;
+    }
+    if (clazz.isInterface()) {
+      return;
+    }
 
-		if (Profiler.listener == null) {
-			return;
-		}
+    for (Method method : findInstanceMethod(clazz, methodName)) {
+      profile(obj, method);
+    }
+  }
 
-		if (clazz == null) {
-			return;
-		}
-		for (Method method : findStaticMethod(clazz, methodName)) {
-			profile(null, method);
-		}
+  public static void profileStaticMethod(Class<?> clazz, String className, String methodName) {
 
-	}
+    if (Profiler.listener == null) {
+      return;
+    }
 
-	// private static void profileEnterLeaveMethod(Object obj, String
-	// methodName) {
-	// if (Profiler.listener == null) {
-	// return;
-	// }
-	// if (obj == null) {
-	// return;
-	// }
-	// for (Method method : obj.getClass().getDeclaredMethods()) {
-	// if (method.getName().equals(methodName)) {
-	// profileEnterLeave(obj.getClass(), methodName);
-	// }
-	// }
-	// for (Method method : obj.getClass().getMethods()) {
-	// if (method.getName().equals(methodName)) {
-	// profileEnterLeave(method.getDeclaringClass(), methodName);
-	// }
-	// }
-	// }
-	//
-	// private static void profileEnterLeaveStaticMethod(Class<?> clazz,
-	// String methodName) {
-	// if (Profiler.listener == null) {
-	// return;
-	// }
-	// if (clazz == null) {
-	// return;
-	// }
-	// profileEnterLeave(clazz, methodName);
-	// }
+    if (clazz == null) {
+      return;
+    }
+    for (Method method : findStaticMethod(clazz, methodName)) {
+      profile(null, method);
+    }
 
-	/**
-	 * add trace bytecode
-	 * 
-	 * @param dep
-	 * @param clazz
-	 */
-	public static void profile(Object thisObject, Method method) {
-		if (Profiler.listener == null) {
-			return;
-		}
-		MethodProfileEvent event = new MethodProfileEvent();
-		event.setThisObject(thisObject);
-		event.setMethod(method);
-		sendEvent(event);
-	}
+  }
 
-	public static void profileEnterLeave(Method method) {
-		if (Profiler.listener == null) {
-			return;
-		}
-		MethodProfileEnterLeaveEvent event = new MethodProfileEnterLeaveEvent();
-		event.setMethod(method);
+  // private static void profileEnterLeaveMethod(Object obj, String
+  // methodName) {
+  // if (Profiler.listener == null) {
+  // return;
+  // }
+  // if (obj == null) {
+  // return;
+  // }
+  // for (Method method : obj.getClass().getDeclaredMethods()) {
+  // if (method.getName().equals(methodName)) {
+  // profileEnterLeave(obj.getClass(), methodName);
+  // }
+  // }
+  // for (Method method : obj.getClass().getMethods()) {
+  // if (method.getName().equals(methodName)) {
+  // profileEnterLeave(method.getDeclaringClass(), methodName);
+  // }
+  // }
+  // }
+  //
+  // private static void profileEnterLeaveStaticMethod(Class<?> clazz,
+  // String methodName) {
+  // if (Profiler.listener == null) {
+  // return;
+  // }
+  // if (clazz == null) {
+  // return;
+  // }
+  // profileEnterLeave(clazz, methodName);
+  // }
 
-		sendEvent(event);
-	}
+  /**
+   * add trace bytecode
+   * 
+   * @param dep
+   * @param clazz
+   */
+  public static void profile(Object thisObject, Method method) {
+    if (Profiler.listener == null) {
+      return;
+    }
+    MethodProfileEvent event = new MethodProfileEvent();
+    event.setThisObject(thisObject);
+    event.setMethod(method);
+    sendEvent(event);
+  }
 
-	public static void enter(Object thisObject, String className,
-			String methodName, Object[] arguments) {
-		if (Profiler.listener == null) {
-			return;
-		}
-		MethodEnterEvent event = new MethodEnterEvent();
-		event.setThisObject(thisObject);
-		event.setClassName(className);
-		event.setMethodName(methodName);
-		event.setArguments(arguments);
-		sendEvent(event);
-	}
+  public static void profileEnterLeave(Method method) {
+    if (Profiler.listener == null) {
+      return;
+    }
+    MethodProfileEnterLeaveEvent event = new MethodProfileEnterLeaveEvent();
+    event.setMethod(method);
 
-	public static void leave(Object thisObject, String className,
-			String methodName, Object[] arguments, Object result) {
-		if (Profiler.listener == null) {
-			return;
-		}
-		MethodLeaveEvent event = new MethodLeaveEvent();
-		event.setThisObject(thisObject);
-		event.setClassName(className);
-		event.setMethodName(methodName);
-		event.setArguments(arguments);
-		event.setResult(result);
-		sendEvent(event);
-	}
+    sendEvent(event);
+  }
 
-	public static void start(Object thisObject, String className,
-			String methodName, Object[] arguments, String fileName, String lineNum) {
-		if (Profiler.listener == null) {
-			return;
-		}
-		MethodStartEvent event = new MethodStartEvent();
-		event.setThisObject(thisObject);
-		event.setClassName(className);
-		event.setMethodName(methodName);
-		event.setArguments(arguments);
-		event.setFileName(fileName);
-		event.setLineNum(lineNum);
-		sendEvent(event);
-	}
 
-	public static void returnEnd(Object thisObject, String className,
-			String methodName, Object[] arguments, Object result) {
-		if (Profiler.listener == null) {
-			return;
-		}
-		MethodReturnEndEvent event = new MethodReturnEndEvent();
-		event.setThisObject(thisObject);
-		event.setClassName(className);
-		event.setMethodName(methodName);
-		event.setArguments(arguments);
-		event.setResult(result);
-		sendEvent(event);
-	}
+  public static void newObject(Object thisObject, String className, String constructorName,
+      Object[] arguments) {
+    if (Profiler.listener == null) {
+      return;
+    }
+    NewObjectEvent event = new NewObjectEvent();
+    event.setThisObject(thisObject);
+    event.setClassName(className);
+    event.setConstructorName(constructorName);
+    event.setArguments(arguments);
+    sendEvent(event);
+  }
 
-	public static void exceptionEnd(Object thisObject, String className,
-			String methodName, Object[] arguments, Throwable e) {
-		if (Profiler.listener == null) {
-			return;
-		}
-		MethodExceptionEndEvent event = new MethodExceptionEndEvent();
-		event.setThisObject(thisObject);
-		event.setClassName(className);
-		event.setMethodName(methodName);
-		event.setArguments(arguments);
-		event.setE(e);
-		sendEvent(event);
-	}
+  public static void newArray(Object thisObject, String className) {
+    if (Profiler.listener == null) {
+      return;
+    }
+    NewArrayEvent event = new NewArrayEvent();
+    event.setThisObject(thisObject);
+    event.setClassName(className);
+    sendEvent(event);
+  }
 
-	private static void sendEvent(Event event) {
-		if (Profiler.listener != null) {
-			try {
-				Profiler.listener.onEvent(event);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
 
-	public static Set<Method> findStaticMethod(Class<?> clazz, String methodName) {
-		Set<Method> methods = new HashSet<Method>();
+  public static void enter(Object thisObject, String className, String methodName,
+      Object[] arguments) {
+    if (Profiler.listener == null) {
+      return;
+    }
+    MethodEnterEvent event = new MethodEnterEvent();
+    event.setThisObject(thisObject);
+    event.setClassName(className);
+    event.setMethodName(methodName);
+    event.setArguments(arguments);
+    sendEvent(event);
+  }
 
-		for (Method method : clazz.getDeclaredMethods()) {
-			if (method.getName().equals(methodName)) {
-				if (Modifier.isStatic(method.getModifiers())) {
-					methods.add(method);
-				}
-			}
-		}
-		return methods;
-	}
+  public static void leave(Object thisObject, String className, String methodName,
+      Object[] arguments, Object result) {
+    if (Profiler.listener == null) {
+      return;
+    }
+    MethodLeaveEvent event = new MethodLeaveEvent();
+    event.setThisObject(thisObject);
+    event.setClassName(className);
+    event.setMethodName(methodName);
+    event.setArguments(arguments);
+    event.setResult(result);
+    sendEvent(event);
+  }
 
-	public static Set<Method> findInstanceMethod(Class<?> clazz,
-			String methodName) {
-		Set<Method> methods = new HashSet<Method>();
+  public static void start(Object thisObject, String className, String methodName,
+      Object[] arguments, String fileName, String lineNum) {
+    if (Profiler.listener == null) {
+      return;
+    }
+    MethodStartEvent event = new MethodStartEvent();
+    event.setThisObject(thisObject);
+    event.setClassName(className);
+    event.setMethodName(methodName);
+    event.setArguments(arguments);
+    event.setFileName(fileName);
+    event.setLineNum(lineNum);
+    sendEvent(event);
+  }
 
-		for (Method method : clazz.getDeclaredMethods()) {
-			if (method.getName().equals(methodName)) {
-				if (!Modifier.isStatic(method.getModifiers())) {
-					methods.add(method);
-				}
-			}
-		}
-		for (Method method : clazz.getMethods()) {
-			if (method.getName().equals(methodName)) {
-				if (!Modifier.isStatic(method.getModifiers())) {
-					methods.add(method);
-				}
-			}
-		}
+  public static void returnEnd(Object thisObject, String className, String methodName,
+      Object[] arguments, Object result) {
+    if (Profiler.listener == null) {
+      return;
+    }
+    MethodReturnEndEvent event = new MethodReturnEndEvent();
+    event.setThisObject(thisObject);
+    event.setClassName(className);
+    event.setMethodName(methodName);
+    event.setArguments(arguments);
+    event.setResult(result);
+    sendEvent(event);
+  }
 
-		return methods;
-	}
+  public static void exceptionEnd(Object thisObject, String className, String methodName,
+      Object[] arguments, Throwable e) {
+    if (Profiler.listener == null) {
+      return;
+    }
+    MethodExceptionEndEvent event = new MethodExceptionEndEvent();
+    event.setThisObject(thisObject);
+    event.setClassName(className);
+    event.setMethodName(methodName);
+    event.setArguments(arguments);
+    event.setE(e);
+    sendEvent(event);
+  }
+
+  private static void sendEvent(Event event) {
+    if (Profiler.listener != null) {
+      try {
+        Profiler.listener.onEvent(event);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  public static Set<Method> findStaticMethod(Class<?> clazz, String methodName) {
+    Set<Method> methods = new HashSet<Method>();
+
+    for (Method method : clazz.getDeclaredMethods()) {
+      if (method.getName().equals(methodName)) {
+        if (Modifier.isStatic(method.getModifiers())) {
+          methods.add(method);
+        }
+      }
+    }
+    return methods;
+  }
+
+  public static Set<Method> findInstanceMethod(Class<?> clazz, String methodName) {
+    Set<Method> methods = new HashSet<Method>();
+
+    for (Method method : clazz.getDeclaredMethods()) {
+      if (method.getName().equals(methodName)) {
+        if (!Modifier.isStatic(method.getModifiers())) {
+          methods.add(method);
+        }
+      }
+    }
+    for (Method method : clazz.getMethods()) {
+      if (method.getName().equals(methodName)) {
+        if (!Modifier.isStatic(method.getModifiers())) {
+          methods.add(method);
+        }
+      }
+    }
+
+    return methods;
+  }
 }

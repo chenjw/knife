@@ -46,10 +46,10 @@ public class HeapHistogram implements Serializable {
   private Map<String, HeapClassInfo> tempClassesMap;
 
   private Date time;
-  private long totalBytes;
-  private long totalInstances;
-  private long totalBytesIncrement = 0;
-  private long totalInstancesIncrement = 0;
+  private LongValue totalBytes = new LongValue();
+
+  private LongValue totalInstances = new LongValue();
+
 
   public List<HeapClassInfo> getClasses() {
     return classes;
@@ -67,22 +67,6 @@ public class HeapHistogram implements Serializable {
     this.time = time;
   }
 
-  public long getTotalBytes() {
-    return totalBytes;
-  }
-
-  public void setTotalBytes(long totalBytes) {
-    this.totalBytes = totalBytes;
-  }
-
-  public long getTotalInstances() {
-    return totalInstances;
-  }
-
-  public void setTotalInstances(long totalInstances) {
-    this.totalInstances = totalInstances;
-  }
-
 
 
   public Map<String, HeapClassInfo> getTempClassesMap() {
@@ -93,20 +77,22 @@ public class HeapHistogram implements Serializable {
     this.tempClassesMap = tempClassesMap;
   }
 
-  public long getTotalBytesIncrement() {
-    return totalBytesIncrement;
+  public LongValue getTotalBytes() {
+    return totalBytes;
   }
 
-  public void setTotalBytesIncrement(long totalBytesIncrement) {
-    this.totalBytesIncrement = totalBytesIncrement;
+  public void setTotalBytes(LongValue totalBytes) {
+    this.totalBytes = totalBytes;
   }
 
-  public long getTotalInstancesIncrement() {
-    return totalInstancesIncrement;
+  public LongValue getTotalInstances() {
+    return totalInstances;
   }
 
-  public void setTotalInstancesIncrement(long totalInstancesIncrement) {
-    this.totalInstancesIncrement = totalInstancesIncrement;
+  public void setTotalInstances(LongValue totalInstances) {
+    this.totalInstances = totalInstances;
   }
+
+
 
 }

@@ -19,7 +19,7 @@ public class ServiceRegistry {
 					ServiceRegistry.class.getClassLoader())) {
 				services.put(service.getClass(), service);
 			}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 

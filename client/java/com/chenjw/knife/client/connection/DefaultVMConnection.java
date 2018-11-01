@@ -68,11 +68,12 @@ public class DefaultVMConnection implements VMConnection {
 				isConnected = true;
 				break;
 			} catch (Exception e) {
-
+			  e.printStackTrace();
 			}
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
+			   e.printStackTrace();
 			}
 		}
 	}

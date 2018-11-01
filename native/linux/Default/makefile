@@ -35,10 +35,9 @@ libnativehelper.so: $(OBJS) $(USER_OBJS)
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C_DEPS)$(LIBRARIES) libnativehelper.so
+	-$(RM) $(LIBRARIES)$(OBJS)$(C_DEPS) libnativehelper.so
 	-@echo ' '
 
 .PHONY: all clean dependents
-.SECONDARY:
 
 -include ../makefile.targets

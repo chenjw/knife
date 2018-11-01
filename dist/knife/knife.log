@@ -1,0 +1,638 @@
+knife>0. 74173 com.chenjw.imagegrab.httpclient.HttpRequestResult
+knife>1. 63935 
+knife>input [0-1] to choose vm! 
+knife>connected!
+knife>idx  key            value                      
+knife>-----------------------------------------------
+knife>0    ygc_count      0 (+0)                     
+knife>1    fullgc_count   0 (+0)                     
+knife>2    heap_used      14.1m (+0) / 245.5m 5.75%  
+knife>3    non_heap_used  12.3m (+0) / 13.2m 93.40%  
+knife>-----------------------------------------------
+knife>top 20 bytes classes in heap (use -n to set topnum) 
+knife>
+knife>idx  classname                                         instances  bytes             bytes-percent  bytes-min-max  
+knife>------------------------------------------------------------------------------------------------------------------
+knife>0    char[]                                            43537      6.2m (+3.4m)      29.29%         2.8m-6.2m      
+knife>1    int[]                                             28748      5.0m (+1.6m)      23.71%         3.4m-5.0m      
+knife>2    byte[]                                            10323      6.0m (+727.8k)    28.26%         5.3m-6.0m      
+knife>3    java.nio.HeapCharBuffer                           9163       429.5k (+426.8k)  1.99%          2.8k-429.5k    
+knife>4    java.lang.String                                  32555      763.0k (+334.3k)  3.53%          428.7k-763.0k  
+knife>5    com.chenjw.knife.core.model.result.LongValue      4052       189.9k (+189.6k)  0.88%          384-189.9k     
+knife>6    java.util.regex.Matcher                           1016       63.5k (+63.3k)    0.29%          256-63.5k      
+knife>7    java.util.HashMap$Node                            4561       142.5k (+50.5k)   0.66%          92.1k-142.5k   
+knife>8    java.util.TreeMap$Entry                           3118       121.8k (+39.4k)   0.56%          82.4k-121.8k   
+knife>9    java.lang.Object[]                                4103       234.4k (+33.0k)   1.08%          201.4k-234.4k  
+knife>10   java.util.HashMap$Node[]                          561        79.8k (+25.7k)    0.37%          54.1k-79.8k    
+knife>11   com.chenjw.knife.core.model.result.HeapClassInfo  1008       23.6k (+23.6k)    0.11%          23.6k-23.6k    
+knife>12   java.lang.reflect.Method                          1228       105.5k (+12.8k)   0.49%          92.7k-105.5k   
+knife>13   java.lang.Class                                   1907       211.2k (+12.2k)   0.98%          199.0k-211.2k  
+knife>14   short[]                                           855        64.5k (+10.1k)    0.30%          54.4k-64.5k    
+knife>15   boolean[]                                         39         8.3k (+7.7k)      0.04%          632-8.3k       
+knife>16   java.lang.StringBuilder                           3085       72.3k (+7.3k)     0.33%          65.0k-72.3k    
+knife>17   java.lang.reflect.Field                           520        36.6k (+5.6k)     0.17%          31.0k-36.6k    
+knife>18   java.lang.String[]                                1367       44.4k (+5.0k)     0.21%          39.4k-44.4k    
+knife>19   java.util.concurrent.ConcurrentHashMap$Node       984        30.8k (+4.8k)     0.14%          25.9k-30.8k    
+knife>     Other                                             37935      1.4m              6.62%                         
+knife>     Total                                             190665     21.1m (+7.0m)     100.00%        14.1m-21.1m    
+knife>------------------------------------------------------------------------------------------------------------------
+knife>idx  key            value                            
+knife>-----------------------------------------------------
+knife>0    ygc_count      0 (+0)                           
+knife>1    fullgc_count   0 (+0)                           
+knife>2    heap_used      21.1m (+7.0m) / 245.5m 8.60%     
+knife>3    non_heap_used  13.3m (+1020.1k) / 14.0m 95.10%  
+knife>-----------------------------------------------------
+knife>top 20 bytes classes in heap (use -n to set topnum) 
+knife>
+knife>idx  classname                                         instances  bytes             bytes-percent  bytes-min-max  
+knife>------------------------------------------------------------------------------------------------------------------
+knife>0    char[]                                            56937      9.7m (+7.0m)      32.24%         2.8m-9.7m      
+knife>1    int[]                                             56427      7.8m (+4.4m)      25.79%         3.4m-7.8m      
+knife>2    byte[]                                            10740      7.2m (+2.0m)      23.96%         5.3m-7.2m      
+knife>3    java.nio.HeapCharBuffer                           19044      892.7k (+889.9k)  2.88%          2.8k-892.7k    
+knife>4    java.lang.String                                  46379      1.1m (+658.3k)    3.51%          428.7k-1.1m    
+knife>5    com.chenjw.knife.core.model.result.LongValue      8612       403.7k (+403.3k)  1.30%          384-403.7k     
+knife>6    java.lang.Object[]                                7551       362.7k (+161.3k)  1.17%          201.4k-362.7k  
+knife>7    java.io.ObjectStreamClass$WeakClassKey            4452       139.1k (+138.2k)  0.45%          992-139.1k     
+knife>8    java.util.regex.Matcher                           2114       132.1k (+131.9k)  0.43%          256-132.1k     
+knife>9    java.util.HashMap$Node                            5758       179.9k (+87.9k)   0.58%          92.1k-179.9k   
+knife>10   java.util.TreeMap$Entry                           4212       164.5k (+82.1k)   0.53%          82.4k-164.5k   
+knife>11   com.chenjw.knife.core.model.result.HeapClassInfo  2188       51.3k (+51.3k)    0.17%          23.6k-51.3k    
+knife>12   java.util.HashMap$Node[]                          578        96.4k (+42.3k)    0.31%          54.1k-96.4k    
+knife>13   java.lang.reflect.Method                          1370       117.7k (+25.0k)   0.38%          92.7k-117.7k   
+knife>14   short[]                                           941        71.0k (+16.6k)    0.23%          54.4k-71.0k    
+knife>15   boolean[]                                         65         15.2k (+14.6k)    0.05%          632-15.2k      
+knife>16   java.lang.Class                                   1922       212.8k (+13.9k)   0.69%          199.0k-212.8k  
+knife>17   java.lang.StringBuilder                           3343       78.4k (+13.4k)    0.25%          65.0k-78.4k    
+knife>18   java.lang.reflect.Field                           574        40.4k (+9.4k)     0.13%          31.0k-40.4k    
+knife>19   java.lang.Class[]                                 3957       89.5k (+8.6k)     0.29%          80.9k-89.5k    
+knife>     Other                                             37225      1.4m              4.66%                         
+knife>     Total                                             274389     30.2m (+16.1m)    100.00%        14.1m-30.2m    
+knife>------------------------------------------------------------------------------------------------------------------
+knife>idx  key            value                           
+knife>----------------------------------------------------
+knife>0    ygc_count      0 (+0)                          
+knife>1    fullgc_count   0 (+0)                          
+knife>2    heap_used      30.2m (+16.1m) / 245.5m 12.32%  
+knife>3    non_heap_used  13.8m (+1.5m) / 14.3m 96.36%    
+knife>----------------------------------------------------
+knife>top 20 bytes classes in heap (use -n to set topnum) 
+knife>
+knife>idx  classname                                         instances  bytes             bytes-percent  bytes-min-max  
+knife>------------------------------------------------------------------------------------------------------------------
+knife>0    char[]                                            69849      13.3m (+10.5m)    34.58%         2.8m-13.3m     
+knife>1    int[]                                             84171      9.8m (+6.4m)      25.54%         3.4m-9.8m      
+knife>2    byte[]                                            10849      8.5m (+3.2m)      22.00%         5.3m-8.5m      
+knife>3    java.nio.HeapCharBuffer                           28968      1.3m (+1.3m)      3.45%          2.8k-1.3m      
+knife>4    java.lang.String                                  59932      1.4m (+975.9k)    3.57%          428.7k-1.4m    
+knife>5    com.chenjw.knife.core.model.result.LongValue      13030      610.8k (+610.4k)  1.55%          384-610.8k     
+knife>6    java.lang.Object[]                                10907      482.7k (+281.3k)  1.23%          201.4k-482.7k  
+knife>7    java.io.ObjectStreamClass$WeakClassKey            8877       277.4k (+276.4k)  0.71%          992-277.4k     
+knife>8    java.util.regex.Matcher                           3217       201.1k (+200.8k)  0.51%          256-201.1k     
+knife>9    java.util.TreeMap$Entry                           5311       207.5k (+125.0k)  0.53%          82.4k-207.5k   
+knife>10   java.util.HashMap$Node                            6866       214.6k (+122.5k)  0.55%          92.1k-214.6k   
+knife>11   com.chenjw.knife.core.model.result.HeapClassInfo  3292       77.2k (+77.2k)    0.20%          23.6k-77.2k    
+knife>12   java.util.HashMap$Node[]                          588        112.6k (+58.5k)   0.29%          54.1k-112.6k   
+knife>13   java.lang.reflect.Method                          1370       117.7k (+25.0k)   0.30%          92.7k-117.7k   
+knife>14   boolean[]                                         91         22.1k (+21.5k)    0.06%          632-22.1k      
+knife>15   java.lang.StringBuilder                           3501       82.1k (+17.1k)    0.21%          65.0k-82.1k    
+knife>16   short[]                                           941        71.0k (+16.6k)    0.18%          54.4k-71.0k    
+knife>17   java.lang.Class                                   1922       212.8k (+13.9k)   0.54%          199.0k-212.8k  
+knife>18   java.lang.reflect.Field                           574        40.4k (+9.4k)     0.10%          31.0k-40.4k    
+knife>19   java.lang.Class[]                                 3957       89.5k (+8.6k)     0.23%          80.9k-89.5k    
+knife>     Other                                             37619      1.4m              3.69%                         
+knife>     Total                                             355832     38.4m (+24.3m)    100.00%        14.1m-38.4m    
+knife>------------------------------------------------------------------------------------------------------------------
+knife>idx  key            value                           
+knife>----------------------------------------------------
+knife>0    ygc_count      0 (+0)                          
+knife>1    fullgc_count   0 (+0)                          
+knife>2    heap_used      38.4m (+24.3m) / 245.5m 15.65%  
+knife>3    non_heap_used  13.9m (+1.6m) / 14.5m 96.05%    
+knife>----------------------------------------------------
+knife>top 20 bytes classes in heap (use -n to set topnum) 
+knife>
+knife>idx  classname                                         instances  bytes             bytes-percent  bytes-min-max  
+knife>------------------------------------------------------------------------------------------------------------------
+knife>0    char[]                                            82744      16.8m (+14.0m)    35.78%         2.8m-16.8m     
+knife>1    int[]                                             111915     12.2m (+8.8m)     26.01%         3.4m-12.2m     
+knife>2    byte[]                                            10958      9.7m (+4.4m)      20.56%         5.3m-9.7m      
+knife>3    java.nio.HeapCharBuffer                           38892      1.8m (+1.8m)      3.79%          2.8k-1.8m      
+knife>4    java.lang.String                                  73468      1.7m (+1.3m)      3.58%          428.7k-1.7m    
+knife>5    com.chenjw.knife.core.model.result.LongValue      17438      817.4k (+817.0k)  1.70%          384-817.4k     
+knife>6    java.io.ObjectStreamClass$WeakClassKey            13302      415.7k (+414.7k)  0.86%          992-415.7k     
+knife>7    java.lang.Object[]                                14263      602.7k (+401.3k)  1.25%          201.4k-602.7k  
+knife>8    java.util.regex.Matcher                           4320       270.0k (+269.8k)  0.56%          256-270.0k     
+knife>9    java.util.TreeMap$Entry                           6410       250.4k (+168.0k)  0.52%          82.4k-250.4k   
+knife>10   java.util.HashMap$Node                            7969       249.0k (+157.0k)  0.52%          92.1k-249.0k   
+knife>11   com.chenjw.knife.core.model.result.HeapClassInfo  4391       102.9k (+102.9k)  0.21%          23.6k-102.9k   
+knife>12   java.util.HashMap$Node[]                          598        128.8k (+74.7k)   0.27%          54.1k-128.8k   
+knife>13   boolean[]                                         117        29.0k (+28.4k)    0.06%          632-29.0k      
+knife>14   java.lang.reflect.Method                          1370       117.7k (+25.0k)   0.24%          92.7k-117.7k   
+knife>15   java.lang.StringBuilder                           3659       85.8k (+20.8k)    0.18%          65.0k-85.8k    
+knife>16   short[]                                           941        71.0k (+16.6k)    0.15%          54.4k-71.0k    
+knife>17   java.lang.Class                                   1922       212.8k (+13.9k)   0.44%          199.0k-212.8k  
+knife>18   java.lang.reflect.Field                           574        40.4k (+9.4k)     0.08%          31.0k-40.4k    
+knife>19   java.lang.Class[]                                 3957       89.5k (+8.6k)     0.19%          80.9k-89.5k    
+knife>     Other                                             38013      1.4m              3.04%                         
+knife>     Total                                             437221     47.0m (+32.9m)    100.00%        14.1m-47.0m    
+knife>------------------------------------------------------------------------------------------------------------------
+knife>idx  key            value                           
+knife>----------------------------------------------------
+knife>0    ygc_count      0 (+0)                          
+knife>1    fullgc_count   0 (+0)                          
+knife>2    heap_used      47.0m (+32.9m) / 245.5m 19.15%  
+knife>3    non_heap_used  14.0m (+1.7m) / 14.8m 95.15%    
+knife>----------------------------------------------------
+knife>top 20 bytes classes in heap (use -n to set topnum) 
+knife>
+knife>idx  classname                                         instances  bytes             bytes-percent  bytes-min-max  
+knife>------------------------------------------------------------------------------------------------------------------
+knife>0    char[]                                            95632      20.4m (+17.6m)    36.68%         2.8m-20.4m     
+knife>1    int[]                                             139659     14.5m (+11.2m)    26.21%         3.4m-14.5m     
+knife>2    byte[]                                            11067      10.9m (+5.6m)     19.60%         5.3m-10.9m     
+knife>3    java.nio.HeapCharBuffer                           48818      2.2m (+2.2m)      4.03%          2.8k-2.2m      
+knife>4    java.lang.String                                  86997      2.0m (+1.6m)      3.59%          428.7k-2.0m    
+knife>5    com.chenjw.knife.core.model.result.LongValue      21846      1.0m (+1023.7k)   1.80%          384-1.0m       
+knife>6    java.io.ObjectStreamClass$WeakClassKey            17727      554.0k (+553.0k)  0.97%          992-554.0k     
+knife>7    java.lang.Object[]                                17619      722.8k (+521.4k)  1.27%          201.4k-722.8k  
+knife>8    java.util.regex.Matcher                           5423       338.9k (+338.7k)  0.60%          256-338.9k     
+knife>9    java.util.TreeMap$Entry                           7509       293.3k (+210.9k)  0.52%          82.4k-293.3k   
+knife>10   java.util.HashMap$Node                            9072       283.5k (+191.4k)  0.50%          92.1k-283.5k   
+knife>11   com.chenjw.knife.core.model.result.HeapClassInfo  5490       128.7k (+128.7k)  0.23%          23.6k-128.7k   
+knife>12   java.util.HashMap$Node[]                          608        145.0k (+91.0k)   0.26%          54.1k-145.0k   
+knife>13   boolean[]                                         143        35.9k (+35.3k)    0.06%          632-35.9k      
+knife>14   java.lang.reflect.Method                          1370       117.7k (+25.0k)   0.21%          92.7k-117.7k   
+knife>15   java.lang.StringBuilder                           3817       89.5k (+24.5k)    0.16%          65.0k-89.5k    
+knife>16   short[]                                           941        71.0k (+16.6k)    0.13%          54.4k-71.0k    
+knife>17   java.lang.Class                                   1922       212.8k (+13.9k)   0.37%          199.0k-212.8k  
+knife>18   java.lang.reflect.Field                           574        40.4k (+9.4k)     0.07%          31.0k-40.4k    
+knife>19   java.lang.Class[]                                 3957       89.5k (+8.6k)     0.16%          80.9k-89.5k    
+knife>     Other                                             38407      1.4m              2.59%                         
+knife>     Total                                             518598     55.5m (+41.4m)    100.00%        14.1m-55.5m    
+knife>------------------------------------------------------------------------------------------------------------------
+knife>idx  key            value                           
+knife>----------------------------------------------------
+knife>0    ygc_count      0 (+0)                          
+knife>1    fullgc_count   0 (+0)                          
+knife>2    heap_used      55.5m (+41.4m) / 245.5m 22.60%  
+knife>3    non_heap_used  14.1m (+1.8m) / 14.8m 95.07%    
+knife>----------------------------------------------------
+knife>top 20 bytes classes in heap (use -n to set topnum) 
+knife>
+knife>idx  classname                                               instances  bytes             bytes-percent  bytes-min-max  
+knife>------------------------------------------------------------------------------------------------------------------------
+knife>0    com.chenjw.knife.core.model.result.LongValue            4416       207.0k (+206.6k)  4.17%          384-1.0m       
+knife>1    com.chenjw.knife.core.model.result.HeapClassInfo        2198       51.5k (+51.5k)    1.04%          23.6k-128.7k   
+knife>2    java.util.HashMap$Node                                  3911       122.2k (+30.2k)   2.46%          92.1k-283.5k   
+knife>3    java.lang.Class                                         1923       212.9k (+14.0k)   4.29%          199.0k-212.9k  
+knife>4    java.lang.reflect.Method                                1131       97.2k (+4.5k)     1.96%          92.7k-117.7k   
+knife>5    java.lang.reflect.Field                                 482        33.9k (+2.9k)     0.68%          31.0k-40.4k    
+knife>6    java.io.ObjectStreamField                               152        5.9k (+1.6k)      0.12%          4.3k-6.2k      
+knife>7    java.lang.Class$ReflectionData                          203        11.1k (+1.5k)     0.22%          9.6k-11.1k     
+knife>8    java.util.concurrent.ConcurrentHashMap                  35         2.2k (+896)       0.04%          1.3k-2.2k      
+knife>9    java.lang.ref.Finalizer                                 487        19.0k (+800)      0.38%          18.2k-19.0k    
+knife>10   long[]                                                  28         1.4k (+728)       0.03%          664-1.4k       
+knife>11   sun.reflect.DelegatingClassLoader                       17         1.2k (+720)       0.02%          504-1.2k       
+knife>12   java.util.regex.Pattern$CharPropertyNames$1             39         624 (+624)        0.01%          624-624        
+knife>13   java.io.ObjectStreamClass                               16         1.6k (+520)       0.03%          1.1k-2.0k      
+knife>14   java.util.Vector                                        49         1.5k (+448)       0.03%          1.1k-1.7k      
+knife>15   java.util.zip.ZipFile$ZipFileInflaterInputStream        198        10.8k (+448)      0.22%          10.4k-10.8k    
+knife>16   java.util.zip.ZipFile$ZipFileInputStream                203        11.1k (+448)      0.22%          10.7k-11.1k    
+knife>17   java.security.ProtectionDomain                          30         1.2k (+440)       0.02%          760-1.2k       
+knife>18   java.io.ObjectStreamField[]                             45         1.4k (+384)       0.03%          1.0k-1.5k      
+knife>19   sun.reflect.UnsafeQualifiedStaticLongFieldAccessorImpl  15         600 (+360)        0.01%          240-600        
+knife>     Other                                                   35115      4.1m              84.00%                        
+knife>     Total                                                   50693      4.8m (-9.3m)      100.00%        4.8m-55.5m     
+knife>------------------------------------------------------------------------------------------------------------------------
+knife>idx  key            value                         
+knife>--------------------------------------------------
+knife>0    ygc_count      1 (+1)                        
+knife>1    fullgc_count   0 (+0)                        
+knife>2    heap_used      4.8m (-9.3m) / 245.5m 1.98%   
+knife>3    non_heap_used  14.2m (+1.8m) / 14.9m 95.23%  
+knife>--------------------------------------------------
+knife>top 20 bytes classes in heap (use -n to set topnum) 
+knife>
+knife>idx  classname                                         instances  bytes             bytes-percent  bytes-min-max  
+knife>------------------------------------------------------------------------------------------------------------------
+knife>0    com.chenjw.knife.core.model.result.LongValue      7522       352.6k (+352.2k)  3.16%          384-1.0m       
+knife>1    java.nio.HeapCharBuffer                           6986       327.5k (+324.7k)  2.93%          2.8k-2.2m      
+knife>2    char[]                                            18216      3.1m (+280.2k)    27.97%         677.1k-20.4m   
+knife>3    java.io.ObjectStreamClass$WeakClassKey            3154       98.6k (+97.6k)    0.88%          992-554.0k     
+knife>4    com.chenjw.knife.core.model.result.HeapClassInfo  2972       69.7k (+69.7k)    0.62%          23.6k-128.7k   
+knife>5    java.util.HashMap$Node                            4689       146.5k (+54.5k)   1.31%          92.1k-283.5k   
+knife>6    java.util.regex.Matcher                           777        48.6k (+48.3k)    0.43%          256-338.9k     
+knife>7    java.lang.Class                                   1923       212.9k (+14.0k)   1.91%          199.0k-212.9k  
+knife>8    boolean[]                                         31         7.6k (+7.0k)      0.07%          632-35.9k      
+knife>9    java.lang.String                                  18579      435.4k (+6.7k)    3.90%          211.2k-2.0m    
+knife>10   java.lang.reflect.Method                          1131       97.2k (+4.5k)     0.87%          92.7k-117.7k   
+knife>11   java.lang.reflect.Field                           482        33.9k (+2.9k)     0.30%          31.0k-40.4k    
+knife>12   java.io.ObjectStreamField                         152        5.9k (+1.6k)      0.05%          4.3k-6.2k      
+knife>13   java.lang.Class$ReflectionData                    203        11.1k (+1.5k)     0.10%          9.6k-11.1k     
+knife>14   java.util.regex.Pattern$Branch                    31         992 (+960)        0.01%          32-4.5k        
+knife>15   java.util.concurrent.ConcurrentHashMap            35         2.2k (+896)       0.02%          1.3k-2.2k      
+knife>16   java.util.regex.Pattern$GroupHead                 36         864 (+864)        0.01%          24-4.1k        
+knife>17   java.util.regex.Pattern$GroupTail                 36         864 (+864)        0.01%          24-4.1k        
+knife>18   java.lang.ref.Finalizer                           487        19.0k (+800)      0.17%          18.2k-19.0k    
+knife>19   java.util.regex.Pattern$Node[]                    32         776 (+752)        0.01%          24-3.5k        
+knife>     Other                                             40858      6.0m              55.28%                        
+knife>     Total                                             108332     10.9m (-3.2m)     100.00%        4.8m-55.5m     
+knife>------------------------------------------------------------------------------------------------------------------
+knife>idx  key            value                         
+knife>--------------------------------------------------
+knife>0    ygc_count      1 (+1)                        
+knife>1    fullgc_count   0 (+0)                        
+knife>2    heap_used      10.9m (-3.2m) / 245.5m 4.44%  
+knife>3    non_heap_used  14.3m (+1.9m) / 15.0m 95.06%  
+knife>--------------------------------------------------
+knife>top 20 bytes classes in heap (use -n to set topnum) 
+knife>
+knife>idx  classname                                         instances  bytes             bytes-percent  bytes-min-max  
+knife>------------------------------------------------------------------------------------------------------------------
+knife>0    char[]                                            27402      5.5m (+2.7m)      31.94%         677.1k-20.4m   
+knife>1    int[]                                             40595      5.3m (+1.9m)      30.77%         1.4m-14.5m     
+knife>2    java.nio.HeapCharBuffer                           14178      664.6k (+661.8k)  3.78%          2.8k-2.2m      
+knife>3    com.chenjw.knife.core.model.result.LongValue      10718      502.4k (+502.0k)  2.86%          384-1.0m       
+knife>4    java.lang.String                                  28452      666.8k (+238.1k)  3.80%          211.2k-2.0m    
+knife>5    java.io.ObjectStreamClass$WeakClassKey            6369       199.0k (+198.1k)  1.13%          992-554.0k     
+knife>6    java.util.regex.Matcher                           1577       98.6k (+98.3k)    0.56%          256-338.9k     
+knife>7    java.lang.Object[]                                6641       296.6k (+95.2k)   1.69%          95.1k-722.8k   
+knife>8    com.chenjw.knife.core.model.result.HeapClassInfo  3768       88.3k (+88.3k)    0.50%          23.6k-128.7k   
+knife>9    java.util.HashMap$Node                            5489       171.5k (+79.5k)   0.98%          92.1k-283.5k   
+knife>10   java.util.HashMap$Node[]                          178        70.8k (+16.7k)    0.40%          38.3k-145.0k   
+knife>11   java.lang.Class                                   1923       212.9k (+14.0k)   1.21%          199.0k-212.9k  
+knife>12   boolean[]                                         57         14.5k (+13.9k)    0.08%          632-35.9k      
+knife>13   java.lang.reflect.Method                          1131       97.2k (+4.5k)     0.55%          92.7k-117.7k   
+knife>14   java.lang.reflect.Field                           482        33.9k (+2.9k)     0.19%          31.0k-40.4k    
+knife>15   java.util.regex.Pattern$Branch                    59         1.8k (+1.8k)      0.01%          32-4.5k        
+knife>16   java.util.regex.Pattern$GroupHead                 71         1.7k (+1.7k)      0.01%          24-4.1k        
+knife>17   java.util.regex.Pattern$GroupTail                 71         1.7k (+1.7k)      0.01%          24-4.1k        
+knife>18   java.io.ObjectStreamField                         152        5.9k (+1.6k)      0.03%          4.3k-6.2k      
+knife>19   java.lang.Class$ReflectionData                    203        11.1k (+1.5k)     0.06%          9.6k-11.1k     
+knife>     Other                                             17797      3.3m              19.41%                        
+knife>     Total                                             167313     17.2m (+3.0m)     100.00%        4.8m-55.5m     
+knife>------------------------------------------------------------------------------------------------------------------
+knife>idx  key            value                         
+knife>--------------------------------------------------
+knife>0    ygc_count      1 (+1)                        
+knife>1    fullgc_count   0 (+0)                        
+knife>2    heap_used      17.2m (+3.0m) / 245.5m 6.99%  
+knife>3    non_heap_used  14.3m (+2.0m) / 15.0m 95.13%  
+knife>--------------------------------------------------
+knife>top 20 bytes classes in heap (use -n to set topnum) 
+knife>
+knife>idx  classname                                         instances  bytes              bytes-percent  bytes-min-max  
+knife>-------------------------------------------------------------------------------------------------------------------
+knife>0    char[]                                            36556      7.9m (+5.1m)       34.13%         677.1k-20.4m   
+knife>1    int[]                                             60716      7.0m (+3.6m)       30.37%         1.4m-14.5m     
+knife>2    java.nio.HeapCharBuffer                           21370      1001.7k (+999.0k)  4.22%          2.8k-2.2m      
+knife>3    com.chenjw.knife.core.model.result.LongValue      13914      652.2k (+651.8k)   2.75%          384-1.0m       
+knife>4    java.lang.String                                  38293      897.5k (+468.8k)   3.79%          211.2k-2.0m    
+knife>5    java.io.ObjectStreamClass$WeakClassKey            9584       299.5k (+298.5k)   1.26%          992-554.0k     
+knife>6    java.lang.Object[]                                9093       398.1k (+196.8k)   1.68%          95.1k-722.8k   
+knife>7    java.util.regex.Matcher                           2377       148.6k (+148.3k)   0.63%          256-338.9k     
+knife>8    com.chenjw.knife.core.model.result.HeapClassInfo  4564       107.0k (+107.0k)   0.45%          23.6k-128.7k   
+knife>9    java.util.HashMap$Node                            6289       196.5k (+104.5k)   0.83%          92.1k-283.5k   
+knife>10   java.util.HashMap$Node[]                          188        87.0k (+32.9k)     0.37%          38.3k-145.0k   
+knife>11   boolean[]                                         83         21.4k (+20.8k)     0.09%          632-35.9k      
+knife>12   java.lang.Class                                   1923       212.9k (+14.0k)    0.90%          199.0k-212.9k  
+knife>13   java.util.TreeMap$Entry                           2455       95.9k (+13.5k)     0.40%          3.5k-293.3k    
+knife>14   java.lang.reflect.Method                          1131       97.2k (+4.5k)      0.41%          92.7k-117.7k   
+knife>15   java.lang.reflect.Field                           482        33.9k (+2.9k)      0.14%          31.0k-40.4k    
+knife>16   java.util.regex.Pattern$Branch                    87         2.7k (+2.7k)       0.01%          32-4.5k        
+knife>17   java.util.regex.Pattern$GroupHead                 106        2.5k (+2.5k)       0.01%          24-4.1k        
+knife>18   java.util.regex.Pattern$GroupTail                 106        2.5k (+2.5k)       0.01%          24-4.1k        
+knife>19   java.util.regex.Pattern$Node[]                    90         2.1k (+2.1k)       0.01%          24-3.5k        
+knife>     Other                                             16823      4.1m               17.53%                        
+knife>     Total                                             226230     23.2m (+9.0m)      100.00%        4.8m-55.5m     
+knife>-------------------------------------------------------------------------------------------------------------------
+knife>idx  key            value                         
+knife>--------------------------------------------------
+knife>0    ygc_count      1 (+1)                        
+knife>1    fullgc_count   0 (+0)                        
+knife>2    heap_used      23.2m (+9.0m) / 245.5m 9.43%  
+knife>3    non_heap_used  14.3m (+2.0m) / 15.1m 95.10%  
+knife>--------------------------------------------------
+knife>finished!
+knife>start sampling wait 10 seconds...
+knife>---thread snapshot---
+knife>[{
+	"blockedCount":0,
+	"blockedTime":-1,
+	"inNative":false,
+	"lockOwnerId":-1,
+	"lockedMonitors":[],
+	"lockedSynchronizers":[],
+	"stackTrace":[{
+		"className":"sun.management.ThreadImpl",
+		"fileName":"ThreadImpl.java",
+		"lineNumber":-2,
+		"methodName":"dumpThreads0",
+		"nativeMethod":true
+	},{
+		"className":"sun.management.ThreadImpl",
+		"fileName":"ThreadImpl.java",
+		"lineNumber":454,
+		"methodName":"dumpAllThreads",
+		"nativeMethod":false
+	},{
+		"className":"com.chenjw.knife.agent.handler.ThreadCommandHandler",
+		"fileName":"ThreadCommandHandler.java",
+		"lineNumber":81,
+		"methodName":"perfThread",
+		"nativeMethod":false
+	},{
+		"className":"com.chenjw.knife.agent.handler.ThreadCommandHandler",
+		"fileName":"ThreadCommandHandler.java",
+		"lineNumber":178,
+		"methodName":"handle",
+		"nativeMethod":false
+	},{
+		"className":"com.chenjw.knife.agent.AgentPacketHandler",
+		"fileName":"AgentPacketHandler.java",
+		"lineNumber":108,
+		"methodName":"dispatch",
+		"nativeMethod":false
+	},{
+		"className":"com.chenjw.knife.agent.AgentPacketHandler",
+		"fileName":"AgentPacketHandler.java",
+		"lineNumber":139,
+		"methodName":"handle",
+		"nativeMethod":false
+	},{
+		"className":"com.chenjw.knife.agent.AgentServer",
+		"fileName":"AgentServer.java",
+		"lineNumber":55,
+		"methodName":"run",
+		"nativeMethod":false
+	},{
+		"className":"java.lang.Thread",
+		"fileName":"Thread.java",
+		"lineNumber":748,
+		"methodName":"run",
+		"nativeMethod":false
+	}],
+	"suspended":false,
+	"threadId":11,
+	"threadName":"agent-server",
+	"threadState":"RUNNABLE",
+	"waitedCount":109,
+	"waitedTime":-1
+},{
+	"blockedCount":0,
+	"blockedTime":-1,
+	"inNative":false,
+	"lockOwnerId":-1,
+	"lockedMonitors":[],
+	"lockedSynchronizers":[],
+	"stackTrace":[],
+	"suspended":false,
+	"threadId":10,
+	"threadName":"Attach Listener",
+	"threadState":"RUNNABLE",
+	"waitedCount":0,
+	"waitedTime":-1
+},{
+	"blockedCount":0,
+	"blockedTime":-1,
+	"inNative":false,
+	"lockOwnerId":-1,
+	"lockedMonitors":[],
+	"lockedSynchronizers":[],
+	"stackTrace":[],
+	"suspended":false,
+	"threadId":4,
+	"threadName":"Signal Dispatcher",
+	"threadState":"RUNNABLE",
+	"waitedCount":0,
+	"waitedTime":-1
+},{
+	"blockedCount":12,
+	"blockedTime":-1,
+	"inNative":false,
+	"lockInfo":{
+		"className":"java.lang.ref.ReferenceQueue$Lock",
+		"identityHashCode":2078761722
+	},
+	"lockName":"java.lang.ref.ReferenceQueue$Lock@7be762fa",
+	"lockOwnerId":-1,
+	"lockedMonitors":[],
+	"lockedSynchronizers":[],
+	"stackTrace":[{
+		"className":"java.lang.Object",
+		"fileName":"Object.java",
+		"lineNumber":-2,
+		"methodName":"wait",
+		"nativeMethod":true
+	},{
+		"className":"java.lang.ref.ReferenceQueue",
+		"fileName":"ReferenceQueue.java",
+		"lineNumber":143,
+		"methodName":"remove",
+		"nativeMethod":false
+	},{
+		"className":"java.lang.ref.ReferenceQueue",
+		"fileName":"ReferenceQueue.java",
+		"lineNumber":164,
+		"methodName":"remove",
+		"nativeMethod":false
+	},{
+		"className":"java.lang.ref.Finalizer$FinalizerThread",
+		"fileName":"Finalizer.java",
+		"lineNumber":212,
+		"methodName":"run",
+		"nativeMethod":false
+	}],
+	"suspended":false,
+	"threadId":3,
+	"threadName":"Finalizer",
+	"threadState":"WAITING",
+	"waitedCount":3,
+	"waitedTime":-1
+},{
+	"blockedCount":3,
+	"blockedTime":-1,
+	"inNative":false,
+	"lockInfo":{
+		"className":"java.lang.ref.Reference$Lock",
+		"identityHashCode":491921161
+	},
+	"lockName":"java.lang.ref.Reference$Lock@1d521f09",
+	"lockOwnerId":-1,
+	"lockedMonitors":[],
+	"lockedSynchronizers":[],
+	"stackTrace":[{
+		"className":"java.lang.Object",
+		"fileName":"Object.java",
+		"lineNumber":-2,
+		"methodName":"wait",
+		"nativeMethod":true
+	},{
+		"className":"java.lang.Object",
+		"fileName":"Object.java",
+		"lineNumber":502,
+		"methodName":"wait",
+		"nativeMethod":false
+	},{
+		"className":"java.lang.ref.Reference",
+		"fileName":"Reference.java",
+		"lineNumber":191,
+		"methodName":"tryHandlePending",
+		"nativeMethod":false
+	},{
+		"className":"java.lang.ref.Reference$ReferenceHandler",
+		"fileName":"Reference.java",
+		"lineNumber":153,
+		"methodName":"run",
+		"nativeMethod":false
+	}],
+	"suspended":false,
+	"threadId":2,
+	"threadName":"Reference Handler",
+	"threadState":"WAITING",
+	"waitedCount":2,
+	"waitedTime":-1
+},{
+	"blockedCount":0,
+	"blockedTime":-1,
+	"inNative":false,
+	"lockOwnerId":-1,
+	"lockedMonitors":[],
+	"lockedSynchronizers":[],
+	"stackTrace":[{
+		"className":"java.lang.Thread",
+		"fileName":"Thread.java",
+		"lineNumber":-2,
+		"methodName":"sleep",
+		"nativeMethod":true
+	},{
+		"className":"com.chenjw.imagegrab.httpclient.HttpRequestResult",
+		"fileName":"HttpRequestResult.java",
+		"lineNumber":115,
+		"methodName":"main",
+		"nativeMethod":false
+	}],
+	"suspended":false,
+	"threadId":1,
+	"threadName":"main",
+	"threadState":"TIMED_WAITING",
+	"waitedCount":21,
+	"waitedTime":-1
+}]
+knife>
+knife>
+knife>
+knife>---top cpu cost threads---
+knife>线程：Signal Dispatcher
+knife>
+knife>线程：agent-server
+knife>java.lang.Thread.run => 100% 100%
+knife>--com.chenjw.knife.agent.AgentServer.run => 100% 100%
+knife>----com.chenjw.knife.agent.AgentPacketHandler.handle => 100% 100%
+knife>------com.chenjw.knife.agent.AgentPacketHandler.dispatch => 100% 100%
+knife>--------com.chenjw.knife.agent.handler.ThreadCommandHandler.handle => 100% 100%
+knife>----------com.chenjw.knife.agent.handler.ThreadCommandHandler.perfThread => 100% 100%
+knife>------------sun.management.ThreadImpl.dumpAllThreads => 100% 100%
+knife>--------------sun.management.ThreadImpl.dumpThreads0 => 100% 100%
+knife>--------------自用 => 0% 0%
+knife>------------自用 => 0% 0%
+knife>----------自用 => 0% 0%
+knife>--------自用 => 0% 0%
+knife>------自用 => 0% 0%
+knife>----自用 => 0% 0%
+knife>--自用 => 0% 0%
+knife>自用 => 0% 0%
+knife>
+knife>线程：Attach Listener
+knife>
+knife>线程：Reference Handler
+knife>java.lang.ref.Reference$ReferenceHandler.run => 100% 0%
+knife>--java.lang.ref.Reference.tryHandlePending => 100% 0%
+knife>----java.lang.Object.wait => 100% 0%
+knife>------java.lang.Object.wait => 100% 0%
+knife>------自用 => 0% 0%
+knife>----自用 => 0% 0%
+knife>--自用 => 0% 0%
+knife>自用 => 0% 0%
+knife>
+knife>线程：main
+knife>com.chenjw.imagegrab.httpclient.HttpRequestResult.main => 100% 0%
+knife>--java.lang.Thread.sleep => 100% 0%
+knife>--自用 => 0% 0%
+knife>自用 => 0% 0%
+knife>
+knife>线程：Finalizer
+knife>java.lang.ref.Finalizer$FinalizerThread.run => 100% 0%
+knife>--java.lang.ref.ReferenceQueue.remove => 100% 0%
+knife>----java.lang.ref.ReferenceQueue.remove => 100% 0%
+knife>------java.lang.Object.wait => 100% 0%
+knife>------自用 => 0% 0%
+knife>----自用 => 0% 0%
+knife>--自用 => 0% 0%
+knife>自用 => 0% 0%
+knife>
+knife>finished!
+knife>
+knife>-------------------------------------------------------
+knife>  usage: <command> [-h] [<args>]
+knife>
+knife>  The most commonly used commands are:
+knife>
+knife>   new                           调用构造函数创建一个对象。
+knife>   cd                            把指定id的对象当作当前对象。
+knife>   set                           更改目标对象的某个属性值。
+knife>   log                           not support yet。
+knife>   ls                            列出目标类或目标对象的属性、方法、构造函数等信息。
+knife>   clear                         清除所有字节码增强和agent保存的对象引用，把agent回复到刚连接上时的状态。
+knife>   invoke                        调用某个类的静态方法，或者目标对象的某个实例方法。
+knife>   do                            do some test。
+knife>   thread                        查看线程情况
+knife>   decode                        根据输入字符串解码成一个新的字符串，用于输入系统不支持的编码，如中文等。
+knife>   env                           
+knife>   spring                        使用指定的spring配置文件创建一个application-context，并加载到容器中。
+knife>   view                          查看类加载器和类文件名。
+knife>   trace                         等待某个目标类或对象上的外部方法调用，并打印出调用信息。
+knife>   ref                           查找所有目标对象引用到的对象，或者引用到目标对象的对象。
+knife>   top                           查找最占cpu的线程。或者查找存在引用数最多的对象。按从多到少排序。
+knife>   find                          从堆内存中查找某个类的实例。
+knife>   prop                          一些全局设置信息。
+knife>   cmd                           更新客户端暂存的服务端命令列表。
+knife>   gc                            强制jvm进行fullgc。
+knife>   heap                          查看堆内存占用情况
+knife>   close                         关闭agent并断开连接。
+knife>-------------------------------------------------------
+knife>
+knife>finished!
+knife>
+knife>-------------------------------------------------------
+knife>  usage: <command> [-h] [<args>]
+knife>
+knife>  The most commonly used commands are:
+knife>
+knife>   new                           调用构造函数创建一个对象。
+knife>   cd                            把指定id的对象当作当前对象。
+knife>   set                           更改目标对象的某个属性值。
+knife>   log                           not support yet。
+knife>   ls                            列出目标类或目标对象的属性、方法、构造函数等信息。
+knife>   clear                         清除所有字节码增强和agent保存的对象引用，把agent回复到刚连接上时的状态。
+knife>   invoke                        调用某个类的静态方法，或者目标对象的某个实例方法。
+knife>   do                            do some test。
+knife>   thread                        查看线程情况
+knife>   decode                        根据输入字符串解码成一个新的字符串，用于输入系统不支持的编码，如中文等。
+knife>   env                           
+knife>   spring                        使用指定的spring配置文件创建一个application-context，并加载到容器中。
+knife>   view                          查看类加载器和类文件名。
+knife>   trace                         等待某个目标类或对象上的外部方法调用，并打印出调用信息。
+knife>   ref                           查找所有目标对象引用到的对象，或者引用到目标对象的对象。
+knife>   top                           查找最占cpu的线程。或者查找存在引用数最多的对象。按从多到少排序。
+knife>   find                          从堆内存中查找某个类的实例。
+knife>   prop                          一些全局设置信息。
+knife>   cmd                           更新客户端暂存的服务端命令列表。
+knife>   gc                            强制jvm进行fullgc。
+knife>   heap                          查看堆内存占用情况
+knife>   close                         关闭agent并断开连接。
+knife>-------------------------------------------------------
+knife>
+knife>finished!

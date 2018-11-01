@@ -99,7 +99,6 @@ public class DoCommandHandler implements CommandHandler {
 									"com.alibaba.china.credit.profile.param.DetailParametersVO");
 					System.out.println("cc" + cc.getClassLoader());
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				System.out.println(clazz.getClassLoader());

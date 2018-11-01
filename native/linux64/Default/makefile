@@ -23,22 +23,21 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: libnativehelper.so
+all: libnativehelper64.so
 
 # Tool invocations
-libnativehelper.so: $(OBJS) $(USER_OBJS)
+libnativehelper64.so: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C Linker'
-	gcc -shared -o "libnativehelper.so" $(OBJS) $(USER_OBJS) $(LIBS)
+	gcc -shared -o "libnativehelper64.so" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C_DEPS)$(LIBRARIES) libnativehelper.so
+	-$(RM) $(LIBRARIES)$(OBJS)$(C_DEPS) libnativehelper64.so
 	-@echo ' '
 
 .PHONY: all clean dependents
-.SECONDARY:
 
 -include ../makefile.targets

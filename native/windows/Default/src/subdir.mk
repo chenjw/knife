@@ -4,12 +4,12 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-C:/workspace/knife/native/src/check.c \
-C:/workspace/knife/native/src/class.c \
-C:/workspace/knife/native/src/field.c \
-C:/workspace/knife/native/src/reference.c \
-C:/workspace/knife/native/src/trace.c \
-C:/workspace/knife/native/src/util.c 
+/Users/chenjw/workspace/knife/native/src/check.c \
+/Users/chenjw/workspace/knife/native/src/class.c \
+/Users/chenjw/workspace/knife/native/src/field.c \
+/Users/chenjw/workspace/knife/native/src/reference.c \
+/Users/chenjw/workspace/knife/native/src/trace.c \
+/Users/chenjw/workspace/knife/native/src/util.c 
 
 OBJS += \
 ./src/check.o \
@@ -29,45 +29,45 @@ C_DEPS += \
 
 
 # Each subdirectory must supply rules for building sources it contributes
-src/check.o: C:/workspace/knife/native/src/check.c
+src/check.o: /Users/chenjw/workspace/knife/native/src/check.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C Compiler'
-	gcc -I"C:\workspace\knife\native\include\windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	gcc -I"/Users/chenjw/workspace/knife/native/include/windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
-src/class.o: C:/workspace/knife/native/src/class.c
+src/class.o: /Users/chenjw/workspace/knife/native/src/class.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C Compiler'
-	gcc -I"C:\workspace\knife\native\include\windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	gcc -I"/Users/chenjw/workspace/knife/native/include/windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
-src/field.o: C:/workspace/knife/native/src/field.c
+src/field.o: /Users/chenjw/workspace/knife/native/src/field.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C Compiler'
-	gcc -I"C:\workspace\knife\native\include\windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	gcc -I"/Users/chenjw/workspace/knife/native/include/windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
-src/reference.o: C:/workspace/knife/native/src/reference.c
+src/reference.o: /Users/chenjw/workspace/knife/native/src/reference.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C Compiler'
-	gcc -I"C:\workspace\knife\native\include\windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	gcc -I"/Users/chenjw/workspace/knife/native/include/windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
-src/trace.o: C:/workspace/knife/native/src/trace.c
+src/trace.o: /Users/chenjw/workspace/knife/native/src/trace.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C Compiler'
-	gcc -I"C:\workspace\knife\native\include\windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	gcc -I"/Users/chenjw/workspace/knife/native/include/windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
-src/util.o: C:/workspace/knife/native/src/util.c
+src/util.o: /Users/chenjw/workspace/knife/native/src/util.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C Compiler'
-	gcc -I"C:\workspace\knife\native\include\windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	gcc -I"/Users/chenjw/workspace/knife/native/include/windows" -O2 -g -Wall -c -fmessage-length=0 -fPIC -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
