@@ -105,8 +105,8 @@ public class ThreadCommandHandler implements CommandHandler {
       @Override
       public int compare(Entry<String, PerfNode> o1, Entry<String, PerfNode> o2) {
 
-        long l1 = o1.getValue().getTimecostCpu();
-        long l2 = o2.getValue().getTimecostCpu();
+        long l1 = o1.getValue().getTimecost();
+        long l2 = o2.getValue().getTimecost();
         if (l2 > l1) {
           return 1;
         } else if (l2 == l1) {
@@ -132,8 +132,8 @@ public class ThreadCommandHandler implements CommandHandler {
       @Override
       public int compare(Entry<PerfNodeKey, PerfNode> o1, Entry<PerfNodeKey, PerfNode> o2) {
 
-        long l1 = o1.getValue().getTimecostCpu();
-        long l2 = o2.getValue().getTimecostCpu();
+        long l1 = o1.getValue().getTimecost();
+        long l2 = o2.getValue().getTimecost();
         if (l2 > l1) {
           return 1;
         } else if (l2 == l1) {
