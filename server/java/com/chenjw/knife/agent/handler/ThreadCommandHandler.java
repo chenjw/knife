@@ -159,17 +159,17 @@ public class ThreadCommandHandler implements CommandHandler {
       for (int i = 0; i < t; i++) {
         ThreadInfo[] tis = ManagementFactory.getThreadMXBean().dumpAllThreads(false, false);
         // 只打印最后一条
-        if (i == t - 1) {
-          Agent.sendPart(ResultHelper.newFragment("---thread snapshot---"));
-          Agent.sendPart(ResultHelper.newFragment(JSON.toJSONString(tis, true)));
-        }
+//        if (i == t - 1) {
+//          Agent.sendPart(ResultHelper.newFragment("---thread snapshot---"));
+//          Agent.sendPart(ResultHelper.newFragment(JSON.toJSONString(tis, true)));
+//        }
         // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(tis, true)));
         addThreadInfo(node,className,methodName, tis);
         Thread.sleep(perfInterval);
       }
-      Agent.sendPart(ResultHelper.newFragment(""));
-      Agent.sendPart(ResultHelper.newFragment(""));
-      Agent.sendPart(ResultHelper.newFragment(""));
+//      Agent.sendPart(ResultHelper.newFragment(""));
+//      Agent.sendPart(ResultHelper.newFragment(""));
+//      Agent.sendPart(ResultHelper.newFragment(""));
       Agent.sendPart(ResultHelper.newFragment("---method cpu cost---"));
       // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(root, true)));
       this.printSubNode(node.getTimecost(), 0, node);
@@ -180,17 +180,17 @@ public class ThreadCommandHandler implements CommandHandler {
       for (int i = 0; i < t; i++) {
         ThreadInfo[] tis = ManagementFactory.getThreadMXBean().dumpAllThreads(false, false);
         // 只打印最后一条
-        if (i == t - 1) {
-          Agent.sendPart(ResultHelper.newFragment("---thread snapshot---"));
-          Agent.sendPart(ResultHelper.newFragment(JSON.toJSONString(tis, true)));
-        }
+//        if (i == t - 1) {
+//          Agent.sendPart(ResultHelper.newFragment("---thread snapshot---"));
+//          Agent.sendPart(ResultHelper.newFragment(JSON.toJSONString(tis, true)));
+//        }
         // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(tis, true)));
         addThreadInfo(tree, tis);
         Thread.sleep(perfInterval);
       }
-      Agent.sendPart(ResultHelper.newFragment(""));
-      Agent.sendPart(ResultHelper.newFragment(""));
-      Agent.sendPart(ResultHelper.newFragment(""));
+//      Agent.sendPart(ResultHelper.newFragment(""));
+//      Agent.sendPart(ResultHelper.newFragment(""));
+//      Agent.sendPart(ResultHelper.newFragment(""));
       Agent.sendPart(ResultHelper.newFragment("---top cpu cost threads---"));
       // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(root, true)));
       printTree(tree);
