@@ -355,7 +355,7 @@ public class HeapCommandHandler implements CommandHandler {
 
   @Override
   public void declareArgs(ArgDef argDef) {
-    argDef.setDefinition("heap [-i] [-gc] [-t <time>] [-p <classnames>] [-n <topnum>]");
+    argDef.setDefinition("heap [-i] [-gc] [-t <time>] [-n <topnum>]");
   }
 
 }
