@@ -14,14 +14,17 @@ public class ServiceRegistry {
 
 	private static Map<Class<?>, Lifecycle> services = new LinkedHashMap<Class<?>, Lifecycle>();
 	static {
+	    // System.err.println("start load service");
 		try {
 			for (Lifecycle service : ServiceLoader.load(Lifecycle.class,
 					ServiceRegistry.class.getClassLoader())) {
 				services.put(service.getClass(), service);
+				// System.err.println("load "+service.getClass());
 			}
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+		// System.err.println("end load service");
 
 	}
 

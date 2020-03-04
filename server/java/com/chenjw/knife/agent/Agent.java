@@ -71,6 +71,8 @@ public class Agent {
     // {
     // sendDividableResult((Dividable) r.getContent());
     // } else {
+    
+    System.out.println(r.getContent());
     directSendPart(r);
     // }
   }

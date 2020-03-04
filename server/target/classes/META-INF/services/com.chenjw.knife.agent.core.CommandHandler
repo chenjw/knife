@@ -9,7 +9,7 @@ com.chenjw.knife.agent.handler.FindCommandHandler
 com.chenjw.knife.agent.handler.InvokeCommandHandler
 com.chenjw.knife.agent.handler.GcCommandHandler
 com.chenjw.knife.agent.handler.SetCommandHandler
-com.chenjw.knife.agent.handler.TraceCommandHandler
+com.chenjw.knife.agent.handler.TraceCommandHandlerBackup
 com.chenjw.knife.agent.handler.DecodeCommandHandler
 com.chenjw.knife.agent.handler.RefCommandHandler
 com.chenjw.knife.agent.handler.NewCommandHandler

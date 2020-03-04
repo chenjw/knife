@@ -17,12 +17,84 @@ import com.chenjw.knife.agent.handler.perf.PerfTree;
 import com.chenjw.knife.agent.utils.ResultHelper;
 import com.chenjw.knife.core.args.ArgDef;
 import com.chenjw.knife.core.args.Args;
+import com.chenjw.knife.utils.StringHelper;
+
 
 
 public class ThreadCommandHandler implements CommandHandler {
 
   private long perfInterval = 100;
 
+
+  private void mergeThreadInfoToNode(PerfNode perfNode, ThreadInfo ts, StackTraceElement[] stes) {
+    
+    perfNode.setTimecost(perfNode.getTimecost() + perfInterval);
+    if (ts.getThreadState() == Thread.State.RUNNABLE) {
+      perfNode.setTimecostCpu(perfNode.getTimecostCpu() + perfInterval);
+    }
+    if (stes == null) {
+      return;
+    }
+    PerfNode currentNode = perfNode;
+    for (int i = stes.length - 1; i >= 0; i--) {
+      StackTraceElement ste = stes[i];
+      PerfNodeKey key = new PerfNodeKey();
+      key.setClassName(ste.getClassName());
+      key.setMethodName(ste.getMethodName());
+      PerfNode node = currentNode.getChildren().get(key);
+      if (node == null) {
+        node = new PerfNode();
+        currentNode.getChildren().put(key, node);
+      }
+      node.setTimecost(node.getTimecost() + perfInterval);
+      if (ts.getThreadState() == Thread.State.RUNNABLE) {
+        node.setTimecostCpu(node.getTimecostCpu() + perfInterval);
+      }
+      // 当前节点是最后节点，说明时间都是被这个节点占用的
+      if (i == 0) {
+        node.setSelfTimecost(node.getSelfTimecost() + perfInterval);
+        if (ts.getThreadState() == Thread.State.RUNNABLE) {
+          node.setSelfTimecostCpu(node.getSelfTimecostCpu() + perfInterval);
+        }
+      }
+      currentNode = node;
+    }
+  }
+
+  /**
+   * 把线程采样数据累积到方法节点上
+   */
+  private void addThreadInfo(PerfNode perfNode, String className, String methodName,
+      ThreadInfo[] tis) {
+    for (ThreadInfo ts : tis) {
+      StackTraceElement[] stes = ts.getStackTrace();
+      if (stes == null) {
+        continue;
+      }
+      for (int i = stes.length - 1; i >= 0; i--) {
+
+        StackTraceElement ste = stes[i];
+        // 如果匹配到就解析
+        if (StringHelper.equals(className, ste.getClassName())
+            && StringHelper.equals(methodName, ste.getMethodName())) {
+          StackTraceElement[] subStes = Arrays.copyOfRange(stes, 0, i+1);
+          this.mergeThreadInfoToNode(perfNode, ts, subStes);
+          break;
+        } else {
+          continue;
+        }
+
+
+      }
+    }
+  }
+
+  /**
+   * 把线程采样数据累积到线程树上
+   * 
+   * @param perfTree
+   * @param tis
+   */
   private void addThreadInfo(PerfTree perfTree, ThreadInfo[] tis) {
     for (ThreadInfo ts : tis) {
       PerfNode perfNode = perfTree.getThreadRoots().get(ts.getThreadName());
@@ -30,70 +102,100 @@ public class ThreadCommandHandler implements CommandHandler {
         perfNode = new PerfNode();
         perfTree.getThreadRoots().put(ts.getThreadName(), perfNode);
       }
-      perfNode.setTimecost(perfNode.getTimecost() + perfInterval);
-      if (ts.getThreadState() == Thread.State.RUNNABLE) {
-        perfNode.setTimecostCpu(perfNode.getTimecostCpu() + perfInterval);
-      }
       StackTraceElement[] stes = ts.getStackTrace();
-      if (stes == null) {
-        continue;
-      }
-      PerfNode currentNode = perfNode;
-      for (int i = 0; i < stes.length; i++) {
-        StackTraceElement ste = stes[stes.length - i - 1];
-        PerfNodeKey key = new PerfNodeKey();
-        key.setClassName(ste.getClassName());
-        key.setMethodName(ste.getMethodName());
-        PerfNode node = currentNode.getChildren().get(key);
-        if (node == null) {
-          node = new PerfNode();
-          currentNode.getChildren().put(key, node);
-        }
-        node.setTimecost(node.getTimecost() + perfInterval);
-        if (ts.getThreadState() == Thread.State.RUNNABLE) {
-          node.setTimecostCpu(node.getTimecostCpu() + perfInterval);
-        }
-        // 当前节点是最后节点，说明时间都是被这个节点占用的
-        if (i == stes.length - 1) {
-          node.setSelfTimecost(node.getSelfTimecost() + perfInterval);
-          if (ts.getThreadState() == Thread.State.RUNNABLE) {
-            node.setSelfTimecostCpu(node.getSelfTimecostCpu() + perfInterval);
-          }
-        }
-        currentNode = node;
-      }
+      this.mergeThreadInfoToNode(perfNode, ts, stes);
     }
 
   }
 
+  public static void main(String[] args) throws InterruptedException {
+    ThreadCommandHandler c=new ThreadCommandHandler();
+    int second = 5;
+    int t = (int) (second * 1000 / c.perfInterval);
+    PerfTree tree = new PerfTree();
+    for (int i = 0; i < t; i++) {
+      ThreadInfo[] tis = ManagementFactory.getThreadMXBean().dumpAllThreads(false, false);
+
+      // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(tis, true)));
+      c.addThreadInfo(tree, tis);
+      Thread.sleep(c.perfInterval);
+    }
+    // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(root, true)));
+    c.printTree(tree);
+    PerfNode node = new PerfNode();
+    for (int i = 0; i < t; i++) {
+      ThreadInfo[] tis = ManagementFactory.getThreadMXBean().dumpAllThreads(false, false);
+
+      // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(tis, true)));
+      c.addThreadInfo(node,"com.chenjw.knife.agent.handler.ThreadCommandHandler","main", tis);
+      Thread.sleep(c.perfInterval);
+    }
+    // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(root, true)));
+    c.printSubNode(node.getTimecost(), 0, node);
+  }
+  
+
   private void perfThread(Args args) throws InterruptedException {
     // 默认perf10秒
     int second = 5;
-    Map<String, String> nOptions = args.option("-t");
-    if (nOptions != null) {
-      second = Integer.parseInt(nOptions.get("time"));
+    Map<String, String> tOptions = args.option("-t");
+    if (tOptions != null) {
+      second = Integer.parseInt(tOptions.get("time"));
     }
     //
     Agent.sendPart(ResultHelper.newFragment("start sampling wait " + second + " seconds..."));
     int t = (int) (second * 1000 / perfInterval);
-    PerfTree tree = new PerfTree();
-    for (int i = 0; i < t; i++) {
-      ThreadInfo[] tis = ManagementFactory.getThreadMXBean().dumpAllThreads(false, false);
-      // 只打印最后一条
-      if (i == t - 1) {
-        Agent.sendPart(ResultHelper.newFragment("---thread snapshot---"));
-        Agent.sendPart(ResultHelper.newFragment(JSON.toJSONString(tis, true)));
-      }
-      // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(tis, true)));
-      addThreadInfo(tree, tis);
-      Thread.sleep(perfInterval);
+    Map<String, String> mOptions = args.option("-m");
+    String className = null;
+    String methodName = null;
+    if (mOptions != null) {
+      String method = mOptions.get("method");
+      className = StringHelper.substringBeforeLast(method, ".");
+      methodName = StringHelper.substringAfterLast(method, ".");
     }
-    Agent.sendPart(ResultHelper.newFragment(""));
-    Agent.sendPart(ResultHelper.newFragment(""));
-    Agent.sendPart(ResultHelper.newFragment(""));
-    Agent.sendPart(ResultHelper.newFragment("---top cpu cost threads---"));
-    // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(root, true)));
-    printTree(tree);
+    // 统计某个方法内部的耗时
+    if (className!=null) {
+      PerfNode node = new PerfNode();
+      for (int i = 0; i < t; i++) {
+        ThreadInfo[] tis = ManagementFactory.getThreadMXBean().dumpAllThreads(false, false);
+        // 只打印最后一条
+        if (i == t - 1) {
+          Agent.sendPart(ResultHelper.newFragment("---thread snapshot---"));
+          Agent.sendPart(ResultHelper.newFragment(JSON.toJSONString(tis, true)));
+        }
+        // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(tis, true)));
+        addThreadInfo(node,className,methodName, tis);
+        Thread.sleep(perfInterval);
+      }
+      Agent.sendPart(ResultHelper.newFragment(""));
+      Agent.sendPart(ResultHelper.newFragment(""));
+      Agent.sendPart(ResultHelper.newFragment(""));
+      Agent.sendPart(ResultHelper.newFragment("---method cpu cost---"));
+      // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(root, true)));
+      this.printSubNode(node.getTimecost(), 0, node);
+    }
+    // 统计所有方法的耗时
+    else {
+      PerfTree tree = new PerfTree();
+      for (int i = 0; i < t; i++) {
+        ThreadInfo[] tis = ManagementFactory.getThreadMXBean().dumpAllThreads(false, false);
+        // 只打印最后一条
+        if (i == t - 1) {
+          Agent.sendPart(ResultHelper.newFragment("---thread snapshot---"));
+          Agent.sendPart(ResultHelper.newFragment(JSON.toJSONString(tis, true)));
+        }
+        // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(tis, true)));
+        addThreadInfo(tree, tis);
+        Thread.sleep(perfInterval);
+      }
+      Agent.sendPart(ResultHelper.newFragment(""));
+      Agent.sendPart(ResultHelper.newFragment(""));
+      Agent.sendPart(ResultHelper.newFragment(""));
+      Agent.sendPart(ResultHelper.newFragment("---top cpu cost threads---"));
+      // Agent.sendResult(ResultHelper.newResult(JSON.toJSONString(root, true)));
+      printTree(tree);
+    }
+
     Agent.sendResult(ResultHelper.newResult("finished!"));
   }
 
@@ -181,7 +283,7 @@ public class ThreadCommandHandler implements CommandHandler {
 
   @Override
   public void declareArgs(ArgDef argDef) {
-    argDef.setDefinition("thread [-t <time>]");
+    argDef.setDefinition("thread [-t <time>] [-m <method>]");
   }
 
 }
