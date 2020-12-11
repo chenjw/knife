@@ -20,3 +20,4 @@ com.chenjw.knife.agent.handler.CmdCommandHandler
 com.chenjw.knife.agent.handler.ThreadCommandHandler
 com.chenjw.knife.agent.handler.HeapCommandHandler
 com.chenjw.knife.agent.handler.EnvCommandHandler
+com.chenjw.knife.agent.handler.FlameCommandHandler

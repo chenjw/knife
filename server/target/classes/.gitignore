@@ -1,1 +1,12 @@
+/META-INF/
 /com/
+/command_cn.properties
+/command_en.properties
+/libnativehelper.dll
+/libnativehelper.dylib
+/libnativehelper.so
+/libnativehelper64.dll
+/libnativehelper64.so
+/libasyncProfiler.so
+/libasyncProfiler.dylib
+/libasyncProfiler64.so
