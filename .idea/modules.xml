@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/agent/knife.agent.iml" filepath="$PROJECT_DIR$/agent/knife.agent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/client/knife.client.iml" filepath="$PROJECT_DIR$/client/knife.client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/knife.core.iml" filepath="$PROJECT_DIR$/core/knife.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib/knife.lib.iml" filepath="$PROJECT_DIR$/lib/knife.lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/server/knife.server.iml" filepath="$PROJECT_DIR$/server/knife.server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/knife.test.iml" filepath="$PROJECT_DIR$/test/knife.test.iml" />
+    </modules>
+  </component>
+</project>
